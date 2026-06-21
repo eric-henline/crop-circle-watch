@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cropcircles.dashboardpush</string>
+
+    <!-- Calls the push runner, which runs `git push` for the dashboard repo -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/erichenline/Projects/crop-circles/dashboard/push_dashboard.sh</string>
+    </array>
+
+    <!-- Runs at 7:10 AM — 10 minutes after the existing 7:00 AM image-download
+         job, inside the same 6:55 AM pmset wake window. No new wake schedule
+         needed. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>10</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/erichenline/Projects/crop-circles/dashboard/push_log.txt</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/erichenline/Projects/crop-circles/dashboard/push_errors.txt</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
