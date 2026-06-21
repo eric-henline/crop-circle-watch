@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crop Circle Watch — Live Formation Log</title>
+<meta name="description" content="A daily-updated log of newly reported crop circle formations, with source links, photos, and aerial footage.">
+
+<!-- Self-contained favicon: a simple ring-glyph, no external file needed -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23060a11'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%236bffc2' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='10' fill='none' stroke='%236bffc2' stroke-width='2'/%3E%3Ccircle cx='32' cy='10' r='3' fill='%236bffc2'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Icon sprite — small geometric line icons, used throughout instead of emoji -->
+<svg style="display:none">
+  <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M12 21s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"/>
+    <circle cx="12" cy="9" r="2.4"/>
+  </symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <rect x="3.5" y="5.5" width="17" height="15" rx="1.5"/>
+    <path d="M3.5 9.5h17M8 3v4M16 3v4"/>
+  </symbol>
+  <symbol id="icon-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M10 14a4 4 0 0 0 5.66 0l2.83-2.83a4 4 0 0 0-5.66-5.66l-1.4 1.4"/>
+    <path d="M14 10a4 4 0 0 0-5.66 0l-2.83 2.83a4 4 0 0 0 5.66 5.66l1.4-1.4"/>
+  </symbol>
+  <symbol id="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="12" cy="12" r="9.2"/>
+    <path d="M10.2 8.6l5.4 3.4-5.4 3.4z" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="10.5" cy="10.5" r="6.5"/>
+    <path d="M19.5 19.5l-4.3-4.3"/>
+  </symbol>
+  <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="12" cy="12" r="8.5"/>
+    <circle cx="12" cy="12" r="3.2"/>
+    <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+  </symbol>
+  <symbol id="icon-wheat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M12 21V9M12 9c0-3.5 2-5 4-6M12 9c0-3.5-2-5-4-6M12 13c2-1 4-1 5-3M12 13c-2-1-4-1-5-3M12 17c2-1 3.5-.5 4.5-2.2M12 17c-2-1-3.5-.5-4.5-2.2"/>
+  </symbol>
+  <symbol id="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path d="M9 6l6 6-6 6"/>
+  </symbol>
+  <symbol id="icon-ring-logo" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="32" cy="32" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="32" cy="6" r="3" fill="currentColor"/>
+    <circle cx="32" cy="58" r="3" fill="currentColor"/>
+    <circle cx="6" cy="32" r="3" fill="currentColor"/>
+    <circle cx="58" cy="32" r="3" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<div class="bg-field" aria-hidden="true"></div>
+<div class="bg-scan" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+    <div class="brand-text">
+      <h1>CROP CIRCLE WATCH</h1>
+      <p class="tagline">A standing log of newly reported formations — updated by an automated daily scan</p>
+    </div>
+  </div>
+  <dl class="hud-stats" id="hudStats">
+    <div class="hud-stat"><dt>LOGGED</dt><dd id="statTotal">—</dd></div>
+    <div class="hud-stat"><dt>LATEST</dt><dd id="statLatest">—</dd></div>
+    <div class="hud-stat"><dt>LAST SCAN</dt><dd id="statScan">—</dd></div>
+  </dl>
+</header>
+
+<div class="control-bar">
+  <label class="search-box">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
+    <input type="search" id="searchInput" placeholder="Search formation, location, source…" autocomplete="off">
+  </label>
+  <div class="filter-chips" id="filterChips"><!-- populated by app.js --></div>
+  <button class="jump-btn" id="jumpLatest" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-target"/></svg>
+    Jump to latest
+  </button>
+</div>
+
+<div class="layout">
+  <nav class="timeline-rail" id="timelineRail" aria-label="Scroll back in time">
+    <!-- populated by app.js: year/month/day rail -->
+  </nav>
+
+  <main class="feed" id="feed">
+    <!-- populated by app.js: date-grouped sections -->
+  </main>
+</div>
+
+<footer class="site-footer">
+  <p>
+    Logged manually or by the daily automated scan described in <code>README.md</code>.
+    Photography and footage remain the property of their original creators — each entry links back to its source.
+  </p>
+  <p class="footer-meta">Crop Circle Watch · part of the <span>crop-circles</span> research project · <span id="footerUpdated">—</span></p>
+</footer>
+
+<template id="storyCardTemplate">
+  <article class="story-card">
+    <div class="card-media"></div>
+    <div class="card-body">
+      <div class="card-tags"></div>
+      <h3 class="card-title"></h3>
+      <p class="card-location">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-pin"/></svg>
+        <span></span>
+      </p>
+      <p class="card-desc"></p>
+      <div class="card-footer">
+        <span class="card-date">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-calendar"/></svg>
+          <span></span>
+        </span>
+        <a class="card-source" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-link"/></svg>
+          <span>Source</span>
+        </a>
+      </div>
+    </div>
+  </article>
+</template>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
