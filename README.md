@@ -1,15 +1,20 @@
 # Crop Circle Watch
 
-A small, no-build static dashboard that logs newly reported crop circle formations — photos/video, source links, and a few sentences per entry — organized so you can scroll back through any day it's run. It lives entirely in this folder and is separate from the coffee-table-book research project one level up.
+A small, no-build static dashboard that logs newly reported crop circle formations — photos/video, source links, and a few sentences per entry — organized so you can scroll back through any day it's run. Live at `https://eric-henline.github.io/crop-circle-watch/`. It lives entirely in this folder and is separate from the coffee-table-book research project one level up.
+
+The page is in two halves: a dashboard "hero" up top (status line, last-confirmed-formation banner, headline stats, and three widgets — recent coverage, field footage, live chatter) that smoothly gives way on scroll to the full chronological timeline below it. A second page, `about.html`, explains how the scan works for anyone who lands on the site cold.
 
 ## How it's built
 
-Four files, no framework, no build step:
+Five files, no framework, no build step:
 
-- `index.html` — page structure
+- `index.html` — dashboard page structure (hero + timeline)
+- `about.html` — the About page
 - `styles.css` — all visual design (dark "research console" theme — change the variables at the top of the file to re-theme)
-- `app.js` — rendering logic (reads the data below and draws the page)
+- `app.js` — rendering logic (reads the data below and draws both the hero widgets and the timeline)
 - `data.js` — **the content**. A plain JavaScript array. This is the file you edit by hand.
+
+Type is deliberately not the usual Inter/Space-Grotesk default stack: **Bricolage Grotesque** for headings and big numbers, **Newsreader** (a serif) for prose — descriptions, taglines, the About page — and **Fragment Mono** for UI chrome (nav, chips, tags, stats). Pulled from Google Fonts via the `<link>` tag at the top of each HTML file.
 
 Because the data lives in a `<script>` tag instead of a fetched JSON file, the dashboard works identically whether you open `index.html` directly in a browser, or it's served from GitHub Pages — no local web server needed to test changes.
 
@@ -27,7 +32,8 @@ Open `data.js`. Each formation is one object inside `window.STORIES`:
   tags: ["UK", "Wiltshire", "2026 season", "video"],
   sourceUrl: "https://www.cropcircleconnector.com/2026/first/first2026a.html",
   sourceName: "Crop Circle Connector",
-  youtubeId: "we8EFnHEP14"   // or null if there's no video yet
+  youtubeId: "we8EFnHEP14",   // or null if there's no video yet
+  socialPosts: []             // optional — see below
 }
 ```
 
@@ -35,7 +41,13 @@ To add one: copy an existing object, change the values, add a comma. New entries
 
 `youtubeId` is the short code from a YouTube URL (the part after `v=` or after `embed/`), not the full link. Set it to `null` if you don't have video. Leave `tags` short — they populate the filter chips along the top of the page, and only the most common ones show as chips.
 
-`DASHBOARD_META.lastScan` near the top of the file drives the "LAST SCAN" stat and the footer timestamp. The daily automation updates it; you can too if you make a manual edit and want the timestamp to reflect that.
+`socialPosts` is optional — an array of `{ platform: "x" | "bluesky", url: "..." }` objects for individual posts you've found and want to surface in the "Live chatter" widget. They render as plain outbound links, never as embeds (see "Why no live social feeds" below).
+
+`DASHBOARD_META.lastScan` near the top of the file drives the "Last scan" stat and the footer timestamp. The daily automation updates it; you can too if you make a manual edit and want the timestamp to reflect that. `DASHBOARD_META.defaultKeywords` seeds the keyword chips in "Live chatter" for first-time visitors — after that, each visitor's edits live in their own browser (`localStorage`), not here.
+
+## Why no live social feeds
+
+The "Live chatter" widget doesn't embed an actual live Twitter/X or Bluesky feed, on purpose. As of 2026, X's embeddable timelines only render content for visitors who are logged into X — an anonymous visitor sees an empty box — and Bluesky's public, no-auth API supports profile search but not keyword post-search. Neither platform offers a way to embed a reliably-working, keyword-driven feed on a static site with no backend and no API keys. Rather than fake it or silently fail, the widget does two honest things instead: shows curated post links you've manually verified and added to `socialPosts`, and gives visitors a one-click "Search X" / "Search Bluesky" link built from their own customizable keyword chips, which opens a real search on the real platform in a new tab.
 
 ## The daily scan
 

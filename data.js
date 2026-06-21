@@ -16,6 +16,16 @@
      sourceName  — short label for the source link, e.g. "Crop Circle Connector"
      youtubeId   — YouTube video ID only (the part after "v=" or after
                    "embed/"), or null if no video is available yet
+     socialPosts — OPTIONAL. Array of { platform, url } objects for individual
+                   posts the scan finds and verifies by hand, e.g.
+                   { platform: "x", url: "https://x.com/someone/status/123" }
+                   or { platform: "bluesky", url: "https://bsky.app/profile/.../post/..." }.
+                   These render as plain outbound link-cards in the "Live
+                   chatter" widget — never as embedded iframes. (Live,
+                   keyword-searchable embeds aren't reliably embeddable on a
+                   static site on either platform as of 2026, so curated
+                   links + the keyword search-launcher below are the honest
+                   substitute. See README.md.)
 
    The automated daily scan (see ../README.md and the scheduled task) adds
    new objects to the TOP of this array and updates DASHBOARD_META.lastScan.
@@ -27,7 +37,11 @@ window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
   lastScan: "2026-06-20T10:15:00-07:00",
-  seasonLabel: "2026 UK season"
+  seasonLabel: "2026 UK season",
+  // Seeds the "Live chatter" keyword chips on a visitor's first visit. After
+  // that, each visitor's own additions/removals are kept in their browser's
+  // localStorage and this list is ignored for them.
+  defaultKeywords: ["crop circle 2026", "Wiltshire crop circle", "crop circle UK"]
 };
 
 window.STORIES = [

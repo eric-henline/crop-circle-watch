@@ -11,13 +11,13 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- Icon sprite — small geometric line icons, used throughout instead of emoji -->
+<!-- Icon sprite — small geometric line icons, used throughout instead of emoji or brand logos -->
 <svg style="display:none">
   <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
     <path d="M12 21s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"/>
@@ -58,54 +58,133 @@
     <circle cx="6" cy="32" r="3" fill="currentColor"/>
     <circle cx="58" cy="32" r="3" fill="currentColor"/>
   </symbol>
+  <symbol id="icon-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M6 3.5h9l3 3V20a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/>
+    <path d="M9 10h6M9 13.5h6M9 17h4"/>
+  </symbol>
+  <symbol id="icon-rss" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="6" cy="18" r="1.6" fill="currentColor" stroke="none"/>
+    <path d="M5 12a7 7 0 0 1 7 7M5 6a13 13 0 0 1 13 13"/>
+  </symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path d="M12 5v14M5 12h14"/>
+  </symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path d="M6 6l12 12M18 6L6 18"/>
+  </symbol>
 </svg>
 
 <div class="bg-field" aria-hidden="true"></div>
 <div class="bg-scan" aria-hidden="true"></div>
 
-<header class="site-header">
-  <div class="brand">
-    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
-    <div class="brand-text">
-      <h1>CROP CIRCLE WATCH</h1>
-      <p class="tagline">A standing log of newly reported formations — updated by an automated daily scan</p>
+<header class="site-header" id="siteHeader">
+  <div class="site-header-inner">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+      <div class="brand-text">
+        <h1>CROP CIRCLE WATCH</h1>
+        <p class="tagline">A standing log of newly reported formations — updated by an automated daily scan</p>
+      </div>
     </div>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#hero" class="nav-link">Dashboard</a>
+      <a href="#timeline" class="nav-link">Timeline</a>
+      <a href="about.html" class="nav-link">About</a>
+    </nav>
   </div>
-  <dl class="hud-stats" id="hudStats">
-    <div class="hud-stat"><dt>LOGGED</dt><dd id="statTotal">—</dd></div>
-    <div class="hud-stat"><dt>LATEST</dt><dd id="statLatest">—</dd></div>
-    <div class="hud-stat"><dt>LAST SCAN</dt><dd id="statScan">—</dd></div>
-  </dl>
 </header>
 
-<div class="control-bar">
-  <label class="search-box">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
-    <input type="search" id="searchInput" placeholder="Search formation, location, source…" autocomplete="off">
-  </label>
-  <div class="filter-chips" id="filterChips"><!-- populated by app.js --></div>
-  <button class="jump-btn" id="jumpLatest" type="button">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-target"/></svg>
-    Jump to latest
-  </button>
-</div>
+<section class="hero" id="hero">
+  <div class="radar-sweep" aria-hidden="true"></div>
+  <div class="hero-inner">
 
-<div class="layout">
-  <nav class="timeline-rail" id="timelineRail" aria-label="Scroll back in time">
-    <!-- populated by app.js: year/month/day rail -->
-  </nav>
+    <div class="status-line">
+      <span class="pulse-dot" aria-hidden="true"></span>
+      <span>Monitoring active — <span id="seasonLabel">—</span></span>
+    </div>
 
-  <main class="feed" id="feed">
-    <!-- populated by app.js: date-grouped sections -->
-  </main>
-</div>
+    <div class="last-formation">
+      <span class="lf-label">Last confirmed formation</span>
+      <span class="lf-value" id="lfValue">—</span>
+      <span class="lf-days" id="lfDays">—</span>
+    </div>
+
+    <dl class="hero-stats">
+      <div class="hero-stat"><dt>Logged</dt><dd id="statTotal">—</dd></div>
+      <div class="hero-stat"><dt>This season</dt><dd id="statSeason">—</dd></div>
+      <div class="hero-stat"><dt>Latest</dt><dd id="statLatest">—</dd></div>
+      <div class="hero-stat"><dt>Last scan</dt><dd id="statScan">—</dd></div>
+    </dl>
+
+    <div class="widget-grid">
+      <section class="widget" aria-labelledby="newsHeading">
+        <h2 id="newsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg>Recent coverage</h2>
+        <ul class="news-list" id="newsList"><!-- populated by app.js --></ul>
+      </section>
+
+      <section class="widget" aria-labelledby="videoHeading">
+        <h2 id="videoHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-play"/></svg>Field footage</h2>
+        <div class="video-strip" id="videoStrip"><!-- populated by app.js --></div>
+      </section>
+
+      <section class="widget widget-social" aria-labelledby="socialHeading">
+        <h2 id="socialHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rss"/></svg>Live chatter</h2>
+        <p class="widget-sub">Curated posts the scan finds, plus a one-tap search for your own keywords — live keyword feeds aren't reliable on either platform right now, so this is the honest version.</p>
+        <div class="social-posts" id="socialPosts"><!-- populated by app.js --></div>
+        <div class="keyword-block">
+          <div class="keyword-chips" id="keywordChips"><!-- populated by app.js --></div>
+          <form class="keyword-form" id="keywordForm">
+            <input type="text" id="keywordInput" placeholder="add a keyword…" autocomplete="off">
+            <button type="submit" aria-label="Add keyword"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-plus"/></svg></button>
+          </form>
+          <div class="keyword-actions">
+            <a id="searchX" class="search-launch" target="_blank" rel="noopener noreferrer">Search X →</a>
+            <a id="searchBsky" class="search-launch" target="_blank" rel="noopener noreferrer">Search Bluesky →</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <button class="scroll-cue" id="scrollCue" type="button">
+      <span>Full timeline</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-chevron"/></svg>
+    </button>
+  </div>
+</section>
+
+<div class="hero-sentinel" id="heroSentinel" aria-hidden="true"></div>
+
+<section class="timeline-section" id="timeline">
+
+  <div class="control-bar">
+    <label class="search-box">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
+      <input type="search" id="searchInput" placeholder="Search formation, location, source…" autocomplete="off">
+    </label>
+    <div class="filter-chips" id="filterChips"><!-- populated by app.js --></div>
+    <button class="jump-btn" id="jumpLatest" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-target"/></svg>
+      Jump to latest
+    </button>
+  </div>
+
+  <div class="layout">
+    <nav class="timeline-rail" id="timelineRail" aria-label="Scroll back in time">
+      <!-- populated by app.js: year/month/day rail -->
+    </nav>
+
+    <main class="feed" id="feed">
+      <!-- populated by app.js: date-grouped sections -->
+    </main>
+  </div>
+</section>
 
 <footer class="site-footer">
   <p>
     Logged manually or by the daily automated scan described in <code>README.md</code>.
     Photography and footage remain the property of their original creators — each entry links back to its source.
   </p>
-  <p class="footer-meta">Crop Circle Watch · part of the <span>crop-circles</span> research project · <span id="footerUpdated">—</span></p>
+  <p class="footer-meta">Crop Circle Watch · part of the <span>crop-circles</span> research project · <a href="about.html">About</a> · <span id="footerUpdated">—</span></p>
 </footer>
 
 <template id="storyCardTemplate">
