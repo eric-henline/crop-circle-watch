@@ -36,7 +36,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-06-20T10:15:00-07:00",
+  lastScan: "2026-06-21T07:58:00-07:00",
   seasonLabel: "2026 UK season",
   // Seeds the "Live chatter" keyword chips on a visitor's first visit. After
   // that, each visitor's own additions/removals are kept in their browser's
@@ -55,6 +55,17 @@ window.STORIES = [
     sourceUrl: "https://www.cropcircleconnector.com/2026/first/first2026a.html",
     sourceName: "Crop Circle Connector",
     youtubeId: "we8EFnHEP14"
+  },
+  {
+    id: "2026-06-15-morgans-hill",
+    date: "2026-06-15",
+    title: "Morgans Hill",
+    location: "Morgans Hill, Wiltshire, UK",
+    description: "Reported 15 June 2026 in a barley field at Morgans Hill, measuring approximately 150ft+ in diameter. The circle was cut out by the farmer before it could be photographed, so no imagery exists; Temporary Temples noted they have no further information beyond the initial report.",
+    tags: ["UK", "Wiltshire", "2026 season"],
+    sourceUrl: "https://temporarytemples.co.uk/2026-morgans-hill",
+    sourceName: "Temporary Temples",
+    youtubeId: null
   },
   {
     id: "2026-05-22-white-sheet-downs",
