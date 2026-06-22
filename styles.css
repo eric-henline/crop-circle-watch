@@ -134,7 +134,7 @@ body.compact .brand-text h1{ font-size:16px; }
   color:var(--accent);
   filter:drop-shadow(0 0 8px rgba(107,255,194,0.35));
   flex-shrink:0;
-  animation:spin-slow 60s linear infinite;
+  animation:spin-slow 13s linear infinite;
   transition:width .2s ease, height .2s ease;
 }
 @keyframes spin-slow{ to{ transform:rotate(360deg); } }
@@ -195,6 +195,40 @@ body.compact .brand-text h1{ font-size:16px; }
 @keyframes radar-spin{ to{ transform:rotate(360deg); } }
 
 .hero-inner{ position:relative; z-index:1; }
+
+.cereology-note{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 10px;
+  margin:0 0 var(--s-4);
+}
+.cereology-note .cer-word{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:15px;
+  color:var(--accent);
+  letter-spacing:0.02em;
+}
+.cereology-note .cer-ipa{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--text-1);
+}
+.cereology-note .cer-pos{
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-style:italic;
+  color:var(--text-2);
+}
+.cereology-note .cer-def{
+  font-family:var(--font-body);
+  font-style:italic;
+  font-size:13.5px;
+  color:var(--text-1);
+  flex-basis:100%;
+}
+@media (min-width:560px){
+  .cereology-note .cer-def{ flex-basis:auto; }
+  .cereology-note .cer-def::before{ content:"— "; }
+}
 
 .status-line{
   display:flex; align-items:center; gap:9px;
@@ -732,4 +766,17 @@ template{ display:none; }
 @media (max-width:520px){
   .cards-grid{ grid-template-columns:1fr; }
   .video-thumb{ flex:0 0 110px; height:70px; }
+}
+
+@media (max-width:480px){
+  .hero{ padding:var(--s-5) var(--s-3) var(--s-5); }
+  .hero-stats{ gap:var(--s-3) var(--s-5); }
+  .widget{ padding:var(--s-3); }
+  .site-header-inner{ padding-left:var(--s-3); padding-right:var(--s-3); }
+  .control-bar{ padding-left:var(--s-3); padding-right:var(--s-3); }
+  .layout{ padding-left:var(--s-3); padding-right:var(--s-3); }
+  .search-box{ min-width:0; flex-basis:100%; }
+  .keyword-actions{ flex-direction:column; align-items:stretch; }
+  .search-launch{ text-align:center; }
+  .lf-value{ font-size:20px; }
 }
