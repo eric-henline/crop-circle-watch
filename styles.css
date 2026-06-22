@@ -113,11 +113,11 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
 .site-header-inner{
   max-width:var(--max-width);
   margin:0 auto;
-  padding:var(--s-5) var(--s-4) var(--s-3);
+  padding:var(--s-5) var(--s-4) var(--s-4);
   display:flex;
   flex-wrap:wrap;
   gap:var(--s-4);
-  align-items:flex-end;
+  align-items:center;
   justify-content:space-between;
   transition:padding .2s ease;
 }
@@ -125,6 +125,7 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
 body.compact .site-header-inner{ padding-top:var(--s-2); padding-bottom:var(--s-2); align-items:center; }
 body.compact .brand-mark{ width:30px; height:30px; }
 body.compact .tagline{ display:none; }
+body.compact .cereology-note{ display:none; }
 body.compact .brand-text h1{ font-size:16px; }
 
 .brand{ display:flex; align-items:center; gap:var(--s-3); }
@@ -156,6 +157,18 @@ body.compact .brand-text h1{ font-size:16px; }
   max-width:46ch;
 }
 
+/* Cereology note reused as a header subheading — same markup/class as the
+   About-page definition, just smaller and tighter since it now sits under
+   the tagline in a fixed-height bar instead of floating in the hero. */
+.brand-text .cereology-note{
+  margin:5px 0 0;
+  gap:5px 8px;
+}
+.brand-text .cereology-note .cer-word{ font-size:13px; }
+.brand-text .cereology-note .cer-ipa{ font-size:10.5px; }
+.brand-text .cereology-note .cer-pos{ font-size:10px; }
+.brand-text .cereology-note .cer-def{ font-size:12px; }
+
 .site-nav{ display:flex; gap:var(--s-4); align-items:center; }
 .nav-link{
   font-family:var(--font-mono);
@@ -166,6 +179,44 @@ body.compact .brand-text h1{ font-size:16px; }
   border-bottom:1px solid transparent;
 }
 .nav-link:hover, .nav-link.active{ color:var(--accent); border-bottom-color:var(--accent); text-decoration:none; }
+
+/* Right side of the header bar: nav + a compact search + the last-scan
+   stamp, pinned to the far right ("top right corner"). */
+.header-end{
+  display:flex;
+  align-items:center;
+  gap:var(--s-4);
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.header-search .search-box{
+  flex:0 1 180px;
+  min-width:130px;
+  padding:6px 10px;
+}
+.header-search .search-box svg{ width:14px; height:14px; }
+.header-search .search-box input{ font-size:12.5px; }
+
+.header-scan{
+  margin:0;
+  text-align:right;
+  white-space:nowrap;
+}
+.header-scan dt{
+  font-family:var(--font-mono);
+  font-size:9.5px;
+  letter-spacing:0.12em;
+  color:var(--text-2);
+  margin:0 0 2px;
+  text-transform:uppercase;
+}
+.header-scan dd{
+  margin:0;
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--accent);
+}
 
 /* ---------------------------------------------------------------------- */
 /* Hero — the "dashboard" half of the page                               */
@@ -251,10 +302,29 @@ body.compact .brand-text h1{ font-size:16px; }
 }
 
 .last-formation{
-  display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--s-3) var(--s-4);
+  display:flex;
+  align-items:center;
+  gap:var(--s-4);
   margin-bottom:var(--s-5);
   padding-bottom:var(--s-5);
   border-bottom:1px solid var(--border);
+}
+.lf-media{
+  flex:0 0 140px;
+  width:140px;
+  aspect-ratio:16/9;
+  position:relative;
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:var(--panel-soft);
+  border:1px solid var(--border);
+}
+.lf-media .media-placeholder svg{ width:32px; height:32px; }
+.lf-media .play-overlay svg{ width:28px; height:28px; }
+.lf-info{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--s-2) var(--s-4);
+  flex:1;
+  min-width:0;
 }
 .lf-label{
   font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.1em;
@@ -766,6 +836,7 @@ template{ display:none; }
 @media (max-width:520px){
   .cards-grid{ grid-template-columns:1fr; }
   .video-thumb{ flex:0 0 110px; height:70px; }
+  .lf-media{ flex:0 0 110px; width:110px; }
 }
 
 @media (max-width:480px){
@@ -779,4 +850,6 @@ template{ display:none; }
   .keyword-actions{ flex-direction:column; align-items:stretch; }
   .search-launch{ text-align:center; }
   .lf-value{ font-size:20px; }
+  .header-end{ width:100%; justify-content:space-between; }
+  .header-search .search-box{ min-width:0; flex:1 1 auto; }
 }

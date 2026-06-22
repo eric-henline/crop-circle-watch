@@ -37,6 +37,8 @@
     rail: document.getElementById('timelineRail'),
     chips: document.getElementById('filterChips'),
     search: document.getElementById('searchInput'),
+    headerSearch: document.getElementById('headerSearchInput'),
+    headerSearchForm: document.getElementById('headerSearchForm'),
     jumpLatest: document.getElementById('jumpLatest'),
     scrollCue: document.getElementById('scrollCue'),
     statTotal: document.getElementById('statTotal'),
@@ -46,6 +48,7 @@
     seasonLabel: document.getElementById('seasonLabel'),
     lfValue: document.getElementById('lfValue'),
     lfDays: document.getElementById('lfDays'),
+    lfMedia: document.getElementById('lfMedia'),
     newsList: document.getElementById('newsList'),
     videoStrip: document.getElementById('videoStrip'),
     socialPosts: document.getElementById('socialPosts'),
@@ -81,10 +84,33 @@
     return WEEKDAYS[d.getDay()] + ' · ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
   }
 
+  // Renders in the viewer's own local timezone (browsers have no other
+  // option without a server round-trip) but now *names* that zone instead
+  // of silently omitting it, via Intl's timeZoneName part. Falls back to the
+  // old plain-time format if Intl support is missing.
   function formatScanStamp(iso) {
     if (!iso) return '—';
     var d = new Date(iso);
     if (isNaN(d.getTime())) return iso;
+    try {
+      var parts = new Intl.DateTimeFormat(undefined, {
+        month: 'short', day: 'numeric',
+        hour: 'numeric', minute: '2-digit',
+        timeZoneName: 'short'
+      }).formatToParts(d);
+      var month = '', day = '', hour = '', minute = '', dayPeriod = '', tz = '';
+      parts.forEach(function (p) {
+        if (p.type === 'month') month = p.value.toUpperCase();
+        else if (p.type === 'day') day = p.value;
+        else if (p.type === 'hour') hour = p.value;
+        else if (p.type === 'minute') minute = p.value;
+        else if (p.type === 'dayPeriod') dayPeriod = p.value;
+        else if (p.type === 'timeZoneName') tz = p.value;
+      });
+      if (month && day && hour && minute) {
+        return month + ' ' + day + ', ' + hour + ':' + minute + (dayPeriod ? ' ' + dayPeriod : '') + (tz ? ' ' + tz : '');
+      }
+    } catch (e) { /* fall through to the plain formatter below */ }
     var hh = d.getHours(), mm = d.getMinutes();
     var ampm = hh >= 12 ? 'PM' : 'AM';
     var hh12 = hh % 12; if (hh12 === 0) hh12 = 12;
@@ -336,12 +362,17 @@
     });
   }
 
+  function clearSearchInputs() {
+    els.search.value = '';
+    if (els.headerSearch) els.headerSearch.value = '';
+  }
+
   function jumpToDate(ymd) {
     // Clear active filters so the target date is guaranteed to be visible,
     // then scroll its section into view.
     state.query = '';
     state.tag = 'all';
-    els.search.value = '';
+    clearSearchInputs();
     render();
     requestAnimationFrame(function () {
       var target = document.getElementById('day-' + ymd);
@@ -353,7 +384,7 @@
   function jumpToStory(id) {
     state.query = '';
     state.tag = 'all';
-    els.search.value = '';
+    clearSearchInputs();
     render();
     requestAnimationFrame(function () {
       var story = stories.filter(function (s) { return s.id === id; })[0];
@@ -430,6 +461,15 @@
     var latest = stories[0];
     els.lfValue.textContent = latest.title + ' — ' + formatShort(latest.date);
     els.lfDays.textContent = formatDaysAgo(daysAgo(latest.date));
+
+    // Swap the placeholder div for a real thumbnail/video, same pattern
+    // buildCard() uses for .card-media.
+    if (els.lfMedia) {
+      var fresh = withClass(buildMedia(latest), 'lf-media');
+      fresh.id = 'lfMedia';
+      els.lfMedia.replaceWith(fresh);
+      els.lfMedia = fresh;
+    }
   }
 
   // -- hero widget: recent coverage ------------------------------------------
@@ -595,11 +635,31 @@
   }
 
   // -- wire controls ------------------------------------------------------------
+  // Main dashboard search and the header search share one query — typing in
+  // either box updates the other so they never fall out of sync.
+  function syncSearch(value, source) {
+    state.query = value;
+    if (source !== els.search) els.search.value = value;
+    if (els.headerSearch && source !== els.headerSearch) els.headerSearch.value = value;
+    renderFeed();
+  }
+
   function wireControls() {
     els.search.addEventListener('input', function () {
-      state.query = els.search.value.trim();
-      renderFeed();
+      syncSearch(els.search.value.trim(), els.search);
     });
+    if (els.headerSearch) {
+      els.headerSearch.addEventListener('input', function () {
+        syncSearch(els.headerSearch.value.trim(), els.headerSearch);
+      });
+    }
+    if (els.headerSearchForm) {
+      els.headerSearchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var target = document.getElementById('timeline');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
     els.jumpLatest.addEventListener('click', function () {
       var grouped = groupByDate(stories.filter(matchesFilter));
       if (grouped.order.length) jumpToDate(grouped.order[0]);

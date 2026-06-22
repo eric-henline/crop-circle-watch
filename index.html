@@ -93,13 +93,31 @@
       <div class="brand-text">
         <h1>CROP CIRCLE WATCH</h1>
         <p class="tagline">Standing watch over the fields — logging every new pattern the day it turns up</p>
+        <p class="cereology-note">
+          <span class="cer-word">cereology</span>
+          <span class="cer-ipa">/ˌsɪərɪˈɒlədʒɪ/</span>
+          <span class="cer-pos">n.</span>
+          <span class="cer-def">the study or investigation of crop circles</span>
+        </p>
       </div>
     </div>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="#hero" class="nav-link">Dashboard</a>
-      <a href="#timeline" class="nav-link">Timeline</a>
-      <a href="about.html" class="nav-link">About</a>
-    </nav>
+    <div class="header-end">
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#hero" class="nav-link">Dashboard</a>
+        <a href="#timeline" class="nav-link">Timeline</a>
+        <a href="about.html" class="nav-link">About</a>
+      </nav>
+      <form class="header-search" id="headerSearchForm" role="search">
+        <label class="search-box">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
+          <input type="search" id="headerSearchInput" placeholder="Search formations…" autocomplete="off">
+        </label>
+      </form>
+      <dl class="header-scan">
+        <dt>Last scan</dt>
+        <dd id="statScan">—</dd>
+      </dl>
+    </div>
   </div>
 </header>
 
@@ -107,29 +125,24 @@
   <div class="radar-sweep" aria-hidden="true"></div>
   <div class="hero-inner">
 
-    <p class="cereology-note">
-      <span class="cer-word">cereology</span>
-      <span class="cer-ipa">/ˌsɪərɪˈɒlədʒɪ/</span>
-      <span class="cer-pos">n.</span>
-      <span class="cer-def">the study or investigation of crop circles</span>
-    </p>
-
     <div class="status-line">
       <span class="pulse-dot" aria-hidden="true"></span>
       <span>Monitoring active — <span id="seasonLabel">—</span></span>
     </div>
 
     <div class="last-formation">
-      <span class="lf-label">Last confirmed formation</span>
-      <span class="lf-value" id="lfValue">—</span>
-      <span class="lf-days" id="lfDays">—</span>
+      <div class="lf-media" id="lfMedia"></div>
+      <div class="lf-info">
+        <span class="lf-label">Last confirmed formation</span>
+        <span class="lf-value" id="lfValue">—</span>
+        <span class="lf-days" id="lfDays">—</span>
+      </div>
     </div>
 
     <dl class="hero-stats">
       <div class="hero-stat"><dt>Logged</dt><dd id="statTotal">—</dd></div>
       <div class="hero-stat"><dt>This season</dt><dd id="statSeason">—</dd></div>
       <div class="hero-stat"><dt>Latest</dt><dd id="statLatest">—</dd></div>
-      <div class="hero-stat"><dt>Last scan</dt><dd id="statScan">—</dd></div>
     </dl>
 
     <div class="widget-grid">
