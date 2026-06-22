@@ -1,3 +1,5 @@
 .DS_Store
 *.log
 node_modules/
+scan_log.txt
+scan_errors.txt

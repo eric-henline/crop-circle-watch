@@ -51,16 +51,19 @@ The "Live chatter" widget doesn't embed an actual live Twitter/X or Bluesky feed
 
 ## The daily scan
 
-A Cowork scheduled task named `crop-circle-dashboard-scan` runs once a day (currently ~6:20 AM) and:
+A `launchd` agent on your Mac runs the scan at 6:58 AM daily via `scan_dashboard.sh`, which invokes Claude Code headlessly (`claude -p`) with the instructions in `dashboard_scan_prompt.md`. It:
 
 1. Reads `data.js` to see what's already logged.
 2. Searches the web for crop-circle reports from the last few days.
 3. Verifies each candidate is a genuinely new formation with a real, current report date (not an old story resurfacing in search results — this bit it down on a recycled 2014 article during setup, so it's deliberately careful).
 4. Adds any verified new entries to the top of `STORIES`, updates `lastScan`, and commits the change locally with `git`.
+5. Pushes to GitHub itself, since it runs on your Mac with real network access and credentials — no separate publish step needed.
 
-It never pushes to GitHub itself — see below for why — and it never touches anything outside this `dashboard/` folder.
+It never touches anything outside this `dashboard/` folder. One-time setup: `bash ~/Projects/crop-circles/dashboard/install_dashboard_scan.sh` (see `scan_dashboard.sh` and `dashboard_scan_prompt.md` for the runner and the full instructions Claude follows). Logs go to `scan_log.txt` / `scan_errors.txt`.
 
-One thing worth knowing: this scan runs inside the Cowork app, so it only fires if Cowork is open at the scheduled time. If it's closed, the run happens the next time you open the app, not silently in the background on a closed app.
+This replaces an earlier version that ran as a Cowork scheduled task — that approach only fired while the Cowork app happened to be open, and couldn't push to GitHub (the sandbox can't reach `github.com`), so it relied on a separate Mac-side push job running later. The Cowork task has been disabled. The 7:10 AM push job below now exists purely as a safety net in case the 6:58 AM scan's own push fails for some reason (e.g. no network yet right at wake) — it re-pushes whatever's already committed, it doesn't re-run the scan.
+
+This is the first piece of this project's automation that depends on `claude` itself running unattended, rather than plain Python — so it's less battle-tested than the image downloader. After installing, run it once manually (`launchctl start com.cropcircles.dashboardscan`) and check `scan_log.txt` before trusting it to run silently every morning.
 
 ## Publishing to GitHub Pages — one-time setup
 
@@ -80,7 +83,7 @@ git push -u origin master
 
 **3. Turn on Pages** — in the repo on GitHub: Settings → Pages → under "Build and deployment," set Source to "Deploy from a branch," Branch to `master`, folder `/ (root)` → Save. After a minute or two your dashboard is live at `https://<your-username>.github.io/crop-circle-watch/`.
 
-**4. (Optional) Automate future pushes** — so each day's scan actually reaches the live site without you running `git push` by hand:
+**4. (Optional) Install the push safety net** — the 6:58 AM scan (see "The daily scan" above) pushes on its own, so this isn't required for publishing to work. It just retries the push once more in case the scan's own push failed:
 
 ```bash
 bash ~/Projects/crop-circles/dashboard/install_dashboard_push.sh
@@ -88,7 +91,7 @@ bash ~/Projects/crop-circles/dashboard/install_dashboard_push.sh
 
 This installs a `launchd` agent that runs `git push` once a day at 7:10 AM. It does **not** change any Energy Saver or `pmset` settings — it rides on the wake schedule already installed for the crop-circle image downloader. If you haven't installed that one and don't want to, this job will simply only fire on mornings the Mac happens to already be awake at 7:10 AM; nothing else depends on it.
 
-Until you do step 4, you can always publish manually any time with `cd ~/Projects/crop-circles/dashboard && git push`.
+You can always publish manually any time with `cd ~/Projects/crop-circles/dashboard && git push`.
 
 ## Why no hotlinked photos
 
@@ -100,8 +103,12 @@ The aerial/ground photos for these formations are marked "All Rights Reserved" b
 dashboard/
   index.html, styles.css, app.js, data.js   ← the site
   README.md                                  ← this file
-  push_dashboard.sh                          ← runs `git push` (Mac-side, via launchd)
-  com.cropcircles.dashboardpush.plist        ← the launchd job definition
+  dashboard_scan_prompt.md                   ← instructions the daily scan follows
+  scan_dashboard.sh                          ← runs the daily scan via `claude -p` (Mac-side, via launchd)
+  com.cropcircles.dashboardscan.plist        ← the launchd job definition for the scan
+  install_dashboard_scan.sh                  ← one-time installer for the scan job
+  push_dashboard.sh                          ← runs `git push` as a safety-net retry (Mac-side, via launchd)
+  com.cropcircles.dashboardpush.plist        ← the launchd job definition for the push retry
   install_dashboard_push.sh                  ← one-time installer for the above
   .nojekyll                                  ← tells GitHub Pages not to run Jekyll on this
 ```

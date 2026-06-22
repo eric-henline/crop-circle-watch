@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cropcircles.dashboardscan</string>
+
+    <!-- Calls the scan runner, which runs `claude -p` to search for new
+         formations, update data.js, commit, and push -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/erichenline/Projects/crop-circles/dashboard/scan_dashboard.sh</string>
+    </array>
+
+    <!-- Runs at 6:58 AM — within the existing 6:55 AM pmset wake window,
+         and before the 7:00 AM image job and 7:10 AM push-retry job.
+         No new wake schedule needed. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>6</integer>
+        <key>Minute</key>
+        <integer>58</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/erichenline/Projects/crop-circles/dashboard/scan_log.txt</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/erichenline/Projects/crop-circles/dashboard/scan_errors.txt</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
