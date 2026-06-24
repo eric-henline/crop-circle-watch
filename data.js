@@ -36,7 +36,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-06-22T07:00:00-07:00",
+  lastScan: "2026-06-23T07:00:00-07:00",
   seasonLabel: "2026 UK season",
   // Seeds the "Live chatter" keyword chips on a visitor's first visit. After
   // that, each visitor's own additions/removals are kept in their browser's
@@ -45,6 +45,17 @@ window.DASHBOARD_META = {
 };
 
 window.STORIES = [
+  {
+    id: "2026-06-21-kingweston-solstice",
+    date: "2026-06-21",
+    title: "Kingweston (Solstice)",
+    location: "Nr Cedar Walk Plantation, Kingweston, Somerset, UK · Map ref ST5213531746",
+    description: "Reported on the summer solstice, 21 June 2026, in young wheat near Cedar Walk Plantation and Kingweston House. Temporary Temples describe an eight-fold design roughly 180ft in diameter, with lollipop motifs and four eye-shapes at the centre. The farmer has requested no public access to the field.",
+    tags: ["UK", "Somerset", "2026 season", "video"],
+    sourceUrl: "https://temporarytemples.co.uk/project/kingweston2-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: "FaVfeWRw2nw"
+  },
   {
     id: "2026-06-15-first-broad-drive",
     date: "2026-06-15",
