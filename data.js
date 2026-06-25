@@ -36,7 +36,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-06-23T07:00:00-07:00",
+  lastScan: "2026-06-24T07:00:00-07:00",
   seasonLabel: "2026 UK season",
   // Seeds the "Live chatter" keyword chips on a visitor's first visit. After
   // that, each visitor's own additions/removals are kept in their browser's
@@ -75,6 +75,17 @@ window.STORIES = [
     description: "Reported 15 June 2026 in a barley field at Morgans Hill, measuring approximately 150ft+ in diameter. The circle was cut out by the farmer before it could be photographed, so no imagery exists; Temporary Temples noted they have no further information beyond the initial report.",
     tags: ["UK", "Wiltshire", "2026 season"],
     sourceUrl: "https://temporarytemples.co.uk/2026-morgans-hill",
+    sourceName: "Temporary Temples",
+    youtubeId: null
+  },
+  {
+    id: "2026-06-15-great-wishford",
+    date: "2026-06-15",
+    title: "Great Wishford",
+    location: "Nr Grovely Woods, Great Wishford, Wiltshire, UK · Map ref SU0556533826",
+    description: "Reported 15 June 2026 in young wheat near Grovely Woods, measuring approximately 120ft in diameter. Temporary Temples describe it as another three-fold design with fascinating geometry and symbolism. The formation lasted only three days before the farmer cut it — one day before Temporary Temples' planned aerial flight — so drone stills by Tomasz Kaczmarek exist but no aerial video was recorded.",
+    tags: ["UK", "Wiltshire", "2026 season"],
+    sourceUrl: "https://temporarytemples.co.uk/project/great-wishford-2026",
     sourceName: "Temporary Temples",
     youtubeId: null
   },
