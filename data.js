@@ -16,16 +16,27 @@
      sourceName  — short label for the source link, e.g. "Crop Circle Connector"
      youtubeId   — YouTube video ID only (the part after "v=" or after
                    "embed/"), or null if no video is available yet
-     socialPosts — OPTIONAL. Array of { platform, url } objects for individual
-                   posts the scan finds and verifies by hand, e.g.
-                   { platform: "x", url: "https://x.com/someone/status/123" }
-                   or { platform: "bluesky", url: "https://bsky.app/profile/.../post/..." }.
-                   These render as plain outbound link-cards in the "Live
-                   chatter" widget — never as embedded iframes. (Live,
-                   keyword-searchable embeds aren't reliably embeddable on a
-                   static site on either platform as of 2026, so curated
-                   links + the keyword search-launcher below are the honest
-                   substitute. See README.md.)
+     socialPosts — OPTIONAL. Array of post objects the scan finds and
+                   verifies by hand:
+                     { platform, url, author, handle, text, postedAt }
+                   Only `platform` ("x" or "bluesky") and `url` are required;
+                   author/handle/text/postedAt are optional enrichment, e.g.
+                     { platform: "bluesky",
+                       url: "https://bsky.app/profile/handle.bsky.social/post/xyz" }
+                     { platform: "x", url: "https://x.com/someone/status/123",
+                       author: "Someone", handle: "@someone",
+                       text: "excerpt of the post…",
+                       postedAt: "2026-06-21T14:30:00Z" }
+                   Rendering differs by platform: Bluesky posts auto-load as a
+                   genuine live embed (via Bluesky's public oEmbed endpoint)
+                   right in the "Live chatter" widget — no click required.
+                   X/Twitter no longer supports reliable embeds on a static
+                   site as of 2026, so X posts render as a rich static card
+                   instead (using author/handle/text/postedAt when present,
+                   otherwise falling back to a plain link). Open-ended
+                   keyword search still isn't embeddable live on either
+                   platform without a backend — that stays the one-tap
+                   external search below. See README.md.
 
    The automated daily scan (see ../README.md and the scheduled task) adds
    new objects to the TOP of this array and updates DASHBOARD_META.lastScan.

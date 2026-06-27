@@ -41,13 +41,15 @@ To add one: copy an existing object, change the values, add a comma. New entries
 
 `youtubeId` is the short code from a YouTube URL (the part after `v=` or after `embed/`), not the full link. Set it to `null` if you don't have video. Leave `tags` short — they populate the filter chips along the top of the page, and only the most common ones show as chips.
 
-`socialPosts` is optional — an array of `{ platform: "x" | "bluesky", url: "..." }` objects for individual posts you've found and want to surface in the "Live chatter" widget. They render as plain outbound links, never as embeds (see "Why no live social feeds" below).
+`socialPosts` is optional — an array of post objects for individual posts you've found and verified by hand: `{ platform: "x" | "bluesky", url: "...", author, handle, text, postedAt }` (only `platform` and `url` are required; the rest is optional enrichment). Bluesky posts auto-load as a real live embed in the "Live chatter" widget — no click required. X posts render as a rich static card built from `author`/`handle`/`text`/`postedAt` when you provide them, since X embeds aren't reliable on a static site anymore (see "Why no live social *search*" below).
 
 `DASHBOARD_META.lastScan` near the top of the file drives the "Last scan" stat and the footer timestamp. The daily automation updates it; you can too if you make a manual edit and want the timestamp to reflect that. `DASHBOARD_META.defaultKeywords` seeds the keyword chips in "Live chatter" for first-time visitors — after that, each visitor's edits live in their own browser (`localStorage`), not here.
 
-## Why no live social feeds
+## Why no live social *search*
 
-The "Live chatter" widget doesn't embed an actual live Twitter/X or Bluesky feed, on purpose. As of 2026, X's embeddable timelines only render content for visitors who are logged into X — an anonymous visitor sees an empty box — and Bluesky's public, no-auth API supports profile search but not keyword post-search. Neither platform offers a way to embed a reliably-working, keyword-driven feed on a static site with no backend and no API keys. Rather than fake it or silently fail, the widget does two honest things instead: shows curated post links you've manually verified and added to `socialPosts`, and gives visitors a one-click "Search X" / "Search Bluesky" link built from their own customizable keyword chips, which opens a real search on the real platform in a new tab.
+The "Live chatter" widget can't embed an actual live, keyword-driven Twitter/X or Bluesky search feed, and that part is by design. As of 2026, X's embeddable timelines only render content for visitors who are logged into X — an anonymous visitor sees an empty box — and Bluesky's public, no-auth API supports profile search but not keyword post-search (it 403s without auth). Neither platform offers a way to embed a reliably-working, keyword-driven feed on a static site with no backend and no API keys. So for open-ended keywords, the widget stays honest: a one-click "Search X" / "Search Bluesky" link built from your own customizable keyword chips, which opens a real search on the real platform in a new tab.
+
+For *specific, known* posts it's a different story: Bluesky publishes a public, no-auth oEmbed endpoint (`embed.bsky.app/oembed`) for individual post URLs, so any post you (or the scan) add to `socialPosts` with `platform: "bluesky"` loads live, right in the widget, no click needed — `app.js`'s `loadBlueskyEmbed()` fetches it and falls back to a static card if the fetch ever fails. X has no equivalent public embed path anymore, so X posts always render as the static rich card.
 
 ## The daily scan
 

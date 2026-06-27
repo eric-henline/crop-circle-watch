@@ -1,7 +1,11 @@
 /* ==========================================================================
    Crop Circle Watch — app.js
    Reads the global `STORIES` array and `DASHBOARD_META` object defined in
-   data.js (no fetch, no build step — works from file:// or any static host).
+   data.js. No build step — works from file:// or any static host. One
+   exception: curated Bluesky posts (see "live chatter" below) load live via
+   a single runtime `fetch()` to Bluesky's public oEmbed endpoint. That fetch
+   is best-effort — if it fails (offline, blocked, opened from file://, etc.)
+   the post falls back to a plain static card, so nothing else breaks.
 
    Renders: hero status line + "last formation" banner + hero stats, the
    three hero widgets (recent coverage / field footage / live chatter +
@@ -26,6 +30,12 @@
     : ['crop circle 2026', 'Wiltshire crop circle', 'crop circle UK'];
   var KEYWORD_KEY = 'ccw_keywords';
   var KEYWORD_MAX = 8;
+
+  var SOCIAL_POST_LIMIT = 6;
+  var BSKY_OEMBED_ENDPOINT = 'https://embed.bsky.app/oembed';
+  var BSKY_EMBED_SCRIPT = 'https://embed.bsky.app/static/embed.js';
+  var BSKY_FETCH_TIMEOUT_MS = 7000;
+  var bskyScriptLoaded = false;
 
   var state = { query: '', tag: 'all' };
   var railIndex = {};
@@ -130,6 +140,24 @@
     if (n <= 0) return 'Today';
     if (n === 1) return 'Yesterday';
     return n + ' days ago';
+  }
+
+  // Compact relative time for social posts ("just now" / "5m ago" / "3h ago"
+  // / "2d ago"), falling back to a plain date once a post is a week old.
+  // Distinct from formatDaysAgo() above, which only handles whole calendar
+  // days for formation dates.
+  function formatRelativeTime(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    var diffMin = Math.round((Date.now() - d.getTime()) / 60000);
+    if (diffMin < 1) return 'just now';
+    if (diffMin < 60) return diffMin + 'm ago';
+    var diffHr = Math.round(diffMin / 60);
+    if (diffHr < 24) return diffHr + 'h ago';
+    var diffDay = Math.round(diffHr / 24);
+    if (diffDay < 7) return diffDay + 'd ago';
+    return formatShort(d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()));
   }
 
   // -- grouping -----------------------------------------------------------
@@ -523,35 +551,181 @@
   }
 
   // -- hero widget: live chatter (curated posts) -----------------------------
+  // Bluesky posts auto-load as real live embeds via Bluesky's public oEmbed
+  // endpoint (https://embed.bsky.app/oembed) — no click required, and no
+  // fabricated content: this only ever activates for posts a human (or the
+  // scan) has verified and added to data.js. X posts render as a static rich
+  // card instead, since reliable client-side X embeds aren't realistic in
+  // 2026 (full rationale in data.js's schema comment). If a post can't be
+  // confirmed it simply never appears — open-ended keyword search stays a
+  // one-tap external link below, since that genuinely can't be embedded
+  // live on either platform without a backend.
+
+  function isBluesky(platform) {
+    var p = String(platform || '').toLowerCase();
+    return p === 'bluesky' || p === 'bsky';
+  }
+
+  function ensureBskyEmbedScript() {
+    if (bskyScriptLoaded) return;
+    bskyScriptLoaded = true;
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = BSKY_EMBED_SCRIPT;
+    script.charset = 'utf-8';
+    document.body.appendChild(script);
+  }
+
+  // Static rich card used for every X post, and as the fallback for any
+  // Bluesky post whose live embed fails to load (offline, blocked, etc.).
+  function buildSocialCardBody(p) {
+    var body = document.createElement('div');
+    body.className = 'social-card-body';
+    if (p.author || p.handle) {
+      var authorRow = document.createElement('div');
+      authorRow.className = 'social-author';
+      if (p.author) {
+        var name = document.createElement('span');
+        name.className = 'social-author-name';
+        name.textContent = p.author;
+        authorRow.appendChild(name);
+      }
+      if (p.handle) {
+        var handle = document.createElement('span');
+        handle.className = 'social-author-handle';
+        handle.textContent = p.handle;
+        authorRow.appendChild(handle);
+      }
+      body.appendChild(authorRow);
+    }
+    if (p.text) {
+      var text = document.createElement('p');
+      text.className = 'social-text';
+      text.textContent = p.text;
+      body.appendChild(text);
+    }
+    var link = document.createElement('a');
+    link.className = 'social-view-link';
+    link.href = p.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'View on ' + (isBluesky(p.platform) ? 'Bluesky' : 'X') + ' →';
+    body.appendChild(link);
+    return body;
+  }
+
+  // Fetches Bluesky's oEmbed JSON for a known post URL and swaps the
+  // skeleton placeholder for the real embed HTML Bluesky returns (a
+  // <blockquote>, auto-upgraded into a live iframe once embed.js runs).
+  // Any failure — network, timeout, CORS when opened from file:// — falls
+  // back to the same static card an X post would get, so the widget never
+  // shows a broken or stuck state.
+  function loadBlueskyEmbed(url, slot, buildFallback) {
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timer = controller ? setTimeout(function () { controller.abort(); }, BSKY_FETCH_TIMEOUT_MS) : null;
+    var endpoint = BSKY_OEMBED_ENDPOINT + '?url=' + encodeURIComponent(url) + '&format=json';
+
+    fetch(endpoint, controller ? { signal: controller.signal } : undefined)
+      .then(function (res) {
+        if (timer) clearTimeout(timer);
+        if (!res.ok) throw new Error('oEmbed request failed: ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        if (!data || !data.html) throw new Error('oEmbed response missing html');
+        var holder = document.createElement('div');
+        holder.innerHTML = data.html;
+        var blockquote = holder.querySelector('blockquote.bluesky-embed');
+        if (!blockquote) throw new Error('oEmbed response missing blockquote');
+        slot.classList.remove('social-skeleton');
+        slot.classList.add('social-embed-wrap');
+        slot.innerHTML = '';
+        slot.appendChild(blockquote);
+        ensureBskyEmbedScript();
+      })
+      .catch(function () {
+        if (timer) clearTimeout(timer);
+        slot.classList.remove('social-skeleton');
+        slot.innerHTML = '';
+        slot.appendChild(buildFallback());
+      });
+  }
+
   function renderSocialPosts() {
     var posts = [];
     stories.forEach(function (s) {
       (s.socialPosts || []).forEach(function (p) {
-        posts.push({ story: s, platform: p.platform, url: p.url });
+        posts.push({
+          story: s,
+          platform: p.platform,
+          url: p.url,
+          author: p.author,
+          handle: p.handle,
+          text: p.text,
+          postedAt: p.postedAt
+        });
       });
     });
     els.socialPosts.innerHTML = '';
+
     if (!posts.length) {
-      var note = document.createElement('p');
-      note.className = 'empty-note';
-      note.textContent = 'No curated posts yet — the next scan checks again. Try a keyword search below.';
-      els.socialPosts.appendChild(note);
+      var empty = document.createElement('div');
+      empty.className = 'social-empty';
+      empty.innerHTML =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rss"/></svg>' +
+        '<p><strong>No curated posts yet.</strong> The daily scan checks again tomorrow — try a keyword search below in the meantime.</p>';
+      els.socialPosts.appendChild(empty);
       return;
     }
-    posts.slice(0, 5).forEach(function (p) {
-      var a = document.createElement('a');
-      a.className = 'social-post';
-      a.href = p.url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      var tag = document.createElement('span');
-      tag.className = 'social-platform';
-      tag.textContent = p.platform;
-      var label = document.createElement('span');
-      label.textContent = 'Mentions of ' + p.story.title;
-      a.appendChild(tag);
-      a.appendChild(label);
-      els.socialPosts.appendChild(a);
+
+    posts.slice(0, SOCIAL_POST_LIMIT).forEach(function (p) {
+      var card = document.createElement('article');
+      card.className = 'social-card';
+
+      var head = document.createElement('div');
+      head.className = 'social-card-head';
+
+      var platformTag = document.createElement('span');
+      platformTag.className = 'social-platform';
+      platformTag.textContent = isBluesky(p.platform) ? 'bluesky' : 'x';
+      head.appendChild(platformTag);
+
+      var statusTag = document.createElement('span');
+      if (isBluesky(p.platform)) {
+        statusTag.className = 'social-live-tag';
+        statusTag.textContent = 'auto-loads live';
+      } else {
+        statusTag.className = 'social-curated-tag';
+        statusTag.textContent = 'curated';
+      }
+      head.appendChild(statusTag);
+
+      var when = formatRelativeTime(p.postedAt);
+      if (when) {
+        var time = document.createElement('span');
+        time.className = 'social-time';
+        time.textContent = when;
+        head.appendChild(time);
+      }
+      card.appendChild(head);
+
+      var mention = document.createElement('button');
+      mention.type = 'button';
+      mention.className = 'social-mention-link';
+      mention.textContent = 'Mentions of ' + p.story.title;
+      mention.addEventListener('click', function () { jumpToStory(p.story.id); });
+      card.appendChild(mention);
+
+      if (isBluesky(p.platform)) {
+        var slot = document.createElement('div');
+        slot.className = 'social-embed-slot social-skeleton';
+        card.appendChild(slot);
+        loadBlueskyEmbed(p.url, slot, function () { return buildSocialCardBody(p); });
+      } else {
+        card.appendChild(buildSocialCardBody(p));
+      }
+
+      els.socialPosts.appendChild(card);
     });
   }
 

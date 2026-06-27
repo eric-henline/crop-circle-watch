@@ -93,6 +93,33 @@ Do not hotlink "All Rights Reserved" photographer images directly — the
 dashboard only embeds YouTube video (permitted) plus the outbound source
 link; that's by design, leave it that way.
 
+## Step 5b — Look for social posts (optional, only if genuinely found)
+
+For each new formation, you may optionally do 1-2 targeted searches for a
+real Bluesky or X/Twitter post specifically about it (e.g. the formation
+name + "crop circle"). If you find one and can confirm it's a real post
+about this specific formation — visit the actual post URL, don't trust a
+search snippet — add it to that story's `socialPosts` array:
+
+```js
+socialPosts: [
+  { platform: "bluesky", url: "https://bsky.app/profile/handle.bsky.social/post/xyz" },
+  { platform: "x", url: "https://x.com/someone/status/123",
+    author: "Display Name", handle: "@handle",
+    text: "short excerpt of the actual post text",
+    postedAt: "2026-06-21T14:30:00Z" }
+]
+```
+
+`platform` and `url` are required; `author`/`handle`/`text`/`postedAt` are
+optional but worth including for X posts (they render in a static card —
+see `dashboard/README.md`'s "Why no live social search" section). Bluesky
+posts need no extra fields since they load as a real live embed
+automatically. Same rule as everything else in this file: never fabricate
+a post or its text — if you can't find and verify a real one, just leave
+`socialPosts` off the object entirely. This is a nice-to-have, not a
+requirement for a successful scan run.
+
 ## Step 6 — Write the update
 
 If you found one or more genuinely new formations:
