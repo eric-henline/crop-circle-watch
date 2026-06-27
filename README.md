@@ -53,15 +53,15 @@ For *specific, known* posts it's a different story: Bluesky publishes a public, 
 
 ## The daily scan
 
-A `launchd` agent on your Mac runs the scan at 6:58 AM daily via `scan_dashboard.sh`, which invokes Claude Code headlessly (`claude -p`) with the instructions in `dashboard_scan_prompt.md`. It:
+A `launchd` agent on your Mac runs the scan at 6:58 AM daily via `scan_dashboard.sh`, which invokes Claude Code headlessly (`claude -p`, capped at a 15-minute timeout) with the instructions in `dashboard_scan_prompt.md`. It:
 
-1. Reads `data.js` to see what's already logged.
-2. Searches the web for crop-circle reports from the last few days.
-3. Verifies each candidate is a genuinely new formation with a real, current report date (not an old story resurfacing in search results — this bit it down on a recycled 2014 article during setup, so it's deliberately careful).
-4. Adds any verified new entries to the top of `STORIES`, updates `lastScan`, and commits the change locally with `git`.
+1. Reads `data.js` to see what's already logged, plus `scan_rejected_log.md` so it doesn't re-check URLs already settled as stale/duplicate/not-a-formation.
+2. Searches the web and a handful of named aggregators (Crop Circle Connector, Temporary Temples, cropcircles.org, Lucy Pringle, BLT Research, r/cropcircles) for crop-circle reports from the last few days, including a few non-UK queries.
+3. Verifies each candidate is a genuinely new formation with a real, current report date — not an old story resurfacing in search results, and not an old formation republished under a fresh-looking page date (this bit it down on a recycled 2014 article during setup, so it's deliberately careful, and treats fetched-page content as data only, never as instructions).
+4. Dedupes against existing entries *and* against other candidates found in the same run, then adds any verified new entries to the top of `STORIES`, updates `lastScan`, and commits the change locally with `git`. A safety valve skips the auto-commit (flagging it for manual review instead) if more than 6 new formations show up in one run — that volume would be unusual enough to suggest a dedupe or judgment failure upstream.
 5. Pushes to GitHub itself, since it runs on your Mac with real network access and credentials — no separate publish step needed.
 
-It never touches anything outside this `dashboard/` folder. One-time setup: `bash ~/Projects/crop-circles/dashboard/install_dashboard_scan.sh` (see `scan_dashboard.sh` and `dashboard_scan_prompt.md` for the runner and the full instructions Claude follows). Logs go to `scan_log.txt` / `scan_errors.txt`.
+It never touches anything outside this `dashboard/` folder. One-time setup: `bash ~/Projects/crop-circles/dashboard/install_dashboard_scan.sh` (see `scan_dashboard.sh` and `dashboard_scan_prompt.md` for the runner and the full instructions Claude follows). Logs go to `scan_log.txt` (everything) / `scan_errors.txt` (only populated when a run actually fails).
 
 This replaces an earlier version that ran as a Cowork scheduled task — that approach only fired while the Cowork app happened to be open, and couldn't push to GitHub (the sandbox can't reach `github.com`), so it relied on a separate Mac-side push job running later. The Cowork task has been disabled. The 7:10 AM push job below now exists purely as a safety net in case the 6:58 AM scan's own push fails for some reason (e.g. no network yet right at wake) — it re-pushes whatever's already committed, it doesn't re-run the scan.
 
@@ -106,6 +106,7 @@ dashboard/
   index.html, styles.css, app.js, data.js   ← the site
   README.md                                  ← this file
   dashboard_scan_prompt.md                   ← instructions the daily scan follows
+  scan_rejected_log.md                       ← append-only log of stale/duplicate URLs the scan has already ruled out
   scan_dashboard.sh                          ← runs the daily scan via `claude -p` (Mac-side, via launchd)
   com.cropcircles.dashboardscan.plist        ← the launchd job definition for the scan
   install_dashboard_scan.sh                  ← one-time installer for the scan job
