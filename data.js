@@ -48,6 +48,13 @@ window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
   lastScan: "2026-06-24T07:00:00-07:00",
+  // Set by the daily scan at the end of each run. Three possible values:
+  //   "ok"      — scan ran and completed normally (including "no new formations" days)
+  //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
+  //   "error"   — scan failed, timed out, or couldn't write/commit the output
+  // When this is "error" or "flagged" the dashboard shows an amber warning
+  // on the scan timestamp so you know to check scan_log.txt / scan_errors.txt.
+  lastScanStatus: "ok",
   seasonLabel: "2026 UK season",
   // Seeds the "Live chatter" keyword chips on a visitor's first visit. After
   // that, each visitor's own additions/removals are kept in their browser's

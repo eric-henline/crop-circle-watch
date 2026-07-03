@@ -217,6 +217,13 @@ body.compact .brand-text h1{ font-size:16px; }
   font-size:13px;
   color:var(--accent);
 }
+/* Shown when DASHBOARD_META.lastScanStatus is "error" or "flagged". */
+.header-scan .scan-warn{ color:var(--signal); }
+.header-scan .scan-warn-label{
+  font-size:10px;
+  opacity:0.85;
+  letter-spacing:0.05em;
+}
 
 /* ---------------------------------------------------------------------- */
 /* Hero — the "dashboard" half of the page                               */

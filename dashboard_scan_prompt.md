@@ -40,6 +40,20 @@ re-fetching and re-judging it — "stale date," "duplicate," and "not a new
 formation" are permanent properties of a given URL, not something that
 changes day to day, so there's no need to spend a fetch re-confirming it.
 
+Finally, read `../index/formations.md` (one folder up, in the book
+research project). This is a master table of every documented formation
+the research agent has catalogued — mostly historical, with dates going
+back to 1678. You're reading it read-only, as a reference: if a name or
+location you see in Step 2's search results also appears in that table
+attached to a date from a PRIOR year (e.g. a search for "new crop circle
+2026 Germany" surfaces the Grasdorf 1991 formation, which is in that
+table under "23 Jul 1991"), that's an immediate signal that you're looking
+at recycled historical content, not a new formation. The table is not
+exhaustive — something absent from it is not disqualified — but a match
+against a prior-year row is strong supporting evidence to reject. Don't
+cross the folder boundary for anything else (Step 3 still owns all actual
+date verification).
+
 ## Step 2 — Search for new formations
 
 Run at least 5–6 varied web searches covering the last 3–5 days (use a few
@@ -204,10 +218,11 @@ Safety valve first: if you've verified more than 6 genuinely new
 formations in a single run, that's unusual enough to suggest something
 went wrong upstream (a dedupe failure, a misread source, a bad date
 judgment repeated across candidates). In that case, don't auto-commit —
-write up what you found and why in your final summary instead, and leave
-`data.js` untouched, so Eric can review before it goes live. This should
-basically never trigger in normal operation; it exists purely as a guard
-rail.
+write up what you found and why in your final summary instead. You SHOULD
+still edit `data.js` to update `DASHBOARD_META.lastScan` and set
+`DASHBOARD_META.lastScanStatus` to `"flagged"` (see below), then commit
+that meta-only change, so the dashboard shows the flagged state and Eric
+knows to check `scan_log.txt`. Leave `STORIES` untouched.
 
 Otherwise, if you found one or more genuinely new formations:
 1. Edit `data.js`: insert the new story object(s) at the TOP of the
@@ -216,14 +231,24 @@ Otherwise, if you found one or more genuinely new formations:
 2. Update `DASHBOARD_META.lastScan` to the current run's timestamp, ISO
    8601 with the correct America/Los_Angeles UTC offset (`-07:00` during
    PDT / `-08:00` during PST — check which applies on today's actual
-   date).
+   date). Also set `DASHBOARD_META.lastScanStatus` to `"ok"`.
 3. Validate your edit didn't break the file: run `node --check data.js`
    from this folder. If it fails, undo your edit and report the failure
    instead of committing broken JS.
 
 If you found NO genuinely new formations, still update
-`DASHBOARD_META.lastScan` to the current run's timestamp (so the
-dashboard's "last scan" stat stays honest), but leave `STORIES` untouched.
+`DASHBOARD_META.lastScan` and set `DASHBOARD_META.lastScanStatus` to
+`"ok"` (so the dashboard's scan stats stay honest), but leave `STORIES`
+untouched.
+
+In all cases, `DASHBOARD_META.lastScanStatus` should reflect the true
+outcome of this run: `"ok"` for a normal run (whether or not anything was
+added), `"flagged"` if the safety valve triggered, or `"error"` if
+something went wrong that prevented you from completing the scan normally
+(e.g., `node --check` failed and you couldn't commit). If the file itself
+is in a broken state and you can't edit it at all, just note it in your
+summary — the runner's own exit code will cause `scan_errors.txt` to be
+populated.
 
 Regardless of outcome, append one line per rejected candidate to
 `scan_rejected_log.md` in this folder (create it with a one-line header if

@@ -803,8 +803,18 @@
     els.statSeason.textContent = String(seasonCount);
 
     var scanStamp = formatScanStamp(meta.lastScan);
-    els.statScan.textContent = scanStamp;
-    els.footerUpdated.textContent = 'Last automated scan: ' + scanStamp;
+    var scanStatus = meta.lastScanStatus || 'ok';
+    if (scanStatus === 'error' || scanStatus === 'flagged') {
+      // Show the timestamp in amber with a label so it's obvious something
+      // needs attention without digging into scan_log.txt manually.
+      els.statScan.innerHTML =
+        '<span class="scan-warn">' + escapeHtml(scanStamp) +
+        ' <span class="scan-warn-label">(' + escapeHtml(scanStatus) + ')</span></span>';
+    } else {
+      els.statScan.textContent = scanStamp;
+    }
+    els.footerUpdated.textContent = 'Last automated scan: ' + scanStamp +
+      (scanStatus !== 'ok' ? ' [' + scanStatus + ' — check scan_log.txt]' : '');
     els.seasonLabel.textContent = meta.seasonLabel || '—';
   }
 
