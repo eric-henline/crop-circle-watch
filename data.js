@@ -47,14 +47,14 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-07-11T22:54:44-07:00",
+  lastScan: "2026-07-12T06:29:26-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
   //   "error"   — scan failed, timed out, or couldn't write/commit the output
   // When this is "error" or "flagged" the dashboard shows an amber warning
   // on the scan timestamp so you know to check scan_log.txt / scan_errors.txt.
-  lastScanStatus: "flagged",
+  lastScanStatus: "ok",
   seasonLabel: "2026 UK season",
   // Seeds the "Live chatter" keyword chips on a visitor's first visit. After
   // that, each visitor's own additions/removals are kept in their browser's
@@ -63,6 +63,17 @@ window.DASHBOARD_META = {
 };
 
 window.STORIES = [
+  {
+    id: "2026-07-11-roundway-hill",
+    date: "2026-07-11",
+    title: "Roundway Hill",
+    location: "Nr Devizes, Wiltshire, UK · Map ref SU0085764698",
+    description: "Reported 11 July 2026 near Devizes, with aerial images credited to Stonehenge Dronescapes. Aerial video coverage of the design has nicknamed it the \"Cosmic Chicken.\"",
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
+    sourceUrl: "https://www.cropcircleconnector.com/2026/roundway/roundway2026a.html",
+    sourceName: "Crop Circle Connector",
+    youtubeId: "MfSAwFcefBQ"
+  },
   {
     id: "2026-07-07-maccoombe-down",
     date: "2026-07-07",
