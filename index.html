@@ -84,6 +84,11 @@
 </svg>
 
 <div class="bg-field" aria-hidden="true"></div>
+<div class="bg-watermarks" aria-hidden="true">
+  <svg class="wm wm-1" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-2" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-3" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+</div>
 <div class="bg-scan" aria-hidden="true"></div>
 
 <header class="site-header" id="siteHeader">
@@ -92,10 +97,8 @@
       <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
       <div class="brand-text">
         <h1>CROP CIRCLE WATCH</h1>
-        <p class="tagline">Standing watch over the fields — logging every new pattern the day it turns up</p>
         <p class="cereology-note">
           <span class="cer-word">cereology</span>
-          <span class="cer-ipa">/ˌsɪərɪˈɒlədʒɪ/</span>
           <span class="cer-pos">n.</span>
           <span class="cer-def">the study or investigation of crop circles</span>
         </p>
@@ -103,7 +106,7 @@
     </div>
     <div class="header-end">
       <nav class="site-nav" aria-label="Primary">
-        <a href="#hero" class="nav-link">Dashboard</a>
+        <a href="#hero" class="nav-link" id="navDashboard">Dashboard</a>
         <a href="#timeline" class="nav-link">Timeline</a>
         <a href="about.html" class="nav-link">About</a>
       </nav>
@@ -122,38 +125,53 @@
 </header>
 
 <section class="hero" id="hero">
-  <div class="radar-sweep" aria-hidden="true"></div>
+  <div class="radar-sweep" aria-hidden="true">
+    <span class="radar-blip b1"></span>
+    <span class="radar-blip b2"></span>
+    <span class="radar-blip b3"></span>
+    <span class="radar-blip b4"></span>
+    <div class="radar-beam"></div>
+  </div>
   <div class="hero-inner">
+
+    <p class="hero-subhead">Daily scans for new formations — news, footage, and field reports as they happen.</p>
 
     <div class="status-line">
       <span class="pulse-dot" aria-hidden="true"></span>
-      <span>Monitoring active — <span id="seasonLabel">—</span></span>
+      <span>Monitoring active</span>
+      <dl class="hero-stats">
+        <div class="hero-stat"><dt>Logged</dt><dd id="statTotal">—</dd></div>
+        <div class="hero-stat"><dt>This year</dt><dd id="statSeason">—</dd></div>
+      </dl>
     </div>
 
     <div class="last-formation">
-      <div class="lf-media" id="lfMedia"></div>
-      <div class="lf-info">
-        <span class="lf-label">Last confirmed formation</span>
-        <span class="lf-value" id="lfValue">—</span>
-        <span class="lf-days" id="lfDays">—</span>
+      <h2 class="lf-label">Last confirmed formation</h2>
+      <div class="lf-body">
+        <div class="lf-media" id="lfMedia"></div>
+        <div class="lf-info">
+          <div class="lf-title-row">
+            <span class="lf-value" id="lfValue">—</span>
+            <span class="lf-days" id="lfDays">—</span>
+          </div>
+          <p class="lf-location" id="lfLocation">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-pin"/></svg>
+            <span>—</span>
+          </p>
+          <p class="lf-desc" id="lfDesc">—</p>
+        </div>
       </div>
     </div>
 
-    <dl class="hero-stats">
-      <div class="hero-stat"><dt>Logged</dt><dd id="statTotal">—</dd></div>
-      <div class="hero-stat"><dt>This season</dt><dd id="statSeason">—</dd></div>
-      <div class="hero-stat"><dt>Latest</dt><dd id="statLatest">—</dd></div>
-    </dl>
-
     <div class="widget-grid">
-      <section class="widget" aria-labelledby="newsHeading">
-        <h2 id="newsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg>Recent coverage</h2>
-        <ul class="news-list" id="newsList"><!-- populated by app.js --></ul>
-      </section>
-
-      <section class="widget" aria-labelledby="videoHeading">
+      <section class="widget widget-footage" aria-labelledby="videoHeading">
         <h2 id="videoHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-play"/></svg>Field footage</h2>
         <div class="video-strip" id="videoStrip"><!-- populated by app.js --></div>
+
+        <section class="widget widget-news-nested" aria-labelledby="newsHeading">
+          <h2 id="newsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg>Recent coverage</h2>
+          <ul class="news-list" id="newsList"><!-- populated by app.js --></ul>
+        </section>
       </section>
 
       <section class="widget widget-social" aria-labelledby="socialHeading">
@@ -187,6 +205,10 @@
 <section class="timeline-section" id="timeline">
 
   <div class="control-bar">
+    <div class="scope-toggle" id="scopeToggle" role="tablist" aria-label="Timeline scope">
+      <button class="scope-btn active" data-scope="season" role="tab" aria-selected="true" type="button">This season</button>
+      <button class="scope-btn" data-scope="all" role="tab" aria-selected="false" type="button">All history</button>
+    </div>
     <label class="search-box">
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
       <input type="search" id="searchInput" placeholder="Search formation, location, source…" autocomplete="off">
@@ -243,6 +265,10 @@
 </template>
 
 <script src="data.js"></script>
+<!-- Generated research-archive dataset (window.HISTORY) — powers the "All history"
+     timeline toggle. Built by pipeline/generate_dashboard_entries.py. Optional:
+     app.js degrades gracefully to the curated feed if it's absent. -->
+<script src="history.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

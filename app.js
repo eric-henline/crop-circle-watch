@@ -22,8 +22,44 @@
   var stories = (Array.isArray(window.STORIES) ? window.STORIES.slice() : []);
   var meta = window.DASHBOARD_META || {};
 
+  // The generated research-archive dataset (pre-current-season formations from
+  // index/formations.json). Optional — the dashboard works without it.
+  var history = (Array.isArray(window.HISTORY) ? window.HISTORY.slice() : []);
+
+  var sortNewestFirst = function (a, b) {
+    return b.date.localeCompare(a.date) || (b.id || '').localeCompare(a.id || '');
+  };
+
   // newest first, everywhere
-  stories.sort(function (a, b) { return b.date.localeCompare(a.date) || (b.id || '').localeCompare(a.id || ''); });
+  stories.sort(sortNewestFirst);
+  history.sort(sortNewestFirst);
+
+  // Curated feed + archive merged for the "All history" scope. Deduped by
+  // formationId (a curated entry always wins over a generated one), then by id.
+  // history.js already excludes the current season, so overlap is minimal.
+  var allStories = (function () {
+    if (!history.length) return stories;
+    var seenFid = {}, seenId = {};
+    stories.forEach(function (s) {
+      if (s.formationId) seenFid[s.formationId] = true;
+      seenId[s.id] = true;
+    });
+    var merged = stories.slice();
+    history.forEach(function (h) {
+      if (h.formationId && seenFid[h.formationId]) return;
+      if (seenId[h.id]) return;
+      merged.push(h);
+    });
+    merged.sort(sortNewestFirst);
+    return merged;
+  })();
+
+  // Which dataset the TIMELINE (feed + rail + chips) draws from. The hero
+  // widgets always stay on the curated `stories` — the toggle only reshapes the
+  // chronological log below.
+  function timelineStories() {
+    return state.scope === 'all' ? allStories : stories;
+  }
 
   var DEFAULT_KEYWORDS = (Array.isArray(meta.defaultKeywords) && meta.defaultKeywords.length)
     ? meta.defaultKeywords
@@ -37,7 +73,7 @@
   var BSKY_FETCH_TIMEOUT_MS = 7000;
   var bskyScriptLoaded = false;
 
-  var state = { query: '', tag: 'all' };
+  var state = { query: '', tag: 'all', scope: 'season' };
   var railIndex = {};
   var sectionObserver = null;
   var keywordState = getKeywordState();
@@ -50,15 +86,16 @@
     headerSearch: document.getElementById('headerSearchInput'),
     headerSearchForm: document.getElementById('headerSearchForm'),
     jumpLatest: document.getElementById('jumpLatest'),
+    scopeToggle: document.getElementById('scopeToggle'),
     scrollCue: document.getElementById('scrollCue'),
     statTotal: document.getElementById('statTotal'),
     statSeason: document.getElementById('statSeason'),
-    statLatest: document.getElementById('statLatest'),
     statScan: document.getElementById('statScan'),
-    seasonLabel: document.getElementById('seasonLabel'),
     lfValue: document.getElementById('lfValue'),
     lfDays: document.getElementById('lfDays'),
     lfMedia: document.getElementById('lfMedia'),
+    lfLocation: document.getElementById('lfLocation'),
+    lfDesc: document.getElementById('lfDesc'),
     newsList: document.getElementById('newsList'),
     videoStrip: document.getElementById('videoStrip'),
     socialPosts: document.getElementById('socialPosts'),
@@ -198,7 +235,7 @@
   }
 
   function renderChips() {
-    var tags = collectTags(stories).slice(0, 7);
+    var tags = collectTags(timelineStories()).slice(0, 7);
     var html = '<button type="button" class="chip' + (state.tag === 'all' ? ' active' : '') + '" data-tag="all">All</button>';
     tags.forEach(function (t) {
       html += '<button type="button" class="chip' + (state.tag === t ? ' active' : '') + '" data-tag="' + escapeAttr(t) + '">' + escapeHtml(t) + '</button>';
@@ -230,6 +267,12 @@
   }
   function escapeAttr(str) { return escapeHtml(str); }
 
+  // A link a visitor can actually open. Internal paths (e.g. sessions/*.md) are
+  // provenance, not public, and must never render as a clickable card link.
+  function isPublicUrl(url) {
+    return typeof url === 'string' && /^https?:\/\//i.test(url);
+  }
+
   // -- media block ------------------------------------------------------------
   function buildMedia(story) {
     var wrap = document.createElement('div');
@@ -260,6 +303,55 @@
     return wrap;
   }
 
+  // -- authenticity badge ----------------------------------------------------
+  // Maps the research registry's evidentiary tag to a compact badge. The
+  // "Unclassified" default is intentionally not shown (it's noise); the three
+  // meaningful states get a colored pill so the card signals at a glance
+  // whether a formation is a confirmed hoax, has anomaly evidence, or is
+  // contested. Carried onto a story via the optional `authenticity` field.
+  var AUTH_BADGE = {
+    'Confirmed human-made':            { cls: 'auth-hoax',     label: 'Confirmed human-made' },
+    'Unexplained (anomaly evidence)':  { cls: 'auth-anomaly',  label: 'Anomaly evidence' },
+    'Contested':                       { cls: 'auth-contested', label: 'Contested' }
+  };
+
+  function buildAuthBadge(authenticity) {
+    var spec = AUTH_BADGE[authenticity];
+    if (!spec) return null;
+    var span = document.createElement('span');
+    span.className = 'auth-badge ' + spec.cls;
+    span.textContent = spec.label;
+    span.title = authenticity;
+    return span;
+  }
+
+  // -- references / provenance row -------------------------------------------
+  // Renders the optional `references` array ([{label,url}]) as a compact "More"
+  // row of external links — "where this can be gathered / read more" — the
+  // link back into the research trail. Only public, resolvable URLs belong
+  // here (see data.js schema note).
+  function buildReferences(refs) {
+    if (!Array.isArray(refs)) return null;
+    var publicRefs = refs.filter(function (r) { return r && isPublicUrl(r.url); });
+    if (!publicRefs.length) return null;
+    var wrap = document.createElement('div');
+    wrap.className = 'card-refs';
+    var lead = document.createElement('span');
+    lead.className = 'card-refs-lead';
+    lead.textContent = 'More';
+    wrap.appendChild(lead);
+    publicRefs.forEach(function (r) {
+      var a = document.createElement('a');
+      a.className = 'card-ref';
+      a.href = r.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = r.label || 'Reference';
+      wrap.appendChild(a);
+    });
+    return wrap;
+  }
+
   // -- card ------------------------------------------------------------
   function buildCard(story) {
     var node = els.cardTemplate.content.firstElementChild.cloneNode(true);
@@ -268,6 +360,8 @@
     node.querySelector('.card-media').replaceWith(withClass(buildMedia(story), 'card-media'));
 
     var tagsEl = node.querySelector('.card-tags');
+    var badge = buildAuthBadge(story.authenticity);
+    if (badge) tagsEl.appendChild(badge);
     (story.tags || []).forEach(function (t) {
       var span = document.createElement('span');
       span.className = 'tag';
@@ -280,9 +374,23 @@
     node.querySelector('.card-desc').textContent = story.description;
     node.querySelector('.card-date span').textContent = formatShort(story.date);
 
+    // Only show the Source link when there's a real, public URL to open — a
+    // missing/internal one would be a dead link (e.g. backfilled historical
+    // entries before the research agent adds real sources).
     var srcLink = node.querySelector('.card-source');
-    srcLink.href = story.sourceUrl;
-    srcLink.querySelector('span').textContent = story.sourceName || 'Source';
+    if (isPublicUrl(story.sourceUrl)) {
+      srcLink.href = story.sourceUrl;
+      srcLink.querySelector('span').textContent = story.sourceName || 'Source';
+    } else {
+      srcLink.remove();
+    }
+
+    // Optional provenance links, inserted between the body text and the footer.
+    var refs = buildReferences(story.references);
+    if (refs) {
+      var footer = node.querySelector('.card-footer');
+      footer.parentNode.insertBefore(refs, footer);
+    }
 
     return node;
   }
@@ -291,7 +399,7 @@
 
   // -- render feed ------------------------------------------------------------
   function renderFeed() {
-    var visible = stories.filter(matchesFilter);
+    var visible = timelineStories().filter(matchesFilter);
     els.feed.innerHTML = '';
 
     if (visible.length === 0) {
@@ -339,7 +447,8 @@
 
   // -- render rail ------------------------------------------------------------
   function renderRail() {
-    var allDates = groupByDate(stories).order;
+    var railStories = timelineStories();
+    var allDates = groupByDate(railStories).order;
     var built = buildRailTree(allDates);
     railIndex = {};
     els.rail.innerHTML = '';
@@ -366,7 +475,7 @@
 
         built.tree[year].months[m].forEach(function (ymd) {
           var d = parseYMD(ymd);
-          var count = groupByDate(stories).map[ymd].length;
+          var count = groupByDate(railStories).map[ymd].length;
           var row = document.createElement('div');
           row.className = 'rail-day';
           row.setAttribute('data-date', ymd);
@@ -415,7 +524,7 @@
     clearSearchInputs();
     render();
     requestAnimationFrame(function () {
-      var story = stories.filter(function (s) { return s.id === id; })[0];
+      var story = timelineStories().filter(function (s) { return s.id === id; })[0];
       var card = document.getElementById('card-' + id);
       if (card) {
         card.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -467,16 +576,58 @@
   }
 
   // -- compact header once the hero scrolls past ---------------------------
+  // Toggling `body.compact` shrinks the sticky site header (less padding,
+  // smaller logo/h1, tagline hidden), which changes the header's height and
+  // therefore shifts every later element's position in the viewport —
+  // including #heroSentinel itself, a 1px marker placed right after the
+  // hero. An IntersectionObserver watching that sentinel with a zero
+  // rootMargin sits exactly on the boundary where the layout shift happens:
+  // compacting the header moves the page content (and the sentinel) up by
+  // the header's height delta, which can flip the sentinel back across the
+  // observer's threshold line, immediately un-compacting it — which
+  // un-shrinks the header and pushes the sentinel across the line again.
+  // That's an infinite toggle loop every frame (the scroll glitch/flicker).
+  //
+  // Fix: don't drive this off element intersection at all near the
+  // boundary — drive it off a plain scrollY reading with hysteresis: two
+  // distinct thresholds, ON well past the hero and OFF only once scrolled
+  // back much closer to the top, with a gap between them far wider than the
+  // header's compact/expanded height delta (a few tens of px). Since the
+  // gap can't be closed by the height change alone, the state can only flip
+  // in response to genuine user scrolling, never as feedback from its own
+  // last toggle. A scroll listener (rAF-throttled) is the reliable way to
+  // read scrollY on every frame; IntersectionObserver isn't needed here.
   function setupHeroSentinel() {
-    if (!('IntersectionObserver' in window)) return;
     var sentinel = document.getElementById('heroSentinel');
     if (!sentinel) return;
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        document.body.classList.toggle('compact', !entry.isIntersecting);
-      });
-    }, { threshold: 0 });
-    obs.observe(sentinel);
+
+    var ON_AT = 320;   // scrollY past which compact turns ON
+    var OFF_AT = 80;    // scrollY below which compact turns OFF
+    // Gap (ON_AT - OFF_AT = 240px) is far larger than the header's
+    // expanded/compact height delta, so toggling compact can never itself
+    // push scrollY's *effective* position across the opposite threshold.
+
+    var ticking = false;
+
+    function apply() {
+      ticking = false;
+      var y = window.scrollY || window.pageYOffset || 0;
+      var isCompact = document.body.classList.contains('compact');
+      if (!isCompact && y > ON_AT) {
+        document.body.classList.add('compact');
+      } else if (isCompact && y < OFF_AT) {
+        document.body.classList.remove('compact');
+      }
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    apply(); // set correct initial state (e.g. on reload mid-page)
   }
 
   // -- hero: last confirmed formation banner --------------------------------
@@ -484,11 +635,27 @@
     if (!stories.length) {
       els.lfValue.textContent = 'No formations logged yet';
       els.lfDays.textContent = '—';
+      if (els.lfLocation) els.lfLocation.style.display = 'none';
+      if (els.lfDesc) els.lfDesc.textContent = '';
       return;
     }
     var latest = stories[0];
     els.lfValue.textContent = latest.title + ' — ' + formatShort(latest.date);
     els.lfDays.textContent = formatDaysAgo(daysAgo(latest.date));
+
+    if (els.lfLocation) {
+      var locSpan = els.lfLocation.querySelector('span');
+      if (latest.location) {
+        if (locSpan) locSpan.textContent = latest.location;
+        els.lfLocation.style.display = '';
+      } else {
+        els.lfLocation.style.display = 'none';
+      }
+    }
+    if (els.lfDesc) {
+      els.lfDesc.textContent = latest.description || '';
+      els.lfDesc.style.display = latest.description ? '' : 'none';
+    }
 
     // Swap the placeholder div for a real thumbnail/video, same pattern
     // buildCard() uses for .card-media.
@@ -791,10 +958,39 @@
     });
   }
 
+  // -- always land at the true top on load/refresh --------------------------
+  // A lingering "#hero" hash (left over from clicking the Dashboard nav link,
+  // or from browser scroll-restoration on reload) combined with the sticky
+  // header's own flow height means the browser's native anchor-scroll lands
+  // the viewport just *below* the header instead of at the real top of the
+  // document. Force it back to (0,0) on load unless the hash is a deliberate
+  // deep link (the timeline section, a specific day, or a specific card).
+  function isDeepLinkHash(hash) {
+    return hash === '#timeline' || /^#(day-|card-)/.test(hash);
+  }
+
+  function setupTopScroll() {
+    if ('scrollRestoration' in history) {
+      try { history.scrollRestoration = 'manual'; } catch (e) { /* ignore */ }
+    }
+    if (!isDeepLinkHash(window.location.hash)) {
+      window.scrollTo(0, 0);
+    }
+    var navDashboard = document.getElementById('navDashboard');
+    if (navDashboard) {
+      navDashboard.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (history.replaceState) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      });
+    }
+  }
+
   // -- hero stats + footer ------------------------------------------------------------
   function renderStats() {
     els.statTotal.textContent = String(stories.length);
-    els.statLatest.textContent = stories.length ? formatShort(stories[0].date) : '—';
 
     var seasonYear = stories.length ? parseYMD(stories[0].date).getFullYear() : null;
     var seasonCount = seasonYear === null ? 0 : stories.filter(function (s) {
@@ -815,7 +1011,6 @@
     }
     els.footerUpdated.textContent = 'Last automated scan: ' + scanStamp +
       (scanStatus !== 'ok' ? ' [' + scanStatus + ' — check scan_log.txt]' : '');
-    els.seasonLabel.textContent = meta.seasonLabel || '—';
   }
 
   // -- wire controls ------------------------------------------------------------
@@ -845,9 +1040,10 @@
       });
     }
     els.jumpLatest.addEventListener('click', function () {
-      var grouped = groupByDate(stories.filter(matchesFilter));
+      var grouped = groupByDate(timelineStories().filter(matchesFilter));
       if (grouped.order.length) jumpToDate(grouped.order[0]);
     });
+    wireScopeToggle();
     if (els.scrollCue) {
       els.scrollCue.addEventListener('click', function () {
         var target = document.getElementById('timeline');
@@ -856,12 +1052,36 @@
     }
   }
 
+  // -- timeline scope toggle: "This season" (curated feed) vs "All history"
+  // (curated + research archive merged). Only reshapes the timeline; the hero
+  // stays on the curated feed. Hidden entirely when there's no history dataset.
+  function wireScopeToggle() {
+    if (!els.scopeToggle) return;
+    if (!history.length) { els.scopeToggle.style.display = 'none'; return; }
+    var btns = els.scopeToggle.querySelectorAll('.scope-btn');
+    Array.prototype.forEach.call(btns, function (btn) {
+      btn.addEventListener('click', function () {
+        var scope = btn.getAttribute('data-scope');
+        if (scope === state.scope) return;
+        state.scope = scope;
+        Array.prototype.forEach.call(btns, function (b) {
+          var on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        renderRail();   // the rail spans a different date range now
+        render();
+      });
+    });
+  }
+
   // -- main render ------------------------------------------------------------
   function render() {
     renderChips();
     renderFeed();
   }
 
+  setupTopScroll();
   renderStats();
   renderLastFormation();
   renderRail();

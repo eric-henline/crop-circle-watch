@@ -40,7 +40,7 @@
 }
 
 *{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+html{ scroll-behavior:smooth; overflow-x:hidden; }
 
 body{
   margin:0;
@@ -51,6 +51,7 @@ body{
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
+  overflow-x:hidden;
 }
 
 /* custom scrollbar — thin, accent-tinted, not default chrome */
@@ -85,6 +86,34 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
   background-size:100% 100%;
 }
 
+/* Giant, near-invisible crop-circle / sacred-geometry glyphs bleeding off
+   the page edges — a texture, not a decoration. Fixed + clipped via the
+   body's overflow-x guard so they never introduce a horizontal scrollbar. */
+.bg-watermarks{
+  position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden;
+}
+.bg-watermarks .wm{
+  position:absolute;
+  color:var(--accent);
+  fill:none;
+}
+.wm-1{
+  width:70vw; height:70vw; max-width:1100px; max-height:1100px;
+  top:-22vw; left:-20vw;
+  opacity:0.035;
+}
+.wm-2{
+  width:60vw; height:60vw; max-width:950px; max-height:950px;
+  bottom:-24vw; right:-18vw;
+  opacity:0.03;
+  color:var(--signal);
+}
+.wm-3{
+  width:40vw; height:40vw; max-width:640px; max-height:640px;
+  top:38vh; right:-16vw;
+  opacity:0.025;
+}
+
 .bg-scan{
   position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:0.35;
   background:repeating-linear-gradient(
@@ -113,14 +142,16 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
 .site-header-inner{
   max-width:var(--max-width);
   margin:0 auto;
-  padding:var(--s-5) var(--s-4) var(--s-4);
+  padding:var(--s-4) var(--s-4);
   display:flex;
-  flex-wrap:wrap;
-  gap:var(--s-4);
+  flex-wrap:nowrap;
+  gap:var(--s-3) var(--s-4);
   align-items:center;
   justify-content:space-between;
   transition:padding .2s ease;
 }
+.brand{ flex:0 1 auto; min-width:0; }
+.header-end{ flex:0 0 auto; }
 
 body.compact .site-header-inner{ padding-top:var(--s-2); padding-bottom:var(--s-2); align-items:center; }
 body.compact .brand-mark{ width:30px; height:30px; }
@@ -131,7 +162,7 @@ body.compact .brand-text h1{ font-size:16px; }
 .brand{ display:flex; align-items:center; gap:var(--s-3); }
 
 .brand-mark{
-  width:46px; height:46px;
+  width:52px; height:52px;
   color:var(--accent);
   filter:drop-shadow(0 0 8px rgba(107,255,194,0.35));
   flex-shrink:0;
@@ -142,8 +173,8 @@ body.compact .brand-text h1{ font-size:16px; }
 
 .brand-text h1{
   font-family:var(--font-display);
-  font-size:clamp(20px, 3vw, 26px);
-  letter-spacing:0.05em;
+  font-size:clamp(21px, 2.7vw, 27px);
+  letter-spacing:0.045em;
   margin:0 0 4px;
   font-weight:700;
   transition:font-size .2s ease;
@@ -161,13 +192,14 @@ body.compact .brand-text h1{ font-size:16px; }
    About-page definition, just smaller and tighter since it now sits under
    the tagline in a fixed-height bar instead of floating in the hero. */
 .brand-text .cereology-note{
-  margin:5px 0 0;
-  gap:5px 8px;
+  margin:4px 0 0;
+  gap:7px;
+  flex-wrap:nowrap;
+  white-space:nowrap;
 }
 .brand-text .cereology-note .cer-word{ font-size:13px; }
-.brand-text .cereology-note .cer-ipa{ font-size:10.5px; }
-.brand-text .cereology-note .cer-pos{ font-size:10px; }
-.brand-text .cereology-note .cer-def{ font-size:12px; }
+.brand-text .cereology-note .cer-pos{ font-size:11px; }
+.brand-text .cereology-note .cer-def{ font-size:12.5px; flex-basis:auto; }
 
 .site-nav{ display:flex; gap:var(--s-4); align-items:center; }
 .nav-link{
@@ -241,18 +273,97 @@ body.compact .brand-text h1{ font-size:16px; }
   position:absolute;
   top:-170px; right:-170px;
   width:440px; height:440px;
-  border-radius:50%;
-  background:
-    repeating-radial-gradient(circle, rgba(107,255,194,0.05) 0px, rgba(107,255,194,0.05) 1px, transparent 1px, transparent 42px),
-    conic-gradient(from 0deg, rgba(107,255,194,0.20), transparent 30%, transparent 100%);
-  opacity:0.65;
   pointer-events:none;
-  animation:radar-spin 16s linear infinite;
   z-index:0;
 }
+
+/* Concentric range rings + faint crosshairs — the static "scope" under the
+   rotating beam. Drawn once, doesn't animate, so the eye reads it as a
+   fixed instrument face. */
+.radar-sweep::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(circle,
+      rgba(107,255,194,0.10) 0px, rgba(107,255,194,0.10) 1px,
+      transparent 1px, transparent 55px),
+    linear-gradient(to bottom, transparent calc(50% - 1px), rgba(107,255,194,0.08) calc(50% - 1px), rgba(107,255,194,0.08) calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(to right, transparent calc(50% - 1px), rgba(107,255,194,0.08) calc(50% - 1px), rgba(107,255,194,0.08) calc(50% + 1px), transparent calc(50% + 1px));
+  -webkit-mask-image:radial-gradient(circle, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 70%, transparent 100%);
+  mask-image:radial-gradient(circle, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 70%, transparent 100%);
+  opacity:0.8;
+}
+
+/* The rotating beam itself: bright leading edge, long soft trailing fade,
+   layered over a very faint full-circle wash so the sweep reads as a real
+   scanning wedge rather than a static pie slice. */
+.radar-beam{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    conic-gradient(from 0deg,
+      rgba(107,255,194,0.55) 0deg,
+      rgba(107,255,194,0.30) 4deg,
+      rgba(107,255,194,0.12) 16deg,
+      rgba(107,255,194,0.04) 34deg,
+      transparent 60deg,
+      transparent 360deg);
+  -webkit-mask-image:radial-gradient(circle, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 75%, transparent 100%);
+  mask-image:radial-gradient(circle, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 75%, transparent 100%);
+  opacity:0.7;
+  animation:radar-spin 6s linear infinite;
+  filter:drop-shadow(0 0 10px rgba(107,255,194,0.25));
+}
+
+/* Stationary "blips" the beam passes over. Each pings briefly once per
+   sweep cycle, timed via animation-delay to roughly match when the beam
+   crosses its angular position. */
+.radar-blip{
+  position:absolute;
+  width:5px; height:5px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 0 rgba(107,255,194,0.6);
+  opacity:0;
+  animation:blip-ping 6s linear infinite;
+}
+.radar-blip.b1{ top:28%; left:62%; animation-delay:0.1s; }
+.radar-blip.b2{ top:64%; left:70%; animation-delay:1.9s; }
+.radar-blip.b3{ top:74%; left:34%; animation-delay:3.3s; }
+.radar-blip.b4{ top:40%; left:22%; animation-delay:4.7s; }
+
 @keyframes radar-spin{ to{ transform:rotate(360deg); } }
 
+@keyframes blip-ping{
+  0%, 3%{ opacity:0; box-shadow:0 0 0 0 rgba(107,255,194,0); }
+  4%{ opacity:1; box-shadow:0 0 0 0 rgba(107,255,194,0.7); }
+  9%{ opacity:0.9; box-shadow:0 0 0 10px rgba(107,255,194,0); }
+  16%, 100%{ opacity:0; box-shadow:0 0 0 0 rgba(107,255,194,0); }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .radar-beam{ animation:none; }
+  .radar-blip{ animation:none; opacity:0.6; }
+}
+
 .hero-inner{ position:relative; z-index:1; }
+
+/* Dashboard subheading — the one-line "what this is" leading the hero. Set in
+   the display sans (not the body serif) so it reads as a crisp tagline, with a
+   little tracking and a lighter weight for an airy, modern feel. */
+.hero-subhead{
+  margin:0 0 var(--s-5);
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(17px, 2.1vw, 21px);
+  line-height:1.4;
+  letter-spacing:0.005em;
+  color:var(--text-1);
+  max-width:52ch;
+}
 
 .cereology-note{
   display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 10px;
@@ -289,13 +400,12 @@ body.compact .brand-text h1{ font-size:16px; }
 }
 
 .status-line{
-  display:flex; align-items:center; gap:9px;
+  display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2) var(--s-6);
   font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.1em;
   color:var(--text-2); text-transform:uppercase;
   margin-bottom:var(--s-4);
 }
-.status-line span:last-child{ color:var(--text-2); }
-.status-line #seasonLabel{ color:var(--text-1); }
+.status-line > span:not(.pulse-dot){ color:var(--text-2); flex:0 0 auto; }
 
 .pulse-dot{
   width:8px; height:8px; border-radius:50%; background:var(--accent);
@@ -308,17 +418,25 @@ body.compact .brand-text h1{ font-size:16px; }
   100%{ box-shadow:0 0 0 0 rgba(107,255,194,0); }
 }
 
+/* Last confirmed formation — a small feature block. The accent label sits on
+   the left edge directly above the video; the media and details sit in a row
+   beneath it. */
 .last-formation{
   display:flex;
-  align-items:center;
-  gap:var(--s-4);
+  flex-direction:column;
+  gap:var(--s-3);
   margin-bottom:var(--s-5);
   padding-bottom:var(--s-5);
   border-bottom:1px solid var(--border);
 }
+.lf-body{
+  display:flex;
+  align-items:flex-start;
+  gap:var(--s-5);
+}
 .lf-media{
-  flex:0 0 140px;
-  width:140px;
+  flex:0 0 280px;
+  width:280px;
   aspect-ratio:16/9;
   position:relative;
   border-radius:var(--radius);
@@ -326,19 +444,23 @@ body.compact .brand-text h1{ font-size:16px; }
   background:var(--panel-soft);
   border:1px solid var(--border);
 }
-.lf-media .media-placeholder svg{ width:32px; height:32px; }
-.lf-media .play-overlay svg{ width:28px; height:28px; }
+.lf-media .media-placeholder svg{ width:52px; height:52px; }
+.lf-media .play-overlay svg{ width:46px; height:46px; }
 .lf-info{
-  display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--s-2) var(--s-4);
+  display:flex; flex-direction:column; gap:9px;
   flex:1;
   min-width:0;
 }
 .lf-label{
-  font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.1em;
-  color:var(--text-2); text-transform:uppercase; width:100%;
+  font-family:var(--font-mono); font-size:13px; letter-spacing:0.16em;
+  color:var(--accent); text-transform:uppercase; font-weight:400;
+  margin:0;
+}
+.lf-title-row{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--s-2) var(--s-4);
 }
 .lf-value{
-  font-family:var(--font-display); font-size:clamp(21px,3.2vw,30px);
+  font-family:var(--font-display); font-size:clamp(25px,3.8vw,36px);
   font-weight:600; color:var(--text-0);
 }
 .lf-days{
@@ -346,21 +468,35 @@ body.compact .brand-text h1{ font-size:16px; }
   border:1px solid var(--signal-dim); border-radius:999px; padding:4px 12px;
   white-space:nowrap;
 }
+.lf-location{
+  display:flex; align-items:center; gap:6px;
+  margin:0; color:var(--text-1); font-size:13.5px;
+  font-family:var(--font-mono);
+}
+.lf-location svg{ width:14px; height:14px; color:var(--accent-dim); flex-shrink:0; }
+.lf-desc{
+  margin:2px 0 0;
+  font-family:var(--font-body);
+  color:var(--text-1);
+  font-size:15px;
+  line-height:1.65;
+  max-width:64ch;
+}
 
-.hero-stats{ display:flex; gap:var(--s-6); flex-wrap:wrap; margin:0 0 var(--s-6); padding:0; }
-.hero-stat{ margin:0; }
+.hero-stats{ display:flex; gap:var(--s-5); flex-wrap:wrap; margin:0; padding:0; }
+.hero-stat{ margin:0; display:flex; align-items:baseline; gap:7px; }
 .hero-stat dt{
   font-family:var(--font-mono); font-size:10.5px; letter-spacing:0.12em;
-  color:var(--text-2); margin:0 0 3px; text-transform:uppercase;
+  color:var(--text-2); margin:0; text-transform:uppercase;
 }
-.hero-stat dd{ margin:0; font-family:var(--font-mono); font-size:22px; color:var(--accent); }
+.hero-stat dd{ margin:0; font-family:var(--font-mono); font-size:22px; color:var(--accent); line-height:1; }
 
 /* ---------------------------------------------------------------------- */
 /* Widgets: news / video / social                                        */
 /* ---------------------------------------------------------------------- */
 
 .widget-grid{
-  display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--s-4);
+  display:grid; grid-template-columns:2fr 1fr; gap:var(--s-4);
   margin-bottom:var(--s-5);
   align-items:start;
 }
@@ -372,6 +508,25 @@ body.compact .brand-text h1{ font-size:16px; }
   padding:var(--s-4);
   display:flex; flex-direction:column;
   min-height:0;
+}
+
+/* Field footage — enlarged into the primary/hero widget. It contains the
+   Recent coverage widget nested beneath the video strip, so the two stack
+   as one visual column while Live chatter sits alongside in its own
+   column (see .widget-grid above). */
+.widget-footage{
+  min-height:460px;
+}
+.widget-footage .video-strip{ flex:0 0 auto; }
+
+.widget-news-nested{
+  background:none;
+  border:0;
+  border-top:1px solid var(--border);
+  border-radius:0;
+  padding:var(--s-4) 0 0;
+  margin-top:var(--s-4);
+  flex:1;
 }
 
 .widget h2{
@@ -393,9 +548,12 @@ body.compact .brand-text h1{ font-size:16px; }
 .news-title{ font-family:var(--font-body); font-size:15px; color:var(--text-0); line-height:1.4; }
 .news-meta{ font-family:var(--font-mono); font-size:10.5px; color:var(--text-2); letter-spacing:0.04em; }
 
-.video-strip{ display:flex; gap:var(--s-2); overflow-x:auto; padding-bottom:4px; margin:-2px -2px 0; }
+.video-strip{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:var(--s-3);
+  padding-bottom:4px; margin:-2px -2px 0;
+}
 .video-thumb{
-  position:relative; flex:0 0 132px; height:82px;
+  position:relative; width:100%; height:150px;
   border:1px solid var(--border); border-radius:5px;
   padding:0; cursor:pointer; overflow:hidden; background:var(--panel-soft);
 }
@@ -408,10 +566,10 @@ body.compact .brand-text h1{ font-size:16px; }
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
   background:rgba(7,11,18,0.18);
 }
-.video-thumb-overlay svg{ width:22px; height:22px; color:var(--text-0); opacity:0.85; }
+.video-thumb-overlay svg{ width:32px; height:32px; color:var(--text-0); opacity:0.85; }
 .video-thumb-label{
-  position:absolute; left:0; right:0; bottom:0; padding:4px 6px;
-  font-family:var(--font-mono); font-size:9.5px; color:var(--text-0);
+  position:absolute; left:0; right:0; bottom:0; padding:6px 8px;
+  font-family:var(--font-mono); font-size:11px; color:var(--text-0);
   background:linear-gradient(180deg, transparent, rgba(0,0,0,0.78));
   text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
@@ -536,7 +694,7 @@ body.compact .brand-text h1{ font-size:16px; }
 /* Control bar                                                            */
 /* ---------------------------------------------------------------------- */
 
-.timeline-section{ padding-top:var(--s-2); }
+.timeline-section{ padding-top:var(--s-2); scroll-margin-top:80px; }
 
 .control-bar{
   max-width:var(--max-width);
@@ -547,6 +705,27 @@ body.compact .brand-text h1{ font-size:16px; }
   gap:var(--s-3);
   align-items:center;
 }
+
+/* Segmented "This season / All history" scope toggle in the control bar. */
+.scope-toggle{
+  display:inline-flex;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:3px;
+  background:var(--panel);
+  flex:0 0 auto;
+}
+.scope-btn{
+  font-family:var(--font-mono);
+  font-size:12px; letter-spacing:0.03em;
+  padding:6px 14px;
+  border:0; border-radius:999px;
+  background:none; color:var(--text-2);
+  cursor:pointer; white-space:nowrap;
+  transition:color .15s, background .15s;
+}
+.scope-btn:hover{ color:var(--text-0); }
+.scope-btn.active{ color:var(--bg-0); background:var(--accent); font-weight:600; }
 
 .search-box{
   display:flex;
@@ -782,6 +961,36 @@ body.compact .brand-text h1{ font-size:16px; }
   padding:2px 7px;
 }
 
+/* Authenticity badge — carried from the research registry. Three meaningful
+   states, color-coded; the "Unclassified" default renders nothing. */
+.auth-badge{
+  font-family:var(--font-mono);
+  font-size:10px; letter-spacing:0.05em;
+  padding:2px 8px; border-radius:999px;
+  border:1px solid currentColor;
+  white-space:nowrap;
+}
+.auth-badge.auth-hoax{ color:var(--signal); background:rgba(255,180,84,0.08); }
+.auth-badge.auth-anomaly{ color:var(--accent); background:rgba(107,255,194,0.08); }
+.auth-badge.auth-contested{ color:var(--text-1); background:rgba(169,186,200,0.06); }
+
+/* Provenance / "read more" links — the trail back into the research sources. */
+.card-refs{
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px;
+  margin-top:2px; padding-top:var(--s-2);
+  border-top:1px dashed var(--border);
+}
+.card-refs-lead{
+  font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--text-2);
+}
+.card-ref{
+  font-family:var(--font-mono); font-size:11px; color:var(--accent);
+  display:inline-flex; align-items:center; gap:4px;
+}
+.card-ref::before{ content:"↗"; font-size:10px; opacity:0.7; }
+.card-ref:hover{ text-decoration:underline; }
+
 .card-title{
   font-family:var(--font-display);
   font-size:18px;
@@ -883,6 +1092,7 @@ template{ display:none; }
 
 @media (max-width:980px){
   .widget-grid{ grid-template-columns:1fr; }
+  .widget-footage{ min-height:0; }
 }
 
 @media (max-width:860px){
@@ -896,20 +1106,23 @@ template{ display:none; }
     padding-bottom:var(--s-3);
     margin-bottom:var(--s-2);
   }
-  .site-header-inner{ align-items:flex-start; }
-  .last-formation{ flex-direction:column; align-items:flex-start; }
+  .site-header-inner{ flex-wrap:wrap; align-items:flex-start; }
+  .lf-body{ flex-direction:column; align-items:flex-start; }
+  .status-line{ gap:var(--s-2) var(--s-4); }
   .hero-stats{ gap:var(--s-4); }
   .radar-sweep{ display:none; }
 }
 
 @media (max-width:520px){
   .cards-grid{ grid-template-columns:1fr; }
-  .video-thumb{ flex:0 0 110px; height:70px; }
-  .lf-media{ flex:0 0 110px; width:110px; }
+  .video-strip{ grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); }
+  .video-thumb{ height:90px; }
+  .lf-media{ flex:0 0 100%; width:100%; }
 }
 
 @media (max-width:480px){
   .hero{ padding:var(--s-5) var(--s-3) var(--s-5); }
+  .status-line{ gap:var(--s-2) var(--s-3); }
   .hero-stats{ gap:var(--s-3) var(--s-5); }
   .widget{ padding:var(--s-3); }
   .site-header-inner{ padding-left:var(--s-3); padding-right:var(--s-3); }
