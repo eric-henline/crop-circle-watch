@@ -47,14 +47,14 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-06-24T07:00:00-07:00",
+  lastScan: "2026-07-11T22:54:44-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
   //   "error"   — scan failed, timed out, or couldn't write/commit the output
   // When this is "error" or "flagged" the dashboard shows an amber warning
   // on the scan timestamp so you know to check scan_log.txt / scan_errors.txt.
-  lastScanStatus: "ok",
+  lastScanStatus: "flagged",
   seasonLabel: "2026 UK season",
   // Seeds the "Live chatter" keyword chips on a visitor's first visit. After
   // that, each visitor's own additions/removals are kept in their browser's
@@ -63,6 +63,72 @@ window.DASHBOARD_META = {
 };
 
 window.STORIES = [
+  {
+    id: "2026-07-07-maccoombe-down",
+    date: "2026-07-07",
+    title: "Maccoombe Down",
+    location: "Nr Tidcombe, Wiltshire, UK · Map ref SU2931057192",
+    description: "Reported 7 July 2026 near Tidcombe, described by Temporary Temples as a striking 3D design roughly 180ft in diameter. The field's owner — his first crop circle in 19 years — has granted limited public access along marked tractor-track routes.",
+    tags: ["UK", "Wiltshire", "2026 season"],
+    sourceUrl: "https://www.cropcircleconnector.com/2026/Maccoombe/Maccoombe2026a.html",
+    sourceName: "Crop Circle Connector",
+    youtubeId: null
+  },
+  {
+    id: "2026-07-05-zeals-knoll",
+    date: "2026-07-05",
+    title: "Zeal's Knoll",
+    location: "Nr Mere, Wiltshire, UK · Map ref ST7903932923",
+    description: "Reported 5 July 2026 in a wheat field near Mere, a compact 80-100ft design of standing circles of differing sizes arranged in a non-geometric group. Aerial photography by Temporary Temples' Steve Alexander.",
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
+    sourceUrl: "https://temporarytemples.co.uk/project/mere-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: "aryGVVwyTkI"
+  },
+  {
+    id: "2026-07-04-etchilhampton-2",
+    date: "2026-07-04",
+    title: "Etchilhampton (2)",
+    location: "Etchilhampton Hill, Nr Devizes, Wiltshire, UK · Map ref SU0284560442",
+    description: "Reported 4 July 2026 in wheat on Etchilhampton Hill, a tri-fold, roughly 180ft design of three circles and a triangle within a containing ring. Researchers noted its resemblance to the Morgans Hill design cut out by the farmer on 15 June.",
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
+    sourceUrl: "https://temporarytemples.co.uk/project/etchilhampton-2-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: "6XH_1dCBFQM"
+  },
+  {
+    id: "2026-07-03-alfreds-castle",
+    date: "2026-07-03",
+    title: "Alfred's Castle (Double Circle)",
+    location: "Nr Ashbury & Bishopstone, Oxfordshire, UK · Map ref SU2772882233",
+    description: "Two formations appeared the same night of 3 July 2026 on opposite sides of the Alfred's Castle earthwork: an old-fashioned dumbbell design with a crescent-moon motif, and a central circle with fine concentric rings.",
+    tags: ["UK", "Oxfordshire", "2026 season", "video"],
+    sourceUrl: "https://temporarytemples.co.uk/project/alfreds-castle-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: "oqcf0UnEU1U"
+  },
+  {
+    id: "2026-06-25-etchilhampton",
+    date: "2026-06-25",
+    title: "Etchilhampton Hill",
+    location: "Nr Devizes, Wiltshire, UK · Map ref SU0383960408",
+    description: "Reported 25 June 2026, straddling a field of wild flowers (including poppies) and young wheat. Temporary Temples describe it as a quintuplet design roughly 180ft in diameter, set within a large containing ring.",
+    tags: ["UK", "Wiltshire", "2026 season"],
+    sourceUrl: "https://temporarytemples.co.uk/project/etchilhampton-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: null
+  },
+  {
+    id: "2026-06-23-zurcher-weinland",
+    date: "2026-06-23",
+    title: "Zürcher Weinland",
+    location: "Zürcher Weinland, Switzerland (exact location withheld at farmer's request)",
+    description: "Reported 23 June 2026 in a wheat field, measuring approximately 215ft in length. Temporary Temples describe it as an elegant two-way spiral based on hexagon and vesica piscis geometry, reported to them by the Swiss research group Kornkreise Schweiz.",
+    tags: ["Switzerland", "2026 season"],
+    sourceUrl: "https://temporarytemples.co.uk/project/zurcher-weinland-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: null
+  },
   {
     id: "2026-06-21-kingweston-solstice",
     date: "2026-06-21",
@@ -108,6 +174,17 @@ window.STORIES = [
     youtubeId: null
   },
   {
+    id: "2026-05-31-ditcheat",
+    date: "2026-05-31",
+    title: "Ditcheat",
+    location: "Nr Ditcheat & Pennard Hill, Somerset, UK · Map ref ST6167037280",
+    description: "Reported 31 May 2026 in young wheat — the first crop circle of the 2026 season to appear in wheat rather than barley or oilseed rape. A three-fold, roughly 120ft design bearing a passing resemblance to the Strophalos (Hecate's Wheel) symbol.",
+    tags: ["UK", "Somerset", "2026 season"],
+    sourceUrl: "https://temporarytemples.co.uk/project/ditcheat-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: null
+  },
+  {
     id: "2026-05-22-white-sheet-downs",
     date: "2026-05-22",
     title: "White Sheet Downs",
@@ -117,6 +194,17 @@ window.STORIES = [
     sourceUrl: "https://www.cropcircleconnector.com/2026/white/white2026a.html",
     sourceName: "Crop Circle Connector",
     youtubeId: "alAdRZoutEM"
+  },
+  {
+    id: "2026-05-10-kingweston-somerset",
+    date: "2026-05-10",
+    title: "Kingweston (Near Snap Hill)",
+    location: "Nr Snap Hill, Kingweston, Somerset, UK · Map ref ST5213029852",
+    description: "First reported 10 May 2026 in young barley as a six-fold spinner design roughly 150ft in diameter; by 13 May, six additional curved paths had appeared in stages, making the pattern more complex.",
+    tags: ["UK", "Somerset", "2026 season"],
+    sourceUrl: "https://temporarytemples.co.uk/project/kingweston-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: null
   },
   {
     id: "2026-05-08-jacks-castle-plantation",
