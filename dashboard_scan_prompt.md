@@ -177,13 +177,46 @@ authoritative field reference):
   tags: ["Country", "Region-or-County", "<year> season", "video" /* only if a real video was found */],
   sourceUrl: "https://...",        // the page you verified the date on
   sourceName: "Short source label",
-  youtubeId: "abc123XYZ" // ONLY a real ID you confirmed by visiting the video's page — never guess or invent one. Use null if no video exists yet.
+  youtubeId: "abc123XYZ", // ONLY a real ID you confirmed by visiting the video's page — never guess or invent one. Use null if no video exists yet.
+  formationId: "slug-YYYY",       // OPTIONAL — see Step 5c
+  references: [ /* OPTIONAL — see Step 5c */ ]
 }
 ```
 
 Do not hotlink "All Rights Reserved" photographer images directly — the
 dashboard only embeds YouTube video (permitted) plus the outbound source
 link; that's by design, leave it that way.
+
+## Step 5c — Capture cross-DB links and extra sources (recommended)
+
+This dashboard is being linked to the wider research archive (see
+`../pipeline/LINKING_DESIGN.md`). Two OPTIONAL fields make each entry richer and
+traceable, and both are pure additions — never fabricate either:
+
+- **`formationId`** — the canonical id from the research registry
+  (`../index/formations.json`, built by `../pipeline/build_registry.py`). If this
+  same formation already exists in the master table, use its registry id here so
+  the dashboard card and the research record are provably the same formation. Its
+  id is `slugify(name)-<year>` (e.g. `etchilhampton-hill-2026`). If you can't find
+  a match, omit the field — do not invent an id.
+
+- **`references`** — an array of `{ label, url }` PUBLIC links where a reader can
+  learn more (the "More" row on the card). Use real, publicly-loading pages
+  (Crop Circle Connector, Temporary Temples, BLT Research, a news article) — NOT
+  internal `../sessions/*.md` paths, which don't resolve on the public site. When
+  a formation has more than one good source, list them all here; `sourceUrl`
+  stays the single canonical one you verified the date against. Example:
+  ```js
+  references: [
+    { label: "Temporary Temples — full report", url: "https://temporarytemples.co.uk/project/..." },
+    { label: "Crop Circle Connector", url: "https://www.cropcircleconnector.com/2026/..." }
+  ]
+  ```
+
+When you log a genuinely new formation here, also consider appending a matching
+row to `../index/formations.md` (name, location, date, brief description,
+authenticity, this session) so the master table and the live feed stay one
+record — this is how future entries become "born linked."
 
 ## Step 5b — Look for social posts (optional, only if genuinely found)
 
