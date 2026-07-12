@@ -16,6 +16,21 @@
      sourceName  — short label for the source link, e.g. "Crop Circle Connector"
      youtubeId   — YouTube video ID only (the part after "v=" or after
                    "embed/"), or null if no video is available yet
+     formationId — OPTIONAL. Canonical id from the research registry
+                   (index/formations.json, built by pipeline/build_registry.py).
+                   This is the LINK back to the master research database — the
+                   same formation's full record, images, and authenticity tag.
+                   See pipeline/LINKING_DESIGN.md.
+     authenticity— OPTIONAL. Evidentiary tag carried from the research registry:
+                   "Confirmed human-made" | "Unexplained (anomaly evidence)" |
+                   "Contested" | "Unclassified". Rendered as a small badge on the
+                   card (the "Unclassified" default is not shown).
+     references  — OPTIONAL. Array of { label, url } provenance links — "where
+                   this can be gathered / read more." Rendered as a compact
+                   "More" row. Use PUBLIC, resolvable URLs (external report pages,
+                   or the research repo if published) — the dashboard deploys as
+                   its own site, so internal ../sessions/*.md paths won't resolve
+                   for public visitors.
      socialPosts — OPTIONAL. Array of post objects the scan finds and
                    verifies by hand:
                      { platform, url, author, handle, text, postedAt }
@@ -120,6 +135,7 @@ window.STORIES = [
   },
   {
     id: "2026-06-25-etchilhampton",
+    formationId: "etchilhampton-hill-2026",
     date: "2026-06-25",
     title: "Etchilhampton Hill",
     location: "Nr Devizes, Wiltshire, UK · Map ref SU0383960408",
@@ -127,7 +143,11 @@ window.STORIES = [
     tags: ["UK", "Wiltshire", "2026 season"],
     sourceUrl: "https://temporarytemples.co.uk/project/etchilhampton-2026",
     sourceName: "Temporary Temples",
-    youtubeId: null
+    youtubeId: null,
+    references: [
+      { label: "Temporary Temples — full report", url: "https://temporarytemples.co.uk/project/etchilhampton-2026" },
+      { label: "Crop Circle Connector", url: "https://www.cropcircleconnector.com/2026/etchilhampton/etchilhampton2026a.html" }
+    ]
   },
   {
     id: "2026-06-23-zurcher-weinland",
@@ -164,6 +184,7 @@ window.STORIES = [
   },
   {
     id: "2026-06-15-morgans-hill",
+    formationId: "morgans-hill-2026",
     date: "2026-06-15",
     title: "Morgans Hill",
     location: "Morgans Hill, Wiltshire, UK",
@@ -175,6 +196,7 @@ window.STORIES = [
   },
   {
     id: "2026-06-15-great-wishford",
+    formationId: "great-wishford-2026",
     date: "2026-06-15",
     title: "Great Wishford",
     location: "Nr Grovely Woods, Great Wishford, Wiltshire, UK · Map ref SU0556533826",
@@ -186,6 +208,7 @@ window.STORIES = [
   },
   {
     id: "2026-05-31-ditcheat",
+    formationId: "ditcheat-2026",
     date: "2026-05-31",
     title: "Ditcheat",
     location: "Nr Ditcheat & Pennard Hill, Somerset, UK · Map ref ST6167037280",
