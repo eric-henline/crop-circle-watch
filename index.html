@@ -81,13 +81,66 @@
   <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
     <path d="M6 6l12 12M18 6L6 18"/>
   </symbol>
+
+  <!-- Background-watermark glyphs — a small set of distinct crop-circle /
+       sacred-geometry motifs, reused (at different sizes/positions/colors)
+       across the ambient watermark layer in .bg-watermarks below. -->
+  <symbol id="icon-glyph-rings" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="2" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-glyph-spokes" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <path d="M32 8v10M32 46v10M8 32h10M46 32h10M14.3 14.3l7.1 7.1M42.6 42.6l7.1 7.1M49.7 14.3l-7.1 7.1M21.4 42.6l-7.1 7.1" stroke="currentColor" stroke-width="1.1"/>
+  </symbol>
+  <symbol id="icon-glyph-triad" viewBox="0 0 64 64">
+    <circle cx="32" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="20" cy="40" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="44" cy="40" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+  </symbol>
+  <symbol id="icon-glyph-quatrefoil" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="44" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="20" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="44" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+  </symbol>
+  <symbol id="icon-glyph-target" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="25" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="16" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="4" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <path d="M32 3v6M32 55v6M3 32h6M55 32h6" stroke="currentColor" stroke-width="1.15"/>
+  </symbol>
+  <symbol id="icon-glyph-orbit" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="32" r="18" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="3 4"/>
+    <circle cx="44" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="2" fill="currentColor"/>
+  </symbol>
 </svg>
 
 <div class="bg-field" aria-hidden="true"></div>
+<!-- Ambient watermark layer: a fixed set of large, near-invisible crop-circle
+     glyphs that slowly fade in and out at staggered times, each in its own
+     spot behind the page. Every instance just picks a symbol + a position
+     class (wm-1..wm-13) — all sizing/color/timing lives in styles.css. -->
 <div class="bg-watermarks" aria-hidden="true">
   <svg class="wm wm-1" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
-  <svg class="wm wm-2" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-2" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-rings"/></svg>
   <svg class="wm wm-3" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-4" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-target"/></svg>
+  <svg class="wm wm-5" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-spokes"/></svg>
+  <svg class="wm wm-6" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-triad"/></svg>
+  <svg class="wm wm-7" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-quatrefoil"/></svg>
+  <svg class="wm wm-8" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-spokes"/></svg>
+  <svg class="wm wm-9" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-orbit"/></svg>
+  <svg class="wm wm-10" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-11" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-rings"/></svg>
+  <svg class="wm wm-12" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-triad"/></svg>
+  <svg class="wm wm-13" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-target"/></svg>
 </div>
 <div class="bg-scan" aria-hidden="true"></div>
 
@@ -146,14 +199,14 @@
     </div>
 
     <div class="last-formation">
-      <h2 class="lf-label">Last confirmed formation</h2>
+      <div class="lf-label-row">
+        <h2 class="lf-label">Last confirmed formation</h2>
+        <span class="lf-days" id="lfDays">—</span>
+      </div>
       <div class="lf-body">
         <div class="lf-media" id="lfMedia"></div>
         <div class="lf-info">
-          <div class="lf-title-row">
-            <span class="lf-value" id="lfValue">—</span>
-            <span class="lf-days" id="lfDays">—</span>
-          </div>
+          <span class="lf-value" id="lfValue">—</span>
           <p class="lf-location" id="lfLocation">
             <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-pin"/></svg>
             <span>—</span>

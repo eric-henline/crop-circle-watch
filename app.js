@@ -295,9 +295,11 @@
       }, { once: true });
       wrap.appendChild(btn);
     } else {
+      // No footage yet — fall back to the site's own ring-logo mark (static,
+      // so it stays light) rather than a generic icon.
       var ph = document.createElement('div');
       ph.className = 'media-placeholder';
-      ph.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-wheat"/></svg>';
+      ph.innerHTML = '<svg viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>';
       wrap.appendChild(ph);
     }
     return wrap;
@@ -448,8 +450,9 @@
   // -- render rail ------------------------------------------------------------
   function renderRail() {
     var railStories = timelineStories();
-    var allDates = groupByDate(railStories).order;
-    var built = buildRailTree(allDates);
+    var grouped = groupByDate(railStories);
+    var countByDate = grouped.map;               // {ymd: [stories]} — computed once
+    var built = buildRailTree(grouped.order);
     railIndex = {};
     els.rail.innerHTML = '';
 
@@ -473,18 +476,24 @@
         mLabel.textContent = MONTHS_FULL[m];
         monthWrap.appendChild(mLabel);
 
+        // Day rows live in their own container so a CSS guide line can hang
+        // them off the month above (see .rail-days in styles.css).
+        var daysHolder = document.createElement('div');
+        daysHolder.className = 'rail-days';
+
         built.tree[year].months[m].forEach(function (ymd) {
           var d = parseYMD(ymd);
-          var count = groupByDate(railStories).map[ymd].length;
+          var count = countByDate[ymd].length;
           var row = document.createElement('div');
           row.className = 'rail-day';
           row.setAttribute('data-date', ymd);
           row.innerHTML = '<span>' + WEEKDAYS[d.getDay()] + ' ' + d.getDate() + '</span><span class="count">' + count + '</span>';
           row.addEventListener('click', function () { jumpToDate(ymd); });
-          monthWrap.appendChild(row);
+          daysHolder.appendChild(row);
           railIndex[ymd] = row;
         });
 
+        monthWrap.appendChild(daysHolder);
         monthsHolder.appendChild(monthWrap);
       });
 
