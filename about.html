@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About — Crop Circle Watch</title>
-<meta name="description" content="What Crop Circle Watch is, how the daily scan works, and why it exists.">
+<meta name="description" content="What Crop Circle Watch is: an open, verifiable log of newly reported crop circle formations, credited to the people documenting them on the ground.">
 
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 
@@ -16,7 +16,14 @@
 </head>
 <body class="about-page">
 
+<!-- Icon sprite — mirrors the subset index.html uses on this page: the ring
+     logo (brand mark + centered about mark) plus the background-watermark
+     glyphs, so the ambient background matches the dashboard. -->
 <svg style="display:none">
+  <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="10.5" cy="10.5" r="6.5"/>
+    <path d="M19.5 19.5l-4.3-4.3"/>
+  </symbol>
   <symbol id="icon-ring-logo" viewBox="0 0 64 64">
     <circle cx="32" cy="32" r="23" fill="none" stroke="currentColor" stroke-width="1.4"/>
     <circle cx="32" cy="32" r="8.6" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -34,12 +41,63 @@
     <circle cx="45.75" cy="8.18" r="1.7" fill="currentColor"/>
     <circle cx="32" cy="32" r="2.4" fill="currentColor"/>
   </symbol>
+  <symbol id="icon-glyph-rings" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="2" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-glyph-spokes" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <path d="M32 8v10M32 46v10M8 32h10M46 32h10M14.3 14.3l7.1 7.1M42.6 42.6l7.1 7.1M49.7 14.3l-7.1 7.1M21.4 42.6l-7.1 7.1" stroke="currentColor" stroke-width="1.1"/>
+  </symbol>
+  <symbol id="icon-glyph-triad" viewBox="0 0 64 64">
+    <circle cx="32" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="20" cy="40" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="44" cy="40" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+  </symbol>
+  <symbol id="icon-glyph-quatrefoil" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="44" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="20" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="44" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+  </symbol>
+  <symbol id="icon-glyph-target" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="25" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="16" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="4" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <path d="M32 3v6M32 55v6M3 32h6M55 32h6" stroke="currentColor" stroke-width="1.15"/>
+  </symbol>
+  <symbol id="icon-glyph-orbit" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="32" r="18" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="3 4"/>
+    <circle cx="44" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="2" fill="currentColor"/>
+  </symbol>
 </svg>
 
 <div class="bg-field" aria-hidden="true"></div>
+<!-- Same ambient watermark layer as the dashboard (see index.html / styles.css). -->
+<div class="bg-watermarks" aria-hidden="true">
+  <svg class="wm wm-1" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-2" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-rings"/></svg>
+  <svg class="wm wm-3" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-4" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-target"/></svg>
+  <svg class="wm wm-5" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-spokes"/></svg>
+  <svg class="wm wm-6" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-triad"/></svg>
+  <svg class="wm wm-7" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-quatrefoil"/></svg>
+  <svg class="wm wm-8" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-spokes"/></svg>
+  <svg class="wm wm-9" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-orbit"/></svg>
+  <svg class="wm wm-10" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-11" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-rings"/></svg>
+  <svg class="wm wm-12" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-triad"/></svg>
+  <svg class="wm wm-13" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-target"/></svg>
+</div>
 <div class="bg-scan" aria-hidden="true"></div>
 
-<header class="site-header">
+<header class="site-header" id="siteHeader">
   <div class="site-header-inner">
     <div class="brand">
       <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
@@ -52,27 +110,39 @@
         </p>
       </div>
     </div>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="index.html#hero" class="nav-link">Dashboard</a>
-      <a href="index.html#timeline" class="nav-link">Timeline</a>
-      <a href="about.html" class="nav-link active">About</a>
-    </nav>
+    <div class="header-end">
+      <nav class="site-nav" aria-label="Primary">
+        <a href="index.html#hero" class="nav-link">Dashboard</a>
+        <a href="index.html#timeline" class="nav-link">Timeline</a>
+        <a href="about.html" class="nav-link active">About</a>
+      </nav>
+      <form class="header-search" id="headerSearchForm" role="search">
+        <label class="search-box">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
+          <input type="search" id="headerSearchInput" placeholder="Search formations…" autocomplete="off">
+        </label>
+      </form>
+      <dl class="header-scan">
+        <dt>Last scan</dt>
+        <dd id="statScan">—</dd>
+      </dl>
+    </div>
   </div>
 </header>
 
 <main class="about-body">
   <article class="about-article">
-    <h1>About Crop Circle Watch</h1>
+    <div class="about-header">
+      <svg class="about-logo" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+      <h1>About Crop Circle Watch</h1>
+    </div>
 
-    <p>Crop Circle Watch is a small, standing log of newly reported crop circle formations — not a theory about what makes them, just a careful record of when and where a new one shows up, with a source link and footage for each. It launched in June 2026 as a side project, separate from the larger research and book work happening elsewhere in the same family of projects.</p>
-
-    <h2>How it works</h2>
-    <p>Once a day, an automated scan checks recent reports from crop-circle photography and research sites, filters out anything that's just old news resurfacing, and adds genuinely new formations to the log with a verified date, location, and source link. Nothing here is generated or guessed — every entry traces back to a real report, and every video is the original footage from the photographer or research group that found it. A person can always edit, correct, or add entries by hand; the automation only ever adds to the record, it never rewrites it.</p>
+    <p>Crop Circle Watch is a growing, systematically maintained log of newly reported crop circle formations — a precise record of when and where each one appears, with source links and original footage credited to the researchers and photographers documenting them on the ground. It launched in June 2026 and adds new formations the day they surface, building an open, verifiable timeline of a phenomenon that has recurred in fields around the world for decades.</p>
 
     <h2>Why it's here</h2>
-    <p>Whatever you make of crop circles — hoax, art, mystery, all three — new ones really do appear in fields most years, and the people documenting them rarely get much attention beyond a small, dedicated community. This is a quiet way of keeping watch: a running record of an odd, very real phenomenon, kept honest by linking back to the people doing the actual fieldwork.</p>
+    <p>Whatever you make of crop circles — human artistry, unexplained anomaly, or something in between — the formations are real, and they keep arriving, season after season. Most in this record remain formally unclassified; a documented share are confirmed human-made, and a smaller, closely studied set exhibit measurable traits in the crop that known construction methods have not reproduced. Crop Circle Watch doesn't argue the question — it keeps the evidence: an honest, growing archive, every entry traceable to the people doing the fieldwork, so the pattern can be seen clearly and the truth has somewhere to accumulate.</p>
 
-    <p class="about-meta">Launched June 2026 · part of the crop-circles project · <a href="index.html">back to the dashboard</a></p>
+    <p class="about-meta">Launched June 2026 · part of the crop-circles research project · <a href="index.html">back to the dashboard</a></p>
   </article>
 </main>
 
@@ -80,6 +150,34 @@
   <p>Photography and footage remain the property of their original creators — each entry links back to its source.</p>
   <p class="footer-meta">Crop Circle Watch · part of the <span>crop-circles</span> research project · <a href="index.html">← Back to dashboard</a></p>
 </footer>
+
+<!-- Read DASHBOARD_META for the shared "Last scan" stamp, and route the header
+     search back to the dashboard timeline (this page has no feed of its own). -->
+<script src="data.js"></script>
+<script>
+  (function () {
+    'use strict';
+    var meta = window.DASHBOARD_META || {};
+    var scanEl = document.getElementById('statScan');
+    if (scanEl && meta.lastScan) {
+      try {
+        scanEl.textContent = new Intl.DateTimeFormat(undefined, {
+          month: 'short', day: 'numeric', hour: 'numeric',
+          minute: '2-digit', timeZoneName: 'short'
+        }).format(new Date(meta.lastScan)).toUpperCase();
+      } catch (e) { scanEl.textContent = meta.lastScan; }
+    }
+    var form = document.getElementById('headerSearchForm');
+    var input = document.getElementById('headerSearchInput');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var q = (input && input.value.trim()) || '';
+        window.location.href = 'index.html' + (q ? '?q=' + encodeURIComponent(q) : '') + '#timeline';
+      });
+    }
+  })();
+</script>
 
 </body>
 </html>

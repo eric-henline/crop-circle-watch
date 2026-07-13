@@ -1048,9 +1048,24 @@ body.compact .brand-text h1{ font-size:16px; }
 /* ---------------------------------------------------------------------- */
 
 .about-body{ max-width:720px; margin:0 auto; padding:var(--s-6) var(--s-4) var(--s-7); }
+
+/* Centered brand header for the article: a large static ring-logo (with a
+   soft accent glow) above the title. Static — no spin — so it reads as a
+   crest, not the busy header mark. */
+.about-header{
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  margin-bottom:var(--s-6);
+}
+.about-logo{
+  width:clamp(96px, 16vw, 132px);
+  height:clamp(96px, 16vw, 132px);
+  color:var(--accent);
+  filter:drop-shadow(0 0 16px rgba(107,255,194,0.28));
+  margin-bottom:var(--s-4);
+}
 .about-article h1{
   font-family:var(--font-display); font-size:clamp(26px,4vw,36px);
-  font-weight:700; margin:0 0 var(--s-5);
+  font-weight:700; margin:0;
 }
 .about-article h2{
   font-family:var(--font-display); font-size:18px; font-weight:600;

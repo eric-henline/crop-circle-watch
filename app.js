@@ -1081,7 +1081,21 @@
     renderFeed();
   }
 
+  // Accept an incoming search from another page (the About page's header
+  // search links here as index.html?q=…#timeline). Pre-fills the query so the
+  // timeline lands already filtered.
+  function applyQueryParam() {
+    var m = /[?&]q=([^&#]*)/.exec(window.location.search);
+    if (!m) return;
+    var q = decodeURIComponent(m[1].replace(/\+/g, ' ')).trim();
+    if (!q) return;
+    state.query = q;
+    if (els.search) els.search.value = q;
+    if (els.headerSearch) els.headerSearch.value = q;
+  }
+
   setupTopScroll();
+  applyQueryParam();
   renderStats();
   renderLastFormation();
   renderRail();
