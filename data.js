@@ -62,7 +62,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-07-12T06:29:26-07:00",
+  lastScan: "2026-07-13T09:15:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -78,6 +78,17 @@ window.DASHBOARD_META = {
 };
 
 window.STORIES = [
+  {
+    id: "2026-07-12-milk-hill",
+    date: "2026-07-12",
+    title: "Milk Hill",
+    location: "Nr Alton Barnes, Wiltshire, UK · Map ref SU1052564021",
+    description: "Reported 12 July 2026 near Alton Barnes, on the historic Milk Hill site overlooking the Pewsey Vale. Aerial images credited to Stonehenge Dronescapes.",
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
+    sourceUrl: "https://www.cropcircleconnector.com/2026/milkhill/milkhill2026a.html",
+    sourceName: "Crop Circle Connector",
+    youtubeId: "smond6kwJWs"
+  },
   {
     id: "2026-07-11-roundway-hill",
     date: "2026-07-11",
