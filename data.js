@@ -62,7 +62,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-07-13T09:15:00-07:00",
+  lastScan: "2026-07-15T06:30:35-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -78,6 +78,17 @@ window.DASHBOARD_META = {
 };
 
 window.STORIES = [
+  {
+    id: "2026-07-14-avebury-henge",
+    date: "2026-07-14",
+    title: "Avebury Henge",
+    location: "Nr Avebury, Wiltshire, UK",
+    description: "Reported 14 July 2026 near the historic Avebury Henge. Aerial footage credited to Stonehenge Dronescapes; no written report from Crop Circle Connector or Temporary Temples was available yet at time of writing, so design details and an exact map reference are not yet confirmed.",
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
+    sourceUrl: "https://www.youtube.com/watch?v=f8LDLG2lsUw",
+    sourceName: "Stonehenge Dronescapes (YouTube)",
+    youtubeId: "f8LDLG2lsUw"
+  },
   {
     id: "2026-07-12-milk-hill",
     date: "2026-07-12",

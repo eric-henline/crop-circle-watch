@@ -28,13 +28,17 @@
 export HOME="/Users/erichenline"
 export PATH="/usr/local/bin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/.claude/local/bin:/usr/bin:/bin"
 
-# Load ANTHROPIC_API_KEY from ~/.anthropic_key if present (keeps the key
-# out of this script). Only needed as a fallback if `claude` isn't
-# already logged in via `claude login` (OAuth/keychain) on this Mac —
-# either auth method works with the invocation below.
-if [ -f "$HOME/.anthropic_key" ]; then
-  source "$HOME/.anthropic_key"
-fi
+# Do NOT load ~/.anthropic_key here. If that file sets ANTHROPIC_API_KEY to
+# an exhausted or invalid key, it overrides the OAuth session from `claude login`
+# and every run fails with "Credit balance is too low." The `claude` CLI
+# already picks up OAuth credentials via the keychain from `claude login` —
+# no explicit key is needed. If you ever need an explicit API key, set
+# ANTHROPIC_API_KEY in the launchd plist's EnvironmentVariables block instead,
+# not here where it silently clobbers the working OAuth session.
+#
+# if [ -f "$HOME/.anthropic_KEY" ]; then
+#   source "$HOME/.anthropic_key"
+# fi
 
 REPO_DIR="$HOME/Projects/crop-circles/dashboard"
 PROMPT_FILE="$REPO_DIR/dashboard_scan_prompt.md"
