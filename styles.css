@@ -438,7 +438,6 @@ body.compact .brand-text h1{ font-size:16px; }
   line-height:1.4;
   letter-spacing:0.005em;
   color:var(--text-1);
-  max-width:52ch;
 }
 
 .cereology-note{
@@ -561,9 +560,11 @@ body.compact .brand-text h1{ font-size:16px; }
 }
 
 .hero-stats{ display:flex; gap:var(--s-6); flex-wrap:wrap; margin:0; padding:0; }
-.hero-stat{ margin:0; display:flex; align-items:baseline; gap:12px; }
+/* row-reverse renders each stat as "<number> <label>" while keeping the
+   semantic dt→dd order in the markup. */
+.hero-stat{ margin:0; display:flex; flex-direction:row-reverse; align-items:baseline; gap:12px; }
 .hero-stat dt{
-  font-family:var(--font-mono); font-size:21px; letter-spacing:0.1em;
+  font-family:var(--font-mono); font-size:23px; letter-spacing:0.1em;
   color:var(--text-2); margin:0; text-transform:uppercase;
 }
 .hero-stat dd{ margin:0; font-family:var(--font-mono); font-size:44px; color:var(--accent); line-height:1; }
