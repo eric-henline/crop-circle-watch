@@ -62,7 +62,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-07-16T09:15:00-07:00",
+  lastScan: "2026-07-17T09:15:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -78,6 +78,17 @@ window.DASHBOARD_META = {
 };
 
 window.STORIES = [
+  {
+    id: "2026-07-16-odstone-barn",
+    date: "2026-07-16",
+    title: "Odstone Barn",
+    location: "Nr Wayland's Smithy, Oxfordshire, UK · Map ref SU2797284836",
+    description: "Reported 16 July 2026 near Wayland's Smithy, roughly 70 metres across in wheat. Aerial images credited to Nick Bull (Crop Circles from Above); ground access details not yet confirmed.",
+    tags: ["UK", "Oxfordshire", "2026 season", "video"],
+    sourceUrl: "https://www.cropcircleconnector.com/2026/odstone/odstonebarn2026a.html",
+    sourceName: "Crop Circle Connector",
+    youtubeId: "uPaRxh2Y8FE"
+  },
   {
     id: "2026-07-14-avebury-henge",
     date: "2026-07-14",
