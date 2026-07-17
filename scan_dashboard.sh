@@ -110,6 +110,32 @@ if [ $EXIT_CODE -ne 0 ]; then
     echo "=== Scan failed: $(date) (exit $EXIT_CODE) ==="
     tail -n 100 "$LOG"
   } >> "$ERRLOG"
+
+  # Surface the failure immediately as a native macOS notification, instead
+  # of relying on someone eventually reading scan_log.txt. This is the fix
+  # for the OAuth-expiry incident: the scan silently failed at
+  # authentication for days before anyone noticed, because a failure that
+  # happens before the script can even touch data.js never shows up as the
+  # dashboard's own amber "flagged/error" indicator — that only works once
+  # the scan gets far enough to write DASHBOARD_META.lastScanStatus. A
+  # wrapper-level notification is the only place this class of failure can
+  # be caught. Pattern-match the tail for the known failure modes so the
+  # alert says what to *do*, not just that something broke.
+  TAIL_TEXT="$(tail -n 30 "$LOG")"
+  if echo "$TAIL_TEXT" | grep -qi "OAuth access token has expired\|Not logged in"; then
+    REASON="Auth expired — run: claude login"
+  elif echo "$TAIL_TEXT" | grep -qi "credit balance is too low"; then
+    REASON="Anthropic credit balance too low — check billing"
+  elif echo "$TAIL_TEXT" | grep -qi "Invalid authentication credentials"; then
+    REASON="Invalid credentials — check claude login / ANTHROPIC_API_KEY"
+  elif [ "$EXIT_CODE" -eq 124 ]; then
+    REASON="Timed out after ${TIMEOUT_SECONDS}s"
+  elif echo "$TAIL_TEXT" | grep -qi "'claude' CLI not found"; then
+    REASON="claude CLI missing from PATH"
+  else
+    REASON="Exit code $EXIT_CODE — see scan_errors.txt"
+  fi
+  "$REPO_DIR/notify_failure.sh" "Crop Circle Watch: scan failed" "$REASON"
 fi
 
 echo "=== Scan runner finished: $(date) (exit $EXIT_CODE) ===" >> "$LOG"
