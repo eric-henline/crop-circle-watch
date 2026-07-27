@@ -26,6 +26,15 @@
   // index/formations.json). Optional — the dashboard works without it.
   var history = (Array.isArray(window.HISTORY) ? window.HISTORY.slice() : []);
 
+  // Non-formation coverage: documentaries, videos, podcasts, events, community
+  // happenings. Optional — the coverage widget falls back to formation sources
+  // alone if data.js predates this array.
+  var coverage = (Array.isArray(window.COVERAGE) ? window.COVERAGE.slice() : []);
+
+  // Standing Reddit discussion venues for the Live chatter widget. Static links:
+  // Reddit's JSON endpoints aren't CORS-readable from a static site.
+  var redditForums = (Array.isArray(window.REDDIT_FORUMS) ? window.REDDIT_FORUMS.slice() : []);
+
   var sortNewestFirst = function (a, b) {
     return b.date.localeCompare(a.date) || (b.id || '').localeCompare(a.id || '');
   };
@@ -91,6 +100,8 @@
     statTotal: document.getElementById('statTotal'),
     statSeason: document.getElementById('statSeason'),
     statScan: document.getElementById('statScan'),
+    statusDot: document.getElementById('statusDot'),
+    statusLabel: document.getElementById('statusLabel'),
     lfValue: document.getElementById('lfValue'),
     lfDays: document.getElementById('lfDays'),
     lfMedia: document.getElementById('lfMedia'),
@@ -104,6 +115,7 @@
     keywordInput: document.getElementById('keywordInput'),
     searchX: document.getElementById('searchX'),
     searchBsky: document.getElementById('searchBsky'),
+    redditForums: document.getElementById('redditForums'),
     footerUpdated: document.getElementById('footerUpdated'),
     cardTemplate: document.getElementById('storyCardTemplate')
   };
@@ -163,6 +175,18 @@
     var hh12 = hh % 12; if (hh12 === 0) hh12 = 12;
     var mmStr = (mm < 10 ? '0' : '') + mm;
     return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + hh12 + ':' + mmStr + ' ' + ampm;
+  }
+
+  // How many hours old the last scan is, or null if the stamp is missing/unparseable.
+  // This is deliberately derived from the timestamp rather than trusting
+  // lastScanStatus: a scan that dies before it can write data.js (expired OAuth,
+  // missing CLI, machine asleep) leaves the *old* "ok" status in place forever,
+  // so status alone can never report that class of failure. The clock can.
+  function scanAgeHours(iso) {
+    if (!iso) return null;
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return null;
+    return (Date.now() - d.getTime()) / 3600000;
   }
 
   function daysAgo(ymd) {
@@ -677,30 +701,122 @@
   }
 
   // -- hero widget: recent coverage ------------------------------------------
+  // Two sources feed one list: formation entries (STORIES, which carry a source
+  // article) and standalone community coverage (COVERAGE — documentaries,
+  // videos, podcasts, events). Both are normalised to a common shape, merged,
+  // and sorted newest-first. The most recent few render as "lead" items with a
+  // full summary paragraph; the tail stays as compact one-liners so the widget
+  // gains depth at the top without becoming a wall of text.
+
+  var NEWS_LIMIT = 7;
+  var NEWS_LEAD_COUNT = 3;
+
+  // Badge label + sprite icon per coverage kind. Anything unrecognised falls
+  // back to the article treatment.
+  var COVERAGE_KINDS = {
+    article:     { label: 'Article',     icon: 'icon-doc' },
+    video:       { label: 'Video',       icon: 'icon-play' },
+    documentary: { label: 'Documentary', icon: 'icon-play' },
+    podcast:     { label: 'Podcast',     icon: 'icon-rss' },
+    event:       { label: 'Event',       icon: 'icon-calendar' },
+    community:   { label: 'Community',   icon: 'icon-rss' }
+  };
+
+  function coverageKind(kind) {
+    return COVERAGE_KINDS[String(kind || '').toLowerCase()] || COVERAGE_KINDS.article;
+  }
+
+  // Normalise a STORIES entry into the coverage shape. A formation's source
+  // article IS its coverage, so the story's own description doubles as the
+  // summary unless a coverage-specific note was written.
+  function storyAsCoverage(s) {
+    return {
+      id: s.id,
+      date: s.date,
+      kind: s.youtubeId ? 'video' : 'article',
+      title: s.title,
+      outlet: s.sourceName || 'Source',
+      url: s.sourceUrl,
+      summary: s.coverageNote || s.description || '',
+      storyId: s.id
+    };
+  }
+
+  function coverageItems() {
+    var merged = stories.filter(function (s) { return !!s.sourceUrl; }).map(storyAsCoverage);
+    coverage.forEach(function (c) {
+      if (!c || !c.url || !c.date) return;
+      merged.push({
+        id: c.id || c.url,
+        date: c.date,
+        kind: c.kind || 'article',
+        title: c.title || '(untitled)',
+        outlet: c.outlet || '',
+        url: c.url,
+        summary: c.summary || '',
+        durationMin: c.durationMin
+      });
+    });
+    merged.sort(sortNewestFirst);
+    return merged.slice(0, NEWS_LIMIT);
+  }
+
+  function buildNewsItem(item, isLead) {
+    var kind = coverageKind(item.kind);
+    var li = document.createElement('li');
+    li.className = 'news-item' + (isLead ? ' news-item--lead' : '');
+
+    var a = document.createElement('a');
+    a.href = item.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+
+    // Kind badge — only on lead items and on anything that isn't a plain
+    // article, so the common case stays visually quiet.
+    if (isLead || item.kind !== 'article') {
+      var badge = document.createElement('span');
+      badge.className = 'news-kind news-kind--' + escapeHtml(String(item.kind || 'article'));
+      badge.innerHTML =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#' + kind.icon + '"/></svg>' +
+        '<span>' + escapeHtml(kind.label) + '</span>';
+      a.appendChild(badge);
+    }
+
+    var title = document.createElement('span');
+    title.className = 'news-title';
+    title.textContent = item.title;
+    a.appendChild(title);
+
+    if (isLead && item.summary) {
+      var summary = document.createElement('p');
+      summary.className = 'news-summary';
+      summary.textContent = item.summary;
+      a.appendChild(summary);
+    }
+
+    var bits = [];
+    if (item.outlet) bits.push(item.outlet);
+    bits.push(formatShort(item.date));
+    if (item.durationMin) bits.push(item.durationMin + ' min');
+
+    var metaEl = document.createElement('span');
+    metaEl.className = 'news-meta';
+    metaEl.textContent = bits.join(' · ');
+    a.appendChild(metaEl);
+
+    li.appendChild(a);
+    return li;
+  }
+
   function renderNews() {
-    var items = stories.slice(0, 6);
+    var items = coverageItems();
     els.newsList.innerHTML = '';
     if (!items.length) {
       els.newsList.innerHTML = '<li class="empty-note">No coverage logged yet.</li>';
       return;
     }
-    items.forEach(function (s) {
-      var li = document.createElement('li');
-      li.className = 'news-item';
-      var a = document.createElement('a');
-      a.href = s.sourceUrl;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      var title = document.createElement('span');
-      title.className = 'news-title';
-      title.textContent = s.title;
-      var metaEl = document.createElement('span');
-      metaEl.className = 'news-meta';
-      metaEl.textContent = (s.sourceName || 'Source') + ' · ' + formatShort(s.date);
-      a.appendChild(title);
-      a.appendChild(metaEl);
-      li.appendChild(a);
-      els.newsList.appendChild(li);
+    items.forEach(function (item, i) {
+      els.newsList.appendChild(buildNewsItem(item, i < NEWS_LEAD_COUNT));
     });
   }
 
@@ -951,6 +1067,38 @@
     els.searchBsky.href = 'https://bsky.app/search?q=' + encoded;
   }
 
+  // -- hero widget: Reddit forums --------------------------------------------
+  // Standing discussion venues, not a live feed. Reddit's JSON endpoints don't
+  // send CORS headers usable from a static origin, so these are one-tap entry
+  // points into the ongoing conversation rather than embedded posts.
+  function renderRedditForums() {
+    if (!els.redditForums) return;
+    els.redditForums.innerHTML = '';
+    if (!redditForums.length) {
+      els.redditForums.closest('.reddit-block').hidden = true;
+      return;
+    }
+    redditForums.forEach(function (f) {
+      if (!f || !f.url || !f.name) return;
+      var a = document.createElement('a');
+      a.className = 'reddit-link';
+      a.href = f.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      var name = document.createElement('span');
+      name.className = 'reddit-link-name';
+      name.textContent = f.name;
+      a.appendChild(name);
+      if (f.note) {
+        var note = document.createElement('span');
+        note.className = 'reddit-link-note';
+        note.textContent = f.note;
+        a.appendChild(note);
+      }
+      els.redditForums.appendChild(a);
+    });
+  }
+
   function wireKeywordForm() {
     els.keywordForm.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -1009,17 +1157,49 @@
 
     var scanStamp = formatScanStamp(meta.lastScan);
     var scanStatus = meta.lastScanStatus || 'ok';
-    if (scanStatus === 'error' || scanStatus === 'flagged') {
+
+    // The scan runs daily, so anything past ~36h means it stopped running (or
+    // stopped being able to write) — treat that as an error no matter what the
+    // stored status claims. Without this the dashboard happily shows a
+    // week-old timestamp with no warning at all.
+    var ageHours = scanAgeHours(meta.lastScan);
+    var isStale = ageHours !== null && ageHours > 36;
+    if (isStale && scanStatus !== 'flagged') {
+      scanStatus = 'stale';
+    }
+
+    var needsAttention = scanStatus === 'error' || scanStatus === 'flagged' || scanStatus === 'stale';
+    // Shared between the header chip and the footer so the two can't describe
+    // the same scan differently.
+    var statusLabel = scanStatus === 'stale'
+      ? 'no scan in ' + Math.floor(ageHours / 24) + 'd'
+      : scanStatus;
+
+    if (needsAttention) {
       // Show the timestamp in amber with a label so it's obvious something
       // needs attention without digging into scan_log.txt manually.
       els.statScan.innerHTML =
         '<span class="scan-warn">' + escapeHtml(scanStamp) +
-        ' <span class="scan-warn-label">(' + escapeHtml(scanStatus) + ')</span></span>';
+        ' <span class="scan-warn-label">(' + escapeHtml(statusLabel) + ')</span></span>';
     } else {
       els.statScan.textContent = scanStamp;
     }
-    els.footerUpdated.textContent = 'Last automated scan: ' + scanStamp +
-      (scanStatus !== 'ok' ? ' [' + scanStatus + ' — check scan_log.txt]' : '');
+    // The footer block carries its own "Last scan" <dt>, so the value here is
+    // just the stamp — the status suffix is only added when it needs attention.
+    els.footerUpdated.textContent = scanStamp + (needsAttention ? ' (' + statusLabel + ')' : '');
+    els.footerUpdated.classList.toggle('scan-warn', needsAttention);
+
+    // The hero's green pulse claimed "Monitoring active" through a week of
+    // failed scans. Tie it to the same staleness signal so the loudest thing
+    // on the page can't contradict the timestamp right next to it.
+    if (els.statusDot && els.statusLabel) {
+      var monitoringDown = scanStatus === 'stale' || scanStatus === 'error';
+      els.statusDot.classList.toggle('pulse-dot--warn', monitoringDown);
+      els.statusLabel.classList.toggle('scan-warn', monitoringDown);
+      els.statusLabel.textContent = monitoringDown
+        ? 'Monitoring stalled'
+        : 'Monitoring active';
+    }
   }
 
   // -- wire controls ------------------------------------------------------------
@@ -1113,6 +1293,7 @@
   renderSocialPosts();
   renderKeywordChips();
   updateSearchLinks();
+  renderRedditForums();
   wireKeywordForm();
   wireControls();
   setupHeroSentinel();

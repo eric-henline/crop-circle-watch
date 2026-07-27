@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Crop Circle Watch</title>
-<meta name="description" content="What Crop Circle Watch is: an open, verifiable log of newly reported crop circle formations, credited to the people documenting them on the ground.">
+<title>Research — Crop Circle Watch</title>
+<meta name="description" content="Charts and findings from the crop circle research archive: geography, seasonality, geometry, and hypothesis confidence over time.">
 
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 
@@ -13,16 +13,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="research.css">
 </head>
-<body class="about-page">
+<body>
 
-<!-- Icon sprite — mirrors the subset index.html uses on this page: the ring
-     logo (brand mark + centered about mark) plus the background-watermark
-     glyphs, so the ambient background matches the dashboard. -->
+<!-- Icon sprite — small geometric line icons, used throughout instead of emoji or brand logos -->
 <svg style="display:none">
+  <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M12 21s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"/>
+    <circle cx="12" cy="9" r="2.4"/>
+  </symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <rect x="3.5" y="5.5" width="17" height="15" rx="1.5"/>
+    <path d="M3.5 9.5h17M8 3v4M16 3v4"/>
+  </symbol>
+  <symbol id="icon-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M10 14a4 4 0 0 0 5.66 0l2.83-2.83a4 4 0 0 0-5.66-5.66l-1.4 1.4"/>
+    <path d="M14 10a4 4 0 0 0-5.66 0l-2.83 2.83a4 4 0 0 0 5.66 5.66l1.4-1.4"/>
+  </symbol>
+  <symbol id="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="12" cy="12" r="9.2"/>
+    <path d="M10.2 8.6l5.4 3.4-5.4 3.4z" fill="currentColor" stroke="none"/>
+  </symbol>
   <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
     <circle cx="10.5" cy="10.5" r="6.5"/>
     <path d="M19.5 19.5l-4.3-4.3"/>
+  </symbol>
+  <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="12" cy="12" r="8.5"/>
+    <circle cx="12" cy="12" r="3.2"/>
+    <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+  </symbol>
+  <symbol id="icon-wheat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M12 21V9M12 9c0-3.5 2-5 4-6M12 9c0-3.5-2-5-4-6M12 13c2-1 4-1 5-3M12 13c-2-1-4-1-5-3M12 17c2-1 3.5-.5 4.5-2.2M12 17c-2-1-3.5-.5-4.5-2.2"/>
+  </symbol>
+  <symbol id="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path d="M9 6l6 6-6 6"/>
   </symbol>
   <symbol id="icon-ring-logo" viewBox="0 0 64 64">
     <circle cx="32" cy="32" r="23" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -41,6 +67,24 @@
     <circle cx="45.75" cy="8.18" r="1.7" fill="currentColor"/>
     <circle cx="32" cy="32" r="2.4" fill="currentColor"/>
   </symbol>
+  <symbol id="icon-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M6 3.5h9l3 3V20a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/>
+    <path d="M9 10h6M9 13.5h6M9 17h4"/>
+  </symbol>
+  <symbol id="icon-rss" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="6" cy="18" r="1.6" fill="currentColor" stroke="none"/>
+    <path d="M5 12a7 7 0 0 1 7 7M5 6a13 13 0 0 1 13 13"/>
+  </symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path d="M12 5v14M5 12h14"/>
+  </symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <path d="M6 6l12 12M18 6L6 18"/>
+  </symbol>
+
+  <!-- Background-watermark glyphs — a small set of distinct crop-circle /
+       sacred-geometry motifs, reused (at different sizes/positions/colors)
+       across the ambient watermark layer in .bg-watermarks below. -->
   <symbol id="icon-glyph-rings" viewBox="0 0 64 64">
     <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="1.2"/>
     <circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" stroke-width="1.2"/>
@@ -79,7 +123,10 @@
 </svg>
 
 <div class="bg-field" aria-hidden="true"></div>
-<!-- Same ambient watermark layer as the dashboard (see index.html / styles.css). -->
+<!-- Ambient watermark layer: a fixed set of large, near-invisible crop-circle
+     glyphs that slowly fade in and out at staggered times, each in its own
+     spot behind the page. Every instance just picks a symbol + a position
+     class (wm-1..wm-13) — all sizing/color/timing lives in styles.css. -->
 <div class="bg-watermarks" aria-hidden="true">
   <svg class="wm wm-1" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
   <svg class="wm wm-2" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-rings"/></svg>
@@ -114,8 +161,8 @@
       <nav class="site-nav" aria-label="Primary">
         <a href="index.html#hero" class="nav-link">Dashboard</a>
         <a href="index.html#timeline" class="nav-link">Timeline</a>
-        <a href="research.html" class="nav-link">Research</a>
-        <a href="about.html" class="nav-link active">About</a>
+        <a href="research.html" class="nav-link active">Research</a>
+        <a href="about.html" class="nav-link">About</a>
       </nav>
       <form class="header-search" id="headerSearchForm" role="search">
         <label class="search-box">
@@ -131,20 +178,42 @@
   </div>
 </header>
 
-<main class="about-body">
-  <article class="about-article">
-    <div class="about-header">
-      <svg class="about-logo" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
-      <h1>About Crop Circle Watch</h1>
+
+<main class="research">
+
+  <header class="research-head">
+    <p class="research-eyebrow">Research archive</p>
+    <h1 class="research-title">What the data says</h1>
+    <p class="research-lede">
+      Every formation in the archive, run through the weekly analytics engine.
+      These are patterns in the record — where formations cluster, when they
+      appear, how their geometry is built, and how much confidence the evidence
+      currently supports for each explanation.
+    </p>
+    <dl class="research-stamp">
+      <div><dt>Dataset</dt><dd id="rsTotal">—</dd></div>
+      <div><dt>Analysis week</dt><dd id="rsWeek">—</dd></div>
+      <div><dt>Span</dt><dd id="rsSpan">—</dd></div>
+    </dl>
+  </header>
+
+  <div class="research-tabs-wrap">
+    <div class="research-tabs" id="researchTabs" role="tablist" aria-label="Research topics">
+      <!-- populated by research.js -->
     </div>
+  </div>
 
-    <p>Crop Circle Watch is a growing, systematically maintained log of newly reported crop circle formations — a precise record of when and where each one appears, with source links and original footage credited to the researchers and photographers documenting them on the ground. It launched in June 2026 and adds new formations the day they surface, building an open, verifiable timeline of a phenomenon that has recurred in fields around the world for decades.</p>
+  <div class="research-feed" id="researchFeed">
+    <!-- populated by research.js: one card per finding -->
+  </div>
 
-    <h2>Why it's here</h2>
-    <p>Whatever you make of crop circles — human artistry, unexplained anomaly, or something in between — the formations are real, and they keep arriving, season after season. Most in this record remain formally unclassified; a documented share are confirmed human-made, and a smaller, closely studied set exhibit measurable traits in the crop that known construction methods have not reproduced. Crop Circle Watch doesn't argue the question — it keeps the evidence: an honest, growing archive, every entry traceable to the people doing the fieldwork, so the pattern can be seen clearly and the truth has somewhere to accumulate.</p>
+  <p class="research-note">
+    Charts are generated from <code>analytics/all_formations.csv</code> by the
+    weekly analytics engine and exported to <code>research.js</code>. Confidence
+    ratings are the engine's own scoring of evidence weight, not a claim of
+    proof — the archive is an evidence record, not a verdict.
+  </p>
 
-    <p class="about-meta">Launched June 2026 · part of the crop-circles research project · <a href="index.html">back to the dashboard</a></p>
-  </article>
 </main>
 
 <footer class="site-footer">
@@ -173,38 +242,8 @@
   <p class="footer-legal">Photography and footage remain the property of their original creators — each entry links back to its source.</p>
 </footer>
 
-<!-- Read DASHBOARD_META for the shared "Last scan" stamp, and route the header
-     search back to the dashboard timeline (this page has no feed of its own). -->
 <script src="data.js"></script>
-<script>
-  (function () {
-    'use strict';
-    var meta = window.DASHBOARD_META || {};
-    // Same stamp feeds the header chip and the footer status block.
-    if (meta.lastScan) {
-      var stamp;
-      try {
-        stamp = new Intl.DateTimeFormat(undefined, {
-          month: 'short', day: 'numeric', hour: 'numeric',
-          minute: '2-digit', timeZoneName: 'short'
-        }).format(new Date(meta.lastScan)).toUpperCase();
-      } catch (e) { stamp = meta.lastScan; }
-      ['statScan', 'footerUpdated'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.textContent = stamp;
-      });
-    }
-    var form = document.getElementById('headerSearchForm');
-    var input = document.getElementById('headerSearchInput');
-    if (form) {
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var q = (input && input.value.trim()) || '';
-        window.location.href = 'index.html' + (q ? '?q=' + encodeURIComponent(q) : '') + '#timeline';
-      });
-    }
-  })();
-</script>
-
+<script src="research.js"></script>
+<script src="research-app.js"></script>
 </body>
 </html>

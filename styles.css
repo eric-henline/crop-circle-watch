@@ -27,6 +27,45 @@
   --signal:#ffb454;
   --signal-dim:#9a6c33;
 
+  /* -- chart palette (research page) --
+     These are NOT the UI accent colors. Chart marks sit on --panel and have to
+     survive colour-vision deficiency, so they were computed in OKLCH at a
+     lightness the dark surface can hold (L 0.48-0.67) and machine-validated for
+     lightness band, chroma floor, adjacent-pair CVD separation (Machado 2009),
+     and WCAG contrast vs --panel. The UI accent #6bffc2 sits at L 0.90 and
+     FAILS that band, which is why it is not in this list.
+
+     Assign --cat-1..8 in fixed order and never cycle them: a 9th series folds
+     into an "Other" bucket instead. Reordering these breaks CVD separation
+     between neighbours — re-run the validator if you change them. */
+  --cat-1:#00ac7d;  /* mint   */
+  --cat-2:#c68102;  /* amber  */
+  --cat-3:#4296e7;  /* blue   */
+  --cat-4:#dd696d;  /* red    */
+  --cat-5:#78a235;  /* lime   */
+  --cat-6:#b773cb;  /* violet */
+  --cat-7:#db6f49;  /* orange */
+  --cat-8:#0da5b2;  /* teal   */
+
+  /* Sequential ramp (magnitude) — one hue, monotone lightness, light end
+     clears the surface at 2.6:1. */
+  --seq-1:#04684e;
+  --seq-2:#078968;
+  --seq-3:#15ab83;
+  --seq-4:#48cba1;
+  --seq-5:#6eecc1;
+
+  /* Diverging pair (polarity) — amber vs mint with a NEUTRAL grey midpoint.
+     Never put a hue at the midpoint. */
+  --div-neg-3:#a66c04; --div-neg-2:#ce8703; --div-neg-1:#f0a63c;
+  --div-mid:#5c6672;
+  --div-pos-1:#36d4a6; --div-pos-2:#05b388; --div-pos-3:#02906d;
+
+  /* Chart chrome — grid and axes stay recessive so marks carry the eye. */
+  --chart-grid:rgba(169,186,200,0.13);
+  --chart-axis:rgba(169,186,200,0.28);
+  --chart-surface:var(--panel);
+
   /* -- type -- */
   --font-display:'Bricolage Grotesque', 'Segoe UI', sans-serif;
   --font-body:'Newsreader', Georgia, 'Times New Roman', serif;
@@ -487,6 +526,15 @@ body.compact .brand-text h1{ font-size:16px; }
   flex-shrink:0;
   animation:pulse 2.4s ease-out infinite;
 }
+/* Set by app.js when the scan has gone stale — the dot turns amber and stops
+   pulsing, because a calm green heartbeat next to a week-old timestamp is the
+   single most misleading thing this page can show. */
+.pulse-dot--warn{
+  background:var(--signal);
+  animation:none;
+}
+.status-line > span.scan-warn{ color:var(--signal); }
+
 @keyframes pulse{
   0%{ box-shadow:0 0 0 0 rgba(107,255,194,0.45); }
   70%{ box-shadow:0 0 0 14px rgba(107,255,194,0); }
@@ -626,6 +674,68 @@ body.compact .brand-text h1{ font-size:16px; }
 .news-title{ font-family:var(--font-body); font-size:15px; color:var(--text-0); line-height:1.4; }
 .news-meta{ font-family:var(--font-mono); font-size:10.5px; color:var(--text-2); letter-spacing:0.04em; }
 
+/* Lead items — the most recent few get a summary paragraph and a little more
+   breathing room, so the top of the list reads as reporting rather than a
+   bare link list. The tail below them stays compact. */
+.news-item--lead{
+  padding-bottom:var(--s-3);
+  border-bottom:1px solid var(--border);
+}
+.news-item--lead + .news-item:not(.news-item--lead){ padding-top:var(--s-1); }
+.news-item--lead .news-title{ font-size:16.5px; line-height:1.35; }
+.news-summary{
+  margin:2px 0 1px;
+  font-family:var(--font-body);
+  font-size:13.5px;
+  line-height:1.55;
+  color:var(--text-1);
+  /* Clamp so one unusually long summary can't dominate the widget. */
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+/* Kind badge — article / video / documentary / podcast / event / community */
+.news-kind{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  align-self:flex-start;
+  margin-bottom:2px;
+  padding:2px 7px 2px 6px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--panel-soft);
+  font-family:var(--font-mono);
+  font-size:9.5px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--text-2);
+}
+.news-kind svg{ width:11px; height:11px; flex:none; }
+.news-item a:hover .news-kind{ border-color:var(--border-strong); color:var(--text-1); }
+
+/* Anything that isn't a plain article is signal-tinted, so a documentary or a
+   community event stands out from routine article coverage at a glance. */
+.news-kind--documentary,
+.news-kind--video,
+.news-kind--podcast,
+.news-kind--event,
+.news-kind--community{
+  color:var(--signal);
+  border-color:rgba(255,180,84,0.28);
+}
+.news-item a:hover .news-kind--documentary,
+.news-item a:hover .news-kind--video,
+.news-item a:hover .news-kind--podcast,
+.news-item a:hover .news-kind--event,
+.news-item a:hover .news-kind--community{
+  border-color:rgba(255,180,84,0.5);
+  color:var(--signal);
+}
+
 .video-strip{
   display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:var(--s-3);
   padding-bottom:4px; margin:-2px -2px 0;
@@ -755,6 +865,45 @@ body.compact .brand-text h1{ font-size:16px; }
 .keyword-note{
   margin:8px 0 0; font-family:var(--font-mono); font-size:10.5px;
   color:var(--text-2); line-height:1.5;
+}
+
+/* Reddit forums — standing venues, rendered as a quiet link list below the
+   keyword search block. Not a feed; these are entry points. */
+.reddit-block{ padding-top:var(--s-3); margin-top:var(--s-3); border-top:1px solid var(--border); }
+.reddit-heading{
+  margin:0 0 var(--s-2);
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  font-weight:400;
+  color:var(--text-2);
+}
+.reddit-links{ display:flex; flex-direction:column; gap:1px; }
+.reddit-link{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  padding:6px 8px;
+  margin-inline:-8px;
+  border-radius:var(--radius);
+  color:inherit;
+  transition:background 0.16s ease;
+}
+.reddit-link:hover{ background:var(--panel-soft); text-decoration:none; }
+.reddit-link-name{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--text-1);
+  flex:none;
+  transition:color 0.16s ease;
+}
+.reddit-link:hover .reddit-link-name{ color:var(--accent); }
+.reddit-link-note{
+  font-family:var(--font-body);
+  font-size:11.5px;
+  line-height:1.4;
+  color:var(--text-2);
 }
 
 .scroll-cue{
@@ -1179,18 +1328,113 @@ body.compact .brand-text h1{ font-size:16px; }
 /* Footer                                                                 */
 /* ---------------------------------------------------------------------- */
 
+/* Footer — a proper sign-off band rather than a run-on caption. Three zones
+   (identity · nav · scan status) on one row, collapsing to a centered stack on
+   narrow screens, with the legal line rendered as a quiet rule-separated tail. */
 .site-footer{
   max-width:var(--max-width);
-  margin:0 auto;
+  margin:var(--s-6) auto 0;
   padding:var(--s-5) var(--s-4) var(--s-7);
   border-top:1px solid var(--border);
   color:var(--text-2);
   font-family:var(--font-body);
   font-size:13px;
 }
-.site-footer p{ margin:0 0 8px; max-width:70ch; }
-.footer-meta{ font-family:var(--font-mono); font-size:12px; }
-.footer-meta span{ color:var(--text-1); }
+
+.footer-inner{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;
+  gap:var(--s-4) var(--s-6);
+}
+
+/* -- identity -- */
+.footer-brand{ display:flex; align-items:center; gap:var(--s-3); }
+.footer-mark{
+  width:34px; height:34px; flex:none;
+  color:var(--accent);
+  opacity:0.75;
+}
+.footer-brand-text p{ margin:0; }
+.footer-wordmark{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--text-0);
+  line-height:1.2;
+}
+.footer-tagline{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.04em;
+  color:var(--text-2);
+  margin-top:3px !important;
+}
+.footer-tagline span{ color:var(--text-1); }
+
+/* -- nav -- */
+.footer-nav{
+  display:flex;
+  gap:var(--s-4);
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+.footer-nav a{
+  color:var(--text-1);
+  text-decoration:none;
+  padding-bottom:2px;
+  border-bottom:1px solid transparent;
+  transition:color 0.18s ease, border-color 0.18s ease;
+}
+.footer-nav a:hover{
+  color:var(--accent);
+  border-bottom-color:var(--border-strong);
+  text-decoration:none;
+}
+
+/* -- scan status -- */
+.footer-status{
+  margin:0;
+  text-align:right;
+  font-family:var(--font-mono);
+}
+.footer-status dt{
+  font-size:10px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--text-2);
+}
+.footer-status dd{
+  margin:2px 0 0;
+  font-size:12px;
+  color:var(--text-1);
+}
+
+/* -- legal tail -- */
+.footer-legal{
+  margin:var(--s-4) 0 0;
+  padding-top:var(--s-3);
+  border-top:1px solid var(--border);
+  max-width:70ch;
+  font-size:12px;
+  line-height:1.6;
+  color:var(--text-2);
+}
+
+@media (max-width:760px){
+  .footer-inner{
+    grid-template-columns:1fr;
+    justify-items:center;
+    text-align:center;
+    gap:var(--s-4);
+  }
+  .footer-status{ text-align:center; }
+  .footer-legal{ text-align:center; margin-inline:auto; }
+}
 
 template{ display:none; }
 

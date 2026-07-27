@@ -161,6 +161,7 @@
       <nav class="site-nav" aria-label="Primary">
         <a href="#hero" class="nav-link" id="navDashboard">Dashboard</a>
         <a href="#timeline" class="nav-link">Timeline</a>
+        <a href="research.html" class="nav-link">Research</a>
         <a href="about.html" class="nav-link">About</a>
       </nav>
       <form class="header-search" id="headerSearchForm" role="search">
@@ -190,8 +191,8 @@
     <p class="hero-subhead">Daily scans for new formations — news, footage, and field reports as they happen.</p>
 
     <div class="status-line">
-      <span class="pulse-dot" aria-hidden="true"></span>
-      <span>Monitoring active</span>
+      <span class="pulse-dot" id="statusDot" aria-hidden="true"></span>
+      <span id="statusLabel">Monitoring active</span>
       <dl class="hero-stats">
         <div class="hero-stat"><dt>Logged</dt><dd id="statTotal">—</dd></div>
         <div class="hero-stat"><dt>This year</dt><dd id="statSeason">—</dd></div>
@@ -243,6 +244,13 @@
           </div>
           <p class="keyword-note">Opens a live search in a new tab — open-ended keyword search still can't be auto-embedded on a static site, on either platform.</p>
         </div>
+
+        <!-- Standing Reddit venues. Static links by necessity: Reddit's JSON
+             endpoints aren't CORS-readable from a static origin. -->
+        <div class="reddit-block">
+          <h3 class="reddit-heading">Discussion forums</h3>
+          <div class="reddit-links" id="redditForums"><!-- populated by app.js --></div>
+        </div>
       </section>
     </div>
 
@@ -285,11 +293,29 @@
 </section>
 
 <footer class="site-footer">
-  <p>
-    Logged manually or by the daily automated scan described in <code>README.md</code>.
-    Photography and footage remain the property of their original creators — each entry links back to its source.
-  </p>
-  <p class="footer-meta">Crop Circle Watch · part of the <span>crop-circles</span> research project · <a href="about.html">About</a> · <span id="footerUpdated">—</span></p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg class="footer-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+      <div class="footer-brand-text">
+        <p class="footer-wordmark">Crop Circle Watch</p>
+        <p class="footer-tagline">Part of the <span>crop-circles</span> research project</p>
+      </div>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="#hero">Dashboard</a>
+      <a href="#timeline">Timeline</a>
+      <a href="research.html">Research</a>
+      <a href="about.html">About</a>
+    </nav>
+
+    <dl class="footer-status">
+      <dt>Last scan</dt>
+      <dd id="footerUpdated">—</dd>
+    </dl>
+  </div>
+
+  <p class="footer-legal">Photography and footage remain the property of their original creators — each entry links back to its source.</p>
 </footer>
 
 <template id="storyCardTemplate">

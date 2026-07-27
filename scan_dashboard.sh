@@ -40,6 +40,26 @@ export PATH="/usr/local/bin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/.claude/loc
 #   source "$HOME/.anthropic_key"
 # fi
 
+# ---- Long-lived token (preferred) -------------------------------------------
+# Created by `claude setup-token`; valid ~1 year. This exists because the
+# interactive claude.ai OAuth session is not a credential a unattended job can
+# rely on: its refresh chain broke on 2026-07-19 and never recovered on its own,
+# and 8 consecutive 06:58 runs failed at authentication before anyone noticed.
+#
+# Read, not sourced — the file holds the bare token and nothing else, so a stray
+# `export ANTHROPIC_API_KEY=` line in it can't silently clobber the session (the
+# exact trap documented above). Absent or empty file: fall through to the
+# keychain OAuth session, so this stays backward compatible.
+TOKEN_FILE="$HOME/.claude-code-token"
+if [ -r "$TOKEN_FILE" ]; then
+  CLAUDE_CODE_OAUTH_TOKEN="$(tr -d ' \t\r\n' < "$TOKEN_FILE")"
+  if [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
+    export CLAUDE_CODE_OAUTH_TOKEN
+  else
+    unset CLAUDE_CODE_OAUTH_TOKEN
+  fi
+fi
+
 REPO_DIR="$HOME/Projects/crop-circles/dashboard"
 PROMPT_FILE="$REPO_DIR/dashboard_scan_prompt.md"
 LOG="$REPO_DIR/scan_log.txt"
@@ -62,6 +82,62 @@ fi
 echo "Using claude: $(command -v claude)" >> "$LOG"
 
 cd "$REPO_DIR" || { echo "ERROR: dashboard directory not found at $REPO_DIR" | tee -a "$LOG" "$ERRLOG" >/dev/null; exit 1; }
+
+# ---- Pre-flight: is authentication actually alive? --------------------------
+# The 2026-07-19 outage burned 8 consecutive runs on calls that could only ever
+# 401, and reported them as a generic "exit 1". This checks first, so a dead
+# credential is named as such instead of being discovered from the stack trace.
+#
+# NB: do NOT gate on the token's expiresAt. The access token lives 8 hours and
+# this job runs every 24, so at 06:58 it is *always* expired — the CLI is meant
+# to silently refresh it. Gating on expiry would skip every single run. Only
+# an explicit loggedIn:false means the session is genuinely unrecoverable.
+#
+# Fails OPEN by design: if `claude auth status` is missing, slow, or returns
+# anything we can't parse, we run the scan anyway. A pre-flight check must
+# never become a new reason the job doesn't happen.
+preflight_auth() {
+  # The setup-token / API-key path has no keychain session to inspect. Instead
+  # warn on AGE: a setup-token is valid ~1 year, which unlike the OAuth refresh
+  # chain is a deterministic expiry we can actually get ahead of. The token
+  # file's mtime is its creation date — no extra state to keep in sync.
+  if [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ] || [ -n "$ANTHROPIC_API_KEY" ]; then
+    echo "Pre-flight: explicit token in environment, skipping session check" >> "$LOG"
+    if [ -f "$TOKEN_FILE" ]; then
+      local age_days
+      age_days=$(( ( $(date +%s) - $(stat -f %m "$TOKEN_FILE") ) / 86400 ))
+      echo "Pre-flight: token is ${age_days}d old" >> "$LOG"
+      # 335d ≈ 11 months: a month of mornings to act before it lapses.
+      if [ "$age_days" -ge 335 ]; then
+        "$REPO_DIR/notify_failure.sh" "Crop Circle Watch: token expiring" \
+          "Auth token is ${age_days}d old (~1y limit) — run: claude setup-token"
+      fi
+    fi
+    return 0
+  fi
+
+  local status logged_in
+  status="$(claude auth status 2>/dev/null)" || return 0
+  logged_in="$(printf '%s' "$status" | python3 -c \
+    'import sys,json
+try: print(json.load(sys.stdin).get("loggedIn"))
+except Exception: print("unknown")' 2>/dev/null)" || return 0
+
+  if [ "$logged_in" = "False" ] || [ "$logged_in" = "false" ]; then
+    echo "ERROR: not logged in — skipping run (would 401)" | tee -a "$LOG" "$ERRLOG" >/dev/null
+    "$REPO_DIR/notify_failure.sh" "Crop Circle Watch: scan skipped" \
+      "Not logged in — run: claude login"
+    return 1
+  fi
+
+  echo "Pre-flight: auth OK (loggedIn=$logged_in)" >> "$LOG"
+  return 0
+}
+
+if ! preflight_auth; then
+  echo "=== Scan runner finished: $(date) (exit 1, auth pre-flight) ===" >> "$LOG"
+  exit 1
+fi
 
 if [ ! -f "$PROMPT_FILE" ]; then
   echo "ERROR: prompt file not found at $PROMPT_FILE" | tee -a "$LOG" "$ERRLOG" >/dev/null
@@ -139,4 +215,14 @@ if [ $EXIT_CODE -ne 0 ]; then
 fi
 
 echo "=== Scan runner finished: $(date) (exit $EXIT_CODE) ===" >> "$LOG"
+
+# Both logs are append-only and nothing ever trimmed them — a repeating failure
+# (the OAuth expiry ran for a week) dumps 100 lines into scan_errors.txt every
+# morning, which is how it reached 178 KB. Keep the newest 2000 lines of each.
+for f in "$LOG" "$ERRLOG"; do
+  if [ -f "$f" ] && [ "$(wc -l < "$f")" -gt 2000 ]; then
+    tail -n 2000 "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+  fi
+done
+
 exit $EXIT_CODE

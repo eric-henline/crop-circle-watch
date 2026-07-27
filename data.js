@@ -62,7 +62,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-07-18T06:28:46-07:00",
+  lastScan: "2026-07-27T06:29:48-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -78,6 +78,39 @@ window.DASHBOARD_META = {
 };
 
 window.STORIES = [
+  {
+    id: "2026-07-21-fox-hill",
+    date: "2026-07-21",
+    title: "Fox Hill",
+    location: "Fox Hill, Wiltshire, UK",
+    description: "Reported 21 July 2026 at Fox Hill: a long pictogram of symbols. Temporary Temples noted full analysis and photography were still pending at time of writing.",
+    tags: ["UK", "Wiltshire", "2026 season"],
+    sourceUrl: "https://temporarytemples.co.uk/2026-fox-hill",
+    sourceName: "Temporary Temples",
+    youtubeId: null
+  },
+  {
+    id: "2026-07-21-wanborough-plain",
+    date: "2026-07-21",
+    title: "Wanborough Plain",
+    location: "Nr Liddington, Wiltshire, UK · Map ref SU2283380804",
+    description: "Reported 21 July 2026 near Liddington. Aerial images and video credited to Stonehenge Dronescapes; ground reports, diagrams, and design details not yet published.",
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
+    sourceUrl: "https://www.cropcircleconnector.com/2026/Wanborough/Wanborough2026a.html",
+    sourceName: "Crop Circle Connector",
+    youtubeId: "I9OtDbbVsvA"
+  },
+  {
+    id: "2026-07-18-roundway-hill-2",
+    date: "2026-07-18",
+    title: "Roundway Hill (2)",
+    location: "Nr Devizes, Wiltshire, UK · Map ref SU0101264744",
+    description: "Reported 18 July 2026 near Devizes, the second formation of the season at Roundway Hill (following the 11 July formation nearby). Aerial images credited to Stonehenge Dronescapes; ground reports and diagrams not yet published.",
+    tags: ["UK", "Wiltshire", "2026 season"],
+    sourceUrl: "https://www.cropcircleconnector.com/2026/roundway2/roundwayhill2026b.html",
+    sourceName: "Crop Circle Connector",
+    youtubeId: null
+  },
   {
     id: "2026-07-16-odstone-barn",
     date: "2026-07-16",
@@ -294,5 +327,89 @@ window.STORIES = [
     sourceUrl: "https://www.cropcircleconnector.com/2026/wadenhill/wadenhill2026a.html",
     sourceName: "Crop Circle Connector",
     youtubeId: "LQO9XUtjwno"
+  }
+];
+
+/* ==========================================================================
+   COVERAGE — community happenings that aren't tied to one formation.
+   ==========================================================================
+   STORIES above is formation-first: every entry is a specific circle in a
+   specific field. That leaves nowhere to log a documentary, a conference, a
+   researcher interview, a book release, or a notable YouTube deep-dive — so
+   they go here instead, and the "Recent coverage" widget renders both lists
+   merged and sorted by date.
+
+   Field reference:
+     id        — unique slug, e.g. "2026-06-02-doc-circular-evidence"
+     date      — "YYYY-MM-DD", when it was published/aired/held
+     kind      — one of: "article" | "video" | "documentary" | "podcast"
+                 | "event" | "community".  Drives the badge + icon.
+     title     — headline / title of the piece
+     outlet    — publisher, channel, or venue, e.g. "BBC Four", "Temporary Temples"
+     url       — link to the piece (required)
+     summary   — OPTIONAL. 1-3 sentences of plain text. Shown in full on the
+                 most recent items, so make it genuinely informative.
+     youtubeId — OPTIONAL. Video ID only, when the piece is on YouTube.
+     durationMin — OPTIONAL. Runtime in minutes, for video/documentary/podcast.
+     formationId — OPTIONAL. Canonical registry id, if it centers on one
+                 formation (see the STORIES field reference above).
+
+   SOURCING RULE — same bar as STORIES: only add something that has been
+   verified to exist at a resolvable URL. An empty list is correct and
+   expected; a plausible-sounding invented documentary is not.
+   ========================================================================== */
+window.COVERAGE = [
+  // Populated by the daily scan (see dashboard_scan_prompt.md, Step 2c) and by
+  // hand. Example shape, kept commented so it never renders as real coverage:
+  //
+  // {
+  //   id: "2026-06-02-example-doc",
+  //   date: "2026-06-02",
+  //   kind: "documentary",
+  //   title: "…",
+  //   outlet: "…",
+  //   url: "https://…",
+  //   summary: "…",
+  //   youtubeId: null,
+  //   durationMin: 58
+  // }
+];
+
+/* ==========================================================================
+   REDDIT_FORUMS — standing discussion venues for the "Live chatter" widget.
+   ==========================================================================
+   Static links, not a live feed: Reddit's JSON endpoints don't send CORS
+   headers a static site can use, so these are one-tap entry points rather
+   than embedded content. Ordered most-relevant first.
+
+   TODO(verify): these four URLs were added from knowledge, not confirmed by
+   fetch — reddit.com was unreachable from the environment they were written
+   in. Open each once and confirm it resolves to a live, on-topic subreddit
+   before/at first deploy, and drop any that don't.
+
+     name  — display label, e.g. "r/cropcircles"
+     url   — full https URL to the subreddit
+     note  — short line on what it's good for (one clause, no period)
+   ========================================================================== */
+window.REDDIT_FORUMS = [
+  {
+    name: "r/cropcircles",
+    url: "https://www.reddit.com/r/cropcircles/",
+    note: "the dedicated subreddit — new formations posted each season"
+  },
+  {
+    name: "r/HighStrangeness",
+    url: "https://www.reddit.com/r/HighStrangeness/",
+    note: "wider anomalous-phenomena discussion, regular crop circle threads"
+  },
+  {
+    name: "r/UFOs",
+    url: "https://www.reddit.com/r/UFOs/",
+    note: "large general forum, crop circles surface around major reports"
+  },
+  {
+    name: "r/aliens",
+    url: "https://www.reddit.com/r/aliens/",
+    note: "speculative discussion and image threads"
   }
 ];

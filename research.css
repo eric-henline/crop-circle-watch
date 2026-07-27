@@ -1,0 +1,374 @@
+/* ==========================================================================
+   Crop Circle Watch — research.css
+   Page-specific styles for research.html. Loads AFTER styles.css and inherits
+   every theme token from it (palette, type, spacing, chart palette). Nothing
+   here redefines a colour literal — chart marks read the --cat- and --seq-
+   custom properties, so the charts re-theme with the site.
+
+   Kept out of styles.css deliberately: only this page needs it, and styles.css
+   is already the shared shell for three pages.
+   ========================================================================== */
+
+.research{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:var(--s-6) var(--s-4) 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Page head                                                              */
+/* ---------------------------------------------------------------------- */
+
+.research-head{ max-width:70ch; margin-bottom:var(--s-6); }
+
+.research-eyebrow{
+  margin:0 0 var(--s-2);
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.research-title{
+  margin:0 0 var(--s-3);
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(32px, 5vw, 52px);
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  color:var(--text-0);
+}
+.research-lede{
+  margin:0;
+  font-family:var(--font-body);
+  font-size:17px;
+  line-height:1.6;
+  color:var(--text-1);
+}
+
+.research-stamp{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--s-5);
+  margin:var(--s-4) 0 0;
+  padding-top:var(--s-3);
+  border-top:1px solid var(--border);
+}
+.research-stamp dt{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--text-2);
+}
+.research-stamp dd{
+  margin:3px 0 0;
+  font-family:var(--font-mono);
+  font-size:14px;
+  color:var(--text-0);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Sub-tabs — same visual language as the timeline's .scope-toggle         */
+/* ---------------------------------------------------------------------- */
+
+.research-tabs-wrap{
+  position:sticky;
+  top:0;
+  z-index:20;
+  padding:var(--s-3) 0;
+  margin-bottom:var(--s-4);
+  background:linear-gradient(180deg, var(--bg-0) 62%, transparent);
+}
+.research-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--s-1);
+  padding:var(--s-1);
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--panel-soft);
+  width:fit-content;
+  max-width:100%;
+}
+.research-tab{
+  appearance:none;
+  border:none;
+  background:none;
+  cursor:pointer;
+  padding:8px 16px;
+  border-radius:999px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:0.06em;
+  color:var(--text-2);
+  transition:color 0.18s ease, background 0.18s ease;
+  white-space:nowrap;
+}
+.research-tab:hover{ color:var(--text-0); }
+.research-tab[aria-selected="true"]{
+  background:var(--panel);
+  color:var(--accent);
+  box-shadow:inset 0 0 0 1px var(--border-strong);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Feed + cards                                                           */
+/* ---------------------------------------------------------------------- */
+
+.research-feed{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s-5);
+  padding-bottom:var(--s-7);
+}
+
+.r-card{
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--panel);
+  padding:var(--s-5);
+  /* Scroll-reveal: cards start slightly low and fade up as they enter view.
+     research-app.js adds .is-in via IntersectionObserver. */
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity 0.55s ease, transform 0.55s cubic-bezier(0.22,0.8,0.3,1);
+}
+.r-card.is-in{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion:reduce){
+  .r-card{ opacity:1; transform:none; transition:none; }
+}
+
+.r-card-head{ margin-bottom:var(--s-4); }
+.r-kicker{
+  margin:0 0 6px;
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--text-2);
+}
+.r-title{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:22px;
+  line-height:1.25;
+  letter-spacing:-0.01em;
+  color:var(--text-0);
+}
+.r-reading{
+  margin:var(--s-4) 0 0;
+  font-family:var(--font-body);
+  font-size:15px;
+  line-height:1.65;
+  color:var(--text-1);
+  max-width:78ch;
+}
+
+/* Headline figure — used when a single number IS the finding. */
+.r-hero-figure{
+  display:flex;
+  align-items:baseline;
+  gap:var(--s-3);
+  margin-bottom:var(--s-3);
+}
+.r-hero-value{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(40px, 7vw, 64px);
+  line-height:1;
+  letter-spacing:-0.03em;
+  color:var(--text-0);
+  font-variant-numeric:tabular-nums;
+}
+.r-hero-unit{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--text-2);
+}
+
+/* Week-over-week delta chip. Direction is carried by an arrow glyph AND the
+   label text, never by colour alone. */
+.r-delta{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:3px 9px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-2);
+}
+.r-delta--up{ color:var(--div-pos-1); border-color:rgba(54,212,166,0.35); }
+.r-delta--down{ color:var(--div-neg-1); border-color:rgba(240,166,60,0.35); }
+.r-delta--flat{ color:var(--text-2); }
+
+/* Stat tile row — for grouped scalar metrics that don't deserve a plot. */
+.r-tiles{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+  gap:var(--s-3);
+}
+.r-tile{
+  padding:var(--s-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--panel-soft);
+}
+.r-tile-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--text-2);
+}
+.r-tile-value{
+  margin-top:6px;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:26px;
+  line-height:1;
+  color:var(--text-0);
+  font-variant-numeric:tabular-nums;
+}
+.r-tile-sub{
+  margin-top:5px;
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  color:var(--text-2);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Charts                                                                 */
+/* ---------------------------------------------------------------------- */
+
+/* Wide charts scroll inside their own container — the page body must never
+   scroll horizontally.
+
+   min-width matters as much as the overflow: an SVG scaled by viewBox shrinks
+   its text with it, so on a 375px phone a 760-unit chart would render its 10px
+   labels at ~4px. Holding a floor and letting the container scroll keeps the
+   chart legible instead of merely fitting. */
+.r-chart-scroll{
+  overflow-x:auto;
+  overflow-y:hidden;
+  /* room for the scrollbar so it never overlaps the axis */
+  padding-bottom:2px;
+  scrollbar-width:thin;
+}
+.r-chart{ display:block; width:100%; min-width:600px; height:auto; overflow:visible; }
+
+.r-chart text{ font-family:var(--font-mono); fill:var(--text-2); }
+.r-axis-label{ font-size:10px; letter-spacing:0.04em; }
+.r-value-label{ font-size:10.5px; fill:var(--text-1); font-variant-numeric:tabular-nums; }
+.r-grid line{ stroke:var(--chart-grid); stroke-width:1; }
+.r-axis line, .r-axis path{ stroke:var(--chart-axis); stroke-width:1; }
+
+/* Marks. Bars get 4px rounded data-ends; the baseline end stays square,
+   which is what `rx` on a rect anchored to the axis effectively gives at
+   these sizes. */
+.r-bar{ transition:opacity 0.15s ease; }
+.r-bar:hover{ opacity:0.82; }
+.r-line{ fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.r-area{ stroke:none; }
+.r-dot{ stroke:var(--chart-surface); stroke-width:2; }
+
+/* Reveal animation for line paths — drawn on, not faded in. */
+.r-line--draw{
+  stroke-dasharray:var(--len);
+  stroke-dashoffset:var(--len);
+  transition:stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1);
+}
+.is-in .r-line--draw{ stroke-dashoffset:0; }
+.r-bar--grow{ transform:scaleY(0); transform-origin:bottom; transition:transform 0.6s cubic-bezier(0.22,0.8,0.3,1); }
+.is-in .r-bar--grow{ transform:none; }
+.r-barh--grow{ transform:scaleX(0); transform-origin:left; transition:transform 0.6s cubic-bezier(0.22,0.8,0.3,1); }
+.is-in .r-barh--grow{ transform:none; }
+
+@media (prefers-reduced-motion:reduce){
+  .r-line--draw{ stroke-dasharray:none; stroke-dashoffset:0; transition:none; }
+  .r-bar--grow, .r-barh--grow{ transform:none; transition:none; }
+}
+
+/* Legend — always present for 2+ series so identity is never colour-alone. */
+.r-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--s-2) var(--s-4);
+  margin-top:var(--s-3);
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-1);
+}
+.r-legend-item{ display:inline-flex; align-items:center; gap:7px; }
+.r-legend-swatch{ width:11px; height:11px; border-radius:3px; flex:none; }
+
+/* Tooltip */
+.r-tip{
+  position:fixed;
+  z-index:60;
+  pointer-events:none;
+  padding:7px 10px;
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius);
+  background:var(--bg-1);
+  box-shadow:0 8px 24px rgba(0,0,0,0.45);
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  color:var(--text-0);
+  white-space:nowrap;
+  opacity:0;
+  transition:opacity 0.12s ease;
+}
+.r-tip.is-on{ opacity:1; }
+.r-tip-label{ color:var(--text-2); }
+
+/* Table view — the accessible fallback for every chart. */
+.r-table-toggle{
+  appearance:none;
+  margin-top:var(--s-3);
+  padding:5px 11px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:none;
+  cursor:pointer;
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:0.06em;
+  color:var(--text-2);
+}
+.r-table-toggle:hover{ color:var(--accent); border-color:var(--border-strong); }
+.r-table-wrap{ overflow-x:auto; margin-top:var(--s-3); }
+.r-table{
+  border-collapse:collapse;
+  width:100%;
+  font-family:var(--font-mono);
+  font-size:11.5px;
+}
+.r-table th, .r-table td{
+  text-align:left;
+  padding:6px 12px 6px 0;
+  border-bottom:1px solid var(--border);
+  color:var(--text-1);
+  white-space:nowrap;
+}
+.r-table th{ color:var(--text-2); font-weight:400; letter-spacing:0.08em; text-transform:uppercase; font-size:10px; }
+.r-table td:last-child{ font-variant-numeric:tabular-nums; }
+
+.research-note{
+  max-width:78ch;
+  margin:0 0 var(--s-7);
+  font-family:var(--font-mono);
+  font-size:11px;
+  line-height:1.7;
+  color:var(--text-2);
+}
+
+@media (max-width:640px){
+  .research{ padding-inline:var(--s-3); }
+  .r-card{ padding:var(--s-4) var(--s-3); }
+  .research-stamp{ gap:var(--s-4); }
+}

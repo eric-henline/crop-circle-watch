@@ -104,6 +104,37 @@ supposed to be there, not changing the historical record. Only look back
 worth a daily fetch. This is optional and not a requirement for a
 successful run.
 
+## Step 2c — Look for non-formation coverage (optional)
+
+`STORIES` is formation-first: every entry is a specific circle in a specific
+field. The community also produces coverage that isn't tied to one formation —
+documentaries, YouTube deep-dives, podcast episodes, conferences and talks,
+book releases, notable researcher interviews. Those go in the separate
+`window.COVERAGE` array in `data.js` (field reference is in the comment block
+directly above it), and the "Recent coverage" widget renders both lists merged
+and sorted by date.
+
+Run one or two searches per scan, e.g. "crop circle documentary 2026",
+"crop circle conference 2026", "crop circle YouTube documentary". Add an entry
+only when **all** of the following hold:
+
+- the URL resolves and you have actually looked at the page
+- the piece is genuinely about crop circles (not a passing mention)
+- it is recent — published, aired, or held within roughly the last 90 days
+- it is not already in `COVERAGE`
+
+Set `kind` to one of `article` | `video` | `documentary` | `podcast` |
+`event` | `community`. Write `summary` as 1-3 factual sentences describing what
+the piece actually covers — the widget shows the summary in full for the most
+recent items, so a vague one-liner is worse than none. Include `durationMin`
+for video/documentary/podcast when the runtime is shown, and `youtubeId` only
+when you have confirmed the ID by visiting the video page.
+
+**The same rule as everywhere else applies with full force: never invent a
+documentary, a conference, or a channel.** Finding nothing is a normal and
+correct outcome for this step — an empty `COVERAGE` array is fine, and the
+widget renders correctly without it. Do not pad it.
+
 ## Step 3 — Verify every candidate before trusting it
 
 This is the most important step, and the only thing standing between a
@@ -299,9 +330,17 @@ dead-end URLs.
 You're already in the right folder (see above), so just run:
 
 ```
-git add -A
+git add data.js scan_rejected_log.md
 git commit -m "Scan YYYY-MM-DD: added N new formation(s)"   # or "Scan YYYY-MM-DD: no new formations found"
 ```
+
+**Stage those two paths only — never `git add -A`.** This step pushes to a
+PUBLIC repo (github.com/eric-henline/crop-circle-watch). `-A` stages whatever
+happens to be sitting in the working tree, so a half-finished page, an internal
+TODO, or a scratch file becomes live on the public site because a scheduled job
+ran at 06:58 while nobody was awake. Those two files are the only ones this task
+is supposed to write; if you believe you need to commit something else, stop and
+report it in the summary instead of staging it.
 
 Unlike the old Cowork-sandbox version of this task, you're running directly
 on Eric's Mac now, so you have real network access — push too:

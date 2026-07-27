@@ -6,13 +6,17 @@ The page is in two halves: a dashboard "hero" up top (status line, last-confirme
 
 ## How it's built
 
-Five files, no framework, no build step:
+No framework, no build step, no third-party JavaScript:
 
 - `index.html` — dashboard page structure (hero + timeline)
 - `about.html` — the About page
-- `styles.css` — all visual design (dark "research console" theme — change the variables at the top of the file to re-theme)
-- `app.js` — rendering logic (reads the data below and draws both the hero widgets and the timeline)
-- `data.js` — **the content**. A plain JavaScript array. This is the file you edit by hand.
+- `research.html` — the Research page (charts and findings)
+- `styles.css` — all visual design (dark "research console" theme — change the variables at the top of the file to re-theme). Also defines the chart palette; **read the comment above `--cat-1` before changing those values.**
+- `research.css` — styles used only by the Research page; inherits every theme token from `styles.css`
+- `app.js` — rendering logic for the dashboard (hero widgets + timeline)
+- `research-app.js` — the Research page's chart engine. Hand-rolled inline SVG — deliberately no chart library, so the site keeps its zero-dependency property.
+- `data.js` — **the content**. Plain JavaScript arrays. This is the file you edit by hand.
+- `research.js` — **generated, do not hand-edit.** Written by `analytics/export_research_json.py`.
 
 Type is deliberately not the usual Inter/Space-Grotesk default stack: **Bricolage Grotesque** for headings and big numbers, **Newsreader** (a serif) for prose — descriptions, taglines, the About page — and **Fragment Mono** for UI chrome (nav, chips, tags, stats). Pulled from Google Fonts via the `<link>` tag at the top of each HTML file.
 
@@ -50,6 +54,39 @@ To add one: copy an existing object, change the values, add a comma. New entries
 The "Live chatter" widget can't embed an actual live, keyword-driven Twitter/X or Bluesky search feed, and that part is by design. As of 2026, X's embeddable timelines only render content for visitors who are logged into X — an anonymous visitor sees an empty box — and Bluesky's public, no-auth API supports profile search but not keyword post-search (it 403s without auth). Neither platform offers a way to embed a reliably-working, keyword-driven feed on a static site with no backend and no API keys. So for open-ended keywords, the widget stays honest: a one-click "Search X" / "Search Bluesky" link built from your own customizable keyword chips, which opens a real search on the real platform in a new tab.
 
 For *specific, known* posts it's a different story: Bluesky publishes a public, no-auth oEmbed endpoint (`embed.bsky.app/oembed`) for individual post URLs, so any post you (or the scan) add to `socialPosts` with `platform: "bluesky"` loads live, right in the widget, no click needed — `app.js`'s `loadBlueskyEmbed()` fetches it and falls back to a static card if the fetch ever fails. X has no equivalent public embed path anymore, so X posts always render as the static rich card.
+
+## The Research page
+
+`research.html` renders charts from `research.js`, which is **generated** — never
+hand-edited. The pipeline is:
+
+```
+analytics/crop_circle_analytics.py     runs weekly (Sunday), writes:
+  data/all_formations.csv                  merged dataset
+  data/snapshots/YYYY-WXX.json             ~22 scalar metrics per week
+  hypotheses/hypothesis_tracker.md         confidence table over time
+        |
+        v
+analytics/export_research_json.py      reads those artifacts, writes:
+  dashboard/research.js                    window.RESEARCH
+```
+
+To refresh the page after an analytics run:
+
+```
+python3 analytics/export_research_json.py
+```
+
+The exporter is deliberately *separate* from the analytics engine rather than a
+hook inside it: it only reads the engine's outputs, so it can be re-run at any
+time, costs nothing (no sklearn, no matplotlib, no model fitting), and cannot
+break the Sunday job.
+
+The engine also writes ten PNG charts to `analytics/visualizations/`. Those are
+an **internal artifact and are not used on the site** — they carry their own
+hardcoded palette, are fixed-size rasters, and would not match the site theme or
+scale to a phone. The site re-draws the same numbers as inline SVG instead, using
+the CSS chart-palette variables, so the charts re-theme with the rest of the site.
 
 ## The daily scan
 
@@ -106,7 +143,12 @@ The aerial/ground photos for these formations are marked "All Rights Reserved" b
 ```
 dashboard/
   index.html, styles.css, app.js, data.js   ← the site
+  about.html                                 ← About page
+  research.html, research.css,               ← Research page (charts)
+    research-app.js
+  research.js                                ← GENERATED chart data — do not hand-edit
   README.md                                  ← this file
+  TODO.md                                    ← planned work, with status
   dashboard_scan_prompt.md                   ← instructions the daily scan follows
   scan_rejected_log.md                       ← append-only log of stale/duplicate URLs the scan has already ruled out
   scan_dashboard.sh                          ← runs the daily scan via `claude -p` (Mac-side, via launchd)
