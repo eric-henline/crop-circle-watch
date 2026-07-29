@@ -62,7 +62,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-07-27T06:29:48-07:00",
+  lastScan: "2026-07-28T07:05:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -84,10 +84,10 @@ window.STORIES = [
     title: "Fox Hill",
     location: "Fox Hill, Wiltshire, UK",
     description: "Reported 21 July 2026 at Fox Hill: a long pictogram of symbols. Temporary Temples noted full analysis and photography were still pending at time of writing.",
-    tags: ["UK", "Wiltshire", "2026 season"],
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://temporarytemples.co.uk/2026-fox-hill",
     sourceName: "Temporary Temples",
-    youtubeId: null
+    youtubeId: "I9OtDbbVsvA"
   },
   {
     id: "2026-07-21-wanborough-plain",
@@ -106,10 +106,10 @@ window.STORIES = [
     title: "Roundway Hill (2)",
     location: "Nr Devizes, Wiltshire, UK · Map ref SU0101264744",
     description: "Reported 18 July 2026 near Devizes, the second formation of the season at Roundway Hill (following the 11 July formation nearby). Aerial images credited to Stonehenge Dronescapes; ground reports and diagrams not yet published.",
-    tags: ["UK", "Wiltshire", "2026 season"],
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://www.cropcircleconnector.com/2026/roundway2/roundwayhill2026b.html",
     sourceName: "Crop Circle Connector",
-    youtubeId: null
+    youtubeId: "juHmZB625i8"
   },
   {
     id: "2026-07-16-odstone-barn",
