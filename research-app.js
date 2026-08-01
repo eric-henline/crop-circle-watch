@@ -341,10 +341,64 @@
   // ------------------------------------------------------- chart: scatter
   // Geographic point cloud in plain equirectangular projection, coloured by a
   // magnitude (complexity) using the sequential ramp — one hue, light→dark.
+  //
+  // At world scale this chart is a lie of omission: roughly half the archive
+  // sits inside two degrees of latitude, so ~350 points render as ~40 visible
+  // dots and the reader cannot see the structure that matters. The fix is the
+  // standard cartographic one — a detail inset. The world panel keeps the
+  // international context; the inset re-plots the densest region at ~40x the
+  // area, where the same points separate. The inset extent is derived from the
+  // data (densest one-degree cell, grown and then tightened onto its contents),
+  // not hardcoded to a country, so it follows the archive if the archive moves.
+
+  function densestBox(points) {
+    var cells = {}, best = null, k;
+    points.forEach(function (p) {
+      k = Math.floor(p.lat) + '|' + Math.floor(p.lon);
+      cells[k] = (cells[k] || 0) + 1;
+    });
+    Object.keys(cells).forEach(function (key) {
+      if (best === null || cells[key] > cells[best]) best = key;
+    });
+    if (best === null) return null;
+
+    var parts = best.split('|'), cLat = +parts[0], cLon = +parts[1];
+    function within(g0, g1, h0, h1) {
+      return points.filter(function (p) {
+        return p.lat >= g0 && p.lat <= g1 && p.lon >= h0 && p.lon <= h1;
+      });
+    }
+    // Prefer the modal cell on its own — the tighter the box, the more the
+    // cluster separates. Only grow out to the neighbouring degrees when the
+    // cell alone is too thin to be worth a panel.
+    var inside = within(cLat, cLat + 1, cLon, cLon + 1);
+    if (inside.length < 25) inside = within(cLat - 1, cLat + 2, cLon - 1.5, cLon + 2.5);
+    // Below this an inset is more clutter than clarification.
+    if (inside.length < 12 || inside.length === points.length) return null;
+
+    var lats = inside.map(function (p) { return p.lat; });
+    var lons = inside.map(function (p) { return p.lon; });
+    var m = 0.08;
+    return {
+      points: inside,
+      n: inside.length,
+      lat0: Math.min.apply(null, lats) - m, lat1: Math.max.apply(null, lats) + m,
+      lon0: Math.min.apply(null, lons) - m, lon1: Math.max.apply(null, lons) + m
+    };
+  }
 
   function scatterGeo(points, opts) {
     opts = opts || {};
-    var Hgt = 420, pad = 26;
+    var Hgt = 436, pad = 26, padB = 46, padLeft = 46;
+    var plotH = Hgt - pad - padB;
+
+    var inset = densestBox(points);
+    // Without an inset the world panel takes the full width, exactly as before.
+    var gapX = 34;
+    var insetW = inset ? 236 : 0;
+    var worldW = W - padLeft - pad - (inset ? insetW + gapX : 0);
+    var insetX = padLeft + worldW + gapX;
+
     var lats = points.map(function (p) { return p.lat; });
     var lons = points.map(function (p) { return p.lon; });
     var minLat = Math.min.apply(null, lats), maxLat = Math.max.apply(null, lats);
@@ -356,47 +410,182 @@
       role: 'img', 'aria-label': opts.ariaLabel || 'Geographic scatter plot'
     });
 
-    // Graticule with degree labels. Without them this reads as an abstract
-    // point cloud — the labels are what make it a projection you can orient in.
-    var padB = 30, padLeft = 46;
-    var plotW = W - padLeft - pad, plotH = Hgt - pad - padB;
-    var deg = function (v, axis) {
+    var deg = function (v, axis, digits) {
       var hemi = axis === 'lat' ? (v >= 0 ? 'N' : 'S') : (v >= 0 ? 'E' : 'W');
-      return Math.abs(v).toFixed(0) + '°' + hemi;
+      return Math.abs(v).toFixed(digits == null ? 0 : digits) + '°' + hemi;
     };
+    var seq = ['var(--seq-1)', 'var(--seq-2)', 'var(--seq-3)', 'var(--seq-4)', 'var(--seq-5)'];
 
+    function plotPoint(p, x, y, r, label, value) {
+      var band = Math.min(4, Math.max(0, Math.round(((p.c || 1) - 1) / 9 * 4)));
+      // Half-transparent fill so a dense knot reads as density rather than one
+      // flat blob; the surface-coloured ring keeps points separable where they
+      // still overlap.
+      var dot = el('circle', {
+        cx: x.toFixed(1), cy: y.toFixed(1), r: r.toFixed(2),
+        fill: seq[band], 'fill-opacity': '0.7',
+        stroke: 'var(--chart-surface)', 'stroke-width': '0.75'
+      });
+      svg.appendChild(dot);
+      hoverable(dot, label || p.name,
+        value || ('complexity ' + p.c + ' · ' + p.lat.toFixed(2) + ', ' + p.lon.toFixed(2)));
+    }
+
+    // Records sharing a coordinate to ~100 m are one position, not many.
+    function groupByCoord(pts) {
+      var seen = {}, out = [];
+      pts.forEach(function (p) {
+        var k = p.lat.toFixed(3) + ',' + p.lon.toFixed(3);
+        if (!seen[k]) {
+          seen[k] = { lat: p.lat, lon: p.lon, items: [], rep: p };
+          out.push(seen[k]);
+        }
+        seen[k].items.push(p);
+        // The representative carries the group's colour, so let the highest
+        // complexity in the group speak for it rather than whichever record
+        // happened to be first in the file.
+        if ((p.c || 0) > (seen[k].rep.c || 0)) seen[k].rep = p;
+      });
+      return out;
+    }
+
+    // ---- world panel. Graticule with degree labels: without them this reads
+    // as an abstract point cloud, and the labels are what make it a projection
+    // you can orient in.
     var grid = el('g', { 'class': 'r-grid' });
     for (var i = 0; i <= 4; i++) {
       var f = i / 4;
       var gy = pad + f * plotH;
-      var gx = padLeft + f * plotW;
-      grid.appendChild(el('line', { x1: padLeft, y1: gy, x2: W - pad, y2: gy }));
+      var gx = padLeft + f * worldW;
+      grid.appendChild(el('line', { x1: padLeft, y1: gy, x2: padLeft + worldW, y2: gy }));
       grid.appendChild(el('line', { x1: gx, y1: pad, x2: gx, y2: pad + plotH }));
       svg.appendChild(el('text', {
         x: padLeft - 9, y: gy + 3.5, 'text-anchor': 'end', 'class': 'r-axis-label'
       }, deg(maxLat - f * spanLat, 'lat')));
       svg.appendChild(el('text', {
-        x: gx, y: Hgt - 10, 'text-anchor': 'middle', 'class': 'r-axis-label'
+        x: gx, y: pad + plotH + 18, 'text-anchor': 'middle', 'class': 'r-axis-label'
       }, deg(minLon + f * spanLon, 'lon')));
     }
-    svg.insertBefore(grid, svg.firstChild);
+    svg.appendChild(grid);
 
-    var seq = ['var(--seq-1)', 'var(--seq-2)', 'var(--seq-3)', 'var(--seq-4)', 'var(--seq-5)'];
-    points.forEach(function (p) {
-      var x = padLeft + ((p.lon - minLon) / spanLon) * plotW;
-      var y = pad + (1 - (p.lat - minLat) / spanLat) * plotH;
-      var band = Math.min(4, Math.max(0, Math.round(((p.c || 1) - 1) / 9 * 4)));
-      // Half-transparent fill so the dense southern-England cluster reads as
-      // density rather than one flat blob; the surface-coloured ring keeps
-      // individual points separable where they overlap.
-      var dot = el('circle', {
-        cx: x.toFixed(1), cy: y.toFixed(1), r: 4,
-        fill: seq[band], 'fill-opacity': '0.7',
-        stroke: 'var(--chart-surface)', 'stroke-width': '0.75'
+    var wx = function (lon) { return padLeft + ((lon - minLon) / spanLon) * worldW; };
+    var wy = function (lat) { return pad + (1 - (lat - minLat) / spanLat) * plotH; };
+    points.forEach(function (p) { plotPoint(p, wx(p.lon), wy(p.lat), 4); });
+
+    svg.appendChild(el('text', {
+      x: padLeft, y: Hgt - 10, 'class': 'r-axis-label'
+    }, 'World · all ' + points.length + ' geolocated formations'));
+
+    // ---- detail inset
+    if (inset) {
+      var iLatSpan = inset.lat1 - inset.lat0, iLonSpan = inset.lon1 - inset.lon0;
+      // Scale longitude by cos(mid-latitude) so the inset is not stretched
+      // sideways — at 51°N a degree of longitude is only ~0.63 of a degree of
+      // latitude on the ground, and an unscaled box distorts the cluster shape.
+      var midLat = (inset.lat0 + inset.lat1) / 2;
+      var lonUnits = iLonSpan * Math.cos(midLat * Math.PI / 180);
+      var scale = Math.min(insetW / lonUnits, plotH / iLatSpan);
+      var mapW = lonUnits * scale, mapH = iLatSpan * scale;
+      var mx = insetX + (insetW - mapW) / 2, my = pad + (plotH - mapH) / 2;
+
+      // Callout on the world panel: the rectangle the inset magnifies, plus
+      // leaders to the inset frame so the relationship is not left implied.
+      var cx0 = wx(inset.lon0), cx1 = wx(inset.lon1);
+      var cy0 = wy(inset.lat1), cy1 = wy(inset.lat0);
+      // At world scale the box is often under two pixels across. Floor it at a
+      // size that can actually be seen; the caption carries the true extent.
+      var callW = Math.max(cx1 - cx0, 14), callH = Math.max(cy1 - cy0, 14);
+      var callX = (cx0 + cx1) / 2 - callW / 2, callY = (cy0 + cy1) / 2 - callH / 2;
+
+      svg.appendChild(el('rect', {
+        x: callX.toFixed(1), y: callY.toFixed(1),
+        width: callW.toFixed(1), height: callH.toFixed(1),
+        fill: 'none', stroke: 'var(--signal)', 'stroke-width': '1.25',
+        'stroke-dasharray': '3 3'
+      }));
+      [[callY, my], [callY + callH, my + mapH]].forEach(function (pair) {
+        svg.appendChild(el('line', {
+          x1: (callX + callW).toFixed(1), y1: pair[0].toFixed(1),
+          x2: mx.toFixed(1), y2: pair[1].toFixed(1),
+          stroke: 'var(--signal)', 'stroke-width': '1',
+          'stroke-opacity': '0.42', 'stroke-dasharray': '3 4'
+        }));
       });
-      svg.appendChild(dot);
-      hoverable(dot, p.name, 'complexity ' + p.c + ' · ' + p.lat.toFixed(2) + ', ' + p.lon.toFixed(2));
-    });
+
+      svg.appendChild(el('rect', {
+        x: mx.toFixed(1), y: my.toFixed(1),
+        width: mapW.toFixed(1), height: mapH.toFixed(1),
+        fill: 'var(--chart-surface)', 'fill-opacity': '0.55',
+        stroke: 'var(--signal)', 'stroke-width': '1.25'
+      }));
+
+      var igrid = el('g', { 'class': 'r-grid' });
+      for (i = 1; i <= 3; i++) {
+        igrid.appendChild(el('line', {
+          x1: mx, y1: my + (i / 4) * mapH, x2: mx + mapW, y2: my + (i / 4) * mapH
+        }));
+        igrid.appendChild(el('line', {
+          x1: mx + (i / 4) * mapW, y1: my, x2: mx + (i / 4) * mapW, y2: my + mapH
+        }));
+      }
+      svg.appendChild(igrid);
+
+      // Zoom alone does not finish the job: a large minority of the archive
+      // shares EXACT coordinates with another record — many entries carry a
+      // site-level or rounded fix rather than a field-level one, so 146 points
+      // can sit on 87 distinct positions. No magnification separates those.
+      // The inset therefore groups by coordinate and sizes the symbol by
+      // count, which stops the chart implying locations it does not have.
+      var groups = groupByCoord(inset.points);
+      // Big groups behind, singles in front, so a single formation sharing a
+      // village with fifteen others is still hoverable.
+      groups.sort(function (a, b) { return b.items.length - a.items.length; });
+      groups.forEach(function (grp) {
+        var x = mx + ((grp.lon - inset.lon0) / iLonSpan) * mapW;
+        var y = my + (1 - (grp.lat - inset.lat0) / iLatSpan) * mapH;
+        // Area proportional to count, which is the only sizing that does not
+        // mislead the eye — hence the square root on the radius.
+        var r = Math.min(15, 4.5 * Math.sqrt(grp.items.length));
+        plotPoint(grp.rep, x, y, r, grp.items.length > 1
+          ? grp.items.length + ' formations · ' + grp.lat.toFixed(3) + ', ' + grp.lon.toFixed(3)
+          : null, grp.items.length > 1
+          ? grp.items.slice(0, 4).map(function (q) { return q.name; }).join(' · ') +
+            (grp.items.length > 4 ? ' · +' + (grp.items.length - 4) + ' more' : '')
+          : null);
+      });
+
+      // The magnification factor is the honest headline for an inset: without
+      // it the reader has no way to judge how much the world panel compressed.
+      // Quoted linearly, the way a map inset is conventionally read — the area
+      // ratio is the square of this and reads as a typo.
+      // Measured against the box's TRUE extent, not the floored drawing size,
+      // or the quoted factor is smaller than the magnification actually is.
+      var mag = Math.round(Math.sqrt(
+        (mapW / Math.max(cx1 - cx0, 0.001)) * (mapH / Math.max(cy1 - cy0, 0.001))));
+      svg.appendChild(el('text', {
+        x: insetX + insetW / 2, y: pad - 8, 'text-anchor': 'middle', 'class': 'r-axis-label'
+      }, deg(inset.lat0, 'lat', 1) + '–' + deg(inset.lat1, 'lat', 1) + ' · ' +
+         deg(inset.lon0, 'lon', 1) + '–' + deg(inset.lon1, 'lon', 1)));
+      svg.appendChild(el('text', {
+        x: insetX + insetW / 2, y: Hgt - 10, 'text-anchor': 'middle', 'class': 'r-axis-label'
+      }, 'Detail · ×' + mag + ' scale · ' + inset.n + ' formations at ' +
+         groups.length + ' distinct coordinates'));
+
+      // Size key. Without it the reader has no way to decode a bubble, and a
+      // proportional-symbol map without a key is just a prettier lie.
+      var keyY = my + mapH - 16, keyX = mx + 14;
+      [1, 4, 12].forEach(function (n, ki) {
+        var kr = Math.min(15, 4.5 * Math.sqrt(n));
+        svg.appendChild(el('circle', {
+          cx: keyX, cy: keyY, r: kr.toFixed(2),
+          fill: 'none', stroke: 'var(--chart-axis)', 'stroke-width': '1'
+        }));
+        svg.appendChild(el('text', {
+          x: keyX, y: keyY - kr - 4, 'text-anchor': 'middle', 'class': 'r-axis-label'
+        }, String(n)));
+        keyX += kr + (ki < 2 ? Math.min(15, 4.5 * Math.sqrt([1, 4, 12][ki + 1])) + 10 : 0);
+      });
+    }
 
     return svg;
   }
@@ -450,6 +639,212 @@
     });
 
     return svg;
+  }
+
+  // ------------------------------------------------- chart: stacked share bar
+  // One whole, split into parts. Used where the parts sum to something
+  // meaningful (all formations, all leads) and the *proportions* are the point
+  // — a bar chart of the same numbers reads as four unrelated quantities.
+  //
+  // Every segment wide enough to hold text is labelled inside itself, so the
+  // chart survives without the legend and without colour vision.
+
+  function stackedBar(segments, opts) {
+    opts = opts || {};
+    var Hgt = 96, padT = 10, barH = 52;
+    var total = segments.reduce(function (a, s) { return a + s.value; }, 0) || 1;
+
+    var svg = el('svg', {
+      'class': 'r-chart', viewBox: '0 0 ' + W + ' ' + Hgt,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Proportional breakdown'
+    });
+
+    var x = 0;
+    segments.forEach(function (s, i) {
+      var w = (s.value / total) * W;
+      var share = 100 * s.value / total;
+      var g = el('g', { 'class': 'r-seg' });
+      g.style.transitionDelay = (i * 70) + 'ms';
+
+      g.appendChild(el('rect', {
+        x: x, y: padT, width: Math.max(1, w - 2), height: barH,
+        rx: 3, fill: s.color, 'class': 'r-seg-rect'
+      }));
+
+      // 46 units is roughly where "12.3%" stops fitting.
+      if (w > 46) {
+        g.appendChild(el('text', {
+          x: x + w / 2 - 1, y: padT + barH / 2 + 5,
+          'text-anchor': 'middle', 'class': 'r-seg-label'
+        }, fmt(share, share < 10 ? 1 : 0) + '%'));
+      }
+      if (w > 120) {
+        g.appendChild(el('text', {
+          x: x + w / 2 - 1, y: padT + barH + 20,
+          'text-anchor': 'middle', 'class': 'r-axis-label'
+        }, s.label));
+      }
+      hoverable(g, s.label, fmt(s.value) + ' · ' + fmt(share, 1) + '%');
+      svg.appendChild(g);
+      x += w;
+    });
+
+    return svg;
+  }
+
+  // ------------------------------------------------------- chart: heatmap
+  // Two categorical axes, one magnitude. Rows are normalised against their own
+  // maximum rather than a global one: the decades hold wildly different record
+  // counts (3 formations in the 1970s against 108 in the 2000s), and on a
+  // global scale every early row would render as a uniform blank. The question
+  // this chart answers is what shape each decade's season has, not how many
+  // formations it holds — that number is printed alongside the row label.
+
+  function heatmap(rows, colLabels, opts) {
+    opts = opts || {};
+    var padL = 92, padT = 26, cellH = 30, gap = 3;
+    var cols = colLabels.length;
+    var cellW = (W - padL - 8) / cols;
+    var Hgt = padT + rows.length * (cellH + gap) + 8;
+
+    var svg = el('svg', {
+      'class': 'r-chart', viewBox: '0 0 ' + W + ' ' + Hgt,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Heatmap'
+    });
+
+    colLabels.forEach(function (c, ci) {
+      svg.appendChild(el('text', {
+        x: padL + ci * cellW + cellW / 2, y: padT - 10,
+        'text-anchor': 'middle', 'class': 'r-axis-label'
+      }, c));
+    });
+
+    rows.forEach(function (row, ri) {
+      var y = padT + ri * (cellH + gap);
+      var rowMax = Math.max.apply(null, row.values) || 1;
+
+      svg.appendChild(el('text', {
+        x: padL - 12, y: y + cellH / 2 + 4, 'text-anchor': 'end', 'class': 'r-axis-label'
+      }, row.label));
+
+      row.values.forEach(function (v, ci) {
+        var step = v === 0 ? 0 : Math.min(5, Math.ceil((v / rowMax) * 5));
+        var cell = el('rect', {
+          x: padL + ci * cellW, y: y,
+          width: cellW - gap, height: cellH, rx: 3,
+          fill: step === 0 ? 'var(--panel-soft)' : 'var(--seq-' + step + ')',
+          'class': 'r-cell'
+        });
+        cell.style.transitionDelay = (ri * 40 + ci * 12) + 'ms';
+        svg.appendChild(cell);
+        hoverable(cell, row.label + ' · ' + colLabels[ci],
+          fmt(v) + ' of ' + fmt(row.n) + ' (' + fmt(100 * v / (row.n || 1), 1) + '%)');
+      });
+    });
+
+    return svg;
+  }
+
+  // --------------------------------------------------- chart: sparkline grid
+  // Several one-number-per-step series that share an x axis but not a y scale
+  // (a 0-10 complexity score against a 0-100 percentage). Plotting them on one
+  // pair of axes would need either a second axis or a normalisation that makes
+  // the numbers unreadable; small multiples keep each on its own honest scale
+  // and let the eye compare *shapes*, which is the actual question.
+
+  function sparkGrid(items) {
+    var wrap = h('div', 'r-sparks');
+
+    items.forEach(function (item) {
+      var cell = h('div', 'r-spark');
+      cell.appendChild(h('div', 'r-spark-label', item.label));
+
+      var vals = item.points.map(function (p) { return p.value == null ? 0 : p.value; });
+      var lo = Math.min.apply(null, vals);
+      var hi = Math.max.apply(null, vals);
+      if (hi === lo) { hi = lo + 1; }
+      var sw = 260, sh = 62, sp = 6;
+      var n = vals.length;
+      var xAt = function (i) { return sp + (n === 1 ? sw / 2 : (i / (n - 1)) * (sw - sp * 2)); };
+      var yAt = function (v) { return sp + (1 - (v - lo) / (hi - lo)) * (sh - sp * 2); };
+
+      var svg = el('svg', {
+        'class': 'r-spark-svg', viewBox: '0 0 ' + sw + ' ' + sh,
+        preserveAspectRatio: 'none',
+        role: 'img', 'aria-label': item.label + ' by ' + (item.xName || 'step')
+      });
+
+      var d = vals.map(function (v, i) {
+        return (i ? 'L' : 'M') + xAt(i).toFixed(1) + ' ' + yAt(v).toFixed(1);
+      }).join(' ');
+      svg.appendChild(el('path', {
+        d: d + ' L' + xAt(n - 1).toFixed(1) + ' ' + (sh - sp) + ' L' + xAt(0).toFixed(1) + ' ' + (sh - sp) + ' Z',
+        fill: item.color || 'var(--seq-3)', 'fill-opacity': '0.14', stroke: 'none'
+      }));
+      svg.appendChild(el('path', {
+        d: d, fill: 'none', stroke: item.color || 'var(--seq-4)',
+        'stroke-width': 2, 'stroke-linejoin': 'round', 'class': 'r-spark-line'
+      }));
+
+      vals.forEach(function (v, i) {
+        var dot = el('circle', {
+          cx: xAt(i), cy: yAt(v), r: i === n - 1 ? 4 : 2.6,
+          fill: item.color || 'var(--seq-4)'
+        });
+        var hit = el('circle', { cx: xAt(i), cy: yAt(v), r: 11, fill: 'transparent' });
+        svg.appendChild(dot);
+        svg.appendChild(hit);
+        hoverable(dot, item.points[i].label + ' · ' + item.label,
+          (item.format ? item.format(v) : fmt(v, 1)));
+      });
+
+      cell.appendChild(svg);
+
+      var foot = h('div', 'r-spark-foot');
+      foot.appendChild(h('span', 'r-spark-range', item.points[0].label + ' → ' + item.points[n - 1].label));
+      foot.appendChild(h('span', 'r-spark-now',
+        item.format ? item.format(vals[n - 1]) : fmt(vals[n - 1], 1)));
+      cell.appendChild(foot);
+      wrap.appendChild(cell);
+    });
+
+    return wrap;
+  }
+
+  // ---------------------------------------------------------- rank list (HTML)
+  // A ranked set of named things, each with a magnitude. Built as HTML rather
+  // than SVG because the names are the content here — real place and formation
+  // names, long and unpredictable, which have to wrap. In an SVG chart they'd
+  // either be truncated or force a gutter wide enough to squash the bars.
+
+  function rankList(items, opts) {
+    opts = opts || {};
+    var max = Math.max.apply(null, items.map(function (i) { return i.value; })) || 1;
+    var wrap = h('ol', 'r-rank');
+
+    items.forEach(function (item, i) {
+      var li = h('li', 'r-rank-row');
+      li.style.transitionDelay = (i * 40) + 'ms';
+
+      var head = h('div', 'r-rank-head');
+      head.appendChild(h('span', 'r-rank-name', item.label));
+      head.appendChild(h('span', 'r-rank-value',
+        opts.format ? opts.format(item.value) : fmt(item.value)));
+      li.appendChild(head);
+
+      if (item.sub) li.appendChild(h('span', 'r-rank-sub', item.sub));
+
+      var track = h('span', 'r-rank-track');
+      var fill = h('span', 'r-rank-fill');
+      fill.style.width = (100 * item.value / max) + '%';
+      fill.style.background = opts.colorByIndex ? catVar(i) : (opts.color || 'var(--seq-3)');
+      track.appendChild(fill);
+      li.appendChild(track);
+
+      wrap.appendChild(li);
+    });
+
+    return wrap;
   }
 
   // -------------------------------------------------------------- building
@@ -536,6 +931,10 @@
       scroll.appendChild(opts.chart);
       c.appendChild(scroll);
     }
+    // `block` is for HTML-built content (rank lists, sparkline grids, the
+    // session log) — it reflows rather than scrolling sideways, so it must not
+    // go inside .r-chart-scroll the way an SVG chart does.
+    if (opts.block) c.appendChild(opts.block);
     if (opts.legend) c.appendChild(opts.legend);
     if (opts.reading) c.appendChild(h('p', 'r-reading', opts.reading));
     if (opts.table) c.appendChild(opts.table);
@@ -559,8 +958,10 @@
   var TABS = [
     { id: 'geography', label: 'Geography', build: buildGeography },
     { id: 'time', label: 'Time & season', build: buildTime },
-    { id: 'geometry', label: 'Geometry & pattern', build: buildGeometry },
+    { id: 'geometry', label: 'Geometry & scale', build: buildGeometry },
+    { id: 'evidence', label: 'Evidence', build: buildEvidence },
     { id: 'hypotheses', label: 'Hypotheses', build: buildHypotheses },
+    { id: 'programme', label: 'Research log', build: buildProgramme },
     { id: 'health', label: 'Dataset health', build: buildHealth }
   ];
 
@@ -624,13 +1025,20 @@
           { label: '9–10', color: 'var(--seq-5)' }
         ]),
         reading: 'All ' + fmt(g.points.length) + ' geolocated formations are plotted ' +
-          'here by latitude and longitude, shaded by complexity score — but far ' +
-          'fewer than ' + fmt(g.points.length) + ' dots are visible, because most ' +
-          'of them land on top of each other. The dense knot near 2°W, 51°N is ' +
-          'southern England, where roughly half the archive sits inside about two ' +
-          'degrees of latitude; at world scale those hundreds of formations collapse ' +
-          'into a single smudge. The scattered points are the international record. ' +
-          'Hover any point for its name. The engine currently resolves ' +
+          'by latitude and longitude, shaded by complexity score. On the world ' +
+          'panel far fewer than ' + fmt(g.points.length) + ' dots are visible, ' +
+          'because most of them land on top of each other: roughly half the ' +
+          'archive sits inside about two degrees of latitude in southern England, ' +
+          'and at world scale those hundreds of formations collapse into a single ' +
+          'smudge. The amber box marks that knot, and the panel beside it re-plots ' +
+          'the same points at map scale, where most of them separate. The outliers ' +
+          'on the world panel are the international record. ' +
+          'Zoom alone is not enough, though: in the detail panel each symbol is ' +
+          'sized by how many records share that coordinate, and a good number of ' +
+          'them stack. Those are not formations in the same field — they are ' +
+          'records carrying a village- or site-level fix rather than a surveyed ' +
+          'one, which is a dataset limitation rather than a finding. Hover any ' +
+          'symbol for the names behind it. The engine currently resolves ' +
           fmt(m.clusters) + ' distinct spatial clusters.'
       }));
     }
@@ -663,6 +1071,50 @@
       ]),
       out[out.length - 1].querySelector('.r-reading')
     );
+
+    var s = R.sites;
+    if (s && s.ancientSites && s.ancientSites.length) {
+      out.push(card({
+        kicker: 'Named sites',
+        title: 'Which monuments turn up more than once',
+        block: rankList(s.ancientSites, {
+          color: 'var(--cat-2)',
+          format: function (v) { return fmt(v) + (v === 1 ? ' formation' : ' formations'); }
+        }),
+        reading: 'Only ' + pct(s.namedSitePct) + ' of records name the monument they ' +
+          'sit beside, so this is a ranking within a small, self-selected slice — ' +
+          'the records that name a site are disproportionately the famous ones. ' +
+          'Read it as "which sites researchers write down", not as a league table ' +
+          'of monument attraction. The Avebury complex — Silbury Hill, Avebury ' +
+          'itself, the West Kennett barrow, the Hackpen horse — accounts for most ' +
+          'of the top of this list, and those are all within a few miles of each ' +
+          'other on the same stretch of Wiltshire chalk.',
+        table: tableView(['Site', 'Formations'],
+          s.ancientSites.map(function (d) { return [d.label, d.value]; }))
+      }));
+    }
+
+    if (s && s.repeatFields && s.repeatFields.length) {
+      out.push(card({
+        kicker: 'Repetition',
+        title: 'Fields that get hit more than once',
+        hero: {
+          value: fmt(s.repeatFieldTotal),
+          unit: 'locations carry more than one formation',
+          delta: null
+        },
+        block: rankList(s.repeatFields, { color: 'var(--seq-3)', format: function (v) { return fmt(v) + '×'; } }),
+        reading: 'Recurrence at a single named location is one of the few patterns ' +
+          'in the archive that a purely random process would not produce — but it ' +
+          'is also exactly what you would expect from a small number of ' +
+          'well-watched, easily-accessed fields near the roads researchers drive. ' +
+          'Note too that some entries here are generic ("Barley field", "Wheat ' +
+          'plantation") rather than real place names: those are a data-quality ' +
+          'artifact of sparse location detail, not a site that keeps recurring.',
+        table: tableView(['Location', 'Formations'],
+          s.repeatFields.map(function (d) { return [d.label, d.value]; }))
+      }));
+    }
 
     return out;
   }
@@ -716,6 +1168,84 @@
           'year is normally just the current season still being incomplete.',
         table: tableView(['Year', 'Formations'],
           t.perYear.map(function (d) { return [d.label, d.value]; }))
+      }));
+    }
+
+    var e = R.eras || {};
+    if (e.monthByDecade && e.monthByDecade.length) {
+      out.push(card({
+        kicker: 'Season shape',
+        title: 'Has the season itself moved?',
+        chart: heatmap(e.monthByDecade, e.monthNames, {
+          ariaLabel: 'Formations by month, one row per decade, each row shaded against its own peak'
+        }),
+        legend: legend([
+          { label: 'row minimum', color: 'var(--seq-1)' },
+          { label: '', color: 'var(--seq-2)' },
+          { label: '', color: 'var(--seq-3)' },
+          { label: '', color: 'var(--seq-4)' },
+          { label: 'row peak', color: 'var(--seq-5)' }
+        ]),
+        reading: 'Each row is one decade, shaded against its own busiest month ' +
+          'rather than against the whole archive — the decades hold very ' +
+          'different record counts, so a shared scale would render the thin rows ' +
+          'blank and tell you nothing. Only decades with at least five ' +
+          'month-dated records appear at all, which is why the record starts here ' +
+          'in the 1990s rather than in the 1970s. What this asks is whether the ' +
+          'shape of the season has shifted. It broadly has not: the July–August ' +
+          'core sits in the middle of every row. What ' +
+          'does change is the spread — later decades carry more non-summer ' +
+          'entries, which most likely tracks the archive picking up southern ' +
+          'hemisphere and out-of-season reports rather than the season widening.',
+        table: tableView(['Decade'].concat(e.monthNames),
+          e.monthByDecade.map(function (r) { return [r.label].concat(r.values); }))
+      }));
+    }
+
+    if (e.decades && e.decades.length > 2) {
+      out.push(card({
+        kicker: 'By decade',
+        title: 'Every headline number, cut by era',
+        block: sparkGrid([
+          {
+            label: 'Records per decade', color: 'var(--cat-3)', xName: 'decade',
+            points: e.decades.map(function (d) { return { label: d.label, value: d.n }; }),
+            format: function (v) { return fmt(v); }
+          },
+          {
+            label: 'Mean complexity', color: 'var(--cat-1)', xName: 'decade',
+            points: e.decades.map(function (d) { return { label: d.label, value: d.meanComplexity }; }),
+            format: function (v) { return fmt(v, 2) + ' / 10'; }
+          },
+          {
+            label: 'Sacred geometry', color: 'var(--cat-6)', xName: 'decade',
+            points: e.decades.map(function (d) { return { label: d.label, value: d.sgPct }; }),
+            format: function (v) { return pct(v); }
+          },
+          {
+            label: 'UK share', color: 'var(--cat-2)', xName: 'decade',
+            points: e.decades.map(function (d) { return { label: d.label, value: d.ukPct }; }),
+            format: function (v) { return pct(v); }
+          }
+        ]),
+        reading: 'The archive\'s single-number statistics are averages over three ' +
+          'and a half centuries of very unevenly distributed records, so it is ' +
+          'worth seeing what they look like decade by decade. Only decades ' +
+          'holding at least ten records are plotted — a percentage over three ' +
+          'formations is noise wearing the costume of a trend. Two things stand ' +
+          'out. Mean complexity and the sacred-geometry rate both peak in the ' +
+          '1990s and drift down afterwards — the opposite of the popular claim ' +
+          'that formations have grown more elaborate, and consistent with the ' +
+          'flat regression on the Geometry tab. And the UK share swings hard: ' +
+          'high in the 1990s, down through the 2010s as European and North ' +
+          'American reporting picked up, then back up in the 2020s, which is far ' +
+          'more likely to be about who is currently documenting than about where ' +
+          'formations are appearing. Each panel is on its own scale.',
+        table: tableView(['Decade', 'Records', 'Mean complexity', 'Sacred geometry', 'UK share', 'Mean diameter'],
+          e.decades.map(function (d) {
+            return [d.label, d.n, fmt(d.meanComplexity, 2), pct(d.sgPct), pct(d.ukPct),
+              d.meanDiameterM == null ? '—' : fmt(d.meanDiameterM, 1) + ' m'];
+          }))
       }));
     }
 
@@ -802,6 +1332,345 @@
       ]),
       out[out.length - 1].querySelector('.r-reading')
     );
+
+    // -- scale ------------------------------------------------------------
+    var sc = R.scale;
+    if (sc && sc.buckets) {
+      out.push(card({
+        kicker: 'Scale',
+        title: 'How big are these things',
+        hero: {
+          value: fmt(sc.medianDiameterM, 0) + ' m',
+          unit: 'median diameter, across the ' + fmt(sc.reported) + ' records that state one',
+          delta: null
+        },
+        chart: barsV(sc.buckets, {
+          ariaLabel: 'Formations by diameter band',
+          unit: 'formations',
+          fill: 'var(--seq-3)'
+        }),
+        reading: 'A crop formation is a large object: the median is ' +
+          fmt(sc.medianDiameterM, 0) + ' metres across and the largest on record ' +
+          'runs to ' + fmt(sc.maxDiameterM, 0) + ' m — roughly five football pitches ' +
+          'end to end. The distribution is right-skewed, which is why the mean (' +
+          fmt(sc.meanDiameterM, 1) + ' m) sits well above the median. The caveat is ' +
+          'large: only ' + pct(sc.reportedPct) + ' of records state a diameter at ' +
+          'all, and reports that bother to measure are biased toward the ' +
+          'impressive ones, so the true archive-wide median is probably lower ' +
+          'than this figure.',
+        table: tableView(['Diameter band', 'Formations'],
+          sc.buckets.map(function (d) { return [d.label, d.value]; }))
+      }));
+
+      out[out.length - 1].insertBefore(
+        tiles([
+          { label: 'Median', value: fmt(sc.medianDiameterM, 0) + ' m', sub: 'across the reported subset' },
+          { label: 'Mean', value: fmt(sc.meanDiameterM, 1) + ' m', sub: 'pulled up by the tail' },
+          { label: 'Largest', value: fmt(sc.maxDiameterM, 0) + ' m', sub: 'on record' },
+          { label: 'Reported', value: pct(sc.reportedPct), sub: 'of records state a size' }
+        ]),
+        out[out.length - 1].querySelector('.r-reading')
+      );
+    }
+
+    if (sc && sc.byComplexity && sc.byComplexity.length > 2) {
+      out.push(card({
+        kicker: 'Size vs complexity',
+        title: 'Do the elaborate ones get bigger?',
+        chart: barsH(sc.byComplexity.map(function (d) {
+          return { label: 'complexity ' + d.label, value: d.value };
+        }), {
+          ariaLabel: 'Mean diameter by complexity band',
+          labelWidth: 160,
+          unit: 'm mean diameter',
+          valueFormat: function (v) { return fmt(v, 0) + ' m'; }
+        }),
+        reading: 'Mean diameter within each complexity band. Size and complexity do ' +
+          'rise together across the low end, which is close to a tautology — you ' +
+          'cannot fit a fifty-element fractal into a twelve-metre circle. The ' +
+          'more interesting part is the top: the most elaborate formations are ' +
+          'not the largest ones. Whatever the elaborate designs cost to produce, ' +
+          'it is evidently not paid for in ground area. Band counts are small at ' +
+          'both extremes — hover each bar for the sample behind it.',
+        table: tableView(['Complexity band', 'Mean diameter (m)', 'Records with a size'],
+          sc.byComplexity.map(function (d) { return [d.label, fmt(d.value, 1), d.n]; }))
+      }));
+    }
+
+    if (sc && sc.largest && sc.largest.length) {
+      out.push(card({
+        kicker: 'Extremes',
+        title: 'The largest formations on record',
+        block: rankList(sc.largest.map(function (d) {
+          return {
+            label: d.name,
+            value: d.diameterM,
+            sub: d.where + (d.year ? ' · ' + d.year : '') + ' · complexity ' + d.complexity + '/10'
+          };
+        }), { colorByIndex: true, format: function (v) { return fmt(v, 0) + ' m'; } }),
+        reading: 'The eight biggest by stated diameter. These are the formations ' +
+          'that carry the argument in both directions — big enough that the ' +
+          'overnight-construction claim gets genuinely demanding, and famous ' +
+          'enough that they are also the ones most likely to have had their ' +
+          'dimensions inflated in the retelling. Every figure here is as-reported; ' +
+          'none has been independently re-surveyed for this archive.',
+        table: tableView(['Formation', 'Where', 'Year', 'Diameter (m)', 'Complexity'],
+          sc.largest.map(function (d) {
+            return [d.name, d.where, d.year || '—', fmt(d.diameterM, 0), d.complexity];
+          }))
+      }));
+    }
+
+    return out;
+  }
+
+  // ------------------------------------------------------------- evidence
+  // The tab that answers "so what does this actually establish". It joins the
+  // research routine's per-formation authenticity verdict (from
+  // index/formations.md — a human judgment that exists nowhere in the CSV)
+  // with the dataset's own media-coverage field.
+
+  function buildEvidence() {
+    var ev = R.evidence, out = [];
+    if (!ev) return out;
+
+    var a = ev.authenticity;
+    var COLORS = ['var(--cat-2)', 'var(--cat-1)', 'var(--cat-3)', 'var(--div-mid)'];
+
+    out.push(card({
+      kicker: 'Verdicts',
+      title: 'What the record has actually been ruled on',
+      hero: {
+        value: fmt(a.assessed),
+        unit: 'of ' + fmt(a.total) + ' formations carry an evidence verdict',
+        delta: null
+      },
+      chart: stackedBar(a.counts.map(function (d, i) {
+        return { label: d.label, value: d.value, color: COLORS[i] };
+      }), { ariaLabel: 'Share of formations by authenticity verdict' }),
+      legend: legend(a.counts.map(function (d, i) {
+        return { label: d.label + ' — ' + fmt(d.value), color: COLORS[i] };
+      })),
+      reading: 'Each formation in the research index carries one of four verdicts, ' +
+        'assigned by the daily research agent from the sourcing it found. The ' +
+        'honest headline is the grey block: ' + fmt(a.counts[3].value) + ' records ' +
+        'are still unassessed, so every ratio drawn from this chart is a ratio ' +
+        'over the ' + fmt(a.assessed) + ' that have been looked at. Within that ' +
+        'assessed set, ' + fmt(a.humanMade) + ' are confirmed human-made — a ' +
+        'hoaxer confession, a documented competition, or an admitted marketing ' +
+        'stunt — against ' + fmt(a.unexplained) + ' with physical anomaly evidence ' +
+        'and no claimant, and ' + fmt(a.contested) + ' where credible people ' +
+        'disagree. Note which way the selection bias runs: a formation gets ' +
+        'assessed because something about it drew attention, so the assessed set ' +
+        'over-represents both confessions and anomalies relative to the quiet ' +
+        'majority.',
+      table: tableView(['Verdict', 'Formations', 'Share of archive'],
+        a.counts.map(function (d) {
+          return [d.label, d.value, fmt(100 * d.value / (a.total || 1), 1) + '%'];
+        }))
+    }));
+
+    if (ev.mediaCoverage && ev.mediaCoverage.length) {
+      var known = ev.mediaCoverage.filter(function (d) { return d.label !== 'unknown'; });
+      out.push(card({
+        kicker: 'Attention',
+        title: 'Fame and complexity do not line up',
+        chart: barsH(known.map(function (d) {
+          return { label: d.label + ' coverage', value: d.meanComplexity };
+        }), {
+          ariaLabel: 'Mean complexity by level of media coverage',
+          labelWidth: 190,
+          colorByIndex: true,
+          unit: 'mean complexity',
+          valueFormat: function (v) { return fmt(v, 2); }
+        }),
+        reading: 'Mean complexity within each media-coverage tier, across the ' +
+          fmt(ev.knownCoverage) + ' records whose coverage is known. If publicity ' +
+          'tracked how remarkable a formation is, this would be a staircase. It ' +
+          'is not: the "medium coverage" tier carries the highest mean complexity ' +
+          'in the archive, well above the very-high-coverage tier. The likeliest ' +
+          'reading is that heavy coverage attaches to formations that are ' +
+          'accessible, photogenic and near a famous monument, which is not the ' +
+          'same property as being structurally elaborate — and that the archive\'s ' +
+          'coverage field is itself a coarse after-the-fact judgment. Either way, ' +
+          'the formations the public knows are not the formations the data finds ' +
+          'most interesting.',
+        table: tableView(['Coverage', 'Formations', 'Mean complexity', 'Sacred geometry'],
+          ev.mediaCoverage.map(function (d) {
+            return [d.label, d.value, fmt(d.meanComplexity, 2), pct(d.sgPct)];
+          }))
+      }));
+
+      out[out.length - 1].insertBefore(
+        tiles(known.map(function (d) {
+          return { label: d.label + ' coverage', value: fmt(d.value), sub: 'mean complexity ' + fmt(d.meanComplexity, 2) };
+        })),
+        out[out.length - 1].querySelector('.r-reading')
+      );
+    }
+
+    if (ev.flagPct && ev.flagPct.length) {
+      out.push(card({
+        kicker: 'Anomaly flags',
+        title: 'How common each claimed feature actually is',
+        chart: barsH(ev.flagPct, {
+          ariaLabel: 'Share of the archive flagged with each encoded feature',
+          labelWidth: 170,
+          colorByIndex: true,
+          unit: '% of archive',
+          valueFormat: function (v) { return fmt(v, 1) + '%'; }
+        }),
+        reading: 'The same features the Geometry tab counts, expressed as a share ' +
+          'of the whole archive rather than as raw totals — which changes how ' +
+          'they read. Sacred geometry is flagged on about a fifth of the record; ' +
+          'everything else is a thin minority, and the two features most often ' +
+          'cited as evidence of encoded intent, binary messages and Fibonacci ' +
+          'sequences, together account for under five per cent. These flags come ' +
+          'from source records and the engine\'s scoring, not from independent ' +
+          're-measurement, so they mark where to look rather than what is true.',
+        table: tableView(['Feature', '% of archive'],
+          ev.flagPct.map(function (d) { return [d.label, fmt(d.value, 1) + '%']; }))
+      }));
+    }
+
+    return out;
+  }
+
+  // --------------------------------------------------------- research log
+  // The daily scheduled routine, treated as a subject. Everything here comes
+  // from the routine's own output files — the session notes, the angle
+  // rotation, the licensing leads — rather than from the analytics engine.
+
+  function buildProgramme() {
+    var p = R.programme, out = [];
+    if (!p) return out;
+
+    out.push(card({
+      kicker: 'The routine',
+      title: 'A research agent has been running this every morning',
+      hero: {
+        value: fmt(p.sessions),
+        unit: 'daily research sessions since ' + p.firstDate,
+        delta: null
+      },
+      chart: barsV(p.perMonth, {
+        ariaLabel: 'Research sessions per month',
+        unit: 'sessions',
+        fill: 'var(--seq-3)'
+      }),
+      reading: 'Everything on this page ultimately rests on a scheduled agent that ' +
+        'wakes up each morning, picks a research angle it has not covered ' +
+        'recently, searches, and writes up what it finds as a dated session ' +
+        'file. It has run ' + fmt(p.sessions) + ' times between ' + p.firstDate +
+        ' and ' + p.lastDate + ', producing ' + fmt(p.topicsTotal) + ' documented ' +
+        'topics — an average of ' + fmt(p.topicsPerSession, 1) + ' per session. ' +
+        'Gaps in the monthly bars are days the job did not run or did not clear ' +
+        'verification, which is a normal outcome rather than a failure.',
+      table: tableView(['Month', 'Sessions'],
+        p.perMonth.map(function (d) { return [d.label, d.value]; }))
+    }));
+
+    out[out.length - 1].insertBefore(
+      tiles([
+        { label: 'Sessions', value: fmt(p.sessions), sub: 'since ' + p.firstDate },
+        { label: 'Topics documented', value: fmt(p.topicsTotal), sub: 'formations and subjects' },
+        { label: 'Per session', value: fmt(p.topicsPerSession, 1), sub: 'average yield' },
+        { label: 'Last run', value: p.lastDate, sub: 'most recent session file' }
+      ]),
+      out[out.length - 1].querySelector('.r-reading')
+    );
+
+    if (p.angles && p.angles.length) {
+      var top = p.angles.reduce(function (a, b) { return b.value > a.value ? b : a; }, p.angles[0]);
+      out.push(card({
+        kicker: 'Rotation',
+        title: 'What it has been looking at',
+        block: rankList(p.angles.slice().sort(function (a, b) { return b.value - a.value; }).map(function (d) {
+          return {
+            label: d.label,
+            value: d.value,
+            sub: d.last ? 'last covered ' + d.last : 'never covered'
+          };
+        }), {
+          colorByIndex: true,
+          format: function (v) { return fmt(v) + (v === 1 ? ' session' : ' sessions'); }
+        }),
+        reading: 'The agent rotates through ten standing research angles. The ' +
+          'rotation is not even, and deliberately so — but it is worth watching, ' +
+          'because it has failed before. "' + top.label + '" has taken ' +
+          fmt(top.value) + ' of ' + fmt(p.sessions) + ' sessions, because it is the ' +
+          'one open-ended angle in the set: there is always one more country. A ' +
+          'meta-analysis of the first 33 sessions found it had consumed 58% of ' +
+          'them while thematic angles went five weeks untouched, and the schedule ' +
+          'now blocks it if it ran in either of the previous two sessions. This ' +
+          'chart is how you check that the guard is still holding.',
+        table: tableView(['Angle', 'Sessions', 'Last covered'],
+          p.angles.map(function (d) { return [d.label, d.value, d.last || '—']; }))
+      }));
+    }
+
+    if (p.leads && p.leads.total) {
+      var L = p.leads;
+      var LCOL = ['var(--cat-1)', 'var(--cat-2)', 'var(--div-mid)'];
+      out.push(card({
+        kicker: 'Sourcing',
+        title: 'Image licensing leads, by what you can actually use',
+        hero: {
+          value: pct(L.freePct),
+          unit: 'of ' + fmt(L.total) + ' logged leads are confirmed free or CC',
+          delta: null
+        },
+        chart: stackedBar(L.counts.map(function (d, i) {
+          return { label: d.label, value: d.value, color: LCOL[i] };
+        }), { ariaLabel: 'Image leads by licensing status' }),
+        legend: legend(L.counts.map(function (d, i) {
+          return { label: d.label + ' — ' + fmt(d.value), color: LCOL[i] };
+        })),
+        reading: 'The research routine logs every image source it finds, tagged by ' +
+          'licensing. This is the number that decides whether the archive can ' +
+          'ever be published: a commercial lead is a lead, not an image. The ' +
+          '"unrecorded" block is leads logged before the tagging rule existed — ' +
+          'the routine has been required since June to tag every new lead ' +
+          'explicitly and to run at least one open-licence query per session, so ' +
+          'the free/CC share should climb and the grey block should stop growing. ' +
+          'It is worth restating the harder constraint underneath all of this: no ' +
+          'print-resolution image exists anywhere in the free library. Every ' +
+          'free source serves web-display copies.',
+        table: tableView(['Licensing', 'Leads', 'Share'],
+          L.counts.map(function (d) {
+            return [d.label, d.value, fmt(100 * d.value / L.total, 1) + '%'];
+          }))
+      }));
+    }
+
+    if (p.recent && p.recent.length) {
+      var log = h('ol', 'r-log');
+      p.recent.forEach(function (s, i) {
+        var li = h('li', 'r-log-entry');
+        li.style.transitionDelay = (i * 40) + 'ms';
+        var head = h('div', 'r-log-head');
+        head.appendChild(h('span', 'r-log-date', s.date));
+        head.appendChild(h('span', 'r-log-angle', s.angle));
+        li.appendChild(head);
+        if (s.topics && s.topics.length) {
+          var ul = h('ul', 'r-log-topics');
+          s.topics.forEach(function (t) { ul.appendChild(h('li', null, t)); });
+          li.appendChild(ul);
+        }
+        log.appendChild(li);
+      });
+
+      out.push(card({
+        kicker: 'Latest runs',
+        title: 'The last eight mornings',
+        block: log,
+        reading: 'The most recent sessions, newest first, with the topics each one ' +
+          'documented. This is the raw feed the rest of this page is built from — ' +
+          'every chart here is a count over these write-ups. Full notes for each ' +
+          'run, including sources and the reasoning behind each authenticity ' +
+          'verdict, live in the session file for that date in the research repo.'
+      }));
+    }
 
     return out;
   }

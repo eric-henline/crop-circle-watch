@@ -207,6 +207,9 @@
 .r-delta--flat{ color:var(--text-2); }
 
 /* Stat tile row — for grouped scalar metrics that don't deserve a plot. */
+/* Tiles are inserted before .r-reading, which often puts them directly under a
+   chart with nothing between the two. */
+.r-chart-scroll + .r-tiles{ margin-top:var(--s-4); }
 .r-tiles{
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
@@ -261,9 +264,13 @@
 }
 .r-chart{ display:block; width:100%; min-width:600px; height:auto; overflow:visible; }
 
+/* `.r-chart text` is (0,1,1); a bare `.r-class` rule is (0,1,0) and loses to
+   it, so every rule that sets a non-default fill has to be scoped through
+   .r-chart to win. Setting the default on the element itself instead would
+   inherit into <use> content elsewhere on the page. */
 .r-chart text{ font-family:var(--font-mono); fill:var(--text-2); }
 .r-axis-label{ font-size:10px; letter-spacing:0.04em; }
-.r-value-label{ font-size:10.5px; fill:var(--text-1); font-variant-numeric:tabular-nums; }
+.r-chart .r-value-label{ font-size:10.5px; fill:var(--text-1); font-variant-numeric:tabular-nums; }
 .r-grid line{ stroke:var(--chart-grid); stroke-width:1; }
 .r-axis line, .r-axis path{ stroke:var(--chart-axis); stroke-width:1; }
 
@@ -291,6 +298,190 @@
 @media (prefers-reduced-motion:reduce){
   .r-line--draw{ stroke-dasharray:none; stroke-dashoffset:0; transition:none; }
   .r-bar--grow, .r-barh--grow{ transform:none; transition:none; }
+}
+
+/* Stacked share bar. The in-segment percentage is set in the mono face at a
+   size that stays legible against every palette colour; segments too narrow to
+   hold it simply omit it and rely on the legend and the tooltip. */
+.r-seg{ transition:opacity 0.15s ease; }
+.r-seg:hover{ opacity:0.85; }
+.r-seg-rect{ transform:scaleX(0); transform-origin:left; transition:transform 0.6s cubic-bezier(0.22,0.8,0.3,1); }
+.is-in .r-seg-rect{ transform:none; }
+.r-chart .r-seg-label{
+  font-size:13px;
+  font-variant-numeric:tabular-nums;
+  /* Dark ink on the mark, not the page's light body colour — every palette
+     colour here is mid-lightness, so light text on it fails contrast. */
+  fill:var(--bg-0);
+}
+
+/* Heatmap cells fade rather than grow — a scale transform on a grid of 70+
+   rects reads as the whole chart shivering. */
+.r-cell{ opacity:0; transition:opacity 0.5s ease; }
+.is-in .r-cell{ opacity:1; }
+.r-cell:hover{ stroke:var(--accent); stroke-width:1.5; }
+
+@media (prefers-reduced-motion:reduce){
+  .r-seg-rect{ transform:none; transition:none; }
+  .r-cell{ opacity:1; transition:none; }
+}
+
+/* Sparkline small multiples. Each panel carries its own y scale, so the label
+   and the current value are mandatory furniture — without them a reader would
+   compare heights across panels that don't share a scale. */
+.r-sparks{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:var(--s-3);
+}
+.r-spark{
+  padding:var(--s-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--panel-soft);
+}
+.r-spark-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--text-2);
+  margin-bottom:var(--s-2);
+}
+.r-spark-svg{ display:block; width:100%; height:62px; overflow:visible; }
+.r-spark-line{
+  stroke-dasharray:600; stroke-dashoffset:600;
+  transition:stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1);
+}
+.is-in .r-spark-line{ stroke-dashoffset:0; }
+.r-spark-foot{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:var(--s-2);
+  margin-top:10px;
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  color:var(--text-2);
+}
+.r-spark-now{ color:var(--text-0); font-size:13px; font-variant-numeric:tabular-nums; }
+
+@media (prefers-reduced-motion:reduce){
+  .r-spark-line{ stroke-dasharray:none; stroke-dashoffset:0; transition:none; }
+}
+
+/* Ranked list — HTML, not SVG, because the row labels are real place and
+   formation names that have to wrap. */
+.r-rank{
+  list-style:none;
+  margin:0; padding:0;
+  display:flex; flex-direction:column; gap:var(--s-3);
+}
+/* A hero figure's own margin is sized for a chart's top padding, which these
+   HTML blocks don't have. */
+.r-hero-figure + .r-rank,
+.r-hero-figure + .r-sparks,
+.r-hero-figure + .r-log{ margin-top:var(--s-3); }
+.r-rank-row{
+  opacity:0; transform:translateY(6px);
+  transition:opacity 0.45s ease, transform 0.45s ease;
+}
+.is-in .r-rank-row{ opacity:1; transform:none; }
+.r-rank-head{
+  display:flex; align-items:baseline; justify-content:space-between; gap:var(--s-3);
+}
+.r-rank-name{
+  font-family:var(--font-body);
+  font-size:15px;
+  line-height:1.35;
+  color:var(--text-0);
+}
+.r-rank-value{
+  flex:none;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--text-1);
+  font-variant-numeric:tabular-nums;
+}
+.r-rank-sub{
+  display:block;
+  margin-top:2px;
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  color:var(--text-2);
+}
+.r-rank-track{
+  display:block;
+  margin-top:7px;
+  height:7px;
+  border-radius:999px;
+  background:var(--panel-soft);
+  overflow:hidden;
+}
+.r-rank-fill{
+  display:block; height:100%; border-radius:999px;
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 0.7s cubic-bezier(0.22,0.8,0.3,1);
+}
+.is-in .r-rank-fill{ transform:none; }
+
+@media (prefers-reduced-motion:reduce){
+  .r-rank-row{ opacity:1; transform:none; transition:none; }
+  .r-rank-fill{ transform:none; transition:none; }
+}
+
+/* Session log — the daily routine's recent runs, rendered as a dated feed
+   rather than a chart, because the content is text. */
+.r-log{ list-style:none; margin:0; padding:0; }
+.r-log-entry{
+  position:relative;
+  padding:0 0 var(--s-4) var(--s-4);
+  border-left:1px solid var(--border);
+  opacity:0; transform:translateY(6px);
+  transition:opacity 0.45s ease, transform 0.45s ease;
+}
+.is-in .r-log-entry{ opacity:1; transform:none; }
+.r-log-entry:last-child{ padding-bottom:0; border-left-color:transparent; }
+.r-log-entry::before{
+  content:'';
+  position:absolute; left:-4.5px; top:6px;
+  width:8px; height:8px; border-radius:50%;
+  background:var(--accent-dim);
+  box-shadow:0 0 0 3px var(--panel);
+}
+.r-log-entry:first-child::before{ background:var(--accent); }
+.r-log-head{ display:flex; align-items:baseline; flex-wrap:wrap; gap:var(--s-2) var(--s-3); }
+.r-log-date{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--signal);
+  font-variant-numeric:tabular-nums;
+}
+.r-log-angle{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--text-2);
+  padding:2px 8px;
+  border:1px solid var(--border);
+  border-radius:999px;
+}
+.r-log-topics{
+  margin:8px 0 0; padding:0;
+  list-style:none;
+  display:flex; flex-direction:column; gap:3px;
+}
+.r-log-topics li{
+  font-family:var(--font-body);
+  font-size:14px;
+  line-height:1.5;
+  color:var(--text-1);
+}
+.r-log-topics li::before{ content:'— '; color:var(--text-2); }
+
+@media (prefers-reduced-motion:reduce){
+  .r-log-entry{ opacity:1; transform:none; transition:none; }
 }
 
 /* Legend — always present for 2+ series so identity is never colour-alone. */

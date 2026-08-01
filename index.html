@@ -230,17 +230,30 @@
       </div>
     </div>
 
-    <!-- Four peer widgets in a 2x2 grid. Recent coverage and Discussion forums
-         used to be nested inside Field footage and Live chatter respectively,
-         which is why neither read as a real section. DOM order sets both the
-         desktop grid placement (left column: footage, coverage / right column:
-         chatter, forums) and the single-column phone stack. -->
+    <!-- Four peer widgets in two columns. They are wrapped in explicit column
+         elements rather than laid out as a 2x2 CSS grid: a grid forces both
+         boxes in a row to share the row's height, and these four have wildly
+         different natural heights (Live chatter runs ~900px, Discussion forums
+         ~370px), so the grid version left two large dead gaps. Flex columns let
+         each box sit directly under the one above it.
+         On phones the columns collapse to `display:contents` and the widgets
+         re-order (see `order` in styles.css) so the stack stays
+         footage → chatter → coverage → forums. -->
     <div class="widget-grid">
+     <div class="widget-col widget-col--main">
       <section class="widget widget-footage" aria-labelledby="videoHeading">
         <h2 id="videoHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-play"/></svg>Field footage</h2>
         <div class="video-strip" id="videoStrip"><!-- populated by app.js --></div>
       </section>
 
+      <section class="widget widget-news" aria-labelledby="newsHeading">
+        <h2 id="newsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg>Recent coverage</h2>
+        <p class="widget-sub">Articles, documentaries, podcasts and events about the phenomenon itself — not the formation reports, which are in the timeline below.</p>
+        <ul class="news-list" id="newsList"><!-- populated by app.js --></ul>
+      </section>
+     </div>
+
+     <div class="widget-col widget-col--side">
       <section class="widget widget-social" aria-labelledby="socialHeading">
         <h2 id="socialHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rss"/></svg>Live chatter</h2>
         <p class="widget-sub">Public Bluesky posts matching crop-circle terms, pulled fresh by the daily scan, plus any posts hand-checked against a formation. Bluesky posts load live right here; X no longer allows that, so X posts show as cards — tap through for the thread. Chatter is unverified: treat it as what people are saying, not as a source.</p>
@@ -259,12 +272,6 @@
         </div>
       </section>
 
-      <section class="widget widget-news" aria-labelledby="newsHeading">
-        <h2 id="newsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg>Recent coverage</h2>
-        <p class="widget-sub">Articles, documentaries, podcasts and events about the phenomenon itself — not the formation reports, which are in the timeline below.</p>
-        <ul class="news-list" id="newsList"><!-- populated by app.js --></ul>
-      </section>
-
       <!-- Standing Reddit venues. Static links by necessity: Reddit's JSON
            endpoints aren't CORS-readable from a static origin. -->
       <section class="widget widget-forums" aria-labelledby="forumsHeading">
@@ -272,6 +279,7 @@
         <p class="widget-sub">Where the community talks between formations. Entry points, not a feed.</p>
         <div class="reddit-links" id="redditForums"><!-- populated by app.js --></div>
       </section>
+     </div>
     </div>
 
     <button class="scroll-cue" id="scrollCue" type="button">

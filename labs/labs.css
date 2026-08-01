@@ -1,0 +1,225 @@
+/* ==========================================================================
+   labs.css — shared chrome for the formation studies.
+
+   Consumes the site's theme tokens from ../styles.css; defines no colours of
+   its own. Used by labs/index.html (all studies on one page, for comparison)
+   and by the single-study wrapper pages.
+
+   No asterisk-slash sequences inside comment bodies — one of those inside a
+   CSS comment silently swallowed an entire rule once.
+   ========================================================================== */
+
+body{ margin:0; min-height:100vh; }
+
+.lab{
+  max-width:1180px;
+  margin:0 auto;
+  padding:var(--s-6) var(--s-4) var(--s-7);
+}
+
+.lab-head{ max-width:66ch; margin-bottom:var(--s-6); }
+.lab-eyebrow{
+  margin:0 0 var(--s-2);
+  font-family:var(--font-mono); font-size:11px;
+  letter-spacing:0.18em; text-transform:uppercase; color:var(--accent);
+}
+.lab-title{
+  margin:0 0 var(--s-3);
+  font-family:var(--font-display); font-weight:800;
+  font-size:clamp(30px,5vw,50px); line-height:1.04; letter-spacing:-0.02em;
+  color:var(--text-0);
+}
+.lab-lede{
+  margin:0; font-family:var(--font-body); font-size:16.5px;
+  line-height:1.6; color:var(--text-1);
+}
+
+/* ---- one study --------------------------------------------------------- */
+
+.study{
+  padding-top:var(--s-6);
+  border-top:1px solid var(--border);
+}
+.study + .study{ margin-top:var(--s-6); }
+
+.study-head{ max-width:70ch; margin-bottom:var(--s-4); }
+.study-index{
+  font-family:var(--font-mono); font-size:11px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--accent); margin:0 0 var(--s-2);
+}
+.study-title{
+  margin:0 0 var(--s-2);
+  font-family:var(--font-display); font-weight:700;
+  font-size:clamp(22px,3vw,30px); line-height:1.15; letter-spacing:-0.01em;
+  color:var(--text-0);
+}
+.study-lede{
+  margin:0; font-family:var(--font-body); font-size:15.5px;
+  line-height:1.6; color:var(--text-1);
+}
+
+/* ---- stage ------------------------------------------------------------- */
+
+.stage{
+  position:relative;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:
+    radial-gradient(120% 90% at 50% 45%, rgba(107,255,194,0.045), transparent 62%),
+    var(--panel-soft);
+  overflow:hidden;
+}
+.stage-svg{ display:block; width:100%; height:auto; }
+
+/* Readouts are HTML, not SVG text, so they never scale with the viewBox.
+   SVG text scales with the viewBox and turns to 4px mush on a phone. */
+.hud{
+  position:absolute; inset:0;
+  pointer-events:none;
+  font-family:var(--font-mono);
+}
+.hud-corner{
+  position:absolute;
+  padding:10px 13px;
+  font-size:10.5px; line-height:1.75;
+  letter-spacing:0.06em;
+  color:var(--text-2);
+}
+.hud-tl{ top:0; left:0; }
+.hud-tr{ top:0; right:0; text-align:right; }
+.hud-bl{ bottom:0; left:0; }
+.hud-br{ bottom:0; right:0; text-align:right; }
+
+.hud-k{ color:var(--text-2); }
+.hud-v{ color:var(--accent); font-variant-numeric:tabular-nums; }
+.hud-v--signal{ color:var(--signal); }
+/* Flashes at the moment a count changes for a real reason. */
+.hud-v--split{
+  color:var(--signal);
+  text-shadow:0 0 12px rgba(255,180,84,0.55);
+}
+
+.phase{
+  position:absolute; left:50%; bottom:26px;
+  transform:translateX(-50%);
+  max-width:calc(100% - 40px);
+  margin:0;
+  padding:7px 16px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:rgba(7,11,18,0.82);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  font-family:var(--font-mono); font-size:11.5px;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--text-1);
+}
+.phase b{ color:var(--signal); font-weight:400; }
+
+/* ---- controls ---------------------------------------------------------- */
+
+.controls{
+  display:flex; align-items:center; gap:var(--s-3);
+  margin-top:var(--s-3); flex-wrap:wrap;
+}
+.btn{
+  appearance:none; cursor:pointer;
+  padding:7px 15px;
+  border:1px solid var(--accent-dim); border-radius:999px;
+  background:none; color:var(--accent);
+  font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.06em;
+}
+.btn:hover{ background:rgba(107,255,194,0.08); }
+.btn[aria-pressed="true"]{ background:rgba(107,255,194,0.14); }
+
+.scrub{ flex:1; min-width:180px; display:flex; align-items:center; gap:var(--s-2); }
+.scrub input[type="range"]{
+  flex:1; appearance:none; height:3px; border-radius:3px;
+  background:linear-gradient(90deg,var(--accent-dim) var(--fill,0%),rgba(169,186,200,0.18) var(--fill,0%));
+  cursor:pointer;
+}
+.scrub input[type="range"]::-webkit-slider-thumb{
+  appearance:none; width:13px; height:13px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--bg-0); cursor:pointer;
+}
+.scrub-label{
+  font-family:var(--font-mono); font-size:10.5px; color:var(--text-2);
+  font-variant-numeric:tabular-nums; min-width:38px;
+}
+
+/* ---- accumulated analysis log ------------------------------------------
+   A floating column beside the figure collides with the graphic under ~700px,
+   so the log sits below the stage. Entries dim until p reaches them, then
+   latch on; scrubbing back un-latches them, same as everything else. */
+
+.log{
+  margin:var(--s-4) 0 0;
+  padding:0; list-style:none;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(232px,1fr));
+  gap:var(--s-2) var(--s-4);
+  font-family:var(--font-mono); font-size:11px; line-height:1.5;
+}
+.log li{
+  display:flex; gap:10px; align-items:baseline;
+  padding:6px 0 6px 10px;
+  border-left:1px solid var(--border);
+  color:var(--text-2);
+  opacity:0.32;
+  transition:opacity 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.log li.on{ opacity:1; color:var(--text-1); border-left-color:var(--accent-dim); }
+.log li.key.on{ border-left-color:var(--signal); color:var(--text-0); }
+.log-i{ color:var(--text-2); font-variant-numeric:tabular-nums; }
+.log li.on .log-i{ color:var(--accent); }
+.log li.key.on .log-i{ color:var(--signal); }
+
+.study-note,
+.lab-note{
+  max-width:76ch; margin:var(--s-4) 0 0;
+  font-family:var(--font-mono); font-size:11px; line-height:1.75; color:var(--text-2);
+}
+.study-note + .study-note,
+.lab-note + .lab-note{ margin-top:var(--s-3); }
+.study-note b,
+.lab-note b{ color:var(--text-1); font-weight:400; }
+
+.lab-foot{
+  margin-top:var(--s-7); padding-top:var(--s-4);
+  border-top:1px solid var(--border);
+}
+
+/* On a phone the stage is only ~340px wide, and an overlaid HUD both covers
+   the figure and collides with itself. Below 640px the readouts stop being an
+   overlay and become a tidy block underneath, leaving the graphic clear. */
+@media (max-width:640px){
+  .lab{ padding-inline:var(--s-3); }
+
+  .hud{
+    position:static;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2px var(--s-3);
+    padding:var(--s-3) var(--s-3) calc(var(--s-3) + 2px);
+    border-top:1px solid var(--border);
+    pointer-events:auto;
+  }
+  .hud-corner{
+    position:static;
+    padding:0;
+    text-align:left;
+    font-size:10px;
+  }
+  .phase{
+    position:static;
+    transform:none;
+    grid-column:1 / -1;
+    justify-self:start;
+    margin-top:var(--s-2);
+    max-width:100%;
+    font-size:10px;
+    letter-spacing:0.1em;
+    white-space:normal;
+  }
+}

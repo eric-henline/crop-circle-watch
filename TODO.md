@@ -1,9 +1,9 @@
 # Dashboard To-Do — implementation plan
 
-Seven items. Ordered by dependency and payoff. File/line references are against
-the state of the repo on 2026-07-27.
+Ten items. Ordered by dependency and payoff. File/line references are against
+the state of the repo on 2026-07-27 unless noted.
 
-**Status as of 2026-07-27:**
+**Status as of 2026-08-01:**
 
 | # | Item | Status |
 |---|------|--------|
@@ -11,25 +11,86 @@ the state of the repo on 2026-07-27.
 | 2 | Crop Circle Watch sign-off block | **done** |
 | 3 | Recent Coverage — more words | **done** |
 | 4 | Recent Coverage — videos/docs/community | **done** (needs scan to populate) |
-| 5a | Reddit forum links | **done** (URLs need one verification pass) |
-| 5b | Live social posts | **decided**: build-time via the daily scan — not built yet |
+| 5a | Reddit forum links | **done** (URLs still unverified — see follow-ups) |
+| 5b | Live social posts | **done for Bluesky**; Reddit half still open |
 | 6 | Research tab | **done** — 5 sub-tabs, 13 cards, 11 charts |
-| 7 | Formation animation | **designed** — see [ANIMATION.md](ANIMATION.md); not built |
+| 7 | Formation animation | **superseded by 8/9** — all studies now live in `labs/index.html` |
+| 8 | Animation v1 rework — simultaneous draw, solids, pattern-finding | **done** — 4/4 incidences verified |
+| 9 | Animation for other formation types (lattice → sphere shell) | **done** — lattice study built; 3/3 incidences verified |
+| 11 | Shared animation engine + one comparison page | **done** — `labs/anim-engine.js` + `labs/studies.js` + `labs/index.html` |
+| 10 | Split Recent Coverage and Discussion Forums into their own boxes | **done** — 2x2 grid, four peer widgets |
 
 ### Open follow-ups
 
-- **Verify the four Reddit URLs.** They were written from knowledge; reddit.com
-  was unreachable from the environment. Open each once and drop any that
-  don't resolve to a live, on-topic subreddit. See the TODO in `data.js`.
-- **Populate `COVERAGE`.** The array ships empty by design. `dashboard_scan_prompt.md`
-  Step 2c now instructs the daily scan to fill it; nothing appears until it does.
-- **#5b build-time social feed.** Decided architecture: extend `scan_dashboard.sh`
-  to fetch Bluesky (public API, no auth) + Reddit (OAuth client-credentials) and
-  commit a `social.js`. No new hosting, no runtime keys. X stays a link-out —
-  read access is ~$200/mo and not worth it.
-- **Scatter plot overplotting.** ~353 points render as ~40 visible dots because
-  half the archive sits inside two degrees of latitude. The card text now says so
-  explicitly, but a UK inset or a density/hexbin treatment would be better.
+- **Verify the four Reddit URLs.** Still open, and now known to be
+  **unverifiable from an agent environment** — retried 2026-07-31 and all four
+  routes fail: `about.json` 403s, `old.reddit.com` bounces to a login wall that
+  answers identically for a fake subreddit name (so it proves nothing), the
+  agent browser blocks the domain by policy, and the search tool cannot crawl
+  reddit.com. Do it in an ordinary logged-in browser, or fold it into the #5b
+  work below — the Reddit OAuth client-credentials token that feed needs also
+  lifts the 403 on `about.json`, which makes this a scripted check instead of a
+  manual one. Details in the comment above `REDDIT_FORUMS` in `data.js`.
+- ~~**Populate `COVERAGE`.**~~ **Done 2026-08-01.** Eight verified items (news,
+  podcast, event, Croppie commentary) covering Apr–Jul 2026, newest first. Every
+  URL was opened and returns 200 before being written. The widget also no longer
+  falls back to `STORIES`: `coverageItems()` used to build its list from every
+  formation entry with `COVERAGE` appended, so "Recent coverage" was the
+  formation feed a second time — the same titles and videos already shown in
+  Field footage directly above it. It is `COVERAGE`-only now, and renders its
+  empty state rather than padding with the feed. `dashboard_scan_prompt.md`
+  Step 2c still governs how the daily scan adds to it.
+- ~~**#5b build-time social feed.**~~ **Done for Bluesky.** `fetch_social.py`
+  runs as a non-fatal step in `scan_dashboard.sh` before `claude -p`, writes
+  `social.js` (`window.SOCIAL_FEED`), and the scan prompt now stages it
+  alongside `data.js`. `renderSocialPosts()` appends the feed behind the
+  hand-checked per-story posts and tags every feed card **unverified**. X stays
+  a link-out as decided.
+
+  Two things worth knowing before touching it:
+  - **Use `api.bsky.app`, not `public.api.bsky.app`.** The latter serves a
+    styled 403 HTML page for the `searchPosts` route specifically while other
+    routes on the same host work fine, so a host-level health check passes and
+    the query still fails.
+  - **The raw search is mostly noise.** `sort=latest` on `"crop circle"` is
+    dominated by two word-list memes that put the phrase in a list of unrelated
+    terms. `sort=top` plus the corroboration gate, the word-list shape check,
+    and a 2-per-author cap in `fetch_social.py` are what make the output worth
+    showing — the first unfiltered run put six of eight slots on one account.
+
+  **Reddit is still not done.** It needs the OAuth client-credentials flow
+  (unauthenticated Reddit 403s everything from a script), which is the same
+  credential the URL-verification follow-up above wants. Do them together.
+- **Bad archive record: "Silbury Hill Cube".** `analytics/data/all_formations.csv`
+  carries `Silbury Hill Cube, 2009-07-05, 3d_cube_hexagonal, complexity 9`.
+  Checked while building the v1 animation: Temporary Temples lists exactly one
+  Silbury Hill formation on 5 July 2009 — the Mayan Headdress — and no source
+  found describes a hexagonal-cube formation at that site. The CSV also holds a
+  *separate* row for that same date ("Quetzalcoatl Headdress"), so this looks
+  like a duplicated date on fabricated seed data. It should be corrected or
+  dropped; it currently inflates the `3d_cube_hexagonal` and sacred-geometry
+  counts on the Research page. `labs/formation-anim.html` was built without the
+  attribution as a result.
+- **Placement decision for the two animations.** Both labs are standalone and
+  neither is linked from the site. ANIMATION.md §6 recommends option C — open
+  the Research page's "Geometry & pattern" tab with the cube piece and link the
+  lab as the full-screen version. Still undecided for the Julia set.
+- ~~**Scatter plot overplotting.**~~ **Done.** `scatterGeo()` is now two panels:
+  the world plot for international context, plus a data-derived detail inset
+  (densest one-degree cell, tightened onto its contents — currently 51.0–51.9°N,
+  2.1–1.0°W at ×126 scale) with a dashed callout box and leaders on the world
+  panel. The inset re-projects with a cos(latitude) longitude scale so the
+  cluster is not stretched sideways.
+
+  **The investigation turned up the real cause, and it is a data problem.** Zoom
+  alone does not fix it: the 146 formations in that cell sit on only **87
+  distinct coordinates** — 16 records share 51.4290,-1.8550, 13 share
+  51.3500,-1.9500, and so on. Those are village- or site-level fixes recorded as
+  if they were field-level ones, and no magnification separates identical
+  numbers. The inset therefore groups by coordinate and sizes each symbol by
+  count (area-proportional, with a size key), and both the caption and the card
+  text now state the distinct-coordinate figure outright. Worth a pass over the
+  archive to re-fix the worst offenders against a real source.
 
 ### What shipped for the research tab
 
@@ -258,21 +319,196 @@ Plan:
 
 ---
 
+## Phase 4 — Motion, second pass (added 2026-08-01)
+
+### 8. Rework animation v1: simultaneous construction, solids, pattern-finding
+
+Feedback on `labs/formation-anim.html`: the hexagonal cube is a good start, but
+the sequential compass construction is the wrong feel. Four changes, in order:
+
+- **Draw everything at once.** Kill the per-primitive stagger — all seven
+  circles and all twelve lines begin drawing on the same frame and complete
+  together. This is a small change mechanically (every primitive's `[pIn,pOut]`
+  window collapses to the same window) but it changes the piece from "watch a
+  construction being taught" to "watch a figure resolve out of nothing." Keep
+  the draw-on itself; it is only the staggering that goes. Acts I–III as
+  currently written stop existing as separate beats, so the act boundaries and
+  the phase captions need re-cutting around the new shape.
+- **Circles become spheres.** Each of the seven construction circles becomes a
+  sphere once the figure lifts. Cheapest honest read at this scale: a great
+  circle plus two foreshortened ellipses whose axes track the rotation, rather
+  than shading — it stays a wireframe piece and matches the site's line-art
+  register. A radial gradient behind each is optional and probably too much.
+- **Some lines become planes or solids.** Extrapolate rather than decorate: the
+  three pairs of parallel hexagon edges each bound a rhombus that is already a
+  cube face in projection, so those promote to filled faces for free. The three
+  spokes meeting at each centre vertex bound the two "cups" that read as the
+  Necker ambiguity. Rule to hold to — **only promote a shape the geometry
+  already implies.** If it needs a new vertex invented to close it, it does not
+  belong.
+- **Then rotate and flip it**, as now, but with the solids present. The flip
+  (mirroring through the centre) is a real operation here: it is the Necker
+  ambiguity made literal, and it should be a distinct beat from the spin.
+- **Find the pattern and draw it.** The genuinely new ask, and the hard part.
+  Look for real incidences in the resolved figure and stroke them in as a final
+  analysis layer: the 8 sphere centres and 7 projected points are already
+  known; candidates are collinear triples, concurrent lines, equal-length
+  chords, and the two inscribed tetrahedra (already built). Compute these
+  numerically at build time and only draw what actually holds to tolerance —
+  the same discipline as the rest of the site. A pattern layer that draws
+  suggestive lines which are not really there would undercut the whole project.
+
+The current `render(p)` is already a pure function of `p` with everything
+recomputed per frame, so none of this needs an architecture change — but the
+act table in [ANIMATION.md](ANIMATION.md) §3 will need rewriting, since it
+describes exactly the sequential construction being removed.
+
+**Cost:** ~1–2 sessions. The pattern-finding pass is most of it, and is worth
+prototyping on its own before touching the existing acts.
+
+### 9. Animations for other formation types
+
+The hexagonal cube works because the formation is genuinely a projection of a
+solid. Extend the same treatment to other archive formations built from lines
+and circles, one lab page each, reusing the shell from
+`labs/formation-anim.html`.
+
+First target — **Odstone Barn, 16 July 2026** (`2026-07-16-odstone-barn` in
+`data.js`; nr Wayland's Smithy, Oxfordshire, ~70 m, aerials by Nick Bull). The
+design is a square lattice / grid block sitting inside a ring. Sequence:
+
+1. The flat lattice and its ring, drawn as now.
+2. The lattice extrudes into a **3D cube lattice** — a grid of cells rather
+   than a single cube, so this needs a different primitive set from item 8.
+3. The ring opens out of the plane into a **half sphere shell** around the
+   lattice — a bowl, cut so the lattice inside stays visible.
+4. The shell closes into a **full sphere** enclosing the lattice, which is the
+   final held figure.
+
+Steps 3 and 4 are the interesting problem: a wireframe sphere that reads as
+enclosing rather than as a flat circle needs latitude/longitude lines with
+correct hidden-line treatment, and the existing convex hidden-edge test in
+`formation-anim.html` does not generalise to a sphere plus contents. Prototype
+the shell alone first.
+
+Candidates after that, all with an honest 3D or structural reading — check each
+against the archive before committing: Windmill Hill 2011 (`hexagonal_web`),
+Six-Mile Bottom 2007 (`star_hexagram`), Wiltshire 2023 (`metatrons_cube`,
+dense but the richest), Oliver's Castle 1997 (`snowflake_hexagonal`).
+
+**Before naming any of them on screen, verify the record** — see the "Silbury
+Hill Cube" entry under Open follow-ups for why that is not a formality.
+
+**Cost:** ~1 session per formation once the shell primitive exists.
+
+---
+
+## Phase 5 — Layout
+
+### 10. Recent Coverage and Discussion Forums get their own boxes
+
+Both are currently nested inside other widgets rather than standing on their
+own, which is why neither reads as a real section:
+
+- **Recent coverage** is a `.widget-news-nested` *inside* the Field footage
+  widget ([index.html:232](index.html)), sharing its box.
+- **Discussion forums** is an `h3` inside a `.reddit-block` at the bottom of
+  the Live chatter widget ([index.html:257](index.html)), below the keyword
+  search — the least prominent position on the page.
+
+Plan:
+- Promote both to top-level `.widget` sections in `.widget-grid`, each with its
+  own `h2` and sprite icon, matching Field footage and Live chatter. Recent
+  coverage keeps `#icon-doc`; Discussion forums should get its own rather than
+  reusing `#icon-rss`, which now belongs to Live chatter.
+- **Recent coverage box a bit shorter, Discussion forums a bit larger.** With
+  four boxes the grid needs re-balancing rather than just a height tweak —
+  decide the new `.widget-grid` template first, then size within it. Recent
+  coverage can afford to lose a row (it renders `stories.slice(0,6)` with the
+  top items as `.news-item--lead`); Discussion forums has room to grow because
+  the four links currently render as a compact row and could carry the `note`
+  field per forum on its own line.
+- Check the sub-720px stacking: four boxes stack to a long column on a phone,
+  so the order matters more than it did with two.
+
+**Cost:** under a session, but it touches `.widget-grid`, so screenshot both
+breakpoints before and after.
+
+### 11. Widget column re-layout — done 2026-08-01
+
+Follow-up to #10, which left the grid unbalanced. The 2×2 grid was replaced
+with two flex columns wrapped in `.widget-col` elements. A grid row forces both
+its boxes to start at the same y, so the shorter of each pair left a hole
+underneath it: 150px under Field footage and 390px under Discussion forums,
+1673px of block for 1439px of content. Flex columns stack each box directly
+under the one above; the block is now 1559px with no internal gaps.
+
+Also in this pass: `.widget h2` went from 11.5px to 16px with a rule and a
+bright accent icon (at caption size the four boxes read as one undivided field
+of content), and `.news-meta` was split into per-part spans so `.news-date`
+could take the site's amber `--signal` — in a uniformly grey meta line the date
+was the hardest part to pick out and the part you scan for.
+
+**Watch out for:** the phone media query has to flip `align-items` back to
+`stretch`. On the desktop row `flex-start` keeps the two columns from matching
+heights; on the stacked column it is the cross axis, and it shrink-wraps every
+box to its own min-content — which is how the Bluesky iframe got out to 446px
+inside a 343px viewport again.
+
+### 12. Research page expansion — done 2026-08-01
+
+Five tabs to seven, 15 cards to 29. New **Evidence** and **Research log** tabs,
+plus scale/sites cards on Geography and Geometry and a decade cut on Time.
+
+The structural change is that `export_research_json.py` now reads the daily
+research routine's own markdown — `index/formations.md` for the per-formation
+Authenticity verdict, `index/image-leads.md` for the licensing split,
+`sessions/*.md` for angle and topics — alongside the analytics engine's CSV.
+None of that is derivable from the CSV; it is the routine's judgment and
+process record, and it is what the two new tabs are built from. See the
+Research page section of `README.md` for the full pipeline, the four new chart
+primitives, the thin-data thresholds, and the `.r-chart text` specificity trap.
+
+**Still open here:** the exporter only runs by hand. The Research log tab goes
+stale as soon as the next morning's session lands, so it wants a hook on the
+daily runner, not just the Sunday one.
+
+---
+
 ## Suggested order
 
-1. Phase 0 (#1, #2) — fast, visible, self-contained.
-2. #5a Reddit links — cheap.
-3. #3 + #4 — one pass, since both touch `renderNews()` and the scan prompt.
-4. #5b Bluesky live search.
-5. #6 Research tab — own branch.
-6. #7 Animation — last; purely additive.
+1. ~~Phase 0 (#1, #2)~~ — done.
+2. ~~#5a Reddit links~~ — done (URLs still need verifying).
+3. ~~#3 + #4~~ — done.
+4. ~~#5b Bluesky~~ — done; Reddit half still open.
+5. ~~#6 Research tab~~ — done.
+6. ~~#7 Animation~~ — both concepts built, neither placed.
+
+7. ~~#10 layout split~~ — done 2026-08-01.
+8. ~~#11 widget column re-layout + #12 research expansion~~ — done 2026-08-01.
+
+Remaining, in order:
+
+8. **#8 animation v1 rework** — supersedes the current acts, so do it before
+   deciding where the animation lives on the site.
+9. **#9 other formations** — depends on the sphere-shell primitive, which is
+   new work; start with Odstone Barn.
+10. Placement for all animations (see Open follow-ups) — decide once #8 is
+    settled, since the reworked piece is what actually ships.
 
 ## Cross-cutting notes
 
 - Every schema change to `data.js` must be reflected in **both** its header
   comment and `dashboard_scan_prompt.md`, or the daily scan silently stops
   filling the new fields.
-- New pages must be added to the `.site-nav` block in `index.html`,
-  `about.html`, and the new `research.html`.
+- New pages must be added to the `.site-nav` block in **every** page that has
+  one — currently `index.html`, `about.html`, `research.html`, and
+  `resources.html`. The nav is duplicated markup, not a partial, so a new tab is
+  four edits and it is easy to miss one.
+- Flex and grid items default to `min-width:auto`, which means a track cannot
+  shrink below its widest child's min-content. `.widget-col` and
+  `.widget-col > .widget` both set `min-width:0` for exactly this reason —
+  without it the Bluesky embed iframe pushes the phone layout wider than the
+  viewport. Keep that in mind before adding embeds to any other flex track.
 - No build step and no third-party JS — preserve that. It is why this site has
   survived a year of daily automated commits without breaking.

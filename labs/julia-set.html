@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stonehenge Julia Set — formation study</title>
+
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,500;1,400&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="labs.css">
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <radialGradient id="ccGlow">
+      <stop offset="0%"   stop-color="var(--signal)" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="var(--signal)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<main class="lab">
+  <header class="lab-head">
+    <p class="lab-eyebrow">Formation study — single view</p>
+    <h1 class="lab-title">Stonehenge Julia Set</h1>
+    <p class="lab-lede">
+      One study on its own. All three are on
+      <a href="index.html">the comparison page</a>.
+    </p>
+  </header>
+
+  <div id="studies"></div>
+</main>
+
+<script src="anim-engine.js"></script>
+<script src="studies.js"></script>
+<script>
+(function () {
+  'use strict';
+  var spec = window.STUDIES.julia;
+  spec.index = 'Study 03';
+  window.__STUDY = window.ANIM.mount(document.getElementById('studies'), spec);
+})();
+</script>
+
+</body>
+</html>

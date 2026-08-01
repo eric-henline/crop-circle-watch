@@ -652,25 +652,33 @@ body.compact .brand-text h1{ font-size:16px; }
 /* Widgets: news / video / social                                        */
 /* ---------------------------------------------------------------------- */
 
-/* 2x2. Four peer widgets, placed by DOM order:
-     row 1  Field footage (wide)  |  Live chatter (narrow)
-     row 2  Recent coverage       |  Discussion forums
-   `align-items:start` matters — without it every box stretches to its row's
-   tallest, and Discussion forums (four links) would inflate to match Recent
-   coverage. Each box sizes to its own content instead. */
-.widget-grid{
-  display:grid; grid-template-columns:2fr 1fr; gap:var(--s-4);
-  margin-bottom:var(--s-5);
-  align-items:start;
-}
+/* Two columns of stacked widgets:
+     main (2fr)  Field footage    →  Recent coverage
+     side (1fr)  Live chatter     →  Discussion forums
 
-/* Grid items default to min-width:auto, so a `1fr` track can never shrink below
-   its widest item's min-content. The Bluesky embed iframe inside Live chatter
-   has a large intrinsic minimum, which dragged the single-column track out to
-   446px inside a 343px container on a phone — every widget then matched the
-   track and overflowed the viewport. (Pre-dates the 2x2 split; the same item
-   was in this grid before.) min-width:0 lets the track honour the container. */
-.widget-grid > .widget{ min-width:0; }
+   This used to be a 2x2 CSS grid, which was the wrong tool: grid rows force
+   both boxes in a row to start at the same y, so the shorter box in each row
+   left a hole underneath it. Live chatter runs ~890px against Field footage's
+   ~730px, and Recent coverage ~760px against Discussion forums' ~375px — two
+   dead gaps of 150px and 390px. Flex columns stack each box directly under the
+   one above it, so the whole block closes up. */
+.widget-grid{
+  display:flex; gap:var(--s-4);
+  margin-bottom:var(--s-5);
+  align-items:flex-start;
+}
+.widget-col{
+  display:flex; flex-direction:column; gap:var(--s-4);
+  /* Flex items default to min-width:auto, so a track can never shrink below its
+     widest item's min-content. The Bluesky embed iframe inside Live chatter has
+     a large intrinsic minimum, which dragged the column out past its share and
+     overflowed the viewport on a phone. min-width:0 lets it honour the flex
+     basis instead. */
+  min-width:0;
+}
+.widget-col--main{ flex:2 1 0; }
+.widget-col--side{ flex:1 1 0; }
+.widget-col > .widget{ min-width:0; }
 
 .widget{
   background:var(--panel);
@@ -681,7 +689,7 @@ body.compact .brand-text h1{ font-size:16px; }
   min-height:0;
 }
 
-/* Field footage — the primary widget, top-left of the grid. */
+/* Field footage — the primary widget, top of the main column. */
 .widget-footage{
   min-height:420px;
 }
@@ -691,19 +699,24 @@ body.compact .brand-text h1{ font-size:16px; }
    it reads as a deliberate panel rather than an offcut sitting under Live
    chatter. */
 .widget-forums{
-  min-height:260px;
+  min-height:240px;
 }
 
+/* Widget headings. Deliberately larger than the site's other mono chrome — at
+   11.5px these read as captions and the four boxes looked like one undivided
+   field of content. They are the only labels telling you what each box is, so
+   they carry a rule and a bright accent icon and sit at display scale. */
 .widget h2{
-  display:flex; align-items:center; gap:8px;
-  font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
-  color:var(--text-1); margin:0 0 var(--s-3); font-weight:400;
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--font-mono); font-size:16px; letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--text-0); margin:0 0 var(--s-3); padding-bottom:10px; font-weight:400;
+  border-bottom:1px solid var(--border);
 }
-.widget h2 svg{ width:14px; height:14px; color:var(--accent-dim); flex-shrink:0; }
+.widget h2 svg{ width:19px; height:19px; color:var(--accent); flex-shrink:0; }
 
 .widget-sub{
   font-family:var(--font-body); font-style:italic; font-size:12.5px;
-  color:var(--text-2); margin:-4px 0 var(--s-3); line-height:1.55;
+  color:var(--text-2); margin:-2px 0 var(--s-3); line-height:1.55;
 }
 
 .news-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--s-3); }
@@ -711,7 +724,17 @@ body.compact .brand-text h1{ font-size:16px; }
 .news-item a:hover{ text-decoration:none; }
 .news-item a:hover .news-title{ color:var(--accent); }
 .news-title{ font-family:var(--font-body); font-size:15px; color:var(--text-0); line-height:1.4; }
-.news-meta{ font-family:var(--font-mono); font-size:10.5px; color:var(--text-2); letter-spacing:0.04em; }
+.news-meta{
+  display:flex; align-items:baseline; flex-wrap:wrap; gap:0 6px;
+  font-family:var(--font-mono); font-size:10.5px; color:var(--text-2); letter-spacing:0.04em;
+}
+.news-meta-sep{ color:var(--text-2); opacity:0.5; }
+/* The date is tinted amber — the one part of the meta line you actually scan
+   for, and previously indistinguishable from the outlet beside it. Amber is
+   already this site's "recency / time" colour (the last-formation chip, the
+   non-article kind badges), so it doesn't introduce a new signal. */
+.news-date{ color:var(--signal); }
+.news-item a:hover .news-date{ color:#ffc87a; }
 
 /* Lead items — the most recent few get a summary paragraph and a little more
    breathing room, so the top of the list reads as reporting rather than a
@@ -1715,14 +1738,24 @@ template{ display:none; }
   .header-controls{ justify-content:flex-start; }
 }
 
-/* One column. Four boxes make a long phone scroll, so the DOM order below the
-   fold matters: footage, chatter, coverage, forums — the two live/most-current
-   panels first, the two reference panels after. Drop the min-heights so no box
-   reserves space it isn't using. */
+/* One column. Four boxes make a long phone scroll, so the order below the fold
+   matters: footage, chatter, coverage, forums — the two live/most-current
+   panels first, the two reference panels after. DOM order is column-major
+   (footage, coverage / chatter, forums), so the column wrappers dissolve with
+   `display:contents` and `order` restores the reading sequence. Drop the
+   min-heights too, so no box reserves space it isn't using. */
 @media (max-width:980px){
-  .widget-grid{ grid-template-columns:1fr; }
-  .widget-footage{ min-height:0; }
-  .widget-forums{ min-height:0; }
+  /* align-items has to flip back to stretch. On the desktop row it keeps the
+     two columns from matching heights; on this single column it is the cross
+     axis, and flex-start would shrink-wrap every box to its own min-content —
+     which blows Live chatter out to the Bluesky iframe's intrinsic 446px
+     inside a 343px viewport. */
+  .widget-grid{ flex-direction:column; align-items:stretch; }
+  .widget-col{ display:contents; }
+  .widget-footage{ min-height:0; order:1; }
+  .widget-social{ order:2; }
+  .widget-news{ order:3; }
+  .widget-forums{ min-height:0; order:4; }
 }
 
 @media (max-width:860px){

@@ -5,7 +5,7 @@
    is overwritten on the next run.
    ========================================================================== */
 window.RESEARCH = {
-  "generatedAt": "2026-07-27T07:34:18+00:00",
+  "generatedAt": "2026-08-01T08:53:24+00:00",
   "week": "2026-W30",
   "asOf": "2026-07-26",
   "metrics": {
@@ -2476,6 +2476,134 @@ window.RESEARCH = {
       2026
     ]
   },
+  "eras": {
+    "decades": [
+      {
+        "label": "1990s",
+        "decade": 1990,
+        "n": 82,
+        "meanComplexity": 4.74,
+        "sgPct": 28.0,
+        "ukPct": 64.6,
+        "meanDiameterM": 105.2
+      },
+      {
+        "label": "2000s",
+        "decade": 2000,
+        "n": 108,
+        "meanComplexity": 4.55,
+        "sgPct": 21.3,
+        "ukPct": 48.1,
+        "meanDiameterM": 114.2
+      },
+      {
+        "label": "2010s",
+        "decade": 2010,
+        "n": 85,
+        "meanComplexity": 4.34,
+        "sgPct": 18.8,
+        "ukPct": 25.9,
+        "meanDiameterM": 115.1
+      },
+      {
+        "label": "2020s",
+        "decade": 2020,
+        "n": 61,
+        "meanComplexity": 4.07,
+        "sgPct": 18.0,
+        "ukPct": 73.8,
+        "meanDiameterM": 151.8
+      }
+    ],
+    "monthByDecade": [
+      {
+        "label": "1990s",
+        "n": 76,
+        "values": [
+          0,
+          1,
+          0,
+          0,
+          2,
+          8,
+          35,
+          24,
+          6,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "2000s",
+        "n": 102,
+        "values": [
+          1,
+          0,
+          0,
+          0,
+          4,
+          22,
+          38,
+          32,
+          1,
+          3,
+          1,
+          0
+        ]
+      },
+      {
+        "label": "2010s",
+        "n": 83,
+        "values": [
+          2,
+          0,
+          2,
+          1,
+          5,
+          32,
+          24,
+          8,
+          2,
+          5,
+          1,
+          1
+        ]
+      },
+      {
+        "label": "2020s",
+        "n": 60,
+        "values": [
+          0,
+          0,
+          0,
+          7,
+          9,
+          21,
+          16,
+          4,
+          0,
+          2,
+          1,
+          0
+        ]
+      }
+    ],
+    "monthNames": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ]
+  },
   "geometry": {
     "types": [
       {
@@ -2582,6 +2710,279 @@ window.RESEARCH = {
       "r2": 0.001,
       "pValue": 0.5186
     }
+  },
+  "scale": {
+    "reported": 172,
+    "reportedPct": 47.9,
+    "meanDiameterM": 114.5,
+    "medianDiameterM": 98.5,
+    "maxDiameterM": 540.0,
+    "buckets": [
+      {
+        "label": "<25 m",
+        "value": 21
+      },
+      {
+        "label": "25–50 m",
+        "value": 17
+      },
+      {
+        "label": "50–100 m",
+        "value": 49
+      },
+      {
+        "label": "100–150 m",
+        "value": 32
+      },
+      {
+        "label": "150–250 m",
+        "value": 36
+      },
+      {
+        "label": "250 m+",
+        "value": 17
+      }
+    ],
+    "byComplexity": [
+      {
+        "label": "1–2",
+        "value": 13.8,
+        "n": 6
+      },
+      {
+        "label": "3–4",
+        "value": 92.6,
+        "n": 69
+      },
+      {
+        "label": "5–6",
+        "value": 73.5,
+        "n": 29
+      },
+      {
+        "label": "7–8",
+        "value": 147.0,
+        "n": 42
+      },
+      {
+        "label": "9–10",
+        "value": 189.4,
+        "n": 26
+      }
+    ],
+    "largest": [
+      {
+        "name": "Human Butterfly / Vitruvian Man",
+        "where": "Zeeland, Netherlands",
+        "year": 2009,
+        "diameterM": 540.0,
+        "complexity": 4
+      },
+      {
+        "name": "Miyazaki Forest Circles",
+        "where": "Kyushu, Japan",
+        "year": 1973,
+        "diameterM": 500.0,
+        "complexity": 3
+      },
+      {
+        "name": "Ipuaçu 2024 Hexagon-Triangle",
+        "where": "Brazil",
+        "year": 2024,
+        "diameterM": 493.0,
+        "complexity": 3
+      },
+      {
+        "name": "Wiltshire Galaxy Spiral 2010",
+        "where": "Wiltshire, UK",
+        "year": 2010,
+        "diameterM": 350.0,
+        "complexity": 10
+      },
+      {
+        "name": "Ipuaçu 2022 Pentagon-Triangle",
+        "where": "Brazil",
+        "year": 2022,
+        "diameterM": 327.0,
+        "complexity": 3
+      },
+      {
+        "name": "Milk Hill Eight Circles",
+        "where": "Wiltshire, UK",
+        "year": 2009,
+        "diameterM": 300.0,
+        "complexity": 7
+      },
+      {
+        "name": "Hoeven Netherlands 2009",
+        "where": "North Brabant, Netherlands",
+        "year": 2009,
+        "diameterM": 300.0,
+        "complexity": 9
+      },
+      {
+        "name": "Saint-Hippolyte / Guémar Formation",
+        "where": "Alsace, France",
+        "year": 2019,
+        "diameterM": 300.0,
+        "complexity": 3
+      }
+    ]
+  },
+  "sites": {
+    "ancientSites": [
+      {
+        "label": "Silbury Hill",
+        "value": 4
+      },
+      {
+        "label": "Avebury",
+        "value": 3
+      },
+      {
+        "label": "Hackpen White Horse",
+        "value": 2
+      },
+      {
+        "label": "Avebury Stone Circle",
+        "value": 2
+      },
+      {
+        "label": "West Kennett Long Barrow",
+        "value": 2
+      },
+      {
+        "label": "Cherhill White Horse",
+        "value": 1
+      },
+      {
+        "label": "Figsbury Ring Iron Age Hillfort",
+        "value": 1
+      },
+      {
+        "label": "Cerne Abbas Giant Ancient Hillfort",
+        "value": 1
+      }
+    ],
+    "namedSitePct": 8.4,
+    "repeatFields": [
+      {
+        "label": "Alton Barnes",
+        "value": 4
+      },
+      {
+        "label": "Sarraltroff",
+        "value": 3
+      },
+      {
+        "label": "Barley field",
+        "value": 3
+      },
+      {
+        "label": "East Field",
+        "value": 3
+      },
+      {
+        "label": "Wheat plantation",
+        "value": 3
+      },
+      {
+        "label": "Broad Hinton",
+        "value": 3
+      },
+      {
+        "label": "Silbury Hill",
+        "value": 3
+      },
+      {
+        "label": "Alton Barnes area",
+        "value": 3
+      }
+    ],
+    "repeatFieldTotal": 34
+  },
+  "evidence": {
+    "authenticity": {
+      "counts": [
+        {
+          "label": "Confirmed human-made",
+          "value": 25
+        },
+        {
+          "label": "Unexplained (anomaly evidence)",
+          "value": 21
+        },
+        {
+          "label": "Contested",
+          "value": 9
+        },
+        {
+          "label": "Unclassified",
+          "value": 233
+        }
+      ],
+      "total": 288,
+      "assessed": 55,
+      "humanMade": 25,
+      "unexplained": 21,
+      "contested": 9
+    },
+    "mediaCoverage": [
+      {
+        "label": "very high",
+        "value": 34,
+        "meanComplexity": 4.82,
+        "sgPct": 23.5
+      },
+      {
+        "label": "high",
+        "value": 52,
+        "meanComplexity": 5.44,
+        "sgPct": 36.5
+      },
+      {
+        "label": "medium",
+        "value": 40,
+        "meanComplexity": 7.65,
+        "sgPct": 80.0
+      },
+      {
+        "label": "low",
+        "value": 24,
+        "meanComplexity": 4.71,
+        "sgPct": 33.3
+      },
+      {
+        "label": "unknown",
+        "value": 209,
+        "meanComplexity": 3.33,
+        "sgPct": 2.9
+      }
+    ],
+    "knownCoverage": 150,
+    "unknownCoverage": 209,
+    "flagPct": [
+      {
+        "label": "Sacred geometry",
+        "value": 20.3
+      },
+      {
+        "label": "Phi ratio",
+        "value": 12.3
+      },
+      {
+        "label": "Astronomical ref",
+        "value": 5.6
+      },
+      {
+        "label": "Binary / message",
+        "value": 3.1
+      },
+      {
+        "label": "Fibonacci",
+        "value": 1.4
+      }
+    ]
   },
   "hypotheses": {
     "current": [
@@ -2752,6 +3153,189 @@ window.RESEARCH = {
       }
     ],
     "scaleMax": 5
+  },
+  "programme": {
+    "sessions": 63,
+    "firstDate": "2026-05-03",
+    "lastDate": "2026-07-31",
+    "topicsTotal": 536,
+    "topicsPerSession": 8.5,
+    "perMonth": [
+      {
+        "label": "2026-05",
+        "value": 19
+      },
+      {
+        "label": "2026-06",
+        "value": 24
+      },
+      {
+        "label": "2026-07",
+        "value": 20
+      }
+    ],
+    "angles": [
+      {
+        "label": "Notable formations by country",
+        "value": 22,
+        "last": "2026-07-23"
+      },
+      {
+        "label": "Geometric analysis",
+        "value": 5,
+        "last": "2026-07-29"
+      },
+      {
+        "label": "Aerial photography sources",
+        "value": 5,
+        "last": "2026-07-31"
+      },
+      {
+        "label": "Historical timeline",
+        "value": 4,
+        "last": "2026-07-17"
+      },
+      {
+        "label": "Formation anatomy",
+        "value": 5,
+        "last": "2026-07-30"
+      },
+      {
+        "label": "Cultural & artistic response",
+        "value": 4,
+        "last": "2026-07-19"
+      },
+      {
+        "label": "Specific iconic formations",
+        "value": 5,
+        "last": "2026-07-27"
+      },
+      {
+        "label": "Researchers & investigators",
+        "value": 4,
+        "last": "2026-07-24"
+      },
+      {
+        "label": "Theories & origins debate",
+        "value": 4,
+        "last": "2026-07-25"
+      },
+      {
+        "label": "Licensing & permissions",
+        "value": 4,
+        "last": "2026-07-26"
+      },
+      {
+        "label": "Unclassified",
+        "value": 1,
+        "last": "2026-07-12"
+      }
+    ],
+    "recent": [
+      {
+        "date": "2026-07-31",
+        "angle": "Aerial photography sources",
+        "topics": [
+          "Badbury Rings, Dorset — new formation",
+          "Geograph Britain and Ireland — follow-up resolved, confirmed as repeatable free/CC source",
+          "Hamish Fenton — Flickr licensing, re-confirmed unchanged",
+          "Lucy Pringle / cropcirclephotographs.co.uk — domain update + security concern",
+          "Circular State of Mind (circularstateofmind.wordpress.com) — new source, active 2026 documentation"
+        ]
+      },
+      {
+        "date": "2026-07-30",
+        "angle": "Formation anatomy",
+        "topics": [
+          "Cherhill Iron-Glaze Formation",
+          "Hoeven 1999 Double-Circle",
+          "Construction Technique — Planking, Ropes & Rollers (topic, not a single formation)",
+          "Node Bending & Expulsion Cavities (topic overview)"
+        ]
+      },
+      {
+        "date": "2026-07-29",
+        "angle": "Geometric analysis",
+        "topics": [
+          "hypermaths.org Chapter 1 — Methodological Framework (\"The Formal Cause\")",
+          "Avebury Manor Solar System — identity resolution for hypermaths.org Chapter 9's two unconfirmed formations",
+          "Silbury Hill \"Scorpion\" — nr Avebury, Wiltshire (1994)",
+          "Live 2026 UK season check — no new rows needed"
+        ]
+      },
+      {
+        "date": "2026-07-27",
+        "angle": "Specific iconic formations",
+        "topics": [
+          "Avebury \"Spider's Web\" (1994)",
+          "West Stowell \"Galaxy\" (1994)",
+          "Oliver's Castle \"Balls of Light\" Video (1996)",
+          "Eastfield \"777\" / \"Aum\" Formation (2007)"
+        ]
+      },
+      {
+        "date": "2026-07-26",
+        "angle": "Licensing & permissions",
+        "topics": [
+          "New free/CC find — Wikimedia Commons \"Category:Alton Barnes crop circles\"",
+          "New free/CC find — Geograph.org.uk, Milk Hill (via Wikimedia Commons mirror)",
+          "Partial resolution — Nationaal Archief general policy confirmed, crop-circle holding NOT confirmed",
+          "Unresolved — PA Images rate-card figures still unverified",
+          "Still unresolved — Flickr Creative Commons, Europeana, dpa Picture-Alliance (4th consecutive session flagged)"
+        ]
+      },
+      {
+        "date": "2026-07-25",
+        "angle": "Theories & origins debate",
+        "topics": [
+          "The PV Resonance Theory (2026) — Credibility Assessment",
+          "The 1992 Berkshire Crop-Circle-Making Competition (media-sponsored contest, corrected from the \"Today newspaper\" thread)",
+          "Doug Bower & Dave Chorley's September 1991 Confession to Today (clarified as press exposé, not a contest)",
+          "Joe Nickell & John F. Fischer — \"The Crop-Circle Phenomenon: An Investigative Report\" (Skeptical Inquirer, Winter 1992)",
+          "Skeptical Inquirer / CSICOP — Three-Decade Coverage Timeline",
+          "James Randi — Documented Absence, Re-Confirmed"
+        ]
+      },
+      {
+        "date": "2026-07-24",
+        "angle": "Researchers & investigators",
+        "topics": [
+          "Michael Green (1931/32–2018) — CCCS co-founder, archaeologist & dowser",
+          "Ralph Noyes (1923–2001) — CCCS co-founder, retired MOD civil servant",
+          "Busty Taylor — aerial photographer & CCCS stalwart",
+          "Andy Thomas — author & Southern Circular Research founder",
+          "John Lundberg — Circlemakers founder & documentary filmmaker",
+          "Rob Irving — Circlemakers member & co-author"
+        ]
+      },
+      {
+        "date": "2026-07-23",
+        "angle": "Notable formations by country",
+        "topics": [
+          "Ireland — absence of documented crop circle formations (angle summary, not a single formation)",
+          "\"Dronehenge\" — Newgrange cropmark (archaeological, NOT a crop circle formation)",
+          "UFO Ireland crop-circle appeal (2000) — historical curiosity, no confirmed formation"
+        ]
+      }
+    ],
+    "leads": {
+      "counts": [
+        {
+          "label": "Free / CC",
+          "value": 43
+        },
+        {
+          "label": "Commercial",
+          "value": 62
+        },
+        {
+          "label": "Unrecorded",
+          "value": 203
+        }
+      ],
+      "total": 308,
+      "freePct": 14.0
+    }
   },
   "health": {
     "growth": [

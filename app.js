@@ -918,14 +918,27 @@
       a.appendChild(summary);
     }
 
-    var bits = [];
-    if (item.outlet) bits.push(item.outlet);
-    bits.push(formatShort(item.date));
-    if (item.durationMin) bits.push(item.durationMin + ' min');
-
+    // Built as separate spans rather than one joined string so the date can be
+    // tinted (.news-date) — in a uniformly grey meta line it was the hardest
+    // part to pick out, and it's the part you scan for.
     var metaEl = document.createElement('span');
     metaEl.className = 'news-meta';
-    metaEl.textContent = bits.join(' · ');
+    var bits = [];
+    if (item.outlet) bits.push({ text: item.outlet, cls: 'news-outlet' });
+    bits.push({ text: formatShort(item.date), cls: 'news-date' });
+    if (item.durationMin) bits.push({ text: item.durationMin + ' min', cls: 'news-dur' });
+    bits.forEach(function (bit, bi) {
+      if (bi) {
+        var sep = document.createElement('span');
+        sep.className = 'news-meta-sep';
+        sep.textContent = '·';
+        metaEl.appendChild(sep);
+      }
+      var span = document.createElement('span');
+      span.className = bit.cls;
+      span.textContent = bit.text;
+      metaEl.appendChild(span);
+    });
     a.appendChild(metaEl);
 
     li.appendChild(a);

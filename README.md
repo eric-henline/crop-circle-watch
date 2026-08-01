@@ -2,7 +2,9 @@
 
 A small, no-build static dashboard that logs newly reported crop circle formations — photos/video, source links, and a few sentences per entry — organized so you can scroll back through any day it's run. Live at `https://eric-henline.github.io/crop-circle-watch/`. It lives entirely in this folder and is separate from the coffee-table-book research project one level up.
 
-The page is in two halves: a dashboard "hero" up top (status line, last-confirmed-formation banner, headline stats, and three widgets — recent coverage, field footage, live chatter) that smoothly gives way on scroll to the full chronological timeline below it. A second page, `about.html`, explains how the scan works for anyone who lands on the site cold.
+The page is in two halves: a dashboard "hero" up top (status line, last-confirmed-formation banner, headline stats, and four widgets — field footage and recent coverage in a wide left column, live chatter and discussion forums in a narrow right one) that smoothly gives way on scroll to the full chronological timeline below it. A second page, `about.html`, explains how the scan works for anyone who lands on the site cold.
+
+Those four widgets are laid out as **two flex columns, not a 2×2 grid** — see the comment above `.widget-grid` in `styles.css`. A grid forces both boxes in a row to share the row's height, and these four have very different natural heights, so the grid version left two dead gaps of 150px and 390px. On phones the columns collapse to `display:contents` and `order` restores the footage → chatter → coverage → forums reading sequence; that media query also has to flip `align-items` back to `stretch`, or every box shrink-wraps to its own min-content and Live chatter's Bluesky iframe blows out past the viewport.
 
 ## How it's built
 
@@ -123,7 +125,19 @@ For *specific, known* posts it's a different story: Bluesky publishes a public, 
 ## The Research page
 
 `research.html` renders charts from `research.js`, which is **generated** — never
-hand-edited. The pipeline is:
+hand-edited. The page has seven tabs:
+
+| Tab | What it covers |
+|-----|----------------|
+| Geography | Country and county distribution, the world/detail scatter, ancient-site proximity, named monuments, repeat-hit fields |
+| Time & season | Month curve, formations per year, the month × decade season heatmap, every headline metric cut by decade |
+| Geometry & scale | Complexity distribution, geometric types, encoded features, the complexity-over-time regression, size bands, size vs complexity, the largest formations |
+| Evidence | The authenticity verdict split, media coverage vs complexity, anomaly-flag prevalence |
+| Hypotheses | Current confidence by hypothesis and how it has shifted week to week |
+| Research log | The daily routine itself — cadence, angle rotation, licensing leads, and the last eight sessions |
+| Dataset health | Archive growth, field completeness, and what the dataset cannot tell you |
+
+The pipeline has **two** input streams, not one:
 
 ```
 analytics/crop_circle_analytics.py     runs weekly (Sunday), writes:
@@ -131,21 +145,68 @@ analytics/crop_circle_analytics.py     runs weekly (Sunday), writes:
   data/snapshots/YYYY-WXX.json             ~22 scalar metrics per week
   hypotheses/hypothesis_tracker.md         confidence table over time
         |
-        v
-analytics/export_research_json.py      reads those artifacts, writes:
+        |     the daily research routine maintains, by hand:
+        |       index/formations.md          per-formation Authenticity verdict
+        |       index/image-leads.md         leads tagged free/CC vs commercial
+        |       sessions/YYYY-MM-DD.md       angle + topics documented per run
+        |            |
+        v            v
+analytics/export_research_json.py      reads both, writes:
   dashboard/research.js                    window.RESEARCH
 ```
 
+The second stream is why the exporter reads outside `analytics/`. The engine only
+ever sees the numeric CSV; the routine's evidence judgments, its angle rotation,
+and its sourcing record are a separate research output that no amount of
+re-running the engine would produce. The **Evidence** and **Research log** tabs
+are built from it, and the exporter imports the rotation classifier straight out
+of `pick_next_angle.py` rather than reimplementing it (that classifier already
+carries a documented fix — match only the leading canonical phrase of a session
+header, never the whole verbose line).
+
 To refresh the page after an analytics run:
 
-```
+```bash
 python3 analytics/export_research_json.py
 ```
 
 The exporter is deliberately *separate* from the analytics engine rather than a
 hook inside it: it only reads the engine's outputs, so it can be re-run at any
 time, costs nothing (no sklearn, no matplotlib, no model fitting), and cannot
-break the Sunday job.
+break the Sunday job. It is also cheap enough to re-run after any daily research
+session, not just after the weekly engine run — the Research log tab goes stale
+otherwise.
+
+### Thresholds the exporter enforces
+
+Three places drop thin data rather than plotting it, because a percentage over a
+handful of records renders identically to one over a hundred and reads as a
+finding:
+
+- **Decade cuts** need ≥ 10 records in the decade. The 1970s hold three
+  formations, two of them UK — a "67% UK share" point next to the 2020s' 74%.
+- **Season heatmap rows** need ≥ 5 *month-dated* records, which is a smaller set
+  than the decade's record count (not one of the three 1970s formations carries a
+  month at all). One data point renders as a single full-intensity cell.
+- **Size-vs-complexity bands** need ≥ 3 records carrying a diameter.
+
+### Chart primitives
+
+All hand-rolled in `research-app.js`; no chart library. Beyond the original
+`barsH` / `barsV` / `lineChart` / `scatterGeo` / `confidenceBars`:
+
+- `stackedBar` — one whole split into parts, labelled in-segment
+- `heatmap` — two categorical axes, **row-normalised** (see the comment above it
+  for why a global scale would be the wrong call here)
+- `sparkGrid` — small multiples, each on its own y scale, for series that share
+  an x axis but not a unit
+- `rankList` — HTML rather than SVG, because its row labels are real place and
+  formation names that have to wrap
+
+One CSS gotcha worth knowing before you add a chart: `.r-chart text` is
+specificity (0,1,1), so a bare `.r-some-label { fill: … }` rule **loses to it**
+and your label silently renders in the default axis grey. Scope it as
+`.r-chart .r-some-label`.
 
 The engine also writes ten PNG charts to `analytics/visualizations/`. Those are
 an **internal artifact and are not used on the site** — they carry their own
@@ -216,7 +277,12 @@ dashboard/
   research.js                                ← GENERATED chart data — do not hand-edit
   social.js                                  ← GENERATED Bluesky chatter — do not hand-edit
   fetch_social.py                            ← `python3 fetch_social.py` — rewrites social.js; run by the daily scan
-  labs/                                      ← standalone formation animations, not linked from the site yet
+  labs/                                      ← formation studies (animations), not linked from the site yet
+    index.html                               ← all three studies on one page, for comparison — START HERE
+    anim-engine.js                           ← shared stage/HUD/controls/driver; mounted once per study
+    studies.js                               ← the studies themselves: geometry + render(ctx, p)
+    labs.css                                 ← shared lab chrome; consumes styles.css tokens only
+    formation-anim.html, julia-set.html      ← thin single-study wrappers around the same specs
   dedupe.js                                  ← duplicate-formation matching rules (Node-side only; the site doesn't load it)
   check_duplicates.js                        ← `node check_duplicates.js` — audits data.js for the same circle logged twice
   test_dedupe.js                             ← `node test_dedupe.js` — tests for the matching rules

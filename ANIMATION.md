@@ -1,6 +1,87 @@
 # The formation animation — design brief
 
-Brainstorm for TODO item #7. Nothing built yet. The goal is the sequence
+> **Status: built, then reworked. §3's act table below is SUPERSEDED —
+> see the new one immediately after this block.** `labs/formation-anim.html`
+> is a self-scrubbing lab page (autoplay + pause + scrub slider, in the same
+> shell as `labs/julia-set.html`) rather than a scroll-pinned section. `p` is
+> still a pure function driving everything, so the scroll driver in §5 can be
+> swapped in for the slider without touching `render()`.
+>
+> The rework (TODO item 8) replaced the sequential compass construction with a
+> simultaneous resolve, added solids, and added a computed pattern layer:
+>
+> | Act | `p` | What happens |
+> |---|---|---|
+> | **I · Resolve** | 0.00–0.18 | All seven circles and all twelve lines draw on together, one shared window, no stagger. |
+> | **II · Solids** | 0.18–0.40 | The circles contract into **eight spheres**, one per cube vertex (two coincide while flat — the same 7→8 fact). Six rhombi promote to filled faces. |
+> | **III · Lift** | 0.40–0.56 | Tilt to 35.264°; the centre splits, `VERTICES 7 → 8`. |
+> | **IV · Flip** | 0.56–0.72 | Tilt runs back through zero to −35.264°. The pair re-merges and re-splits the other way — the Necker ambiguity performed rather than shaded. |
+> | **V · Rotate** | 0.72–0.86 | Free rotation, hidden edges dashed, bounding lattice. |
+> | **VI · Pattern** | 0.86–1.00 | Unwinds to the down-the-diagonal view and draws the incidences. |
+>
+> **The pattern layer is asserted, not eyeballed.** `buildPattern()` tests four
+> claims at 1e-9 and refuses to draw any that fail; all four currently pass at
+> ~1e-15. They are: the three long diagonals are concurrent at the centre; each
+> is a collinear triple; the twelve chords (six sides, six spokes) are of equal
+> length 4/√6; and the two inscribed tetrahedra project to two equilateral
+> triangles — so the star tetrahedron seen down [1,1,1] **is** a hexagram.
+> Residuals are readable at `__HEXCUBE.pattern`.
+>
+> **§1's attribution did not survive checking, and the formation is not named
+> on screen.** Temporary Temples lists one Silbury Hill formation on 5 July
+> 2009 — the Mayan Headdress — and no source describes a hexagonal cube there.
+> The CSV row is almost certainly bad seed data; see the follow-up in TODO.md.
+> The geometry in §2 is unaffected: it was recomputed during the build and
+> reproduces exactly, and the page presents it on its own terms.
+>
+> Deviations from the brief, all deliberate: the type layer is an accumulated
+> log *below* the stage rather than a floating column beside the figure (a
+> floating column collides with the graphic under ~700px); the crop lay
+> alternates radial and chord hatching per sector, which is what actually makes
+> a lay legible; and the wireframe recedes as the pattern layer comes in,
+> because two dozen overlaid strokes are unreadable otherwise.
+>
+> One rule held throughout the solids work: **only promote a shape the geometry
+> already closes.** The six rhombi are cube faces in projection, so they are
+> free; nothing is filled that would need an invented vertex to close it.
+>
+> ---
+>
+> **Second rework (TODO 9/11). Read this before touching any study.**
+>
+> **1. The design does not move.** The first solids pass shrank the seven
+> circles down into small beads at the cube's corners. That looked tidier and
+> was wrong: the seed-of-life proportion — satellites of radius r on a rim of
+> radius r — *is* the formation, and contracting it threw the formation away to
+> keep the cube. Circles now become spheres **in place**, at their own radius,
+> on their own centres, and the frame no longer zooms. Depth is added;
+> position is never taken away. Apply this to every future study.
+>
+> **2. There is now one engine, not one per animation.** `labs/anim-engine.js`
+> owns the stage, HUD, controls, log, rAF driver, reduced-motion path and
+> projection helpers. `labs/studies.js` holds the three studies, each supplying
+> only geometry, `build(ctx)` and `render(ctx, p)`. `labs/index.html` mounts all
+> three on one page for comparison; `formation-anim.html` and `julia-set.html`
+> are now thin wrappers around the same specs, so they cannot drift.
+>
+> **3. Study 2 — the lattice and its sphere** (after Odstone Barn). The
+> improvement over study 1 is that the enclosing sphere is *derived*: the eight
+> corner nodes sit at √3, so the sphere of radius √3 is the lattice's
+> circumsphere, and the flat design's ring already had that radius. The ring
+> never moves — it was a great circle of that sphere seen edge-on all along.
+> Verified: 27 nodes on exactly 4 shells (1, 6, 12, 8) and **49 lines of three**,
+> matching the closed form (5³ − 3³)/2. Only the 22 diagonals are drawn; the
+> other 27 are already on screen as lattice edges.
+>
+> **4. Tilt alone does not make a lattice read as 3D.** With spin at zero the
+> depth axis projects straight onto screen-y and 27 nodes look like a flat grid
+> with extra rows. The extrusion has to turn *and* tilt into an axonometric
+> view. Cost an iteration; do not repeat it.
+>
+> Studies freeze while scrolled out of view (IntersectionObserver in the
+> engine) — three animations running at once is otherwise needlessly expensive.
+
+Brainstorm for TODO item #7. The goal is the sequence
 originally described: start from one basic shape → dynamically add lines and
 circles until it becomes a real crop circle → rotate it into 3D like a
 mathematical object under analysis. Plus two additions: sacred-geometry
