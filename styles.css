@@ -1438,6 +1438,7 @@ body.compact .brand-text h1{ font-size:16px; }
   margin:0; font-family:var(--font-body);
   font-size:16px; line-height:1.7; color:var(--text-1);
 }
+.res-lede + .res-lede{ margin-top:var(--s-3); }
 
 .res-section{ margin-top:var(--s-6); }
 .res-section-head{ margin-bottom:var(--s-4); }

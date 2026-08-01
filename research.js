@@ -5,7 +5,7 @@
    is overwritten on the next run.
    ========================================================================== */
 window.RESEARCH = {
-  "generatedAt": "2026-08-01T08:53:24+00:00",
+  "generatedAt": "2026-08-01T16:11:56+00:00",
   "week": "2026-W30",
   "asOf": "2026-07-26",
   "metrics": {
@@ -2906,7 +2906,7 @@ window.RESEARCH = {
       "counts": [
         {
           "label": "Confirmed human-made",
-          "value": 25
+          "value": 26
         },
         {
           "label": "Unexplained (anomaly evidence)",
@@ -2918,12 +2918,12 @@ window.RESEARCH = {
         },
         {
           "label": "Unclassified",
-          "value": 233
+          "value": 235
         }
       ],
-      "total": 288,
-      "assessed": 55,
-      "humanMade": 25,
+      "total": 291,
+      "assessed": 56,
+      "humanMade": 26,
       "unexplained": 21,
       "contested": 9
     },
@@ -3155,11 +3155,11 @@ window.RESEARCH = {
     "scaleMax": 5
   },
   "programme": {
-    "sessions": 63,
+    "sessions": 64,
     "firstDate": "2026-05-03",
-    "lastDate": "2026-07-31",
-    "topicsTotal": 536,
-    "topicsPerSession": 8.5,
+    "lastDate": "2026-08-01",
+    "topicsTotal": 540,
+    "topicsPerSession": 8.4,
     "perMonth": [
       {
         "label": "2026-05",
@@ -3172,6 +3172,10 @@ window.RESEARCH = {
       {
         "label": "2026-07",
         "value": 20
+      },
+      {
+        "label": "2026-08",
+        "value": 1
       }
     ],
     "angles": [
@@ -3192,8 +3196,8 @@ window.RESEARCH = {
       },
       {
         "label": "Historical timeline",
-        "value": 4,
-        "last": "2026-07-17"
+        "value": 5,
+        "last": "2026-08-01"
       },
       {
         "label": "Formation anatomy",
@@ -3232,6 +3236,16 @@ window.RESEARCH = {
       }
     ],
     "recent": [
+      {
+        "date": "2026-08-01",
+        "angle": "Historical timeline",
+        "topics": [
+          "Stonehenge Julia Set (1996) — cross-check, already indexed",
+          "1988–1990 Formation Count Surge (topic, not a single formation)",
+          "1983 Sheppard Hoax Exposure (topic, historical footnote)",
+          "2018–2022 UK Plateau (topic)"
+        ]
+      },
       {
         "date": "2026-07-31",
         "angle": "Aerial photography sources",
@@ -3307,34 +3321,25 @@ window.RESEARCH = {
           "John Lundberg — Circlemakers founder & documentary filmmaker",
           "Rob Irving — Circlemakers member & co-author"
         ]
-      },
-      {
-        "date": "2026-07-23",
-        "angle": "Notable formations by country",
-        "topics": [
-          "Ireland — absence of documented crop circle formations (angle summary, not a single formation)",
-          "\"Dronehenge\" — Newgrange cropmark (archaeological, NOT a crop circle formation)",
-          "UFO Ireland crop-circle appeal (2000) — historical curiosity, no confirmed formation"
-        ]
       }
     ],
     "leads": {
       "counts": [
         {
           "label": "Free / CC",
-          "value": 43
+          "value": 44
         },
         {
           "label": "Commercial",
-          "value": 62
+          "value": 63
         },
         {
           "label": "Unrecorded",
-          "value": 203
+          "value": 205
         }
       ],
-      "total": 308,
-      "freePct": 14.0
+      "total": 312,
+      "freePct": 14.1
     }
   },
   "health": {
