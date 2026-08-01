@@ -652,11 +652,25 @@ body.compact .brand-text h1{ font-size:16px; }
 /* Widgets: news / video / social                                        */
 /* ---------------------------------------------------------------------- */
 
+/* 2x2. Four peer widgets, placed by DOM order:
+     row 1  Field footage (wide)  |  Live chatter (narrow)
+     row 2  Recent coverage       |  Discussion forums
+   `align-items:start` matters — without it every box stretches to its row's
+   tallest, and Discussion forums (four links) would inflate to match Recent
+   coverage. Each box sizes to its own content instead. */
 .widget-grid{
   display:grid; grid-template-columns:2fr 1fr; gap:var(--s-4);
   margin-bottom:var(--s-5);
   align-items:start;
 }
+
+/* Grid items default to min-width:auto, so a `1fr` track can never shrink below
+   its widest item's min-content. The Bluesky embed iframe inside Live chatter
+   has a large intrinsic minimum, which dragged the single-column track out to
+   446px inside a 343px container on a phone — every widget then matched the
+   track and overflowed the viewport. (Pre-dates the 2x2 split; the same item
+   was in this grid before.) min-width:0 lets the track honour the container. */
+.widget-grid > .widget{ min-width:0; }
 
 .widget{
   background:var(--panel);
@@ -667,23 +681,17 @@ body.compact .brand-text h1{ font-size:16px; }
   min-height:0;
 }
 
-/* Field footage — enlarged into the primary/hero widget. It contains the
-   Recent coverage widget nested beneath the video strip, so the two stack
-   as one visual column while Live chatter sits alongside in its own
-   column (see .widget-grid above). */
+/* Field footage — the primary widget, top-left of the grid. */
 .widget-footage{
-  min-height:460px;
+  min-height:420px;
 }
 .widget-footage .video-strip{ flex:0 0 auto; }
 
-.widget-news-nested{
-  background:none;
-  border:0;
-  border-top:1px solid var(--border);
-  border-radius:0;
-  padding:var(--s-4) 0 0;
-  margin-top:var(--s-4);
-  flex:1;
+/* Discussion forums is the shortest box by far (four links). Give it a floor so
+   it reads as a deliberate panel rather than an offcut sitting under Live
+   chatter. */
+.widget-forums{
+  min-height:260px;
 }
 
 .widget h2{
@@ -898,24 +906,15 @@ body.compact .brand-text h1{ font-size:16px; }
   color:var(--text-2); line-height:1.5;
 }
 
-/* Reddit forums — standing venues, rendered as a quiet link list below the
-   keyword search block. Not a feed; these are entry points. */
-.reddit-block{ padding-top:var(--s-3); margin-top:var(--s-3); border-top:1px solid var(--border); }
-.reddit-heading{
-  margin:0 0 var(--s-2);
-  font-family:var(--font-mono);
-  font-size:10px;
-  letter-spacing:0.14em;
-  text-transform:uppercase;
-  font-weight:400;
-  color:var(--text-2);
-}
-.reddit-links{ display:flex; flex-direction:column; gap:1px; }
+/* Reddit forums — standing venues in the Discussion forums widget. Not a feed;
+   these are entry points. Previously a .reddit-block tucked under Live
+   chatter's keyword search, which was the least prominent spot on the page. */
+.reddit-links{ display:flex; flex-direction:column; gap:2px; }
 .reddit-link{
   display:flex;
   flex-direction:column;
-  gap:1px;
-  padding:6px 8px;
+  gap:2px;
+  padding:9px 8px;
   margin-inline:-8px;
   border-radius:var(--radius);
   color:inherit;
@@ -1716,9 +1715,14 @@ template{ display:none; }
   .header-controls{ justify-content:flex-start; }
 }
 
+/* One column. Four boxes make a long phone scroll, so the DOM order below the
+   fold matters: footage, chatter, coverage, forums — the two live/most-current
+   panels first, the two reference panels after. Drop the min-heights so no box
+   reserves space it isn't using. */
 @media (max-width:980px){
   .widget-grid{ grid-template-columns:1fr; }
   .widget-footage{ min-height:0; }
+  .widget-forums{ min-height:0; }
 }
 
 @media (max-width:860px){

@@ -75,6 +75,12 @@
     <circle cx="6" cy="18" r="1.6" fill="currentColor" stroke="none"/>
     <path d="M5 12a7 7 0 0 1 7 7M5 6a13 13 0 0 1 13 13"/>
   </symbol>
+  <!-- Discussion forums. Two overlapping speech bubbles — deliberately its own
+       mark rather than reusing #icon-rss, which now belongs to Live chatter. -->
+  <symbol id="icon-forum" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M3.5 5.5h11a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5H8l-3.5 3v-3h-1a.5.5 0 0 1-.5-.5V6a.5.5 0 0 1 .5-.5z"/>
+    <path d="M18 9.5h2.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5h-1v3l-3.5-3h-3"/>
+  </symbol>
   <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
     <path d="M12 5v14M5 12h14"/>
   </symbol>
@@ -224,15 +230,15 @@
       </div>
     </div>
 
+    <!-- Four peer widgets in a 2x2 grid. Recent coverage and Discussion forums
+         used to be nested inside Field footage and Live chatter respectively,
+         which is why neither read as a real section. DOM order sets both the
+         desktop grid placement (left column: footage, coverage / right column:
+         chatter, forums) and the single-column phone stack. -->
     <div class="widget-grid">
       <section class="widget widget-footage" aria-labelledby="videoHeading">
         <h2 id="videoHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-play"/></svg>Field footage</h2>
         <div class="video-strip" id="videoStrip"><!-- populated by app.js --></div>
-
-        <section class="widget widget-news-nested" aria-labelledby="newsHeading">
-          <h2 id="newsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg>Recent coverage</h2>
-          <ul class="news-list" id="newsList"><!-- populated by app.js --></ul>
-        </section>
       </section>
 
       <section class="widget widget-social" aria-labelledby="socialHeading">
@@ -251,13 +257,20 @@
           </div>
           <p class="keyword-note">Opens a live search in a new tab — open-ended keyword search still can't be auto-embedded on a static site, on either platform.</p>
         </div>
+      </section>
 
-        <!-- Standing Reddit venues. Static links by necessity: Reddit's JSON
-             endpoints aren't CORS-readable from a static origin. -->
-        <div class="reddit-block">
-          <h3 class="reddit-heading">Discussion forums</h3>
-          <div class="reddit-links" id="redditForums"><!-- populated by app.js --></div>
-        </div>
+      <section class="widget widget-news" aria-labelledby="newsHeading">
+        <h2 id="newsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg>Recent coverage</h2>
+        <p class="widget-sub">Articles, documentaries, podcasts and events about the phenomenon itself — not the formation reports, which are in the timeline below.</p>
+        <ul class="news-list" id="newsList"><!-- populated by app.js --></ul>
+      </section>
+
+      <!-- Standing Reddit venues. Static links by necessity: Reddit's JSON
+           endpoints aren't CORS-readable from a static origin. -->
+      <section class="widget widget-forums" aria-labelledby="forumsHeading">
+        <h2 id="forumsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-forum"/></svg>Discussion forums</h2>
+        <p class="widget-sub">Where the community talks between formations. Entry points, not a feed.</p>
+        <div class="reddit-links" id="redditForums"><!-- populated by app.js --></div>
       </section>
     </div>
 

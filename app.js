@@ -835,7 +835,10 @@
   // full summary paragraph; the tail stays as compact one-liners so the widget
   // gains depth at the top without becoming a wall of text.
 
-  var NEWS_LIMIT = 7;
+  // Six, not seven: Recent coverage now has its own box in the 2x2 grid instead
+  // of sharing Field footage's, and at full width seven items made it markedly
+  // taller than everything beside it. The three leads keep their summaries.
+  var NEWS_LIMIT = 6;
   var NEWS_LEAD_COUNT = 3;
 
   // Badge label + sprite icon per coverage kind. Anything unrecognised falls
@@ -943,7 +946,13 @@
 
   // -- hero widget: field footage strip --------------------------------------
   function renderVideoStrip() {
-    var items = stories.filter(function (s) { return !!s.youtubeId; }).slice(0, 8);
+    // Twelve, not eight. Field footage sits opposite Live chatter in the grid's
+    // top row, and Live chatter is tall by nature (capped feed + keyword block +
+    // its note). At eight thumbnails — two rows — footage left roughly 300px of
+    // dead space beside it. Three rows balances the row without padding it:
+    // there are more than twelve formations with footage, so nothing is invented
+    // to fill it.
+    var items = stories.filter(function (s) { return !!s.youtubeId; }).slice(0, 12);
     els.videoStrip.innerHTML = '';
     if (!items.length) {
       els.videoStrip.innerHTML = '<p class="empty-note">No footage logged yet.</p>';
@@ -1243,7 +1252,11 @@
     if (!els.redditForums) return;
     els.redditForums.innerHTML = '';
     if (!redditForums.length) {
-      els.redditForums.closest('.reddit-block').hidden = true;
+      // Hide the whole widget, not an inner block: Discussion forums is now a
+      // top-level section in the widget grid rather than a .reddit-block tucked
+      // inside Live chatter, and an empty bordered box reads as a broken panel.
+      var section = els.redditForums.closest('.widget');
+      if (section) section.hidden = true;
       return;
     }
     redditForums.forEach(function (f) {
