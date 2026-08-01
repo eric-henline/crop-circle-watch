@@ -277,7 +277,12 @@
   function matchesFilter(s) {
     if (state.tag !== 'all' && (s.tags || []).indexOf(state.tag) === -1) return false;
     if (state.query) {
-      var hay = [s.title, s.location, s.description, s.sourceName].join(' • ').toLowerCase();
+      // Aliases are part of the haystack: a merged formation is one card that
+      // answers to every name it was reported under, so searching "Fox Hill"
+      // must find the card titled "Wanborough Plain".
+      var hay = [s.title, s.location, s.description, s.sourceName]
+        .concat(s.aliases || [])
+        .join(' • ').toLowerCase();
       if (hay.indexOf(state.query.toLowerCase()) === -1) return false;
     }
     return true;
@@ -351,31 +356,128 @@
     return span;
   }
 
-  // -- references / provenance row -------------------------------------------
-  // Renders the optional `references` array ([{label,url}]) as a compact "More"
-  // row of external links — "where this can be gathered / read more" — the
-  // link back into the research trail. Only public, resolvable URLs belong
-  // here (see data.js schema note).
-  function buildReferences(refs) {
-    if (!Array.isArray(refs)) return null;
-    var publicRefs = refs.filter(function (r) { return r && isPublicUrl(r.url); });
-    if (!publicRefs.length) return null;
-    var wrap = document.createElement('div');
-    wrap.className = 'card-refs';
+  // -- aliases ---------------------------------------------------------------
+  // One formation, several names. When two aggregators file the same circle
+  // under different names the entries are merged into a single record (see
+  // dedupe.js / check_duplicates.js), and the names that lost render here so a
+  // reader who knows it by the other name still recognises the card.
+  function buildAliases(aliases) {
+    var list = (aliases || []).filter(function (a) { return typeof a === 'string' && a.trim(); });
+    if (!list.length) return null;
+    var p = document.createElement('p');
+    p.className = 'card-aliases';
     var lead = document.createElement('span');
-    lead.className = 'card-refs-lead';
-    lead.textContent = 'More';
-    wrap.appendChild(lead);
-    publicRefs.forEach(function (r) {
-      var a = document.createElement('a');
-      a.className = 'card-ref';
-      a.href = r.url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      a.textContent = r.label || 'Reference';
-      wrap.appendChild(a);
+    lead.className = 'card-aliases-lead';
+    lead.textContent = 'Also reported as';
+    p.appendChild(lead);
+    p.appendChild(document.createTextNode(' ' + list.join(' · ')));
+    return p;
+  }
+
+  // -- expandable detail panel -----------------------------------------------
+  // A merged formation (see dedupe.js / data.js `aliases`) carries more than a
+  // single-source one: two or three reports of the same circle, each with its
+  // own link, plus any social posts. Rendering all of that inline made merged
+  // cards markedly taller and noisier than their neighbours for information
+  // most readers don't need up front. So it moves behind a "+" in the card's
+  // top corner: collapsed by default, one click to open, "−" to close. Cards
+  // with nothing extra get no button at all, which is what makes the button
+  // meaningful — its presence is the signal that a formation has more behind it.
+  function extraSourcesFor(story) {
+    var refs = (story.references || []).filter(function (r) { return r && isPublicUrl(r.url); });
+    var posts = (story.socialPosts || []).filter(function (p) { return p && isPublicUrl(p.url); });
+    return { refs: refs, posts: posts };
+  }
+
+  function hasExtras(story) {
+    var e = extraSourcesFor(story);
+    return e.refs.length > 0 || e.posts.length > 0;
+  }
+
+  function buildDetailPanel(story, panelId) {
+    var e = extraSourcesFor(story);
+    var panel = document.createElement('div');
+    panel.className = 'card-detail';
+    panel.id = panelId;
+    panel.hidden = true;
+
+    if (e.refs.length) {
+      var group = document.createElement('div');
+      group.className = 'card-detail-group';
+      var lead = document.createElement('p');
+      lead.className = 'card-detail-lead';
+      // Merged records genuinely have several independent reports; a single
+      // source keeps the singular label.
+      lead.textContent = e.refs.length > 1 ? 'Reported by' : 'Also available at';
+      group.appendChild(lead);
+
+      var list = document.createElement('ul');
+      list.className = 'card-detail-list';
+      e.refs.forEach(function (r) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = r.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = r.label || 'Reference';
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+      group.appendChild(list);
+      panel.appendChild(group);
+    }
+
+    if (e.posts.length) {
+      var pg = document.createElement('div');
+      pg.className = 'card-detail-group';
+      var plead = document.createElement('p');
+      plead.className = 'card-detail-lead';
+      plead.textContent = 'Discussion';
+      pg.appendChild(plead);
+      var plist = document.createElement('ul');
+      plist.className = 'card-detail-list';
+      e.posts.forEach(function (p) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = p.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = (p.author || p.handle || (p.platform === 'bluesky' ? 'Bluesky post' : 'X post'));
+        li.appendChild(a);
+        plist.appendChild(li);
+      });
+      pg.appendChild(plist);
+      panel.appendChild(pg);
+    }
+
+    return panel;
+  }
+
+  function buildExpandToggle(story, panel, panelId) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'card-expand';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', panelId);
+    var label = 'Show more about ' + story.title;
+    btn.setAttribute('aria-label', label);
+    btn.title = label;
+    // Drawn in CSS, not text, so the glyph stays optically centred and the
+    // +/− swap can't reflow the button.
+    btn.innerHTML = '<span class="card-expand-glyph" aria-hidden="true"></span>';
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      panel.hidden = open;
+      var next = open ? ('Show more about ' + story.title) : ('Show less about ' + story.title);
+      btn.setAttribute('aria-label', next);
+      btn.title = next;
+      btn.closest('.story-card').classList.toggle('is-expanded', !open);
     });
-    return wrap;
+
+    return btn;
   }
 
   // -- card ------------------------------------------------------------
@@ -395,7 +497,12 @@
       tagsEl.appendChild(span);
     });
 
-    node.querySelector('.card-title').textContent = story.title;
+    var titleEl = node.querySelector('.card-title');
+    titleEl.textContent = story.title;
+
+    var aliasEl = buildAliases(story.aliases);
+    if (aliasEl) titleEl.parentNode.insertBefore(aliasEl, titleEl.nextSibling);
+
     node.querySelector('.card-location span').textContent = story.location;
     node.querySelector('.card-desc').textContent = story.description;
     node.querySelector('.card-date span').textContent = formatShort(story.date);
@@ -411,11 +518,15 @@
       srcLink.remove();
     }
 
-    // Optional provenance links, inserted between the body text and the footer.
-    var refs = buildReferences(story.references);
-    if (refs) {
+    // Extra sources (a merged formation's other reports, plus any social posts)
+    // live in a collapsed panel behind the "+" rather than always-on inline
+    // links — see buildDetailPanel.
+    if (hasExtras(story)) {
+      var panelId = 'detail-' + story.id;
+      var panel = buildDetailPanel(story, panelId);
       var footer = node.querySelector('.card-footer');
-      footer.parentNode.insertBefore(refs, footer);
+      footer.parentNode.insertBefore(panel, footer);
+      node.appendChild(buildExpandToggle(story, panel, panelId));
     }
 
     return node;
@@ -551,7 +662,23 @@
     });
   }
 
-  function jumpToStory(id) {
+  // Ids retired by a merge (data.js `mergedIds`) -> the surviving story. An old
+  // link to #card-2026-07-21-fox-hill must still land on the Wanborough Plain
+  // card rather than silently doing nothing.
+  var mergedIds = (function () {
+    var index = {};
+    allStories.forEach(function (s) {
+      (s.mergedIds || []).forEach(function (old) { index[old] = s.id; });
+    });
+    return index;
+  })();
+
+  function resolveStoryId(id) {
+    return mergedIds[id] || id;
+  }
+
+  function jumpToStory(rawId) {
+    var id = resolveStoryId(rawId);
     state.query = '';
     state.tag = 'all';
     clearSearchInputs();
@@ -726,27 +853,21 @@
     return COVERAGE_KINDS[String(kind || '').toLowerCase()] || COVERAGE_KINDS.article;
   }
 
-  // Normalise a STORIES entry into the coverage shape. A formation's source
-  // article IS its coverage, so the story's own description doubles as the
-  // summary unless a coverage-specific note was written.
-  function storyAsCoverage(s) {
-    return {
-      id: s.id,
-      date: s.date,
-      kind: s.youtubeId ? 'video' : 'article',
-      title: s.title,
-      outlet: s.sourceName || 'Source',
-      url: s.sourceUrl,
-      summary: s.coverageNote || s.description || '',
-      storyId: s.id
-    };
-  }
-
+  // COVERAGE ONLY — deliberately. This list used to be built from every STORIES
+  // entry (each formation's own source page) with COVERAGE appended, which meant
+  // "Recent coverage" was just the formation feed a second time: the same
+  // titles, the same aggregator links, the same videos already embedded in
+  // "Field footage" directly above it. A formation's own report page is not
+  // coverage *about* the phenomenon, it IS the formation entry.
+  // This widget now carries only genuine standalone coverage — articles, news,
+  // documentaries, podcasts, events — from window.COVERAGE. If that array is
+  // empty the widget renders its empty state, which is the honest outcome:
+  // better to show nothing than to pad the list with the feed again.
   function coverageItems() {
-    var merged = stories.filter(function (s) { return !!s.sourceUrl; }).map(storyAsCoverage);
+    var items = [];
     coverage.forEach(function (c) {
       if (!c || !c.url || !c.date) return;
-      merged.push({
+      items.push({
         id: c.id || c.url,
         date: c.date,
         kind: c.kind || 'article',
@@ -757,8 +878,8 @@
         durationMin: c.durationMin
       });
     });
-    merged.sort(sortNewestFirst);
-    return merged.slice(0, NEWS_LIMIT);
+    items.sort(sortNewestFirst);
+    return items.slice(0, NEWS_LIMIT);
   }
 
   function buildNewsItem(item, isLead) {
@@ -943,6 +1064,38 @@
       });
   }
 
+  // Two sources feed this widget, and they are not equivalent:
+  //
+  //   1. story.socialPosts — hand-checked and tied to a specific formation.
+  //      Scarce, but the good stuff, so these sort first.
+  //   2. window.SOCIAL_FEED — public Bluesky chatter fetched at build time by
+  //      dashboard/fetch_social.py during the daily scan. Nobody verified it,
+  //      it belongs to no formation, and the card is labelled accordingly.
+  //
+  // A static site cannot query Bluesky itself without shipping the request to
+  // every visitor, so the fetch happens once at scan time and lands in
+  // social.js. See TODO.md item 5b.
+  function collectFeedPosts() {
+    var feed = window.SOCIAL_FEED;
+    if (!feed || !Array.isArray(feed.posts)) return [];
+    var seen = {};
+    return feed.posts.filter(function (p) {
+      if (!p || !isPublicUrl(p.url) || seen[p.url]) return false;
+      seen[p.url] = true;
+      return true;
+    }).map(function (p) {
+      return {
+        story: null,
+        platform: p.platform,
+        url: p.url,
+        author: p.author,
+        handle: p.handle,
+        text: p.text,
+        postedAt: p.postedAt
+      };
+    });
+  }
+
   function renderSocialPosts() {
     var posts = [];
     stories.forEach(function (s) {
@@ -958,6 +1111,13 @@
         });
       });
     });
+
+    // Verified-and-attached first, then chatter newest-first behind it.
+    var feedPosts = collectFeedPosts().sort(function (a, b) {
+      return String(b.postedAt || '').localeCompare(String(a.postedAt || ''));
+    });
+    posts = posts.concat(feedPosts);
+
     els.socialPosts.innerHTML = '';
 
     if (!posts.length) {
@@ -965,7 +1125,7 @@
       empty.className = 'social-empty';
       empty.innerHTML =
         '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rss"/></svg>' +
-        '<p><strong>No curated posts yet.</strong> The daily scan checks again tomorrow — try a keyword search below in the meantime.</p>';
+        '<p><strong>Nothing to show yet.</strong> The daily scan checks again tomorrow — try a keyword search below in the meantime.</p>';
       els.socialPosts.appendChild(empty);
       return;
     }
@@ -983,7 +1143,12 @@
       head.appendChild(platformTag);
 
       var statusTag = document.createElement('span');
-      if (isBluesky(p.platform)) {
+      if (!p.story) {
+        // Chatter. Say so plainly — this is the one label on the page
+        // attached to content nobody checked.
+        statusTag.className = 'social-curated-tag';
+        statusTag.textContent = 'unverified';
+      } else if (isBluesky(p.platform)) {
         statusTag.className = 'social-live-tag';
         statusTag.textContent = 'auto-loads live';
       } else {
@@ -1001,12 +1166,15 @@
       }
       card.appendChild(head);
 
-      var mention = document.createElement('button');
-      mention.type = 'button';
-      mention.className = 'social-mention-link';
-      mention.textContent = 'Mentions of ' + p.story.title;
-      mention.addEventListener('click', function () { jumpToStory(p.story.id); });
-      card.appendChild(mention);
+      // Feed posts belong to no formation, so there is nothing to jump to.
+      if (p.story) {
+        var mention = document.createElement('button');
+        mention.type = 'button';
+        mention.className = 'social-mention-link';
+        mention.textContent = 'Mentions of ' + p.story.title;
+        mention.addEventListener('click', function () { jumpToStory(p.story.id); });
+        card.appendChild(mention);
+      }
 
       if (isBluesky(p.platform)) {
         var slot = document.createElement('div');
@@ -1126,9 +1294,11 @@
     return hash === '#timeline' || /^#(day-|card-)/.test(hash);
   }
 
+  // NOTE: `history` at this scope is the research-archive array (window.HISTORY),
+  // not the browser's History API — always spell out `window.history` in here.
   function setupTopScroll() {
-    if ('scrollRestoration' in history) {
-      try { history.scrollRestoration = 'manual'; } catch (e) { /* ignore */ }
+    if ('scrollRestoration' in window.history) {
+      try { window.history.scrollRestoration = 'manual'; } catch (e) { /* ignore */ }
     }
     if (!isDeepLinkHash(window.location.hash)) {
       window.scrollTo(0, 0);
@@ -1138,11 +1308,25 @@
       navDashboard.addEventListener('click', function (e) {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (history.replaceState) {
-          history.replaceState(null, '', window.location.pathname + window.location.search);
-        }
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
       });
     }
+  }
+
+  // A #card- link pointing at an id retired by a merge (data.js `mergedIds`)
+  // has no element to scroll to, so the browser's native anchor jump silently
+  // does nothing. Rewrite the hash to the surviving card and jump there. Runs
+  // AFTER the first render — jumping before the feed exists would be undone by
+  // that render.
+  function resolveMergedHash() {
+    var m = /^#card-(.+)$/.exec(window.location.hash);
+    if (!m) return;
+    var requested = decodeURIComponent(m[1]);
+    var target = resolveStoryId(requested);
+    if (target === requested) return;
+    window.history.replaceState(
+      null, '', window.location.pathname + window.location.search + '#card-' + target);
+    jumpToStory(target);
   }
 
   // -- hero stats + footer ------------------------------------------------------------
@@ -1175,15 +1359,13 @@
       ? 'no scan in ' + Math.floor(ageHours / 24) + 'd'
       : scanStatus;
 
-    if (needsAttention) {
-      // Show the timestamp in amber with a label so it's obvious something
-      // needs attention without digging into scan_log.txt manually.
-      els.statScan.innerHTML =
-        '<span class="scan-warn">' + escapeHtml(scanStamp) +
-        ' <span class="scan-warn-label">(' + escapeHtml(statusLabel) + ')</span></span>';
-    } else {
-      els.statScan.textContent = scanStamp;
-    }
+    // The header stamp is always the plain timestamp in the theme green. It
+    // used to turn amber and append a "(no scan in 2d)" label, which made the
+    // busiest corner of the page also the loudest. The staleness signal itself
+    // is NOT lost — it still drives the hero's "Monitoring stalled" state (with
+    // an amber pulse dot) and the footer stamp below, which is one clear alarm
+    // instead of the same warning repeated in three places.
+    els.statScan.textContent = scanStamp;
     // The footer block carries its own "Last scan" <dt>, so the value here is
     // just the stamp — the status suffix is only added when it needs attention.
     els.footerUpdated.textContent = scanStamp + (needsAttention ? ' (' + statusLabel + ')' : '');
@@ -1298,4 +1480,5 @@
   wireControls();
   setupHeroSentinel();
   render();
+  resolveMergedHash();
 })();

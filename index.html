@@ -157,23 +157,30 @@
         </p>
       </div>
     </div>
+    <!-- Right side stacks into two rows: the last-scan stamp pinned to the top
+         corner, and the nav + search sitting on a second row beneath it. The
+         previous single-row version ran the nav straight into the wordmark at
+         common widths. -->
     <div class="header-end">
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#hero" class="nav-link" id="navDashboard">Dashboard</a>
-        <a href="#timeline" class="nav-link">Timeline</a>
-        <a href="research.html" class="nav-link">Research</a>
-        <a href="about.html" class="nav-link">About</a>
-      </nav>
-      <form class="header-search" id="headerSearchForm" role="search">
-        <label class="search-box">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
-          <input type="search" id="headerSearchInput" placeholder="Search formations…" autocomplete="off">
-        </label>
-      </form>
       <dl class="header-scan">
         <dt>Last scan</dt>
         <dd id="statScan">—</dd>
       </dl>
+      <div class="header-controls">
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#hero" class="nav-link" id="navDashboard">Dashboard</a>
+          <a href="#timeline" class="nav-link">Timeline</a>
+          <a href="research.html" class="nav-link">Research</a>
+          <a href="resources.html" class="nav-link">Resources</a>
+          <a href="about.html" class="nav-link">About</a>
+        </nav>
+        <form class="header-search" id="headerSearchForm" role="search">
+          <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
+            <input type="search" id="headerSearchInput" placeholder="Search formations…" autocomplete="off">
+          </label>
+        </form>
+      </div>
     </div>
   </div>
 </header>
@@ -230,7 +237,7 @@
 
       <section class="widget widget-social" aria-labelledby="socialHeading">
         <h2 id="socialHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rss"/></svg>Live chatter</h2>
-        <p class="widget-sub">Curated Bluesky posts load live, right here — no click needed. X no longer allows that, so curated X posts show as cards instead; tap through for the live thread.</p>
+        <p class="widget-sub">Public Bluesky posts matching crop-circle terms, pulled fresh by the daily scan, plus any posts hand-checked against a formation. Bluesky posts load live right here; X no longer allows that, so X posts show as cards — tap through for the thread. Chatter is unverified: treat it as what people are saying, not as a source.</p>
         <div class="social-posts" id="socialPosts"><!-- populated by app.js --></div>
         <div class="keyword-block">
           <div class="keyword-chips" id="keywordChips"><!-- populated by app.js --></div>
@@ -348,6 +355,10 @@
      timeline toggle. Built by pipeline/generate_dashboard_entries.py. Optional:
      app.js degrades gracefully to the curated feed if it's absent. -->
 <script src="history.js"></script>
+<!-- Public Bluesky chatter (window.SOCIAL_FEED), refreshed at build time by the
+     daily scan via dashboard/fetch_social.py. Optional: app.js falls back to the
+     curated per-story posts if it's absent or empty. -->
+<script src="social.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

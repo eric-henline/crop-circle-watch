@@ -158,22 +158,25 @@
       </div>
     </div>
     <div class="header-end">
-      <nav class="site-nav" aria-label="Primary">
-        <a href="index.html#hero" class="nav-link">Dashboard</a>
-        <a href="index.html#timeline" class="nav-link">Timeline</a>
-        <a href="research.html" class="nav-link active">Research</a>
-        <a href="about.html" class="nav-link">About</a>
-      </nav>
-      <form class="header-search" id="headerSearchForm" role="search">
-        <label class="search-box">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
-          <input type="search" id="headerSearchInput" placeholder="Search formations…" autocomplete="off">
-        </label>
-      </form>
       <dl class="header-scan">
         <dt>Last scan</dt>
         <dd id="statScan">—</dd>
       </dl>
+      <div class="header-controls">
+        <nav class="site-nav" aria-label="Primary">
+          <a href="index.html#hero" class="nav-link">Dashboard</a>
+          <a href="index.html#timeline" class="nav-link">Timeline</a>
+          <a href="research.html" class="nav-link active">Research</a>
+          <a href="resources.html" class="nav-link">Resources</a>
+          <a href="about.html" class="nav-link">About</a>
+        </nav>
+        <form class="header-search" id="headerSearchForm" role="search">
+          <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
+            <input type="search" id="headerSearchInput" placeholder="Search formations…" autocomplete="off">
+          </label>
+        </form>
+      </div>
     </div>
   </div>
 </header>
@@ -206,13 +209,6 @@
   <div class="research-feed" id="researchFeed">
     <!-- populated by research.js: one card per finding -->
   </div>
-
-  <p class="research-note">
-    Charts are generated from <code>analytics/all_formations.csv</code> by the
-    weekly analytics engine and exported to <code>research.js</code>. Confidence
-    ratings are the engine's own scoring of evidence weight, not a claim of
-    proof — the archive is an evidence record, not a verdict.
-  </p>
 
 </main>
 

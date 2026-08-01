@@ -180,17 +180,67 @@ story that resurfaced under a current-year search). For every candidate:
 
 ## Step 4 — Dedupe against existing entries
 
-Skip any formation that matches an existing entry's `sourceUrl`, or whose
-title+location+date clearly describes a formation already in `data.js`.
+**Aggregators name the same crop circle differently, and this has already put
+duplicates on the live site twice.** Crop Circle Connector filed the 21 Jul 2026
+formation as "Wanborough Plain"; Temporary Temples filed the same circle as "Fox
+Hill" — no shared word in the title, no shared word in the location, and both
+went live as separate cards. The same thing happened on 15 Jun 2026 with "First
+Broad Drive" (CCC) and "Great Wishford" (Temporary Temples), whose map refs turn
+out to be 29 metres apart. Comparing titles is not enough. Compare these instead:
+
+- **Map refs.** Both aggregators publish an OS grid ref. Two refs in the same
+  field are the same formation, whatever the names say.
+- **Video ID.** Two entries embedding the same YouTube video are the same
+  formation, full stop.
+- **Any shared URL** across `sourceUrl` / `references`.
+
+You don't have to eyeball any of that. Run the checker for each candidate
+before you write it into `data.js`:
+
+```
+node check_duplicates.js --check "Title|Location with map ref|YYYY-MM-DD|youtubeId"
+```
+
+It exits 0 when the candidate is genuinely new and 1 when it likely duplicates
+something already logged, printing which entry and why. Location and youtubeId
+may be left empty (`"Fox Hill||2026-07-21|"`) — it uses whatever you give it.
+
+Skip any formation that matches an existing entry's `sourceUrl`, or that the
+checker or your own reading says is already in `data.js`.
+
+**When a candidate duplicates an existing entry, MERGE — never add a second
+card, and never just drop the new source.** The point is one card holding
+everything known about one circle:
+
+1. Keep the existing entry. Its `id` and `date` do not change.
+2. Add the new source's name for it to `aliases` (creating the array if
+   needed). It renders under the title as "Also reported as …" and is
+   searchable, so the formation is findable under either name.
+3. Add the new source to `references` as `{ label, url }` — label it with the
+   source name so a reader can tell the two reports apart. Move the existing
+   `sourceUrl` into `references` too if it isn't there yet, so the row shows
+   both.
+4. Fold any genuinely new fact from the new source into `description`,
+   attributed to the source that says it ("Temporary Temples describe …").
+   Don't overwrite what's there and don't let two sources' claims silently
+   contradict each other.
+5. If the new source has a video and the entry's `youtubeId` is `null`, set it,
+   and add `"video"` to `tags`.
+6. Leave `formationId` alone if the entry has one — it links to the research
+   registry.
+
+If you ever merge two entries that BOTH already exist in `data.js`, keep the one
+carrying a `formationId` (or, if neither has one, the one with a map ref), add
+the loser's `id` to the survivor's `mergedIds` array so old links to it still
+resolve, and delete the loser's object.
 
 ## Step 4b — Dedupe within today's candidates
 
 If two different sources you found in Step 2 describe the same formation
 (common when both Crop Circle Connector and Temporary Temples cover the
-same circle), don't add it twice. Pick the single best source — prefer
-whichever has the clearer report date and more complete description — and
-fold any extra detail from the other source into the description if
-useful.
+same circle), don't add it twice — merge them into one entry using the same
+rules as Step 4: best source as `sourceUrl`, the other name in `aliases`, both
+links in `references`, both sets of detail folded into the description.
 
 ## Step 5 — Build new entries
 
@@ -210,7 +260,12 @@ authoritative field reference):
   sourceName: "Short source label",
   youtubeId: "abc123XYZ", // ONLY a real ID you confirmed by visiting the video's page — never guess or invent one. Use null if no video exists yet.
   formationId: "slug-YYYY",       // OPTIONAL — see Step 5c
-  references: [ /* OPTIONAL — see Step 5c */ ]
+  references: [ /* OPTIONAL — see Step 5c */ ],
+  aliases: ["Other name"],        // OPTIONAL — other names this same formation
+                                  // was reported under (see Step 4). Only ever
+                                  // a name a real source actually used.
+  mergedIds: ["retired-id"]       // OPTIONAL — ids of entries folded into this
+                                  // one (see Step 4). Keeps old links working.
 }
 ```
 
@@ -299,6 +354,11 @@ Otherwise, if you found one or more genuinely new formations:
 3. Validate your edit didn't break the file: run `node --check data.js`
    from this folder. If it fails, undo your edit and report the failure
    instead of committing broken JS.
+4. Validate you didn't log the same circle twice: run `node check_duplicates.js`
+   from this folder. Exit 0 means clean. If it exits 1, it prints the pair and
+   the evidence — go back to Step 4 and merge them before committing. Do not
+   commit a `data.js` this check rejects; the runner re-runs it after you
+   finish and will fire a macOS notification if a duplicate is still there.
 
 If you found NO genuinely new formations, still update
 `DASHBOARD_META.lastScan` and set `DASHBOARD_META.lastScanStatus` to
@@ -330,17 +390,24 @@ dead-end URLs.
 You're already in the right folder (see above), so just run:
 
 ```
-git add data.js scan_rejected_log.md
+git add data.js scan_rejected_log.md social.js
 git commit -m "Scan YYYY-MM-DD: added N new formation(s)"   # or "Scan YYYY-MM-DD: no new formations found"
 ```
 
-**Stage those two paths only — never `git add -A`.** This step pushes to a
+`social.js` is **machine-generated** — the runner script regenerates it from
+Bluesky's public search before it starts you, so it may already be modified when
+you arrive. Stage it as-is. **Never hand-edit it**, and never promote anything
+out of it into `STORIES`: it is unverified public chatter, and a post that looks
+like a real formation report still has to go through Step 3 verification against
+a real source first. If it's unchanged, `git add` on it is a harmless no-op.
+
+**Stage those three paths only — never `git add -A`.** This step pushes to a
 PUBLIC repo (github.com/eric-henline/crop-circle-watch). `-A` stages whatever
 happens to be sitting in the working tree, so a half-finished page, an internal
 TODO, or a scratch file becomes live on the public site because a scheduled job
-ran at 06:58 while nobody was awake. Those two files are the only ones this task
-is supposed to write; if you believe you need to commit something else, stop and
-report it in the summary instead of staging it.
+ran at 06:58 while nobody was awake. Those three files are the only ones this
+task is supposed to write; if you believe you need to commit something else,
+stop and report it in the summary instead of staging it.
 
 Unlike the old Cowork-sandbox version of this task, you're running directly
 on Eric's Mac now, so you have real network access — push too:

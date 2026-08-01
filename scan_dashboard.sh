@@ -147,6 +147,23 @@ PROMPT="$(cat "$PROMPT_FILE")"
 
 # macOS doesn't ship GNU `timeout` — Homebrew's coreutils installs it as
 # `gtimeout` by default to avoid clashing with anything else named timeout.
+# ---- Social feed refresh ----------------------------------------------------
+# TODO item 5b. Pulls public Bluesky posts matching crop-circle terms and
+# rewrites social.js, which the dashboard loads as window.SOCIAL_FEED. Runs
+# BEFORE `claude -p` so the agent's Step 7 commit picks the file up in the same
+# commit as data.js.
+#
+# Deliberately NOT fatal. This is a decorative widget hanging off a third-party
+# API with no SLA; a Bluesky outage must never stop the actual formation scan,
+# which is what this job exists for. fetch_social.py also declines to overwrite
+# an existing social.js when a run returns nothing, so a bad morning leaves
+# yesterday's chatter up rather than blanking the widget.
+if [ -f "$REPO_DIR/fetch_social.py" ]; then
+  if ! python3 "$REPO_DIR/fetch_social.py" >> "$LOG" 2>&1; then
+    echo "WARNING: fetch_social.py failed; continuing with the existing social.js" >> "$LOG"
+  fi
+fi
+
 # Use whichever is actually on PATH; if neither is, fall back to running
 # without a cap rather than failing the job outright (the rest of this
 # script's job is more important than the timeout being present).
@@ -212,6 +229,30 @@ if [ $EXIT_CODE -ne 0 ]; then
     REASON="Exit code $EXIT_CODE — see scan_errors.txt"
   fi
   "$REPO_DIR/notify_failure.sh" "Crop Circle Watch: scan failed" "$REASON"
+fi
+
+# ---- Duplicate gate ---------------------------------------------------------
+# Aggregators file the same formation under different names — Crop Circle
+# Connector's "Wanborough Plain" was Temporary Temples' "Fox Hill", and both
+# went live as two separate cards for the same circle. The scan prompt tells the
+# agent to run this check itself before committing (Step 4), but a prompt is not
+# an enforcement mechanism, and this job runs at 06:58 with nobody watching.
+# Re-run it here on the committed result: too late to block the push the agent
+# already made, but it turns a silent duplicate into a notification the same
+# morning instead of something spotted weeks later by eye.
+if command -v node &>/dev/null && [ -f "$REPO_DIR/check_duplicates.js" ]; then
+  DUPE_OUT="$(cd "$REPO_DIR" && node check_duplicates.js 2>&1)"
+  if [ $? -ne 0 ]; then
+    {
+      echo ""
+      echo "=== Duplicate formations detected after scan: $(date) ==="
+      echo "$DUPE_OUT"
+    } | tee -a "$ERRLOG" >> "$LOG"
+    "$REPO_DIR/notify_failure.sh" "Crop Circle Watch: duplicate formation" \
+      "Same circle logged twice — see scan_errors.txt, then merge with aliases"
+  else
+    echo "$DUPE_OUT" >> "$LOG"
+  fi
 fi
 
 echo "=== Scan runner finished: $(date) (exit $EXIT_CODE) ===" >> "$LOG"

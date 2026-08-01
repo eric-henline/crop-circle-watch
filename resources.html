@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources — Crop Circle Watch</title>
+<meta name="description" content="The sites, archives and channels Crop Circle Watch aggregates from — what each one offers, and what it is best at.">
+
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="resources-page">
+
+<!-- Icon sprite — mirrors the subset index.html uses on this page: the ring
+     logo (brand mark + centered about mark) plus the background-watermark
+     glyphs, so the ambient background matches the dashboard. -->
+<svg style="display:none">
+  <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <circle cx="10.5" cy="10.5" r="6.5"/>
+    <path d="M19.5 19.5l-4.3-4.3"/>
+  </symbol>
+  <symbol id="icon-ring-logo" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="23" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="32" cy="32" r="8.6" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="45.5" cy="32" r="8.6" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="38.75" cy="43.69" r="8.6" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="25.25" cy="43.69" r="8.6" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="18.5" cy="32" r="8.6" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="25.25" cy="20.31" r="8.6" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="38.75" cy="20.31" r="8.6" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="59.5" cy="32" r="1.7" fill="currentColor"/>
+    <circle cx="45.75" cy="55.82" r="1.7" fill="currentColor"/>
+    <circle cx="18.25" cy="55.82" r="1.7" fill="currentColor"/>
+    <circle cx="4.5" cy="32" r="1.7" fill="currentColor"/>
+    <circle cx="18.25" cy="8.18" r="1.7" fill="currentColor"/>
+    <circle cx="45.75" cy="8.18" r="1.7" fill="currentColor"/>
+    <circle cx="32" cy="32" r="2.4" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-glyph-rings" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="2" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-glyph-spokes" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="32" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <path d="M32 8v10M32 46v10M8 32h10M46 32h10M14.3 14.3l7.1 7.1M42.6 42.6l7.1 7.1M49.7 14.3l-7.1 7.1M21.4 42.6l-7.1 7.1" stroke="currentColor" stroke-width="1.1"/>
+  </symbol>
+  <symbol id="icon-glyph-triad" viewBox="0 0 64 64">
+    <circle cx="32" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="20" cy="40" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="44" cy="40" r="13" fill="none" stroke="currentColor" stroke-width="1.15"/>
+  </symbol>
+  <symbol id="icon-glyph-quatrefoil" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="44" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="20" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="44" cy="32" r="11" fill="none" stroke="currentColor" stroke-width="1.1"/>
+  </symbol>
+  <symbol id="icon-glyph-target" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="25" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="16" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="4" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <path d="M32 3v6M32 55v6M3 32h6M55 32h6" stroke="currentColor" stroke-width="1.15"/>
+  </symbol>
+  <symbol id="icon-glyph-orbit" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="32" cy="32" r="18" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="3 4"/>
+    <circle cx="44" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.15"/>
+    <circle cx="32" cy="32" r="2" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<div class="bg-field" aria-hidden="true"></div>
+<!-- Same ambient watermark layer as the dashboard (see index.html / styles.css). -->
+<div class="bg-watermarks" aria-hidden="true">
+  <svg class="wm wm-1" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-2" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-rings"/></svg>
+  <svg class="wm wm-3" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-4" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-target"/></svg>
+  <svg class="wm wm-5" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-spokes"/></svg>
+  <svg class="wm wm-6" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-triad"/></svg>
+  <svg class="wm wm-7" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-quatrefoil"/></svg>
+  <svg class="wm wm-8" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-spokes"/></svg>
+  <svg class="wm wm-9" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-orbit"/></svg>
+  <svg class="wm wm-10" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+  <svg class="wm wm-11" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-rings"/></svg>
+  <svg class="wm wm-12" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-triad"/></svg>
+  <svg class="wm wm-13" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-glyph-target"/></svg>
+</div>
+<div class="bg-scan" aria-hidden="true"></div>
+
+<header class="site-header" id="siteHeader">
+  <div class="site-header-inner">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+      <div class="brand-text">
+        <h1>CROP CIRCLE WATCH</h1>
+        <p class="cereology-note">
+          <span class="cer-word">cereology</span>
+          <span class="cer-pos">n.</span>
+          <span class="cer-def">the study or investigation of crop circles</span>
+        </p>
+      </div>
+    </div>
+    <div class="header-end">
+      <dl class="header-scan">
+        <dt>Last scan</dt>
+        <dd id="statScan">—</dd>
+      </dl>
+      <div class="header-controls">
+        <nav class="site-nav" aria-label="Primary">
+          <a href="index.html#hero" class="nav-link">Dashboard</a>
+          <a href="index.html#timeline" class="nav-link">Timeline</a>
+          <a href="research.html" class="nav-link">Research</a>
+          <a href="resources.html" class="nav-link active">Resources</a>
+          <a href="about.html" class="nav-link">About</a>
+        </nav>
+        <form class="header-search" id="headerSearchForm" role="search">
+          <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
+            <input type="search" id="headerSearchInput" placeholder="Search formations…" autocomplete="off">
+          </label>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="resources-body">
+
+  <div class="res-intro">
+    <p class="res-eyebrow">Sources</p>
+    <h2 class="res-title">Where this dashboard gets its information</h2>
+    <p class="res-lede">
+      Crop Circle Watch does not photograph or investigate formations itself — it
+      reads the people who do, verifies the report date, and links straight back
+      to them. These are the sources the daily scan checks, what each one
+      actually offers, and what it is best at. Every formation entry on this site
+      credits its source; nothing here is a substitute for visiting them.
+    </p>
+  </div>
+
+  <section class="res-section">
+    <div class="res-section-head">
+      <h3>Primary aggregators</h3>
+      <p>Where a new formation is usually reported first, and the two sources most entries on this dashboard cite.</p>
+    </div>
+
+    <div class="res-grid">
+
+      <article class="res-card">
+        <div class="res-card-top">
+          <span class="res-kind res-kind--aggregator">Aggregator</span>
+          <span class="res-domain">cropcircleconnector.com</span>
+        </div>
+        <h4 class="res-name">The Crop Circle Connector</h4>
+        <p class="res-desc">
+          The field's central clearing house, running since the 1990s. A season
+          index for each year, with a page per formation carrying aerial
+          photography, an OS grid reference, and often ground reports, diagrams
+          and dowsing notes. Its per-formation URLs embed the report year, which
+          makes it unusually easy to tell a current report from an old page
+          resurfacing in search.
+        </p>
+        <ul class="res-offers">
+          <li>Season index by year</li>
+          <li>Map references</li>
+          <li>Aerial photo sets</li>
+          <li>Ground reports</li>
+        </ul>
+        <p class="res-best"><span>Best at</span> breadth and speed — usually the first to post a new formation.</p>
+        <a class="res-link" href="https://www.cropcircleconnector.com/" target="_blank" rel="noopener noreferrer">Visit site</a>
+      </article>
+
+      <article class="res-card">
+        <div class="res-card-top">
+          <span class="res-kind res-kind--aggregator">Aggregator</span>
+          <span class="res-domain">temporarytemples.co.uk</span>
+        </div>
+        <h4 class="res-name">Temporary Temples</h4>
+        <p class="res-desc">
+          Run by Steve and Karen Alexander, who have photographed the phenomenon
+          since 1994. Each formation gets a project page built around their own
+          photography, with geometric drawings, measurements and a discussion of
+          the pattern's construction. Also books and year books, a video library,
+          online courses and an annual conference.
+        </p>
+        <ul class="res-offers">
+          <li>Formation analysis</li>
+          <li>Geometry drawings</li>
+          <li>Year books</li>
+          <li>Conference &amp; courses</li>
+        </ul>
+        <p class="res-best"><span>Best at</span> the most considered write-up per formation — typically a few days behind the first report, and worth the wait.</p>
+        <a class="res-link" href="https://temporarytemples.co.uk/" target="_blank" rel="noopener noreferrer">Visit site</a>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="res-section">
+    <div class="res-section-head">
+      <h3>Photography &amp; field documentation</h3>
+      <p>The people in the fields and in the air. Most imagery credited on this dashboard originates here.</p>
+    </div>
+
+    <div class="res-grid">
+
+      <article class="res-card">
+        <div class="res-card-top">
+          <span class="res-kind res-kind--photo">Photography</span>
+          <span class="res-domain">cropcirclephotographs.co.uk</span>
+        </div>
+        <h4 class="res-name">Lucy Pringle</h4>
+        <p class="res-desc">
+          A photographer and researcher who has documented formations since 1990,
+          giving her one of the longest continuous visual archives in the field.
+          The site carries that archive alongside articles and newsletters, and
+          she runs guided tours of Wiltshire formations and the sacred sites
+          around them.
+        </p>
+        <ul class="res-offers">
+          <li>Archive from 1990</li>
+          <li>Articles &amp; newsletter</li>
+          <li>Guided tours</li>
+        </ul>
+        <p class="res-best"><span>Best at</span> the long view — three and a half decades of continuous photographic record.</p>
+        <a class="res-link" href="https://cropcirclephotographs.co.uk/" target="_blank" rel="noopener noreferrer">Visit site</a>
+      </article>
+
+      <article class="res-card">
+        <div class="res-card-top">
+          <span class="res-kind res-kind--video">Video</span>
+          <span class="res-domain">youtube.com/@StonehengeDronescapes</span>
+        </div>
+        <h4 class="res-name">Stonehenge Dronescapes</h4>
+        <p class="res-desc">
+          A commercial drone pilot who flies the Wiltshire formations between
+          Avebury and Stonehenge each season, publishing short aerial films —
+          often within a day or two of a formation appearing. A large share of
+          the footage embedded on this dashboard is theirs.
+        </p>
+        <ul class="res-offers">
+          <li>Aerial video</li>
+          <li>Same-week uploads</li>
+          <li>Wiltshire focus</li>
+        </ul>
+        <p class="res-best"><span>Best at</span> seeing the pattern whole — frequently the only aerial record a formation gets before it is cut.</p>
+        <a class="res-link" href="https://www.youtube.com/@StonehengeDronescapes" target="_blank" rel="noopener noreferrer">Visit channel</a>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="res-section">
+    <div class="res-section-head">
+      <h3>Archives &amp; community</h3>
+      <p>Historical depth, and the open forums where word of a new formation often travels first.</p>
+    </div>
+
+    <div class="res-grid">
+
+      <article class="res-card">
+        <div class="res-card-top">
+          <span class="res-kind res-kind--archive">Archive</span>
+          <span class="res-domain">circleresearcharchive.com</span>
+        </div>
+        <h4 class="res-name">Crop Circle Research Archive</h4>
+        <p class="res-desc">
+          A free digital repository digitising the paper archives of researchers
+          active from the 1980s through the early 2000s — over 600 magazines and
+          articles so far, plus chronologies and bibliographies. Still actively
+          being scanned and added to.
+        </p>
+        <ul class="res-offers">
+          <li>600+ digitised magazines</li>
+          <li>Chronologies</li>
+          <li>Bibliographies</li>
+        </ul>
+        <p class="res-best"><span>Best at</span> the pre-internet record — material that exists nowhere else online.</p>
+        <a class="res-link" href="https://circleresearcharchive.com/" target="_blank" rel="noopener noreferrer">Visit archive</a>
+      </article>
+
+      <article class="res-card">
+        <div class="res-card-top">
+          <span class="res-kind res-kind--commentary">Commentary</span>
+          <span class="res-domain">thecroppie.com</span>
+        </div>
+        <h4 class="res-name">The Croppie</h4>
+        <p class="res-desc">
+          A blog covering the British scene since 2015, and the field's most
+          sceptical regular voice. Alongside formation write-ups it runs
+          commentary columns, a reader Q&amp;A with working circle makers, and
+          debunkings of claims circulating in the community — the counterweight
+          to sources that report the phenomenon uncritically.
+        </p>
+        <ul class="res-offers">
+          <li>Season commentary</li>
+          <li>Circle-maker interviews</li>
+          <li>Sceptical analysis</li>
+        </ul>
+        <p class="res-best"><span>Best at</span> scrutiny — the source most likely to say a formation is human-made and explain how.</p>
+        <a class="res-link" href="https://thecroppie.com/" target="_blank" rel="noopener noreferrer">Visit site</a>
+      </article>
+
+      <article class="res-card">
+        <div class="res-card-top">
+          <span class="res-kind res-kind--community">Community</span>
+          <span class="res-domain">reddit.com/r/cropcircles</span>
+        </div>
+        <h4 class="res-name">r/cropcircles</h4>
+        <p class="res-desc">
+          The main open discussion venue, and often where word of a new formation
+          travels before the aggregators publish. Useful as an early signal, but
+          posts carry no reliable date structure and reposted photo sets of old
+          formations are common — this dashboard treats it as a lead to verify
+          elsewhere, never as a source on its own.
+        </p>
+        <ul class="res-offers">
+          <li>Early word-of-mouth</li>
+          <li>Photo sets</li>
+          <li>Open discussion</li>
+        </ul>
+        <p class="res-best"><span>Best at</span> speed — at the cost of reliability. Always corroborate before trusting a date.</p>
+        <a class="res-link" href="https://www.reddit.com/r/cropcircles/" target="_blank" rel="noopener noreferrer">Visit subreddit</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Honest note: these are named in the project's own scan instructions but
+       did not load when this page was compiled. Listing them as live links
+       would be exactly the kind of dead reference this dashboard tries to
+       avoid. Re-check periodically; a domain coming back is normal. -->
+  <section class="res-section res-section--note">
+    <div class="res-section-head">
+      <h3>Not currently reachable</h3>
+      <p>Long-standing sources in this field that did not load when this page was compiled, so they are listed without links.</p>
+    </div>
+    <ul class="res-unreachable">
+      <li>
+        <strong>BLT Research</strong> <span class="res-domain">bltresearch.com</span>
+        — Nancy Talbott's team, known for laboratory work on plant and soil
+        abnormalities at formation sites, including papers in peer-reviewed
+        journals. The domain did not resolve at time of writing.
+      </li>
+      <li>
+        <strong>Crop Circles and More</strong> <span class="res-domain">cropcirclesandmore.com</span>
+        — season coverage alongside ancient sites. Returned a 403 at time of writing.
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg class="footer-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#icon-ring-logo"/></svg>
+      <div class="footer-brand-text">
+        <p class="footer-wordmark">Crop Circle Watch</p>
+        <p class="footer-tagline">Part of the <span>crop-circles</span> research project</p>
+      </div>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="index.html#hero">Dashboard</a>
+      <a href="index.html#timeline">Timeline</a>
+      <a href="research.html">Research</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
+    </nav>
+
+    <dl class="footer-status">
+      <dt>Last scan</dt>
+      <dd id="footerUpdated">—</dd>
+    </dl>
+  </div>
+
+  <p class="footer-legal">Photography and footage remain the property of their original creators — each entry links back to its source.</p>
+</footer>
+
+<!-- Read DASHBOARD_META for the shared "Last scan" stamp, and route the header
+     search back to the dashboard timeline (this page has no feed of its own). -->
+<script src="data.js"></script>
+<script>
+  (function () {
+    'use strict';
+    var meta = window.DASHBOARD_META || {};
+    // Same stamp feeds the header chip and the footer status block.
+    if (meta.lastScan) {
+      var stamp;
+      try {
+        stamp = new Intl.DateTimeFormat(undefined, {
+          month: 'short', day: 'numeric', hour: 'numeric',
+          minute: '2-digit', timeZoneName: 'short'
+        }).format(new Date(meta.lastScan)).toUpperCase();
+      } catch (e) { stamp = meta.lastScan; }
+      ['statScan', 'footerUpdated'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = stamp;
+      });
+    }
+    var form = document.getElementById('headerSearchForm');
+    var input = document.getElementById('headerSearchInput');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var q = (input && input.value.trim()) || '';
+        window.location.href = 'index.html' + (q ? '?q=' + encodeURIComponent(q) : '') + '#timeline';
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

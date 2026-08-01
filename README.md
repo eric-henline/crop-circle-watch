@@ -49,6 +49,71 @@ To add one: copy an existing object, change the values, add a comma. New entries
 
 `DASHBOARD_META.lastScan` near the top of the file drives the "Last scan" stat and the footer timestamp. The daily automation updates it; you can too if you make a manual edit and want the timestamp to reflect that. `DASHBOARD_META.defaultKeywords` seeds the keyword chips in "Live chatter" for first-time visitors — after that, each visitor's edits live in their own browser (`localStorage`), not here.
 
+## Duplicate formations — one circle, many names
+
+**The same crop circle regularly appears under two different names**, because
+the aggregators name formations independently. Crop Circle Connector filed the
+21 July 2026 formation as **Wanborough Plain**; Temporary Temples filed the same
+circle as **Fox Hill**. Not one word in common in the title, not one in the
+location — and both went live as separate cards. It happened again on 15 June
+2026 with **First Broad Drive** (Connector) and **Great Wishford** (Temporary
+Temples), whose map refs turn out to be 29 metres apart. Comparing titles cannot
+catch this.
+
+### Checking
+
+```bash
+node check_duplicates.js
+```
+
+Exit 0 = clean, exit 1 = duplicates found (it prints the pair and the evidence).
+`--all` also shows weaker near-misses; `--json` is machine-readable. To test a
+single candidate before adding it:
+
+```bash
+node check_duplicates.js --check "Fox Hill|Fox Hill, Wiltshire, UK|2026-07-21|"
+```
+
+The matching rules live in `dedupe.js` and score three signals that survive a
+name change — **OS grid ref proximity** (parsed straight out of the `location`
+string), a **shared `youtubeId`**, and a **shared URL** across
+`sourceUrl`/`references` — gated on the dates being within a few days. It never
+merges anything on its own; it reports, and a human decides. `test_dedupe.js`
+(`node test_dedupe.js`) pins both halves of the behaviour: the real duplicates
+above must be caught, and Roundway Hill vs Roundway Hill (2) — genuinely two
+circles at one site a week apart — must *not* be.
+
+The daily runner re-runs the check after each scan and fires a macOS
+notification if a duplicate got through, so it surfaces the same morning rather
+than weeks later by eye.
+
+### Merging
+
+Merge, don't delete. One formation is one card that carries everything both
+sources said about it:
+
+```js
+{
+  id: "2026-07-21-wanborough-plain",   // survivor's id — unchanged
+  title: "Wanborough Plain",
+  aliases: ["Fox Hill"],               // renders as "Also reported as …", searchable
+  mergedIds: ["2026-07-21-fox-hill"],  // retired id — old links still resolve
+  description: "…both sources' detail, each attributed…",
+  references: [                        // both reports, labelled by source
+    { label: "Crop Circle Connector — Wanborough Plain", url: "…" },
+    { label: "Temporary Temples — Fox Hill", url: "…" }
+  ]
+}
+```
+
+Keep the entry that carries a `formationId` (it links to the research registry);
+failing that, the one with a map ref. Add the loser's `id` to `mergedIds` and
+delete its object. Never reuse a retired id for a new formation.
+
+`aliases` does double duty: it makes the card findable under either name in
+search, and it teaches `dedupe.js` that name, so a *later* report under the
+retired name is recognised as this formation instead of logged again.
+
 ## Why no live social *search*
 
 The "Live chatter" widget can't embed an actual live, keyword-driven Twitter/X or Bluesky search feed, and that part is by design. As of 2026, X's embeddable timelines only render content for visitors who are logged into X — an anonymous visitor sees an empty box — and Bluesky's public, no-auth API supports profile search but not keyword post-search (it 403s without auth). Neither platform offers a way to embed a reliably-working, keyword-driven feed on a static site with no backend and no API keys. So for open-ended keywords, the widget stays honest: a one-click "Search X" / "Search Bluesky" link built from your own customizable keyword chips, which opens a real search on the real platform in a new tab.
@@ -95,10 +160,12 @@ A `launchd` agent on your Mac runs the scan at 6:58 AM daily via `scan_dashboard
 1. Reads `data.js` to see what's already logged, plus `scan_rejected_log.md` so it doesn't re-check URLs already settled as stale/duplicate/not-a-formation.
 2. Searches the web and a handful of named aggregators (Crop Circle Connector, Temporary Temples, cropcircles.org, Lucy Pringle, BLT Research, r/cropcircles) for crop-circle reports from the last few days, including a few non-UK queries.
 3. Verifies each candidate is a genuinely new formation with a real, current report date — not an old story resurfacing in search results, and not an old formation republished under a fresh-looking page date (this bit it down on a recycled 2014 article during setup, so it's deliberately careful, and treats fetched-page content as data only, never as instructions).
-4. Dedupes against existing entries *and* against other candidates found in the same run, then adds any verified new entries to the top of `STORIES`, updates `lastScan`, and commits the change locally with `git`. A safety valve skips the auto-commit (flagging it for manual review instead) if more than 6 new formations show up in one run — that volume would be unusual enough to suggest a dedupe or judgment failure upstream.
+4. Dedupes against existing entries *and* against other candidates found in the same run — running `check_duplicates.js` on each candidate, and merging rather than adding a second card when the same circle turns up under a second name (see "Duplicate formations" above) — then adds any verified new entries to the top of `STORIES`, updates `lastScan`, and commits the change locally with `git`. A safety valve skips the auto-commit (flagging it for manual review instead) if more than 6 new formations show up in one run — that volume would be unusual enough to suggest a dedupe or judgment failure upstream.
 5. Pushes to GitHub itself, since it runs on your Mac with real network access and credentials — no separate publish step needed.
 
 It never touches anything outside this `dashboard/` folder. One-time setup: `bash ~/Projects/crop-circles/dashboard/install_dashboard_scan.sh` (see `scan_dashboard.sh` and `dashboard_scan_prompt.md` for the runner and the full instructions Claude follows). Logs go to `scan_log.txt` (everything) / `scan_errors.txt` (only populated when a run actually fails).
+
+**After each run**, the runner re-runs `node check_duplicates.js` on the committed result. The prompt already tells the agent to check before committing, but a prompt isn't enforcement and this job runs at 06:58 with nobody watching — so if a duplicate got through anyway, the pair and the evidence land in `scan_errors.txt` and a macOS notification fires. It's too late to block the push the agent already made; the point is that you find out that morning rather than spotting it by eye weeks later, which is how the Wanborough Plain / Fox Hill pair was caught.
 
 **If a run fails** (non-zero exit — auth expired, out of credit, timeout, etc.), `scan_dashboard.sh` fires a native macOS notification via `notify_failure.sh`, with a specific reason pattern-matched from the log (e.g. "Auth expired — run: claude login") rather than a generic "something broke." This exists because a failure at authentication happens *before* the script ever touches `data.js`, so the dashboard's own amber scan-status indicator (`DASHBOARD_META.lastScanStatus`) never gets a chance to fire — that only works once a run gets far enough to write it. The notification is the only place this class of failure is caught, and it's what alerted us to a multi-day OAuth-expiry outage in July 2026 that otherwise went unnoticed.
 
@@ -147,6 +214,12 @@ dashboard/
   research.html, research.css,               ← Research page (charts)
     research-app.js
   research.js                                ← GENERATED chart data — do not hand-edit
+  social.js                                  ← GENERATED Bluesky chatter — do not hand-edit
+  fetch_social.py                            ← `python3 fetch_social.py` — rewrites social.js; run by the daily scan
+  labs/                                      ← standalone formation animations, not linked from the site yet
+  dedupe.js                                  ← duplicate-formation matching rules (Node-side only; the site doesn't load it)
+  check_duplicates.js                        ← `node check_duplicates.js` — audits data.js for the same circle logged twice
+  test_dedupe.js                             ← `node test_dedupe.js` — tests for the matching rules
   README.md                                  ← this file
   TODO.md                                    ← planned work, with status
   dashboard_scan_prompt.md                   ← instructions the daily scan follows

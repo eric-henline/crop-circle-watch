@@ -16,6 +16,18 @@
      sourceName  — short label for the source link, e.g. "Crop Circle Connector"
      youtubeId   — YouTube video ID only (the part after "v=" or after
                    "embed/"), or null if no video is available yet
+     aliases     — OPTIONAL. Other names this same formation was reported under.
+                   Aggregators routinely name one circle differently (Crop Circle
+                   Connector's "Wanborough Plain" is Temporary Temples' "Fox
+                   Hill"). One card, every name: the alternates render under the
+                   title as "Also reported as …", and they're searchable, so
+                   looking up either name finds the one record. Adding an alias
+                   also teaches dedupe.js that name, so a later re-report under
+                   it is recognised instead of logged again.
+     mergedIds   — OPTIONAL. Ids of entries folded INTO this one. Two jobs: old
+                   deep links (#card-<retired-id>) still land on the surviving
+                   card, and the daily scan can tell a retired id from an id it
+                   has never seen. Never reuse a retired id for a new formation.
      formationId — OPTIONAL. Canonical id from the research registry
                    (index/formations.json, built by pipeline/build_registry.py).
                    This is the LINK back to the master research database — the
@@ -62,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-07-29T00:30:00-07:00",
+  lastScan: "2026-07-31T19:31:55-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -79,26 +91,24 @@ window.DASHBOARD_META = {
 
 window.STORIES = [
   {
-    id: "2026-07-21-fox-hill",
-    date: "2026-07-21",
-    title: "Fox Hill",
-    location: "Fox Hill, Wiltshire, UK",
-    description: "Reported 21 July 2026 at Fox Hill: a long pictogram of symbols. Temporary Temples noted full analysis and photography were still pending at time of writing.",
-    tags: ["UK", "Wiltshire", "2026 season", "video"],
-    sourceUrl: "https://temporarytemples.co.uk/2026-fox-hill",
-    sourceName: "Temporary Temples",
-    youtubeId: "I9OtDbbVsvA"
-  },
-  {
+    // MERGED 2026-07-30: Crop Circle Connector filed this as "Wanborough Plain"
+    // and Temporary Temples as "Fox Hill". Same date, same drone video
+    // (I9OtDbbVsvA), adjacent sites — one formation, two names.
     id: "2026-07-21-wanborough-plain",
     date: "2026-07-21",
     title: "Wanborough Plain",
+    aliases: ["Fox Hill"],
+    mergedIds: ["2026-07-21-fox-hill"],
     location: "Nr Liddington, Wiltshire, UK · Map ref SU2283380804",
-    description: "Reported 21 July 2026 near Liddington. Aerial images and video credited to Stonehenge Dronescapes; ground reports, diagrams, and design details not yet published.",
+    description: "Reported 21 July 2026 near Liddington, on the Wanborough Plain / Fox Hill downs. Temporary Temples describe a long pictogram of symbols, with full analysis and photography still pending at time of writing. Aerial images and video credited to Stonehenge Dronescapes; ground reports, diagrams, and design details not yet published.",
     tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://www.cropcircleconnector.com/2026/Wanborough/Wanborough2026a.html",
     sourceName: "Crop Circle Connector",
-    youtubeId: "I9OtDbbVsvA"
+    youtubeId: "I9OtDbbVsvA",
+    references: [
+      { label: "Crop Circle Connector — Wanborough Plain", url: "https://www.cropcircleconnector.com/2026/Wanborough/Wanborough2026a.html" },
+      { label: "Temporary Temples — Fox Hill", url: "https://temporarytemples.co.uk/2026-fox-hill" }
+    ]
   },
   {
     id: "2026-07-18-roundway-hill-2",
@@ -161,10 +171,10 @@ window.STORIES = [
     title: "Maccoombe Down",
     location: "Nr Tidcombe, Wiltshire, UK · Map ref SU2931057192",
     description: "Reported 7 July 2026 near Tidcombe, described by Temporary Temples as a striking 3D design roughly 180ft in diameter. The field's owner — his first crop circle in 19 years — has granted limited public access along marked tractor-track routes.",
-    tags: ["UK", "Wiltshire", "2026 season"],
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://www.cropcircleconnector.com/2026/Maccoombe/Maccoombe2026a.html",
     sourceName: "Crop Circle Connector",
-    youtubeId: null
+    youtubeId: "GBwSHN5Gv7g"
   },
   {
     id: "2026-07-05-zeals-knoll",
@@ -238,17 +248,6 @@ window.STORIES = [
     youtubeId: "FaVfeWRw2nw"
   },
   {
-    id: "2026-06-15-first-broad-drive",
-    date: "2026-06-15",
-    title: "First Broad Drive",
-    location: "Nr Wilton, Wiltshire, UK · Map ref SU0559233836",
-    description: "The fourth confirmed formation of the 2026 UK season, found in a field near Wilton on 15 June. Picked up by Crop Circle Connector and covered the same week by Unknown Country as a fresh, newly-discovered design — not a repeat of an earlier formation.",
-    tags: ["UK", "Wiltshire", "2026 season", "video"],
-    sourceUrl: "https://www.cropcircleconnector.com/2026/first/first2026a.html",
-    sourceName: "Crop Circle Connector",
-    youtubeId: "we8EFnHEP14"
-  },
-  {
     id: "2026-06-15-morgans-hill",
     formationId: "morgans-hill-2026",
     date: "2026-06-15",
@@ -261,16 +260,28 @@ window.STORIES = [
     youtubeId: null
   },
   {
+    // MERGED 2026-07-30: Crop Circle Connector filed this as "First Broad Drive,
+    // Nr Wilton" (SU0559233836) and Temporary Temples as "Great Wishford, Nr
+    // Grovely Woods" (SU0556533826) — the two refs are 29m apart on the same
+    // day. First Broad Drive is a ride through Grovely Wood, so both names
+    // describe the same field. Kept under the Temporary Temples record because
+    // it carries the research-registry formationId.
     id: "2026-06-15-great-wishford",
     formationId: "great-wishford-2026",
     date: "2026-06-15",
     title: "Great Wishford",
+    aliases: ["First Broad Drive"],
+    mergedIds: ["2026-06-15-first-broad-drive"],
     location: "Nr Grovely Woods, Great Wishford, Wiltshire, UK · Map ref SU0556533826",
-    description: "Reported 15 June 2026 in young wheat near Grovely Woods, measuring approximately 120ft in diameter. Temporary Temples describe it as another three-fold design with fascinating geometry and symbolism. The formation lasted only three days before the farmer cut it — one day before Temporary Temples' planned aerial flight — so drone stills by Tomasz Kaczmarek exist but no aerial video was recorded.",
-    tags: ["UK", "Wiltshire", "2026 season"],
+    description: "Reported 15 June 2026 in young wheat near Grovely Woods, measuring approximately 120ft in diameter, and logged by Crop Circle Connector as the season's fourth confirmed formation. Temporary Temples describe it as another three-fold design with fascinating geometry and symbolism. The formation lasted only three days before the farmer cut it — one day before Temporary Temples' planned aerial flight — so their own coverage is drone stills by Tomasz Kaczmarek; the aerial video below comes from Crop Circle Connector's report of the same formation.",
+    tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://temporarytemples.co.uk/project/great-wishford-2026",
     sourceName: "Temporary Temples",
-    youtubeId: null
+    youtubeId: "we8EFnHEP14",
+    references: [
+      { label: "Temporary Temples — Great Wishford", url: "https://temporarytemples.co.uk/project/great-wishford-2026" },
+      { label: "Crop Circle Connector — First Broad Drive", url: "https://www.cropcircleconnector.com/2026/first/first2026a.html" }
+    ]
   },
   {
     id: "2026-05-31-ditcheat",
@@ -359,8 +370,87 @@ window.STORIES = [
    expected; a plausible-sounding invented documentary is not.
    ========================================================================== */
 window.COVERAGE = [
-  // Populated by the daily scan (see dashboard_scan_prompt.md, Step 2c) and by
-  // hand. Example shape, kept commented so it never renders as real coverage:
+  // Newest first. Every entry below was verified by opening the page: the URL
+  // returns 200 and the summary describes what the piece actually says. This is
+  // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
+  // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-07-21-croppie-gossip-crop-cutting",
+    date: "2026-07-21",
+    kind: "community",
+    title: "Croppie Gossip: Crop Cutting, Crop Marks, Crop Clubs",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/07/21/croppie-gossip-crop-cutting-crop-marks-crop-crazies/",
+    summary: "Season round-up arguing the 2026 season is ending early, as unusual weather brought the wheat harvest forward and destroyed the remaining formations. Also covers Mark Byrne's argument that crop circles obscure archaeologically important crop marks, and a debunking of the idea that organised circle-making clubs operate in Britain."
+  },
+  {
+    id: "2026-07-18-croppie-gossip-conspiracy-camel",
+    date: "2026-07-18",
+    kind: "community",
+    title: "Croppie Gossip: The Crying Conspiracy Camel",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/07/18/croppie-gossip-the-crying-conspiracy-camel/",
+    summary: "Mid-season commentary column from The Croppie on the conspiracy claims circulating around the 2026 season."
+  },
+  {
+    id: "2026-07-17-circles-festival",
+    date: "2026-07-17",
+    kind: "event",
+    title: "The Circles Festival 2026",
+    outlet: "Crop Circle Access",
+    url: "https://www.cropcircleaccess.com/the-circles-festival-2026/",
+    summary: "Three-day in-person gathering at Honeystreet Village, Wiltshire (July 17–19), marking the 25th anniversary of the Milk Hill Galaxy spiral and the Chilbolton Face & Message circles of 2001. Featured talks, films, a festival fair, workshops, field tours, and night watching under the stars."
+  },
+  {
+    id: "2026-06-20-unknown-country-wilton",
+    date: "2026-06-20",
+    kind: "article",
+    title: "Intricate Crop Circle Appears Near Wilton as 2026 Season Continues",
+    outlet: "Whitley Strieber's Unknown Country",
+    url: "https://unknowncountry.com/headline-news/intricate-crop-circle-appears-near-wilton-as-2026-season-continues/",
+    summary: "News write-up of the season's fourth formation, describing drone footage of a complex geometric pattern of interconnected circles. Notes that roughly 80% of UK crop circles appear in Wiltshire and that annual UK totals run around thirty formations, and sets out the competing human-made and unexplained readings without endorsing either."
+  },
+  {
+    id: "2026-06-09-wondering-monsters-ep29",
+    date: "2026-06-09",
+    kind: "podcast",
+    title: "Crop Circles Explained? Mystery, Hoaxes, and Unanswered Questions",
+    outlet: "Wondering Monsters Podcast (Ep. 29)",
+    url: "https://wonderingmonsterspodcast.com/crop-circles-explained.php",
+    summary: "Episode-length survey of the phenomenon: the Doug Bower and Dave Chorley board-and-string claims, the 1996 Stonehenge Julia Set, expulsion cavities in plant nodes, ball lightning and plasma vortex theories, Operation Blackbird, and the 2001 Arecibo response formation."
+  },
+  {
+    id: "2026-05-15-dear-croppie-imprint",
+    date: "2026-05-15",
+    kind: "article",
+    title: "Dear Croppie: Why Do Crop Circles Leave Their Imprint Behind After Harvest?",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/05/15/dear-croppie-why-do-crop-circles-leave-their-imprint-behind-immediately-after-they-are-harvested/",
+    summary: "Reader-question column on why a formation's outline stays visible in the stubble immediately after a field has been harvested."
+  },
+  {
+    id: "2026-05-01-circle-makers-speak-12",
+    date: "2026-05-01",
+    kind: "article",
+    title: "Circle Makers Speak #12: Q&A Session (Part One)",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/05/01/circle-makers-speak-12-qa-session-part-one/",
+    summary: "First part of a reader Q&A with a working circle maker, drawn from more than seventy submitted questions. Covers how they learned the craft, why they keep making formations, and their view of landmark circles such as Milk Hill."
+  },
+  {
+    id: "2026-04-24-circle-makers-not-grassing",
+    date: "2026-04-24",
+    kind: "article",
+    title: "No, Circle Makers Are Not Grassing On Each Other",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/04/24/no-circle-makers-are-not-grassing-on-each-other/",
+    summary: "Rebuts the rumour that rival circle-making teams report each other to the police, arguing it would only invite scrutiny on themselves. Attributes the actual complaints to farmers and rural residents who follow the makers' own public social media posts."
+  }
+  // Added by the daily scan (see dashboard_scan_prompt.md, Step 2c) and by hand.
+  // Rules that matter: the URL must resolve and you must have read the page; the
+  // piece must be about crop circles generally rather than a single formation
+  // report (those belong in STORIES); and it must be recent. Never invent an
+  // item — an honestly short list is correct, a padded one is not.
   //
   // {
   //   id: "2026-06-02-example-doc",
@@ -382,10 +472,19 @@ window.COVERAGE = [
    headers a static site can use, so these are one-tap entry points rather
    than embedded content. Ordered most-relevant first.
 
-   TODO(verify): these four URLs were added from knowledge, not confirmed by
-   fetch — reddit.com was unreachable from the environment they were written
-   in. Open each once and confirm it resolves to a live, on-topic subreddit
-   before/at first deploy, and drop any that don't.
+   TODO(verify): these four URLs were added from knowledge and are STILL
+   unverified. A second attempt on 2026-07-31 failed on every available route,
+   so do not read the absence of a failure report as a pass:
+     - curl to www.reddit.com/r/NAME/about.json returns 403 with an HTML shell
+     - old.reddit.com redirects to a login wall, and a deliberately fake
+       subreddit name produces a byte-identical response, so the method cannot
+       tell a live sub from a dead one
+     - the agent browser blocks reddit.com by policy
+     - the search tool cannot crawl reddit.com
+   What will actually work: open the four in an ordinary logged-in browser, or
+   verify them with the Reddit OAuth client-credentials token that the #5b
+   social feed needs anyway (see TODO.md), which lifts the 403. Drop any that
+   do not resolve to a live, on-topic subreddit.
 
      name  — display label, e.g. "r/cropcircles"
      url   — full https URL to the subreddit
