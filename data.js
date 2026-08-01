@@ -466,31 +466,51 @@ window.COVERAGE = [
 ];
 
 /* ==========================================================================
-   REDDIT_FORUMS — standing discussion venues for the "Live chatter" widget.
+   DISCUSSION_FORUMS — standing discussion venues for the "Discussion forums"
+   widget. Was REDDIT_FORUMS until 2026-08-01; renamed when two non-Reddit
+   forums were added, since the old name became inaccurate.
    ==========================================================================
-   Static links, not a live feed: Reddit's JSON endpoints don't send CORS
-   headers a static site can use, so these are one-tap entry points rather
-   than embedded content. Ordered most-relevant first.
+   Static links, not a live feed: none of these platforms send CORS headers
+   a static site can fetch and re-render, so these are one-tap entry points
+   rather than embedded content. Ordered most-relevant first.
 
-   TODO(verify): these four URLs were added from knowledge and are STILL
-   unverified. A second attempt on 2026-07-31 failed on every available route,
-   so do not read the absence of a failure report as a pass:
-     - curl to www.reddit.com/r/NAME/about.json returns 403 with an HTML shell
-     - old.reddit.com redirects to a login wall, and a deliberately fake
-       subreddit name produces a byte-identical response, so the method cannot
-       tell a live sub from a dead one
-     - the agent browser blocks reddit.com by policy
-     - the search tool cannot crawl reddit.com
-   What will actually work: open the four in an ordinary logged-in browser, or
-   verify them with the Reddit OAuth client-credentials token that the #5b
-   social feed needs anyway (see TODO.md), which lifts the 403. Drop any that
-   do not resolve to a live, on-topic subreddit.
+   The four Reddit entries: added from knowledge and STILL unverified — a
+   2026-07-31 attempt failed on every available route (curl to
+   www.reddit.com/r/NAME/about.json returns 403 with an HTML shell;
+   old.reddit.com redirects to a login wall and does so identically for a
+   deliberately fake subreddit name, so the method can't tell a live sub from
+   a dead one; the agent browser blocks reddit.com by policy; the search tool
+   can't crawl reddit.com). r/aliens was dropped 2026-08-01 on user request
+   rather than re-attempted — it was the weakest of the four anyway (general
+   "speculative discussion," not actually crop-circle-adjacent the way
+   r/HighStrangeness or r/UFOs are). What will actually verify the remaining
+   three: open them in an ordinary logged-in browser, or use the Reddit OAuth
+   client-credentials token the #5b social feed already needs (see TODO.md),
+   which lifts the 403. Drop any that don't resolve to a live, on-topic sub.
+
+   The two non-Reddit entries below WERE verified live on 2026-08-01 (real
+   network access, not the sandboxed agent browser): curl confirmed both
+   domains resolve and return 200, and both linked threads contain genuine,
+   current-season crop-circle discussion (checked by grepping the fetched
+   page for "crop circle" and reading the <title>). Three other candidates
+   were tried and rejected on the same pass: abovetopsecret.com's origin
+   server is down (Cloudflare 522, confirmed via `curl -v`, not just a bot
+   block); unexplained-mysteries.com/forum/ returns HTTP 410 with a page
+   titled "The Forum Has Closed"; godlikeproductions.com returns 403 to curl
+   under two different user agents and can't be verified either way.
+
+   Both new entries are single active threads, not standing boards — neither
+   forum has a crop-circle-specific board, and their own site search only
+   works via a JS-driven POST form (no linkable GET results page exists to
+   use instead). That means, unlike the subreddits, these two rows will need
+   manual refreshing once the linked thread goes quiet or a new season starts
+   and a fresh thread appears elsewhere on the same forum.
 
      name  — display label, e.g. "r/cropcircles"
-     url   — full https URL to the subreddit
+     url   — full https URL to the subreddit / thread
      note  — short line on what it's good for (one clause, no period)
    ========================================================================== */
-window.REDDIT_FORUMS = [
+window.DISCUSSION_FORUMS = [
   {
     name: "r/cropcircles",
     url: "https://www.reddit.com/r/cropcircles/",
@@ -507,8 +527,13 @@ window.REDDIT_FORUMS = [
     note: "large general forum, crop circles surface around major reports"
   },
   {
-    name: "r/aliens",
-    url: "https://www.reddit.com/r/aliens/",
-    note: "speculative discussion and image threads"
+    name: "Cassiopaea Forum",
+    url: "https://cassiopaea.org/forum/threads/2026-crop-circles.57805/",
+    note: "this season's dedicated thread on a long-running paranormal-research forum"
+  },
+  {
+    name: "Paranormal Forum",
+    url: "https://paranormalforum.net/threads/first-crop-circle-of-26.37059/",
+    note: "this season's opening thread — active general paranormal/anomalies board"
   }
 ];

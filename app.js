@@ -31,9 +31,11 @@
   // alone if data.js predates this array.
   var coverage = (Array.isArray(window.COVERAGE) ? window.COVERAGE.slice() : []);
 
-  // Standing Reddit discussion venues for the Live chatter widget. Static links:
-  // Reddit's JSON endpoints aren't CORS-readable from a static site.
-  var redditForums = (Array.isArray(window.REDDIT_FORUMS) ? window.REDDIT_FORUMS.slice() : []);
+  // Standing discussion venues for the Discussion forums widget — Reddit plus
+  // a couple of general paranormal-research forums (see data.js). Static
+  // links: none of these platforms' content is CORS-readable from a static
+  // site.
+  var discussionForums = (Array.isArray(window.DISCUSSION_FORUMS) ? window.DISCUSSION_FORUMS.slice() : []);
 
   var sortNewestFirst = function (a, b) {
     return b.date.localeCompare(a.date) || (b.id || '').localeCompare(a.id || '');
@@ -115,7 +117,7 @@
     keywordInput: document.getElementById('keywordInput'),
     searchX: document.getElementById('searchX'),
     searchBsky: document.getElementById('searchBsky'),
-    redditForums: document.getElementById('redditForums'),
+    discussionForums: document.getElementById('discussionForums'),
     footerUpdated: document.getElementById('footerUpdated'),
     cardTemplate: document.getElementById('storyCardTemplate')
   };
@@ -959,13 +961,13 @@
 
   // -- hero widget: field footage strip --------------------------------------
   function renderVideoStrip() {
-    // Twelve, not eight. Field footage sits opposite Live chatter in the grid's
-    // top row, and Live chatter is tall by nature (capped feed + keyword block +
-    // its note). At eight thumbnails — two rows — footage left roughly 300px of
-    // dead space beside it. Three rows balances the row without padding it:
-    // there are more than twelve formations with footage, so nothing is invented
-    // to fill it.
-    var items = stories.filter(function (s) { return !!s.youtubeId; }).slice(0, 12);
+    // Capped to 9 — a fixed 3x3 grid (see .video-strip's `repeat(3, 1fr)` in
+    // styles.css). Field footage sits opposite Live chatter in the grid's top
+    // row, and 12 thumbnails (4 rows) ran the box well past Live chatter's own
+    // height, which is the box it's supposed to be balancing against, not
+    // dwarfing. There are more than nine formations with footage, so nothing
+    // is invented to fill the grid.
+    var items = stories.filter(function (s) { return !!s.youtubeId; }).slice(0, 9);
     els.videoStrip.innerHTML = '';
     if (!items.length) {
       els.videoStrip.innerHTML = '<p class="empty-note">No footage logged yet.</p>';
@@ -1257,39 +1259,39 @@
     els.searchBsky.href = 'https://bsky.app/search?q=' + encoded;
   }
 
-  // -- hero widget: Reddit forums --------------------------------------------
-  // Standing discussion venues, not a live feed. Reddit's JSON endpoints don't
-  // send CORS headers usable from a static origin, so these are one-tap entry
+  // -- hero widget: discussion forums -----------------------------------------
+  // Standing discussion venues, not a live feed. None of these platforms'
+  // content is CORS-readable from a static origin, so these are one-tap entry
   // points into the ongoing conversation rather than embedded posts.
-  function renderRedditForums() {
-    if (!els.redditForums) return;
-    els.redditForums.innerHTML = '';
-    if (!redditForums.length) {
+  function renderDiscussionForums() {
+    if (!els.discussionForums) return;
+    els.discussionForums.innerHTML = '';
+    if (!discussionForums.length) {
       // Hide the whole widget, not an inner block: Discussion forums is now a
       // top-level section in the widget grid rather than a .reddit-block tucked
       // inside Live chatter, and an empty bordered box reads as a broken panel.
-      var section = els.redditForums.closest('.widget');
+      var section = els.discussionForums.closest('.widget');
       if (section) section.hidden = true;
       return;
     }
-    redditForums.forEach(function (f) {
+    discussionForums.forEach(function (f) {
       if (!f || !f.url || !f.name) return;
       var a = document.createElement('a');
-      a.className = 'reddit-link';
+      a.className = 'forum-link';
       a.href = f.url;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
       var name = document.createElement('span');
-      name.className = 'reddit-link-name';
+      name.className = 'forum-link-name';
       name.textContent = f.name;
       a.appendChild(name);
       if (f.note) {
         var note = document.createElement('span');
-        note.className = 'reddit-link-note';
+        note.className = 'forum-link-note';
         note.textContent = f.note;
         a.appendChild(note);
       }
-      els.redditForums.appendChild(a);
+      els.discussionForums.appendChild(a);
     });
   }
 
@@ -1328,6 +1330,26 @@
     }
     if (!isDeepLinkHash(window.location.hash)) {
       window.scrollTo(0, 0);
+      if (window.location.hash) {
+        // Clearing the hash here (not just in the click handler below) is
+        // the part that was missing: Chrome/Firefox keep re-running their
+        // own fragment-scroll on every layout shift for as long as the URL
+        // still has a matching "#hero" and the page hasn't fully settled —
+        // a webfont swap or a late image landing is enough to trigger one.
+        // That native re-scroll ignores this correction entirely (it's not
+        // our code re-running), so it can put the header back over the hero
+        // content a few hundred ms after this line runs. With no hash left
+        // to re-anchor to, it has nothing to retry. Reproduced by
+        // navigating research.html -> click "Dashboard": readyState was
+        // already "complete" and scrollY had drifted back to exactly the
+        // header's height (126px) before this fix — a single corrective
+        // scroll on script execution is not sufficient on its own.
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        // Belt-and-braces: run the same correction again once every
+        // resource (fonts included) has finished loading, in case a shift
+        // still manages to land between the line above and `load`.
+        window.addEventListener('load', function () { window.scrollTo(0, 0); }, { once: true });
+      }
     }
     var navDashboard = document.getElementById('navDashboard');
     if (navDashboard) {
@@ -1501,7 +1523,7 @@
   renderSocialPosts();
   renderKeywordChips();
   updateSearchLinks();
-  renderRedditForums();
+  renderDiscussionForums();
   wireKeywordForm();
   wireControls();
   setupHeroSentinel();
