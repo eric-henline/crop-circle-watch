@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-01T02:57:33Z",
+  "fetchedAt": "2026-08-01T13:58:06Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mrz4mv2mr22e",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "The Dyad And The Vesica\nAbbots Down, Wiltshire, England\n5th June 2007\n\n#CropCircles #SacredGeometry\n#Logos #TheLivingWord #GodGeometer #TheDyad #TheVesicaPiscis \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-08-01T09:08:23.558000Z",
+      "likes": 2
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mrx4hse6zs2z",
@@ -26,15 +35,6 @@ window.SOCIAL_FEED = {
       "text": "@donald-tusk.bsky.social @interpol.int \n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #Parousia #Jesus\n#TheNewJerusalem #TheNewEarth\n\ntemporarytemples.co.uk/cr…",
       "postedAt": "2026-07-31T14:00:13.466000Z",
       "likes": 2
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mrwf6amjtk2w",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "Ode To The Pentagram\n(The Garden Of Cyrus)\nMartinsell Hill, Wiltshire, England\n7th July 2018\n\n#Logos #SpecialRevelation\n#CropCircles #SacredGeometry #TheWordOfGod #GodGeometer\n#England #TheSecondComing\n#At-Tariq #TheStarProphecy\n#TheMorningStar #Jesus\n\nwww.cropcircleconnector.…",
-      "postedAt": "2026-07-31T07:03:16.825000Z",
-      "likes": 1
     },
     {
       "platform": "bluesky",

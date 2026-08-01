@@ -18,3 +18,5 @@ Format: `- YYYY-MM-DD | <url> | <reason>`
 - 2026-07-30 | https://feeds.bbci.co.uk/news/articles/c51y8pjd14ro | unverifiable (HTTP 404); BBC article about a Dorset crop circle, surfaced in search results but page no longer exists
 - 2026-07-31 | https://www.amper-kurier.de/de/region/alling/der-kornkreis-bei-genauerem-betrachten | stale date — article published 30 Jul 2015; Biburg/Alling formation is from 2015, not 2026
 - 2026-07-31 | https://www.youtube.com/watch?v=jyjwBaQHj4s | not a new formation / not legitimate coverage — clickbait AI-generated video "AI Decoded the Truth Behind Mysterious Crop Circles 2026", no verifiable production details
+- 2026-08-01 | https://www.landundforst.de/niedersachsen/bild-tages-mysterioeser-kornkreis-begeistert-schaulustige-562679 | stale date — article published July 29, 2020; Pähl/Ammersee (Georg Steingruber) formation is from July 26, 2020, not 2026
+- 2026-08-01 | https://frequencywavetheory.substack.com/p/the-16th-crop-circle-of-2026-looks | not a new formation — paywalled Substack post (July 9, 2026) theorising about a mid-July 2026 formation already in database; no verifiable new location or date
