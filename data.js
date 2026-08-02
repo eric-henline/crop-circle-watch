@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-08-01T07:30:00-07:00",
+  lastScan: "2026-08-02T07:30:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -338,6 +338,17 @@ window.STORIES = [
     sourceUrl: "https://www.cropcircleconnector.com/2026/wadenhill/wadenhill2026a.html",
     sourceName: "Crop Circle Connector",
     youtubeId: "LQO9XUtjwno"
+  },
+  {
+    id: "2026-04-04-ilchester",
+    date: "2026-04-04",
+    title: "Ilchester (Bondip Hill)",
+    location: "Bondip Hill, Nr Ilchester, Somerset, UK · Map ref ST5200324129",
+    description: "Reported 4 April 2026 (Easter Sunday) in oilseed rape on Bondip Hill, north of the A303, measuring approximately 100ft. A cross-shaped formation with a central ring; Temporary Temples' geometric analysis notes concentric circles, octagrams, squares, and pentagonal ratios in the design. The first UK formation of the 2026 season, predating Waden Hill by 25 days.",
+    tags: ["UK", "Somerset", "2026 season", "video"],
+    sourceUrl: "https://temporarytemples.co.uk/project/ilchester-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: "9kqt3QucmiY"
   }
 ];
 
@@ -374,6 +385,15 @@ window.COVERAGE = [
   // returns 200 and the summary describes what the piece actually says. This is
   // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
   // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-08-01-croppie-gossip-new-month",
+    date: "2026-08-01",
+    kind: "community",
+    title: "Croppie Gossip: New Month, Not Quite So New Things",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/08/01/croppie-gossip-new-month-not-quite-so-new-things/",
+    summary: "End-of-season commentary column critiquing a circle maker who publicly claims the title of 'master', contrasting self-promotion with the genuine complexity of landmark formations such as Milk Hill and Chilbolton. A second item speculates about a sighting of musician and crop-circle enthusiast Prashant Trivedi in a recent Facebook post."
+  },
   {
     id: "2026-07-21-croppie-gossip-crop-cutting",
     date: "2026-07-21",

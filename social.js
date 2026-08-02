@@ -15,26 +15,35 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-01T13:58:06Z",
+  "fetchedAt": "2026-08-02T07:39:05Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mrz4mv2mr22e",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms3gkamc6c2u",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Dyad And The Vesica\nAbbots Down, Wiltshire, England\n5th June 2007\n\n#CropCircles #SacredGeometry\n#Logos #TheLivingWord #GodGeometer #TheDyad #TheVesicaPiscis \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-08-01T09:08:23.558000Z",
+      "text": "The Roman Floor Mosaic\nMorgans Hill, Wiltshire, England\n2nd August 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#History #Culture #Heritage\n#RomanBritain #Art\n\nwww.cropcirclecenter.com/ccdata/2009/...",
+      "postedAt": "2026-08-02T07:11:11.908000Z",
       "likes": 2
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mrx4hse6zs2z",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms3gjfpp4c2u",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@donald-tusk.bsky.social @interpol.int \n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #Parousia #Jesus\n#TheNewJerusalem #TheNewEarth\n\ntemporarytemples.co.uk/cr…",
-      "postedAt": "2026-07-31T14:00:13.466000Z",
+      "text": "The Roman Floor Mosaic\nMorgans Hill, Wiltshire, England\n2nd August 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#History #Culture #Heritage\n#RomanBritain #Art\n\nwww.cropcirclecenter.com/ccdata/2009/...",
+      "postedAt": "2026-08-02T07:10:43.704000Z",
       "likes": 2
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/peachiikimaf.bsky.social/post/3ms276tldc22h",
+      "author": "peachiiKim",
+      "handle": "@peachiikimaf.bsky.social",
+      "text": "Did the aliens Crop Pixel the 8647 instead of crop circles?",
+      "postedAt": "2026-08-01T19:26:53.217000Z",
+      "likes": 17
     },
     {
       "platform": "bluesky",
@@ -71,15 +80,6 @@ window.SOCIAL_FEED = {
       "text": "Even the crop circle aliens are done with him",
       "postedAt": "2026-06-12T01:59:23.093000Z",
       "likes": 36
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/ampule2.bsky.social/post/3mo2aw6tvpk22",
-      "author": "Martin",
-      "handle": "@ampule2.bsky.social",
-      "text": "Crop circles, absolutely alien crop circles 😂😂",
-      "postedAt": "2026-06-11T22:17:04.015000Z",
-      "likes": 13
     },
     {
       "platform": "bluesky",
