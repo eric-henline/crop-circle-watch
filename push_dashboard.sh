@@ -37,9 +37,26 @@ fi
 
 # Belt-and-suspenders: commit anything left uncommitted. Under normal
 # operation the daily scan task already commits its own changes.
+#
+# `git add -A` here is deliberately indiscriminate, which is fine for a stray
+# data file and not fine for anything else — this job has no idea what it is
+# sweeping up. hooks/pre-commit is the check on that: it rejects unattended
+# commits of anything outside the data files (see SECURITY.md), and launchd
+# gives this job no TTY, so the guard is active every time it matters.
+#
+# A rejected commit is the correct outcome, not a malfunction: it means files
+# a human has not reviewed were sitting in the tree. Report it and skip the
+# push rather than pushing a half-committed state.
 if [ -n "$(git status --porcelain)" ]; then
   git add -A
-  git commit -m "Auto-commit: local changes as of $(date '+%Y-%m-%d %H:%M')" >> "$LOG" 2>&1
+  if ! git commit -m "Auto-commit: local changes as of $(date '+%Y-%m-%d %H:%M')" >> "$LOG" 2>&1; then
+    echo "ERROR: auto-commit rejected (see pre-commit guard) — not pushing" >> "$LOG"
+    git reset >> "$LOG" 2>&1
+    "$REPO_DIR/notify_failure.sh" "Crop Circle Watch: push skipped" \
+      "Uncommitted non-data files in the dashboard repo — review and commit by hand"
+    echo "=== Push runner finished: $(date) (exit 1, commit rejected) ===" >> "$LOG"
+    exit 1
+  fi
 fi
 
 git push origin HEAD:master >> "$LOG" 2>&1

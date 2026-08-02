@@ -32,7 +32,20 @@ The defences, in order of how much they carry:
 **2. The scan pipeline.** The daily job runs an agent with edit and `git` access
 over content it fetched from the open web. A page crafted to be read by that
 agent is a prompt-injection route to committing arbitrary JavaScript into a
-site that is already public. See `TODO.md` for the open hardening work here.
+site that is already public — and CSP is no help there, because a file the
+agent edited is a legitimately same-origin script.
+
+The control for this is `hooks/pre-commit`, which restricts unattended commits
+(no TTY) to `data.js`, `social.js`, `scan_rejected_log.md` and `research.js`.
+Git hooks are not version controlled, so **it must be installed once per
+clone**:
+
+```bash
+ln -sf ../../hooks/pre-commit .git/hooks/pre-commit
+```
+
+Interactive commits are unaffected. See `TODO.md` for the remaining hardening
+work on the pipeline.
 
 ## Reporting
 

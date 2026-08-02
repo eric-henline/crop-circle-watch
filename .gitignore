@@ -3,3 +3,19 @@
 node_modules/
 scan_log.txt
 scan_errors.txt
+# push_dashboard.sh writes this, and its belt-and-suspenders `git add -A` would
+# otherwise commit it. Run logs do not belong in a public repo: this one is
+# harmless today, but it is the file that would carry a git error message
+# verbatim if a push ever failed on something credential-shaped.
+push_log.txt
+
+# Never publish a credential, a key, or an env file, whatever it is named.
+# Blanket patterns rather than specific filenames — the failure mode to guard
+# against is a file nobody thought to list.
+*.pem
+*.key
+.env
+.env.*
+*_token
+*_secret*
+.claude/settings.local.json

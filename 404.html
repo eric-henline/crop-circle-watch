@@ -23,13 +23,21 @@
      the whole point of this page is that it still renders correctly if the
      stylesheet it inherits from has been renamed or moved. -->
 <style>
+  /* Palette repeated literally rather than read from the --bg-0/--text-0
+     custom properties in styles.css. If a visitor hits this page because a
+     path is wrong, the stylesheet may be exactly what failed to load — a 404
+     that renders as unstyled black-on-white is a second failure on top of the
+     first. These five values are the only duplication and they are stable. */
+  body { background: #070b12; color: #eaf2f3; margin: 0; }
   .notfound { max-width: 34rem; margin: 18vh auto 0; padding: 0 1.5rem;
               font-family: Newsreader, Georgia, serif; line-height: 1.6; }
   .notfound .code { font-family: 'Fragment Mono', ui-monospace, monospace;
-                    font-size: .8rem; letter-spacing: .12em; opacity: .6; }
+                    font-size: .8rem; letter-spacing: .12em; color: #6c7e91; }
   .notfound h1 { font-family: 'Bricolage Grotesque', system-ui, sans-serif;
                  font-size: clamp(1.8rem, 5vw, 2.6rem); margin: .4rem 0 .8rem; }
+  .notfound p { color: #a9bac8; }
   .notfound nav { margin-top: 1.6rem; font-size: .95rem; }
+  .notfound a { color: #6bffc2; }
 </style>
 </head>
 <body>

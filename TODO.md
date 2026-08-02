@@ -524,3 +524,109 @@ Remaining, in order:
   viewport. Keep that in mind before adding embeds to any other flex track.
 - No build step and no third-party JS — preserve that. It is why this site has
   survived a year of daily automated commits without breaking.
+
+---
+
+# Pre-launch security — open items
+
+Audit run 2026-08-01, ahead of promoting the site publicly. **The site and repo
+are already public and live** (`eric-henline.github.io/crop-circle-watch`,
+repo visibility `public`), so none of this is theoretical — it is all live
+exposure today. `SECURITY.md` records the threat model and the accepted limits.
+
+**Already done in that pass, for context** (no action needed): strict CSP on all
+eight pages with `script-src 'self'` — which required moving every inline
+`<script>` into `page-chrome.js` and `labs/boot.js`; `isPublicUrl()` gating on
+the two hrefs that lacked it (coverage items, forum links); YouTube switched to
+`youtube-nocookie.com`; `hooks/pre-commit` restricting unattended commits to
+data files; `robots.txt`, `404.html`, `SECURITY.md`, `.well-known/security.txt`;
+`.gitignore` hardened. Credential hygiene checked clean — no secret has ever
+been committed to this repo's history, and `~/.claude-code-token` and
+`~/.anthropic_key` are both `0600`.
+
+## S1. Narrow the scan agent's Bash allowlist — needs one supervised run
+
+`scan_dashboard.sh` runs the 06:58 agent with:
+
+```
+--allowedTools "Read,Edit,WebSearch,WebFetch,Bash(git *),Bash(node *),Bash(cd *)"
+```
+
+`Bash(git *)` is much wider than it looks. `git` runs arbitrary commands by
+design — `git -c core.pager=<cmd> log`, `git config alias.x '!<cmd>'` then
+`git x`, `git submodule` with a hostile URL. An injected instruction in a
+scraped page that reaches the agent therefore has a shell, not just git. Same
+for `Bash(node *)`, which is `node -e '<anything>'`.
+
+The prompt only ever needs `git add`, `git commit`, `git status`, `git diff`,
+`git remote get-url`, `git push`, and `node --check` / `node
+check_duplicates.js`. Suggested replacement:
+
+```
+--allowedTools "Read,Edit,WebSearch,WebFetch,Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git remote get-url:*),Bash(git push:*),Bash(node --check:*),Bash(node check_duplicates.js:*)"
+```
+
+**Why this is not already applied:** a permission pattern that does not match
+makes the job fail silently at commit time, and this runs unattended. It needs
+one watched run — trigger the job by hand, confirm it still commits, then leave
+it. Worth doing; just not worth doing blind. `hooks/pre-commit` limits the blast
+radius in the meantime, but it constrains *what gets committed*, not what the
+agent can execute locally.
+
+## S2. Decide the position on `git push` from an unattended agent
+
+Right now the agent pushes to a public site itself, in the same run in which it
+reads untrusted third-party pages. Three options, cheapest first:
+
+1. **Keep it, rely on `hooks/pre-commit`.** Free, already in place. Accepts that
+   poisoned *data* (a fake formation, a hostile link) can go live for a day.
+2. **Drop the agent's push; let the 7:10 `push_dashboard.sh` job do it.** Adds
+   nothing on its own — same content, ~12 minutes later.
+3. **Hold new entries for review.** Agent commits to a `pending` branch or
+   writes `data.pending.js`; a one-line approval promotes it. Real protection,
+   real friction, and it ends "the site updates itself while I sleep" — which
+   is arguably the whole point of the project.
+
+My read: (1) is the right trade for a hobby log with no user data, given the
+CSP and the commit guard. Worth an explicit decision rather than a default.
+
+## S3. Custom domain — the only way to get real response headers
+
+GitHub Pages cannot set response headers, and a CSP in a `<meta>` tag silently
+ignores `frame-ancestors`. So there is **no clickjacking protection** on the
+site today, and no CSP violation reporting. Neither matters much here (nothing
+on the site is authenticated, so there is no click worth stealing), but both are
+fixed for free by putting a custom domain behind Cloudflare, which can add
+`Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`,
+`Referrer-Policy` and HSTS preload as real headers. This also makes
+`/.well-known/security.txt` land at the origin root where RFC 9116 wants it,
+instead of the project-pages subpath where no scanner will find it.
+
+Decision needed: is a domain in scope for the launch?
+
+## S4. Google Fonts is a third-party request on every page load
+
+Three fonts load from `fonts.googleapis.com` / `fonts.gstatic.com`, which sends
+every visitor's IP to Google. A German court has already ruled this a GDPR
+violation for embedded Google Fonts, and the site has UK/EU readers by subject
+matter. Self-hosting the four families is a ~400 KB commit, removes two external
+origins from CSP, and makes the page faster. Low effort, worth doing before any
+traffic arrives — but it is a real (if small) addition to a repo that currently
+ships no binary assets, hence flagged rather than done.
+
+## S5. Small, do-anytime
+
+- **Add a `CODEOWNERS` / branch protection on `master`.** The push credential is
+  a machine credential on one Mac; if it leaks, there is nothing between it and
+  the live site. Protecting `master` would break the scan's own push, so the
+  realistic version is: confirm the GitHub token in the keychain is a
+  fine-grained PAT scoped to this one repo with contents-write only, not a
+  classic `repo`-scope token that reaches every repo on the account. **Check
+  this — it is the highest-value item on this list that takes five minutes.**
+- **Turn on Dependabot / secret scanning** in repo settings. Free on public
+  repos, and secret scanning is the backstop for the one mistake most likely to
+  actually happen: pasting a key into a commit.
+- **Re-run the audit after any change to how `data.js` renders.** The whole
+  security posture rests on: scripts stay external, hrefs go through
+  `isPublicUrl()`, and text goes through `textContent`. All three are
+  conventions, not enforced by anything.
