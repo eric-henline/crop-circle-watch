@@ -125,7 +125,7 @@ For *specific, known* posts it's a different story: Bluesky publishes a public, 
 ## The Research page
 
 `research.html` renders charts from `research.js`, which is **generated** — never
-hand-edited. The page has seven tabs:
+hand-edited. The page has five tabs:
 
 | Tab | What it covers |
 |-----|----------------|
@@ -134,10 +134,17 @@ hand-edited. The page has seven tabs:
 | Geometry & scale | Complexity distribution, geometric types, encoded features, the complexity-over-time regression, size bands, size vs complexity, the largest formations |
 | Evidence | The authenticity verdict split, media coverage vs complexity, anomaly-flag prevalence |
 | Hypotheses | Current confidence by hypothesis and how it has shifted week to week |
-| Research log | The daily routine itself — cadence, angle rotation, licensing leads, and the last eight sessions |
-| Dataset health | Archive growth, field completeness, and what the dataset cannot tell you |
 
-The pipeline has **two** input streams, not one:
+Two more tabs — **Research log** (the daily routine's own cadence, angle
+rotation, and session notes) and **Dataset health** (completeness/growth
+internals) — existed briefly and were removed 2026-08-01: internal-process
+detail that isn't meant to be public. Removal was end-to-end, not just
+hiding the tabs — the exporter no longer reads `index/image-leads.md` or
+`sessions/*.md` at all, and `research.js` no longer carries a `programme` or
+`health` key, so that data never ships to a visitor's browser in the first
+place.
+
+The pipeline now has one real input stream plus one narrow exception:
 
 ```
 analytics/crop_circle_analytics.py     runs weekly (Sunday), writes:
@@ -145,24 +152,19 @@ analytics/crop_circle_analytics.py     runs weekly (Sunday), writes:
   data/snapshots/YYYY-WXX.json             ~22 scalar metrics per week
   hypotheses/hypothesis_tracker.md         confidence table over time
         |
-        |     the daily research routine maintains, by hand:
+        |     the daily research routine also maintains, by hand:
         |       index/formations.md          per-formation Authenticity verdict
-        |       index/image-leads.md         leads tagged free/CC vs commercial
-        |       sessions/YYYY-MM-DD.md       angle + topics documented per run
         |            |
         v            v
 analytics/export_research_json.py      reads both, writes:
   dashboard/research.js                    window.RESEARCH
 ```
 
-The second stream is why the exporter reads outside `analytics/`. The engine only
-ever sees the numeric CSV; the routine's evidence judgments, its angle rotation,
-and its sourcing record are a separate research output that no amount of
-re-running the engine would produce. The **Evidence** and **Research log** tabs
-are built from it, and the exporter imports the rotation classifier straight out
-of `pick_next_angle.py` rather than reimplementing it (that classifier already
-carries a documented fix — match only the leading canonical phrase of a session
-header, never the whole verbose line).
+The Authenticity column is why the exporter reads one file outside
+`analytics/` at all. The engine only ever sees the numeric CSV; that verdict
+is a judgment call the research routine makes per formation, which no amount
+of re-running the engine would produce. The **Evidence** tab is built from
+it.
 
 To refresh the page after an analytics run:
 
@@ -173,9 +175,7 @@ python3 analytics/export_research_json.py
 The exporter is deliberately *separate* from the analytics engine rather than a
 hook inside it: it only reads the engine's outputs, so it can be re-run at any
 time, costs nothing (no sklearn, no matplotlib, no model fitting), and cannot
-break the Sunday job. It is also cheap enough to re-run after any daily research
-session, not just after the weekly engine run — the Research log tab goes stale
-otherwise.
+break the Sunday job.
 
 ### Thresholds the exporter enforces
 

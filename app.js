@@ -300,6 +300,14 @@
 
   // A link a visitor can actually open. Internal paths (e.g. sessions/*.md) are
   // provenance, not public, and must never render as a clickable card link.
+  //
+  // This is also the site's only guard against a hostile URL. Everything that
+  // reaches an href here — references, source links, coverage items, social
+  // posts — originates in data.js, which the unattended 6:58 scan writes from
+  // third-party pages nobody reviews before they go live. A value like
+  // `javascript:...` assigned to a.href executes on click, so the http(s)
+  // prefix test is load-bearing, not just a tidiness check. Never assign an
+  // href from data without passing it through here first.
   function isPublicUrl(url) {
     return typeof url === 'string' && /^https?:\/\//i.test(url);
   }
@@ -317,8 +325,13 @@
         '<span class="play-overlay"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-play"/></svg></span>';
       btn.addEventListener('click', function () {
         var iframe = document.createElement('iframe');
-        iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(story.youtubeId) + '?autoplay=1&rel=0';
+        // youtube-nocookie.com, not youtube.com: same player, but Google sets
+        // no tracking cookie until the visitor actually plays something. The
+        // thumbnail above is already click-to-play, so nothing from YouTube
+        // loads for a visitor who never presses play.
+        iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(story.youtubeId) + '?autoplay=1&rel=0';
         iframe.title = story.title;
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
         iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
         iframe.allowFullscreen = true;
         wrap.innerHTML = '';
@@ -893,9 +906,14 @@
     li.className = 'news-item' + (isLead ? ' news-item--lead' : '');
 
     var a = document.createElement('a');
-    a.href = item.url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
+    // Coverage URLs come straight out of the scan; gate them like every other
+    // data-supplied href (see isPublicUrl). An entry with a non-http URL still
+    // renders — it just isn't clickable.
+    if (isPublicUrl(item.url)) {
+      a.href = item.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
 
     // Kind badge — only on lead items and on anything that isn't a plain
     // article, so the common case stays visually quiet.
@@ -1275,7 +1293,7 @@
       return;
     }
     discussionForums.forEach(function (f) {
-      if (!f || !f.url || !f.name) return;
+      if (!f || !isPublicUrl(f.url) || !f.name) return;
       var a = document.createElement('a');
       a.className = 'forum-link';
       a.href = f.url;

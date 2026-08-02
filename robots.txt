@@ -1,0 +1,17 @@
+# Crop Circle Watch — https://eric-henline.github.io/crop-circle-watch/
+#
+# The formation log is meant to be found and indexed. The only things kept out
+# are the operational files that sit in the same repo as the site: the scan
+# runner's logs and prompt are published because the repo is public and the
+# method is meant to be auditable, but they are not pages and have no business
+# in a search index.
+
+User-agent: *
+Allow: /
+
+Disallow: /scan_log.txt
+Disallow: /scan_errors.txt
+Disallow: /scan_rejected_log.md
+Disallow: /dashboard_scan_prompt.md
+Disallow: /TODO.md
+Disallow: /ANIMATION.md

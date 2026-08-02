@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Security policy — see the note in index.html. This page loads nothing
+     external beyond the site's own fonts, so its policy is tighter. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<title>Page not found — Crop Circle Watch</title>
+<meta name="robots" content="noindex">
+
+<link rel="icon" type="image/svg+xml" href="/crop-circle-watch/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/crop-circle-watch/styles.css">
+
+<!-- Its own type rather than borrowing classes from styles.css or labs.css:
+     the whole point of this page is that it still renders correctly if the
+     stylesheet it inherits from has been renamed or moved. -->
+<style>
+  .notfound { max-width: 34rem; margin: 18vh auto 0; padding: 0 1.5rem;
+              font-family: Newsreader, Georgia, serif; line-height: 1.6; }
+  .notfound .code { font-family: 'Fragment Mono', ui-monospace, monospace;
+                    font-size: .8rem; letter-spacing: .12em; opacity: .6; }
+  .notfound h1 { font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+                 font-size: clamp(1.8rem, 5vw, 2.6rem); margin: .4rem 0 .8rem; }
+  .notfound nav { margin-top: 1.6rem; font-size: .95rem; }
+</style>
+</head>
+<body>
+
+<!-- Deliberately a plain, self-contained page. A 404 is the one page that has
+     to work when something else on the site is broken, so it depends on no
+     script and no data file. Absolute paths (/crop-circle-watch/...) because
+     GitHub Pages serves this same file for a miss at any depth, including
+     /labs/whatever, where a relative href would resolve wrong. -->
+<main class="notfound">
+  <p class="code">404</p>
+  <h1>No formation here</h1>
+  <p>
+    That page does not exist — or it moved. The live log is the best place to start.
+  </p>
+  <nav>
+    <a href="/crop-circle-watch/">Back to the formation log</a>
+    &nbsp;·&nbsp;
+    <a href="/crop-circle-watch/about.html">About</a>
+    &nbsp;·&nbsp;
+    <a href="/crop-circle-watch/resources.html">Resources</a>
+  </nav>
+</main>
+
+</body>
+</html>

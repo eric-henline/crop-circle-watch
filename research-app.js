@@ -955,14 +955,19 @@
 
   // ------------------------------------------------------------------ tabs
 
+  // "Research log" (the daily routine's own cadence/session notes) and
+  // "Dataset health" (completeness/growth internals) were removed from public
+  // view 2026-08-01 — internal-process detail, not meant to be public. Their
+  // builder functions and the underlying research.js fields were removed
+  // too (see buildProgramme/buildHealth removal below and
+  // analytics/export_research_json.py, which no longer writes "programme" or
+  // "health" into the exported JSON at all).
   var TABS = [
     { id: 'geography', label: 'Geography', build: buildGeography },
     { id: 'time', label: 'Time & season', build: buildTime },
     { id: 'geometry', label: 'Geometry & scale', build: buildGeometry },
     { id: 'evidence', label: 'Evidence', build: buildEvidence },
-    { id: 'hypotheses', label: 'Hypotheses', build: buildHypotheses },
-    { id: 'programme', label: 'Research log', build: buildProgramme },
-    { id: 'health', label: 'Dataset health', build: buildHealth }
+    { id: 'hypotheses', label: 'Hypotheses', build: buildHypotheses }
   ];
 
   function buildGeography() {
@@ -1536,145 +1541,6 @@
     return out;
   }
 
-  // --------------------------------------------------------- research log
-  // The daily scheduled routine, treated as a subject. Everything here comes
-  // from the routine's own output files — the session notes, the angle
-  // rotation, the licensing leads — rather than from the analytics engine.
-
-  function buildProgramme() {
-    var p = R.programme, out = [];
-    if (!p) return out;
-
-    out.push(card({
-      kicker: 'The routine',
-      title: 'A research agent has been running this every morning',
-      hero: {
-        value: fmt(p.sessions),
-        unit: 'daily research sessions since ' + p.firstDate,
-        delta: null
-      },
-      chart: barsV(p.perMonth, {
-        ariaLabel: 'Research sessions per month',
-        unit: 'sessions',
-        fill: 'var(--seq-3)'
-      }),
-      reading: 'Everything on this page ultimately rests on a scheduled agent that ' +
-        'wakes up each morning, picks a research angle it has not covered ' +
-        'recently, searches, and writes up what it finds as a dated session ' +
-        'file. It has run ' + fmt(p.sessions) + ' times between ' + p.firstDate +
-        ' and ' + p.lastDate + ', producing ' + fmt(p.topicsTotal) + ' documented ' +
-        'topics — an average of ' + fmt(p.topicsPerSession, 1) + ' per session. ' +
-        'Gaps in the monthly bars are days the job did not run or did not clear ' +
-        'verification, which is a normal outcome rather than a failure.',
-      table: tableView(['Month', 'Sessions'],
-        p.perMonth.map(function (d) { return [d.label, d.value]; }))
-    }));
-
-    out[out.length - 1].insertBefore(
-      tiles([
-        { label: 'Sessions', value: fmt(p.sessions), sub: 'since ' + p.firstDate },
-        { label: 'Topics documented', value: fmt(p.topicsTotal), sub: 'formations and subjects' },
-        { label: 'Per session', value: fmt(p.topicsPerSession, 1), sub: 'average yield' },
-        { label: 'Last run', value: p.lastDate, sub: 'most recent session file' }
-      ]),
-      out[out.length - 1].querySelector('.r-reading')
-    );
-
-    if (p.angles && p.angles.length) {
-      var top = p.angles.reduce(function (a, b) { return b.value > a.value ? b : a; }, p.angles[0]);
-      out.push(card({
-        kicker: 'Rotation',
-        title: 'What it has been looking at',
-        block: rankList(p.angles.slice().sort(function (a, b) { return b.value - a.value; }).map(function (d) {
-          return {
-            label: d.label,
-            value: d.value,
-            sub: d.last ? 'last covered ' + d.last : 'never covered'
-          };
-        }), {
-          colorByIndex: true,
-          format: function (v) { return fmt(v) + (v === 1 ? ' session' : ' sessions'); }
-        }),
-        reading: 'The agent rotates through ten standing research angles. The ' +
-          'rotation is not even, and deliberately so — but it is worth watching, ' +
-          'because it has failed before. "' + top.label + '" has taken ' +
-          fmt(top.value) + ' of ' + fmt(p.sessions) + ' sessions, because it is the ' +
-          'one open-ended angle in the set: there is always one more country. A ' +
-          'meta-analysis of the first 33 sessions found it had consumed 58% of ' +
-          'them while thematic angles went five weeks untouched, and the schedule ' +
-          'now blocks it if it ran in either of the previous two sessions. This ' +
-          'chart is how you check that the guard is still holding.',
-        table: tableView(['Angle', 'Sessions', 'Last covered'],
-          p.angles.map(function (d) { return [d.label, d.value, d.last || '—']; }))
-      }));
-    }
-
-    if (p.leads && p.leads.total) {
-      var L = p.leads;
-      var LCOL = ['var(--cat-1)', 'var(--cat-2)', 'var(--div-mid)'];
-      out.push(card({
-        kicker: 'Sourcing',
-        title: 'Image licensing leads, by what you can actually use',
-        hero: {
-          value: pct(L.freePct),
-          unit: 'of ' + fmt(L.total) + ' logged leads are confirmed free or CC',
-          delta: null
-        },
-        chart: stackedBar(L.counts.map(function (d, i) {
-          return { label: d.label, value: d.value, color: LCOL[i] };
-        }), { ariaLabel: 'Image leads by licensing status' }),
-        legend: legend(L.counts.map(function (d, i) {
-          return { label: d.label + ' — ' + fmt(d.value), color: LCOL[i] };
-        })),
-        reading: 'The research routine logs every image source it finds, tagged by ' +
-          'licensing. This is the number that decides whether the archive can ' +
-          'ever be published: a commercial lead is a lead, not an image. The ' +
-          '"unrecorded" block is leads logged before the tagging rule existed — ' +
-          'the routine has been required since June to tag every new lead ' +
-          'explicitly and to run at least one open-licence query per session, so ' +
-          'the free/CC share should climb and the grey block should stop growing. ' +
-          'It is worth restating the harder constraint underneath all of this: no ' +
-          'print-resolution image exists anywhere in the free library. Every ' +
-          'free source serves web-display copies.',
-        table: tableView(['Licensing', 'Leads', 'Share'],
-          L.counts.map(function (d) {
-            return [d.label, d.value, fmt(100 * d.value / L.total, 1) + '%'];
-          }))
-      }));
-    }
-
-    if (p.recent && p.recent.length) {
-      var log = h('ol', 'r-log');
-      p.recent.forEach(function (s, i) {
-        var li = h('li', 'r-log-entry');
-        li.style.transitionDelay = (i * 40) + 'ms';
-        var head = h('div', 'r-log-head');
-        head.appendChild(h('span', 'r-log-date', s.date));
-        head.appendChild(h('span', 'r-log-angle', s.angle));
-        li.appendChild(head);
-        if (s.topics && s.topics.length) {
-          var ul = h('ul', 'r-log-topics');
-          s.topics.forEach(function (t) { ul.appendChild(h('li', null, t)); });
-          li.appendChild(ul);
-        }
-        log.appendChild(li);
-      });
-
-      out.push(card({
-        kicker: 'Latest runs',
-        title: 'The last eight mornings',
-        block: log,
-        reading: 'The most recent sessions, newest first, with the topics each one ' +
-          'documented. This is the raw feed the rest of this page is built from — ' +
-          'every chart here is a count over these write-ups. Full notes for each ' +
-          'run, including sources and the reasoning behind each authenticity ' +
-          'verdict, live in the session file for that date in the research repo.'
-      }));
-    }
-
-    return out;
-  }
-
   function buildHypotheses() {
     var hy = R.hypotheses, out = [];
     var leading = hy.current.reduce(function (a, b) {
@@ -1764,66 +1630,6 @@
     return out;
   }
 
-  function buildHealth() {
-    var hl = R.health, out = [];
-
-    if (hl.growth && hl.growth.length) {
-      out.push(card({
-        kicker: 'Coverage',
-        title: 'Archive growth, week by week',
-        hero: {
-          value: fmt(R.metrics.total),
-          unit: 'formations in the dataset',
-          delta: deltaChip(R.deltas.total, '', { digits: 0 })
-        },
-        chart: lineChart(hl.growth.map(function (d) {
-          return { label: d.week.replace('2026-', ''), value: d.value };
-        }), { ariaLabel: 'Dataset size by analysis week', unit: 'formations', stroke: 'var(--seq-4)' }),
-        reading: 'Dataset size at each weekly run. The step is the point where the ' +
-          'seed dataset was replaced by the full research archive; growth since ' +
-          'then comes from the daily research agent. A flat week means no new ' +
-          'formations cleared verification — which is a normal outcome, not a ' +
-          'failure of the scan.',
-        table: tableView(['Week', 'Formations'],
-          hl.growth.map(function (d) { return [d.week, d.value]; }))
-      }));
-    }
-
-    out.push(card({
-      kicker: 'Data quality',
-      title: 'Field completeness',
-      chart: barsH(hl.completeness, {
-        ariaLabel: 'Percentage of records with each field populated',
-        labelWidth: 170,
-        unit: '% populated',
-        valueFormat: function (v) { return fmt(v, 1) + '%'; }
-      }),
-      reading: 'How much of each field is actually populated across the archive. ' +
-        'Coordinates and complexity are near-complete; physical measurements like ' +
-        'diameter are the weakest, because most source reports simply never state ' +
-        'one. Any statistic derived from a sparse field carries that gap with it — ' +
-        'the mean diameter is a mean over the subset that reported a diameter, not ' +
-        'over the archive.',
-      table: tableView(['Field', '% populated'],
-        hl.completeness.map(function (d) { return [d.label, d.value + '%']; }))
-    }));
-
-    out.push(card({
-      kicker: 'Known gaps',
-      title: 'What this dataset cannot tell you',
-      reading: 'Three limits worth stating outright. First, ' + fmt(hl.unknownMediaCoverage) +
-        ' records have unknown media coverage, so anything about publicity is ' +
-        'unreliable. Second, the archive is a record of *reports*, and reporting ' +
-        'effort is concentrated in one county of one country — geographic patterns ' +
-        'partly measure where people are looking. Third, the confidence ratings ' +
-        'are an evidence-weighting exercise by an automated pipeline, not peer ' +
-        'review. The value here is in the shape of the record and in knowing ' +
-        'exactly where it is thin.'
-    }));
-
-    return out;
-  }
-
   // ----------------------------------------------------------------- render
 
   var elFeed = document.getElementById('researchFeed');
@@ -1841,7 +1647,11 @@
     : null;
 
   function selectTab(id) {
+    // elTabs.children now also holds the "|" separator spans between
+    // buttons — skip anything without a dataset.tab rather than stamping
+    // aria-selected onto a purely decorative, aria-hidden span.
     [].forEach.call(elTabs.children, function (b) {
+      if (!b.dataset.tab) return;
       b.setAttribute('aria-selected', String(b.dataset.tab === id));
     });
     elFeed.innerHTML = '';
@@ -1894,6 +1704,15 @@
     }
 
     TABS.forEach(function (t, i) {
+      // A separator between tabs, not inside one — keeping the "|" out of the
+      // button means its hit area stays just the label, and the pipe can be
+      // styled/hidden independently (it's aria-hidden, purely visual; the
+      // tablist's own semantics carry the structure for assistive tech).
+      if (i > 0) {
+        var sep = h('span', 'research-tab-sep', '|');
+        sep.setAttribute('aria-hidden', 'true');
+        elTabs.appendChild(sep);
+      }
       var b = h('button', 'research-tab', t.label);
       b.type = 'button';
       b.dataset.tab = t.id;

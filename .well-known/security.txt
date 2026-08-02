@@ -1,0 +1,22 @@
+# Crop Circle Watch — how to report a security problem with this site.
+#
+# Caveat worth knowing: RFC 9116 wants this file at the ORIGIN root, i.e.
+# https://eric-henline.github.io/.well-known/security.txt. This site lives on a
+# project-pages subpath, so this copy sits at
+# https://eric-henline.github.io/crop-circle-watch/.well-known/security.txt
+# and automated scanners will not find it. It becomes standards-compliant the
+# day this moves to a custom domain, at which point nothing here changes but
+# the Canonical line. Until then it is documentation for a human who goes
+# looking, which is still better than nothing.
+#
+# The site is static: HTML, CSS, JS and generated data files on GitHub Pages.
+# There is no backend, no database, no login and no user data collected. The
+# interesting attack surface is therefore (a) anything that gets a string from
+# the daily automated scan onto the page as markup or as an href, and (b) the
+# scan pipeline itself, which reads untrusted third-party pages.
+
+Contact: https://github.com/eric-henline/crop-circle-watch/issues
+Expires: 2027-08-01T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://eric-henline.github.io/crop-circle-watch/.well-known/security.txt
+Policy: https://github.com/eric-henline/crop-circle-watch/blob/master/SECURITY.md

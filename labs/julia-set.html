@@ -3,6 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Security policy. GitHub Pages serves static files and cannot set response
+     headers, so the policy has to ride in the document itself. Two known
+     limits of the meta form: frame-ancestors is ignored (clickjacking cover
+     needs a real header, i.e. a proxy/CDN in front of Pages), and there is no
+     report-uri. Everything else here is enforced normally.
+
+     Every script on this site is an external file precisely so script-src can
+     stay 'self' — that single directive is what stops a string injected into
+     data.js (which the unattended daily scan writes from third-party pages)
+     from ever executing. Do NOT add 'unsafe-inline' to script-src to make an
+     inline snippet work; put the snippet in a .js file instead.
+
+     Hosts allowed, and why:
+       embed.bsky.app      Bluesky oEmbed JSON + embed.js (Live chatter widget)
+       cdn/video.bsky.app  avatars and clips inside those embeds
+       fonts.googleapis    the three webfonts; fonts.gstatic serves the files
+       i.ytimg.com         YouTube thumbnails
+       youtube-nocookie    the click-to-play footage player
+     'unsafe-inline' on style-src covers the handful of style="" attributes and
+     the inline styles Bluesky's embed injects. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://embed.bsky.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com https://cdn.bsky.app https://video.bsky.app; connect-src 'self' https://embed.bsky.app; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://embed.bsky.app; media-src 'self' https://video.bsky.app; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Stonehenge Julia Set — formation study</title>
 
 <link rel="icon" type="image/svg+xml" href="../logo.svg">
@@ -34,19 +57,12 @@
     </p>
   </header>
 
-  <div id="studies"></div>
+  <div id="studies" data-study="julia" data-index="Study 03"></div>
 </main>
 
 <script src="anim-engine.js"></script>
 <script src="studies.js"></script>
-<script>
-(function () {
-  'use strict';
-  var spec = window.STUDIES.julia;
-  spec.index = 'Study 03';
-  window.__STUDY = window.ANIM.mount(document.getElementById('studies'), spec);
-})();
-</script>
+<script src="boot.js"></script>
 
 </body>
 </html>

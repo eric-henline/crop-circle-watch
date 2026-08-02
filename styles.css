@@ -635,7 +635,10 @@ body.compact .brand-text h1{ font-size:16px; }
   color:var(--text-1);
   font-size:17px;
   line-height:1.65;
-  max-width:64ch;
+  /* Fills .lf-info's flex width instead of stopping at a fixed character
+     count — used to be capped at 64ch, leaving a visible gap on the right of
+     the hero next to the formation thumbnail. */
+  max-width:100%;
 }
 
 .hero-stats{ display:flex; gap:var(--s-6); flex-wrap:wrap; margin:0; padding:0; }
@@ -1427,7 +1430,9 @@ body.compact .brand-text h1{ font-size:16px; }
   padding:var(--s-6) var(--s-4) var(--s-7);
 }
 
-.res-intro{ max-width:70ch; margin-bottom:var(--s-6); }
+/* No max-width: fills the page, matching the Research page's intro block.
+   Used to be capped at 70ch, leaving the right half of the page empty. */
+.res-intro{ margin-bottom:var(--s-6); }
 .res-eyebrow{
   margin:0 0 var(--s-2);
   font-family:var(--font-mono);
@@ -1462,7 +1467,7 @@ body.compact .brand-text h1{ font-size:16px; }
   background:linear-gradient(90deg, var(--border), transparent);
 }
 .res-section-head p{
-  margin:0; max-width:72ch;
+  margin:0;
   font-family:var(--font-body); font-size:14px; line-height:1.6;
   color:var(--text-2);
 }
@@ -1554,7 +1559,6 @@ body.compact .brand-text h1{ font-size:16px; }
 .res-unreachable{
   list-style:none; margin:0; padding:0;
   display:grid; gap:var(--s-3);
-  max-width:80ch;
 }
 .res-unreachable li{
   font-family:var(--font-body); font-size:14px; line-height:1.65;

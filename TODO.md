@@ -473,6 +473,18 @@ primitives, the thin-data thresholds, and the `.r-chart text` specificity trap.
 stale as soon as the next morning's session lands, so it wants a hook on the
 daily runner, not just the Sunday one.
 
+**Superseded, same day:** Research log and Dataset health were pulled back out
+again a few hours later — not meant to be public, per direct request. This
+wasn't just hiding the two tabs; `export_research_json.py` no longer reads
+`index/image-leads.md` or `sessions/*.md` at all, and `research.js` carries no
+`programme` or `health` key, so the "still open" note above about a daily-run
+hook is moot — there's nothing left to keep fresh. Five tabs, 22 cards. The
+page also picked up a "Research Vectors" heading and switched the tab strip
+from pills to plain pipe-separated text this same session, and every
+description block on the Research, Resources, and Dashboard pages had its
+`ch`-based `max-width` removed — those were capping paragraphs at roughly half
+their container's width on a normal desktop screen.
+
 ---
 
 ## Suggested order
