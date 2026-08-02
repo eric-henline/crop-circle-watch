@@ -35,6 +35,32 @@ if ! git remote get-url origin >/dev/null 2>&1; then
   exit 0
 fi
 
+# ---- Stale git lock sweep ---------------------------------------------------
+# This job exists specifically to catch the 6:58 scan failing to commit — and
+# on 2026-08-01 the reason it failed was a stale .git/HEAD.lock left by a
+# crashed process. That lock sits in the SAME repo this job runs in, and
+# nothing removes it in the 12 minutes between 6:58 and 7:10. Without this
+# sweep, the safety net hits the identical lock and fails the identical way,
+# which defeats the point of having it.
+#
+# Same guard as scan_dashboard.sh, ported rather than shared: this script has
+# no Claude-agent permission hook standing in the way of an `rm` here, which is
+# exactly the restriction that stopped the scan from clearing its own lock.
+LOCK_AGE_MINS=10
+if ! pgrep -x git >/dev/null 2>&1; then
+  for lock in "$REPO_DIR"/.git/index.lock "$REPO_DIR"/.git/HEAD.lock; do
+    if [ -f "$lock" ]; then
+      lock_age=$(( ( $(date +%s) - $(stat -f %m "$lock" 2>/dev/null || echo 0) ) / 60 ))
+      if [ "$lock_age" -ge "$LOCK_AGE_MINS" ]; then
+        echo "Pre-flight: removing stale $(basename "$lock") (${lock_age}m old, no git process)" >> "$LOG"
+        rm -f "$lock"
+      else
+        echo "Pre-flight: $(basename "$lock") is only ${lock_age}m old — leaving it alone" >> "$LOG"
+      fi
+    fi
+  done
+fi
+
 # Belt-and-suspenders: commit anything left uncommitted. Under normal
 # operation the daily scan task already commits its own changes.
 #

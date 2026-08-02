@@ -176,19 +176,107 @@ else
   echo "WARNING: no 'timeout'/'gtimeout' on PATH — running without a time cap. Install via 'brew install coreutils' to enable it." >> "$LOG"
 fi
 
+# ---- Stale git lock sweep ---------------------------------------------------
+# Twice now a 0-byte lock file left behind by a crashed process has silently
+# blocked the scan's commit: .git/index.lock on 2026-07-27, .git/HEAD.lock on
+# 2026-08-01. Both times the agent did the full morning's research and then
+# could not save it, and both times it took a human noticing to recover.
+#
+# git itself never cleans these up — it cannot tell a crash leftover from a
+# lock held by a git process running right now. This can, because it checks
+# both conditions: nothing named git is running, and the lock is older than any
+# plausible in-flight operation. Under those two facts the file is garbage.
+#
+# Fails OPEN: if the sweep cannot decide, it leaves the lock alone and lets the
+# run proceed. A guard must never become a new reason the job doesn't happen.
+# 10, not 30. The 2026-08-01 lock was created at 06:29 and the scan hit it just
+# after 07:00 — about 31 minutes, which a 30-minute threshold would have caught
+# only by luck, and a slightly earlier crash not at all. Ten minutes is still
+# orders of magnitude longer than any real git operation on a repo this size,
+# and `pgrep` above has already established no git process is running, which is
+# the check actually doing the work; the age is only insurance against catching
+# git between fork and exec.
+# Sweeps EVERY *.lock under .git, not a hardcoded list. The first version of
+# this named index.lock and HEAD.lock, which is what the two known incidents
+# had left behind — and then the 2026-08-02 06:59 run was blocked by a THIRD
+# kind, refs/heads/master.lock, which sailed straight past it. Git creates a
+# lock beside whatever file it is about to rewrite (refs, packed-refs, config,
+# objects/maintenance), so enumerating them by name will always be incomplete.
+# The safety conditions below are what make this safe, not the file list.
+LOCK_AGE_MINS=10
+if ! pgrep -x git >/dev/null 2>&1; then
+  while IFS= read -r lock; do
+    [ -n "$lock" ] || continue
+    lock_age=$(( ( $(date +%s) - $(stat -f %m "$lock" 2>/dev/null || echo 0) ) / 60 ))
+    rel="${lock#"$REPO_DIR"/.git/}"
+    if [ "$lock_age" -ge "$LOCK_AGE_MINS" ]; then
+      echo "Pre-flight: removing stale $rel (${lock_age}m old, no git process)" >> "$LOG"
+      rm -f "$lock"
+    else
+      echo "Pre-flight: $rel is only ${lock_age}m old — leaving it alone" >> "$LOG"
+    fi
+  done < <(find "$REPO_DIR/.git" -name "*.lock" -type f 2>/dev/null)
+fi
+
+# HEAD before the run. The agent commits on every run, including "no new
+# formations" days, so a HEAD that has not moved afterwards means the day's work
+# was not saved — see the verification block below.
+HEAD_BEFORE="$(git rev-parse HEAD 2>/dev/null)"
+
 if [ -n "$TIMEOUT_BIN" ]; then
   "$TIMEOUT_BIN" "$TIMEOUT_SECONDS" claude -p "$PROMPT" \
-    --allowedTools "Read,Edit,WebSearch,WebFetch,Bash(git *),Bash(node *),Bash(cd *)" \
+    --allowedTools "Read,Edit,WebSearch,WebFetch,Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git remote get-url:*),Bash(git push:*),Bash(node --check:*),Bash(node check_duplicates.js:*)" \
     >> "$LOG" 2>&1
 else
   claude -p "$PROMPT" \
-    --allowedTools "Read,Edit,WebSearch,WebFetch,Bash(git *),Bash(node *),Bash(cd *)" \
+    --allowedTools "Read,Edit,WebSearch,WebFetch,Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git remote get-url:*),Bash(git push:*),Bash(node --check:*),Bash(node check_duplicates.js:*)" \
     >> "$LOG" 2>&1
 fi
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -eq 124 ]; then
   echo "ERROR: scan timed out after ${TIMEOUT_SECONDS}s and was killed" >> "$LOG"
+fi
+
+# ---- Did the work actually get saved? ---------------------------------------
+# `claude -p` exits 0 when the AGENT finished its turn — not when the agent's
+# work landed. On 2026-08-01 the scan researched the whole morning, staged
+# data.js / scan_rejected_log.md / social.js, hit a stale HEAD.lock on the
+# commit, wrote "Commit: FAILED — manual fix required" into its own transcript,
+# and this script recorded `exit 0`. No notification fired. The day's result sat
+# unsaved in the working tree until a human happened to look.
+#
+# The lesson generalises past this job: an exit code reported by the process
+# being monitored cannot tell you the process achieved anything. It needs an
+# independent check of the world. Here that check is HEAD — the agent commits on
+# every run, including days it finds nothing, so a HEAD that has not moved means
+# the run produced no saved result.
+#
+# Fails OPEN in the sense that matters: if HEAD_BEFORE could not be read, the
+# check is skipped rather than guessed at.
+if [ $EXIT_CODE -eq 0 ] && [ -n "$HEAD_BEFORE" ]; then
+  HEAD_AFTER="$(git rev-parse HEAD 2>/dev/null)"
+  if [ "$HEAD_AFTER" = "$HEAD_BEFORE" ]; then
+    echo "ERROR: scan reported success but HEAD did not move — nothing was committed" >> "$LOG"
+    {
+      echo ""
+      echo "=== Scan committed nothing: $(date) ==="
+      echo "claude -p exited 0 but HEAD is still $HEAD_BEFORE."
+      echo "Working tree state:"
+      git status --porcelain
+      echo "Last 40 lines of this run:"
+      tail -n 40 "$LOG"
+    } >> "$ERRLOG"
+    "$REPO_DIR/notify_failure.sh" "Crop Circle Watch: scan saved nothing" \
+      "Scan ran but committed nothing — check scan_errors.txt"
+    # A flag, not EXIT_CODE=1: the generic failure block below keys off
+    # EXIT_CODE, and setting it here would make this failure get logged and
+    # notified twice, the second time with a vaguer message. The flag is folded
+    # back into the exit status at the end of the script.
+    COMMIT_MISSING=1
+  else
+    echo "Post-flight: commit verified — $HEAD_BEFORE -> $HEAD_AFTER" >> "$LOG"
+  fi
 fi
 
 # scan_errors.txt is meant to be the thing worth checking when something's
@@ -253,6 +341,12 @@ if command -v node &>/dev/null && [ -f "$REPO_DIR/check_duplicates.js" ]; then
   else
     echo "$DUPE_OUT" >> "$LOG"
   fi
+fi
+
+# "The agent finished" and "the run produced a result" are different facts, and
+# the exit status should reflect the second one.
+if [ "$COMMIT_MISSING" = "1" ] && [ $EXIT_CODE -eq 0 ]; then
+  EXIT_CODE=1
 fi
 
 echo "=== Scan runner finished: $(date) (exit $EXIT_CODE) ===" >> "$LOG"

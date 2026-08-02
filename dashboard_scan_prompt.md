@@ -71,9 +71,38 @@ checkable report date:
   covered by more than one aggregator.
 - `bltresearch.com` for research-angle coverage that sometimes surfaces a
   formation before the photo aggregators catch up.
+  **Note (2026-08-02): this domain no longer resolves at all** — DNS returns
+  SERVFAIL for the apex, `www` and `mail`. Don't waste a fetch on it unless a
+  search result suggests it's back. Check archive.org if you need its material.
+- `cropcirclecenter.com` — **added 2026-08-02, previously unused.** A genuine
+  formation *database* (not a blog) with per-formation pages carrying a
+  structured date, county and country code, e.g.
+  `https://www.cropcirclecenter.com/ccdata/[year]/[mm]/[dd]/UK[yyyymmdd]_A.html`,
+  plus monthly archive indexes at `date/[year]/[yyyymm].html` running from
+  Dec 2006 to the present. Recent months are UK-only in practice, so treat it
+  as an independent cross-check on UK formations rather than a source of
+  international coverage. Updates roughly per-formation in season.
+- `thecroppie.com` — **formalised as a scan source 2026-08-02.** The dashboard
+  has cited it for commentary for months (it's on the Resources page) but the
+  scan never checked it directly. Its recurring "Croppie Gossip" column is
+  literally a new-formation roundup, and its season posts put the date and
+  location in the URL (`/2026/05/23/2026-circles-white-sheet-down-mere-wiltshire/`),
+  which makes them easy to date-check. UK/Wiltshire-focused, posts roughly
+  weekly. It is also the field's most sceptical regular voice, which makes it
+  a good counterweight when a formation is being over-claimed elsewhere.
 - r/cropcircles on Reddit — useful, but treat dates on forum posts as
   unstructured (see Step 3) since recycled posts and reposted photo sets
   are common there.
+
+**Image rights, for any source above.** If you record image URLs for a
+formation, note the licensing as you find it. Every one of these sites credits
+its photographs to named third-party photographers and none publishes a reuse
+licence, so the default is *rights-restricted*: fine to log and to download for
+private reference, never to publish. `images/download_images.py` enforces this
+by where it saves a file (`images/free/` vs
+`images/licensed_rights_not_cleared/`), and `images/catalog.json` records it as
+`cleared_to_publish`. Only claim a free licence when the source states one
+explicitly — Wikimedia Commons is the main genuine case.
 
 Don't limit yourself to the UK — most formations are UK/Wiltshire, but
 also run at least one query each for Germany, the Netherlands, Italy, and
