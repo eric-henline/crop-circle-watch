@@ -604,28 +604,70 @@ instead of the project-pages subpath where no scanner will find it.
 
 Decision needed: is a domain in scope for the launch?
 
-## S4. Google Fonts is a third-party request on every page load
+## ~~S4. Google Fonts~~ — done 2026-08-01
 
-Three fonts load from `fonts.googleapis.com` / `fonts.gstatic.com`, which sends
-every visitor's IP to Google. A German court has already ruled this a GDPR
-violation for embedded Google Fonts, and the site has UK/EU readers by subject
-matter. Self-hosting the four families is a ~400 KB commit, removes two external
-origins from CSP, and makes the page faster. Low effort, worth doing before any
-traffic arrives — but it is a real (if small) addition to a repo that currently
-ships no binary assets, hence flagged rather than done.
+The three typefaces are self-hosted: `fonts.css` + `fonts/`, 10 woff2 files,
+312 KB total, of which an English page pulls three (~115 KB). No visitor IP
+reaches Google any more, and `style-src` / `font-src` no longer name an
+external host.
 
-## S5. Small, do-anytime
+Two things worth knowing before touching it:
 
-- **Add a `CODEOWNERS` / branch protection on `master`.** The push credential is
-  a machine credential on one Mac; if it leaks, there is nothing between it and
-  the live site. Protecting `master` would break the scan's own push, so the
-  realistic version is: confirm the GitHub token in the keychain is a
-  fine-grained PAT scoped to this one repo with contents-write only, not a
-  classic `repo`-scope token that reaches every repo on the account. **Check
-  this — it is the highest-value item on this list that takes five minutes.**
-- **Turn on Dependabot / secret scanning** in repo settings. Free on public
-  repos, and secret scanning is the backstop for the one mistake most likely to
-  actually happen: pasting a key into a commit.
+- **Bricolage Grotesque and Newsreader are VARIABLE fonts.** One file covers
+  wght 200-800, which is why five Bricolage weights are one `@font-face` with a
+  weight range rather than five faces. Google's own CSS served the same file
+  five times. Only Fragment Mono is static.
+- **Fetching the css2 URL with plain `curl` gets you `.ttf`, not `.woff2`.**
+  Google picks the format from the User-Agent. Open the URL in a real browser
+  to get the woff2 links. This is in the `fonts.css` header too, because it is
+  the thing that will waste an hour next time.
+
+## S5. Repo settings — mostly done 2026-08-01
+
+- ~~**Secret scanning + push protection.**~~ Already enabled (GitHub turns
+  these on by default for public repos). Verified, not changed.
+- ~~**Private vulnerability reporting.**~~ **Enabled.** Gives a channel for
+  security reports that is not a world-readable issue; `security.txt` and
+  `SECURITY.md` now point at it first.
+- ~~**Dependabot.**~~ **Deliberately left off.** There are no dependency
+  manifests in this repo — no `package.json`, no `requirements.txt`. Nothing to
+  scan, so enabling it would only add noise. Revisit if a build step ever lands.
+
+### Still needs you — the token scopes
+
+Two separate credentials can write to this repo, and neither can be checked
+without you:
+
+1. **The `gh` CLI token** is a *classic* OAuth token with scopes
+   `gist, read:org, repo, workflow`. **`repo` means full read/write to every
+   repository on the account**, public and private — not just this one. That is
+   how `gh auth login` sets things up by default; it is not a mistake, but it
+   is a wide credential sitting on a laptop that runs unattended jobs.
+2. **The `git push` credential** in the macOS keychain (used by
+   `push_dashboard.sh` and the scan) could not be inspected — reading it was
+   blocked by a permission guard, which is the correct behaviour. Check it
+   yourself:
+
+   ```bash
+   printf 'protocol=https\nhost=github.com\n\n' | git credential fill | sed -n 's/^password=//p' | xargs -I{} curl -sI -H "Authorization: token {}" https://api.github.com/user | grep -i x-oauth-scopes
+   ```
+
+   An empty `x-oauth-scopes` header means a fine-grained PAT (good). A list
+   containing `repo` means a classic token with account-wide write (worth
+   replacing).
+
+**The fix for both:** create a fine-grained PAT at
+<https://github.com/settings/personal-access-tokens/new>, scoped to
+`crop-circle-watch` only, with `Contents: read and write` and nothing else.
+Give it a 1-year expiry and note the date next to the
+`claude setup-token` reminder in `scan_dashboard.sh`. Then
+`git credential reject` the old one and let the next push store the new one.
+
+Rationale: this Mac runs an unattended agent that reads the open web. The
+credential it can reach should open one hobby repo, not the whole account.
+
+## S6. Ongoing
+
 - **Re-run the audit after any change to how `data.js` renders.** The whole
   security posture rests on: scripts stay external, hrefs go through
   `isPublicUrl()`, and text goes through `textContent`. All three are

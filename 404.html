@@ -6,16 +6,17 @@
 
 <!-- Security policy — see the note in index.html. This page loads nothing
      external beyond the site's own fonts, so its policy is tighter. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <title>Page not found — Crop Circle Watch</title>
 <meta name="robots" content="noindex">
 
 <link rel="icon" type="image/svg+xml" href="/crop-circle-watch/logo.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<!-- Typefaces are served from this repo, not fonts.googleapis.com — see the
+     header of fonts.css for why. Nothing on this page contacts a third party
+     before the visitor asks it to. -->
+<link rel="stylesheet" href="/crop-circle-watch/fonts.css">
 
 <link rel="stylesheet" href="/crop-circle-watch/styles.css">
 

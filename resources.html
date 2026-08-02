@@ -19,21 +19,23 @@
      Hosts allowed, and why:
        embed.bsky.app      Bluesky oEmbed JSON + embed.js (Live chatter widget)
        cdn/video.bsky.app  avatars and clips inside those embeds
-       fonts.googleapis    the three webfonts; fonts.gstatic serves the files
        i.ytimg.com         YouTube thumbnails
+     Webfonts are NOT in that list: they are served from this origin
+     (fonts.css + fonts/), so font-src stays 'self'. Keep it that way.
        youtube-nocookie    the click-to-play footage player
      'unsafe-inline' on style-src covers the handful of style="" attributes and
      the inline styles Bluesky's embed injects. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://embed.bsky.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com https://cdn.bsky.app https://video.bsky.app; connect-src 'self' https://embed.bsky.app; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://embed.bsky.app; media-src 'self' https://video.bsky.app; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://embed.bsky.app; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://i.ytimg.com https://cdn.bsky.app https://video.bsky.app; connect-src 'self' https://embed.bsky.app; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://embed.bsky.app; media-src 'self' https://video.bsky.app; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Resources — Crop Circle Watch</title>
 <meta name="description" content="Credit and thanks to the researchers, photographers and archivists whose work Crop Circle Watch is built on — who they are, and what each one contributes.">
 
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<!-- Typefaces are served from this repo, not fonts.googleapis.com — see the
+     header of fonts.css for why. Nothing on this page contacts a third party
+     before the visitor asks it to. -->
+<link rel="stylesheet" href="fonts.css">
 
 <link rel="stylesheet" href="styles.css">
 </head>

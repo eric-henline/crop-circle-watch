@@ -1,0 +1,125 @@
+/* ==========================================================================
+   fonts.css — the site's three typefaces, served from this repo.
+
+   Replaces the <link> to fonts.googleapis.com that every page used to carry.
+   That link meant every visitor's IP address and User-Agent went to Google on
+   every page load, for a site that otherwise collects nothing about anybody.
+   A German court (LG München I, 3 O 17493/20) found exactly that arrangement
+   to be a GDPR violation, and a crop circle log has a substantially UK/EU
+   readership. Self-hosting also removes two external origins from the CSP and
+   removes a third party who can change or stop serving the files.
+
+   WHAT IS HERE, AND WHY IT IS ONLY 10 FILES
+
+   Bricolage Grotesque and Newsreader are VARIABLE fonts: one file covers the
+   whole 200-800 weight range, which is why the five Bricolage weights the site
+   uses (400/500/600/700/800) are one @font-face with a weight RANGE, not five
+   separate faces. Google's own CSS served the same file five times over. Only
+   Fragment Mono is static, so it gets one face per style.
+
+   Each family is split by unicode-range into `latin` and `latin-ext`, so a
+   page of English text never downloads the accented-character file. The
+   Vietnamese and Cyrillic subsets Google also offers were dropped — this site
+   is English with occasional European place names, which latin-ext covers.
+
+   Total: 312 KB across 10 files, of which a typical English page pulls three.
+
+   HOW TO REGENERATE (e.g. to add a weight or pick up an upstream revision)
+
+   1. Open the Google Fonts css2 URL in a REAL browser — the API serves .ttf
+      to clients whose User-Agent it doesn't recognise, and woff2 only to
+      modern ones. Fetching it with a plain curl gets you the wrong format.
+   2. Take the `latin` and `latin-ext` src URLs for each family. Variable
+      families repeat the same URL for every weight; you only need it once.
+   3. Download into fonts/, then mirror any change here.
+   Font files are versioned in the URL path (v9, v26, v6 above), so an upstream
+   change cannot alter what is already committed here.
+   ========================================================================== */
+
+/* -- Bricolage Grotesque — display/UI. Variable, 200-800. ------------------ */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 200 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(fonts/bricolage-grotesque-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 200 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(fonts/bricolage-grotesque-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* -- Newsreader — body copy. Variable, 200-800, real italics. -------------- */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url(fonts/newsreader-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url(fonts/newsreader-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url(fonts/newsreader-italic-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url(fonts/newsreader-italic-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* -- Fragment Mono — data, stamps, map refs. Static 400 + italic. ---------- */
+@font-face {
+  font-family: 'Fragment Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/fragment-mono-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Fragment Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/fragment-mono-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fragment Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/fragment-mono-italic-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Fragment Mono';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/fragment-mono-italic-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}

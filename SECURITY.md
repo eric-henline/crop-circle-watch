@@ -49,12 +49,13 @@ work on the pipeline.
 
 ## Reporting
 
-Open an issue: <https://github.com/eric-henline/crop-circle-watch/issues>
+For anything a visitor could be harmed by before a fix lands — anything in
+category 1 above — use the private channel, which is not world-readable:
 
-If the report is something a visitor could be harmed by before a fix lands —
-anything in category 1 above — please say so in the title and skip the proof of
-concept in the public issue; a description of the injection point is enough to
-act on.
+<https://github.com/eric-henline/crop-circle-watch/security/advisories/new>
+
+For everything else, a public issue is fine:
+<https://github.com/eric-henline/crop-circle-watch/issues>
 
 ## Known and accepted limits
 
@@ -62,9 +63,17 @@ act on.
   response headers, so there is no clickjacking protection. Accepted: the site
   has no authenticated actions, so there is nothing to trick a click into doing.
   A custom domain behind a CDN would fix it.
-- No Subresource Integrity on the Google Fonts stylesheet — its content is
-  versioned and changes, so a pinned hash would break the site instead of
-  protecting it. The font hosts are pinned in CSP instead.
 - `style-src` allows `'unsafe-inline'`, needed for a handful of `style=""`
   attributes and the styles Bluesky's embed injects. Low value to an attacker
   with `script-src` locked down.
+- The Bluesky "Live chatter" widget is the one third party left on the page,
+  and only on `index.html`. It is opt-out-able by deleting the widget; until
+  then `embed.bsky.app` can run script in the page, so the CSP is only as good
+  as Bluesky's own supply chain. Accepted — the alternative is no widget.
+
+## No longer applicable
+
+- ~~Google Fonts~~ — the three typefaces are self-hosted as of 2026-08-01
+  (`fonts.css` + `fonts/`). No visitor IP reaches Google, and `font-src` /
+  `style-src` no longer name an external host. See the header of `fonts.css`
+  before changing a weight.

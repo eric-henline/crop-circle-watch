@@ -15,6 +15,10 @@
 # the daily automated scan onto the page as markup or as an href, and (b) the
 # scan pipeline itself, which reads untrusted third-party pages.
 
+# Private vulnerability reporting is enabled on the repo, so the first Contact
+# is a channel that is not world-readable — use it for anything a visitor could
+# be harmed by before a fix lands. Public issues are fine for everything else.
+Contact: https://github.com/eric-henline/crop-circle-watch/security/advisories/new
 Contact: https://github.com/eric-henline/crop-circle-watch/issues
 Expires: 2027-08-01T00:00:00.000Z
 Preferred-Languages: en
