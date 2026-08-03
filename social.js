@@ -15,26 +15,35 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-02T13:59:16Z",
+  "fetchedAt": "2026-08-03T13:58:07Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms3otbpxck2a",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "The Roman Floor Mosaic\nMorgans Hill, Wiltshire, England\n2nd August 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#History #Culture #Heritage\n#RomanBritain #Art\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-08-02T09:39:25.001000Z",
-      "likes": 2
+      "url": "https://bsky.app/profile/cynicaltherapist.bsky.social/post/3ms5olrlfcs2e",
+      "author": "CynicalTherapist",
+      "handle": "@cynicaltherapist.bsky.social",
+      "text": "nobody drinks problematically because of alien crop circles anymore",
+      "postedAt": "2026-08-03T04:40:32.672000Z",
+      "likes": 56
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms3oss2v4s2a",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms4crvkcj225",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Roman Floor Mosaic\nMorgans Hill, Wiltshire, England\n2nd August 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#History #Culture #Heritage\n#RomanBritain #Art\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-08-02T09:39:08.581000Z",
-      "likes": 2
+      "text": "The Whirling Dervish \nWestbury, Wiltshire, England\n(Near Westbury White Horse)\n30th July 2023\n\nCan you see the base geometry?\nPentagonal in form.\n\n#CropCircles #Logos #Jesus\n#SpecialRevelation #England\n#Islam #TheHour #Isa \n\ncropcircleconnector.com/2023/combehi...",
+      "postedAt": "2026-08-02T15:36:33.511000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms4ar3jwgc25",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "The Whirling Dervish \nWestbury, Wiltshire, England\n(Near Westbury White Horse)\n30th July 2023\n\n#CropCircles #Logos #Jesus\n#SpecialRevelation #England\n#Islam #TheHour #Isa\n#ThePromiseAndTheThreat\n\ncropcircleconnector.com/2023/combehi...",
+      "postedAt": "2026-08-02T15:00:18.753000Z",
+      "likes": 1
     },
     {
       "platform": "bluesky",
@@ -80,15 +89,6 @@ window.SOCIAL_FEED = {
       "text": "Even the crop circle aliens are done with him",
       "postedAt": "2026-06-12T01:59:23.093000Z",
       "likes": 36
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/galeriadometeorito.bsky.social/post/3mmpmo46vfc2i",
-      "author": "Galeria do Meteorito",
-      "handle": "@galeriadometeorito.bsky.social",
-      "text": "🚨Ela filmou um fenômeno BIZARRO acontecendo em um novo desenho de plantação! O vídeo acaba de sair: youtu.be/28BsEk132uU\n\n#UFO #CropCircle #UAP #analise",
-      "postedAt": "2026-05-25T23:22:48.933000Z",
-      "likes": 2
     }
   ]
 };
