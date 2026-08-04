@@ -15,9 +15,27 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-03T13:58:07Z",
+  "fetchedAt": "2026-08-04T13:58:06Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms74j7paok2y",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "The Kundalini Of The Earth\nWest Woodhay Down \nWiltshire, England.\n29th July 2011 \n\n#CropCircles #Logos\n#TheLivingWord #SpecialRevelation\n#Electromagnetism #Kundalini\n#TheFourFundamentalForces\n#TheFourLivingCreatures \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-08-03T18:22:18.934000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms73si463k2y",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "The Kundalini Of The Earth\nWest Woodhay Down \nWiltshire, England.\n29th July 2011 \n\n#CropCircles #Logos\n#SpecialRevelation\n#Electromagnetism #Kundalini\n#Dragons #Serpents\n#Symbolism #Inspiration\n#Innatism #TheSubconscious \n\nwww.cropcirclecenter.com/ccdata/2011/...",
+      "postedAt": "2026-08-03T18:09:35.993000Z",
+      "likes": 1
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/cynicaltherapist.bsky.social/post/3ms5olrlfcs2e",
@@ -25,25 +43,7 @@ window.SOCIAL_FEED = {
       "handle": "@cynicaltherapist.bsky.social",
       "text": "nobody drinks problematically because of alien crop circles anymore",
       "postedAt": "2026-08-03T04:40:32.672000Z",
-      "likes": 56
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms4crvkcj225",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "The Whirling Dervish \nWestbury, Wiltshire, England\n(Near Westbury White Horse)\n30th July 2023\n\nCan you see the base geometry?\nPentagonal in form.\n\n#CropCircles #Logos #Jesus\n#SpecialRevelation #England\n#Islam #TheHour #Isa \n\ncropcircleconnector.com/2023/combehi...",
-      "postedAt": "2026-08-02T15:36:33.511000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms4ar3jwgc25",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "The Whirling Dervish \nWestbury, Wiltshire, England\n(Near Westbury White Horse)\n30th July 2023\n\n#CropCircles #Logos #Jesus\n#SpecialRevelation #England\n#Islam #TheHour #Isa\n#ThePromiseAndTheThreat\n\ncropcircleconnector.com/2023/combehi...",
-      "postedAt": "2026-08-02T15:00:18.753000Z",
-      "likes": 1
+      "likes": 69
     },
     {
       "platform": "bluesky",
