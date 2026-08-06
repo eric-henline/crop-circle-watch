@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-08-05T07:30:00-07:00",
+  lastScan: "2026-08-06T07:06:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -136,12 +136,18 @@ window.STORIES = [
     id: "2026-07-14-avebury-henge",
     date: "2026-07-14",
     title: "Avebury Henge",
-    location: "Nr Avebury, Wiltshire, UK",
-    description: "Reported 14 July 2026 near the historic Avebury Henge. Aerial footage credited to Stonehenge Dronescapes; no written report from Crop Circle Connector or Temporary Temples was available yet at time of writing, so design details and an exact map reference are not yet confirmed.",
+    aliases: ["Stone Circle"],
+    location: "Nr Avebury Henge, Wiltshire, UK · Map ref SU1051070223",
+    description: "Reported 14 July 2026 in a wheat field near the historic Avebury Henge and close to Green Street. Temporary Temples describe a 'classical' collection of circles and rings approximately 250 feet across. Aerial footage credited to Stonehenge Dronescapes.",
     tags: ["UK", "Wiltshire", "2026 season", "video"],
-    sourceUrl: "https://www.youtube.com/watch?v=f8LDLG2lsUw",
-    sourceName: "Stonehenge Dronescapes (YouTube)",
-    youtubeId: "f8LDLG2lsUw"
+    sourceUrl: "https://temporarytemples.co.uk/project/avebury-2026",
+    sourceName: "Temporary Temples",
+    youtubeId: "f8LDLG2lsUw",
+    references: [
+      { label: "Temporary Temples — Avebury", url: "https://temporarytemples.co.uk/project/avebury-2026" },
+      { label: "Crop Circle Connector — Stone Circle", url: "https://www.cropcircleconnector.com/2026/stone/stonecircle2026a.html" },
+      { label: "Stonehenge Dronescapes (aerial video)", url: "https://www.youtube.com/watch?v=f8LDLG2lsUw" }
+    ]
   },
   {
     id: "2026-07-12-milk-hill",
@@ -208,6 +214,30 @@ window.STORIES = [
     sourceUrl: "https://temporarytemples.co.uk/project/alfreds-castle-2026",
     sourceName: "Temporary Temples",
     youtubeId: "oqcf0UnEU1U"
+  },
+  {
+    // ADDED 2026-08-06 by manual check. Missed by every daily scan because
+    // Crop Circle Connector files it on the "January to May" index page
+    // (2026/May2026.html), which actually runs through June — the scan only
+    // reads the index page matching the current month. It also surfaced on
+    // the CCC Rumours page under a different name ("White Horse Trail, Nr
+    // Hackpen"), which is why it was logged as an unverifiable rumour on
+    // 2026-08-03 rather than recognised as this formation.
+    id: "2026-06-29-walkers-plantation",
+    date: "2026-06-29",
+    title: "Walker's Plantation",
+    aliases: ["Hackpen Hill", "White Horse Trail"],
+    location: "Nr Hackpen Hill, Wiltshire, UK · Map ref SU1290975816",
+    description: "Reported 29 June 2026 at Walker's Plantation below Hackpen Hill, a site with a long history of formations. Crop Circle Connector states it is a commissioned circle made for a new Sky History series with Bradley Walsh. The farmer does not permit public access to the field.",
+    tags: ["UK", "Wiltshire", "2026 season", "commissioned"],
+    sourceUrl: "https://www.cropcircleconnector.com/2026/walker/walker2026a.html",
+    sourceName: "Crop Circle Connector",
+    youtubeId: null,
+    authenticity: "Confirmed human-made",
+    references: [
+      { label: "Crop Circle Connector — Walker's Plantation", url: "https://www.cropcircleconnector.com/2026/walker/walker2026a.html" },
+      { label: "Kornkreise Schweiz — Nachtrag vom 29. Juni 2026", url: "https://kornkreiseschweiz.ch/2026/07/14/nachtrag-vom-29-juni-2026/" }
+    ]
   },
   {
     id: "2026-06-25-etchilhampton",
@@ -385,6 +415,15 @@ window.COVERAGE = [
   // returns 200 and the summary describes what the piece actually says. This is
   // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
   // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-08-04-croppie-gossip-in-a-field-in-wiltshire",
+    date: "2026-08-04",
+    kind: "community",
+    title: "Croppie Gossip: In A Field In Wiltshire…",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/08/04/croppie-gossip-in-a-field-in-wiltshire/",
+    summary: "Investigates a suspicious overhead photo of an alleged August 2026 Wiltshire formation, posted via a fake Facebook account ('WiltshireWerewolf/Shortdude Bob'). Analyst Nick Bull identified Photoshop clone-tool artifacts in the image, indicating the photograph was digitally fabricated. The article also speculates on the identity of the person behind the account based on stylistic and contextual clues."
+  },
   {
     id: "2026-08-01-croppie-gossip-new-month",
     date: "2026-08-01",
