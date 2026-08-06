@@ -65,6 +65,18 @@ they're the most reliable sources and the ones most likely to have a clean,
 checkable report date:
 - `cropcircleconnector.com` — `https://www.cropcircleconnector.com/[year]/[year].html`
   and that season's monthly index page.
+  **Read EVERY index page linked from `[year].html`, not just the current
+  month's.** CCC's index filenames do not match the months they contain. As of
+  2026 the season splits into `May[year].html` (titled "JANUARY TO MAY" but
+  actually running through **June**), `July[year].html`, and
+  `August[year].html`. A formation reported 29 June is therefore filed on the
+  page called *May*. Do not infer a page's contents from its filename, and do
+  not skip a page because you believe its month is over — CCC back-fills late
+  entries onto whichever page it already used.
+  *This is not hypothetical:* Walker's Plantation (29 Jun 2026, nr Hackpen
+  Hill) sat on `May2026.html` with its own dedicated formation page for five
+  weeks and every daily scan missed it, because the scan only ever opened the
+  July and August indexes. It was found by a manual check on 2026-08-06.
 - `temporarytemples.co.uk` — recent-posts / projects list.
 - `cropcircles.org` and `lucypringle.co.uk` — both maintain their own
   current-season listings and are useful cross-checks when a formation is
@@ -413,6 +425,22 @@ it doesn't exist yet), in the form:
 
 This is what Step 1 reads on future runs to skip re-checking the same
 dead-end URLs.
+
+**Before you reject a CCC Rumours entry as "unverifiable", search for it by
+LOCATION, not by name.** Aggregators routinely promote a rumour to a full
+formation page under a different label — CCC's rumour "White Horse Trail, Nr
+Hackpen, Wiltshire" became the confirmed formation page "Walker's Plantation,
+Nr Hackpen Hill" at `/2026/walker/walker2026a.html`. The 2026-08-03 scan
+rejected it on the grounds that there was "no dedicated CCC page", which was
+simply false: the page existed, under the other name, and a search for the
+place name (`site:cropcircleconnector.com Hackpen`) would have found it. A
+rejection reason that asserts something does not exist has to be checked with
+at least one location-keyed search before you write it down.
+
+Rejections are not permanent. A candidate already in this log should be
+re-checked if it is under 8 weeks old and was rejected for *unverifiable*
+(rather than stale/duplicate) — that is exactly the window in which a rumour
+gets a real page.
 
 ## Step 7 — Commit, and push if possible
 
