@@ -138,9 +138,16 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
    fades up to), --wm-duration, --wm-delay — so the shared `wm-fade`
    keyframes below produce a slow, staggered, asynchronous breathing effect
    instead of everything pulsing in lockstep. Position/size/timing are the
-   only things that vary per instance; the fade mechanics live in one place. */
+   only things that vary per instance; the fade mechanics live in one place.
+
+   --wm-gain is a single brightness multiplier applied to every instance's
+   --wm-peak. The 13 peaks are tuned relative to each other (bigger shapes sit
+   fainter so they don't dominate), so brightness changes belong here, as one
+   number, rather than as 13 hand-edited values that would drift out of ratio.
+   Raised to 1.2 on 2026-08-06 — glyphs 20% brighter at the top of each fade. */
 .bg-watermarks{
   position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden;
+  --wm-gain:1.2;
 }
 .bg-watermarks .wm{
   position:absolute;
@@ -151,11 +158,11 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
 }
 @keyframes wm-fade{
   0%, 100%  { opacity:0; }
-  15%, 55%  { opacity:var(--wm-peak); }
+  15%, 55%  { opacity:calc(var(--wm-peak) * var(--wm-gain, 1)); }
   70%       { opacity:0; }
 }
 @media (prefers-reduced-motion:reduce){
-  .bg-watermarks .wm{ animation:none; opacity:var(--wm-peak); }
+  .bg-watermarks .wm{ animation:none; opacity:calc(var(--wm-peak) * var(--wm-gain, 1)); }
 }
 
 .wm-1{
