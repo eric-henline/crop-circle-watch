@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-04T13:58:06Z",
+  "fetchedAt": "2026-08-06T05:51:19Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms74j7paok2y",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msds7lhx3s27",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Kundalini Of The Earth\nWest Woodhay Down \nWiltshire, England.\n29th July 2011 \n\n#CropCircles #Logos\n#TheLivingWord #SpecialRevelation\n#Electromagnetism #Kundalini\n#TheFourFundamentalForces\n#TheFourLivingCreatures \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-08-03T18:22:18.934000Z",
+      "text": "Conjunctions And The Word \nStonehenge,\nWiltshire, England. \n16th July 2020\n\n#TheWordOfGod #TheGeometricWord\n#CropCircles #Logos #SpecialRevelation #England #Heritage #Culture #Taboo\n#Rejection #Exclusion #Marginalisation\n\ntemporarytemples.co.uk/project/ston...",
+      "postedAt": "2026-08-05T15:01:17.006000Z",
       "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3ms73si463k2y",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msdrunf6ss27",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Kundalini Of The Earth\nWest Woodhay Down \nWiltshire, England.\n29th July 2011 \n\n#CropCircles #Logos\n#SpecialRevelation\n#Electromagnetism #Kundalini\n#Dragons #Serpents\n#Symbolism #Inspiration\n#Innatism #TheSubconscious \n\nwww.cropcirclecenter.com/ccdata/2011/...",
-      "postedAt": "2026-08-03T18:09:35.993000Z",
+      "text": "Conjunctions And The Word\nStonehenge,\nWiltshire, England. \n16th July 2020\n\n#TheWordOfGod #TheGeometricWord\n#CropCircles #Logos #SpecialRevelation #England #Heritage #Culture #Taboo \n\ntemporarytemples.co.uk/project/ston...",
+      "postedAt": "2026-08-05T14:55:09.918000Z",
       "likes": 1
     },
     {
@@ -43,7 +43,7 @@ window.SOCIAL_FEED = {
       "handle": "@cynicaltherapist.bsky.social",
       "text": "nobody drinks problematically because of alien crop circles anymore",
       "postedAt": "2026-08-03T04:40:32.672000Z",
-      "likes": 69
+      "likes": 72
     },
     {
       "platform": "bluesky",
