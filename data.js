@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-08-06T07:06:00-07:00",
+  lastScan: "2026-08-08T09:59:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -125,6 +125,7 @@ window.STORIES = [
     id: "2026-07-16-odstone-barn",
     date: "2026-07-16",
     title: "Odstone Barn",
+    aliases: ["Wayland's Smithy"],
     location: "Nr Wayland's Smithy, Oxfordshire, UK · Map ref SU2797284836",
     description: "Reported 16 July 2026 near Wayland's Smithy, roughly 70 metres across in wheat. Aerial images credited to Nick Bull (Crop Circles from Above); ground access details not yet confirmed.",
     tags: ["UK", "Oxfordshire", "2026 season", "video"],
@@ -270,6 +271,7 @@ window.STORIES = [
     id: "2026-06-21-kingweston-solstice",
     date: "2026-06-21",
     title: "Kingweston (Solstice)",
+    aliases: ["North Lodge"],
     location: "Nr Cedar Walk Plantation, Kingweston, Somerset, UK · Map ref ST5213531746",
     description: "Reported on the summer solstice, 21 June 2026, in young wheat near Cedar Walk Plantation and Kingweston House. Temporary Temples describe an eight-fold design roughly 180ft in diameter, with lollipop motifs and four eye-shapes at the centre. The farmer has requested no public access to the field.",
     tags: ["UK", "Somerset", "2026 season", "video"],
@@ -340,6 +342,7 @@ window.STORIES = [
     id: "2026-05-10-kingweston-somerset",
     date: "2026-05-10",
     title: "Kingweston (Near Snap Hill)",
+    aliases: ["Christian's Cross"],
     location: "Nr Snap Hill, Kingweston, Somerset, UK · Map ref ST5213029852",
     description: "First reported 10 May 2026 in young barley as a six-fold spinner design roughly 150ft in diameter; by 13 May, six additional curved paths had appeared in stages, making the pattern more complex.",
     tags: ["UK", "Somerset", "2026 season"],

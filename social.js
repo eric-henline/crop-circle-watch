@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-06T13:58:06Z",
+  "fetchedAt": "2026-08-08T13:59:18Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mskmwzeg6c2m",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@churchofengland.org\n\nCosciomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-08-08T08:15:39.039000Z",
+      "likes": 0
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msds7lhx3s27",
@@ -29,21 +38,12 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msdrunf6ss27",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "Conjunctions And The Word\nStonehenge,\nWiltshire, England. \n16th July 2020\n\n#TheWordOfGod #TheGeometricWord\n#CropCircles #Logos #SpecialRevelation #England #Heritage #Culture #Taboo \n\ntemporarytemples.co.uk/project/ston...",
-      "postedAt": "2026-08-05T14:55:09.918000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
       "url": "https://bsky.app/profile/cynicaltherapist.bsky.social/post/3ms5olrlfcs2e",
       "author": "CynicalTherapist",
       "handle": "@cynicaltherapist.bsky.social",
       "text": "nobody drinks problematically because of alien crop circles anymore",
       "postedAt": "2026-08-03T04:40:32.672000Z",
-      "likes": 72
+      "likes": 76
     },
     {
       "platform": "bluesky",
@@ -53,15 +53,6 @@ window.SOCIAL_FEED = {
       "text": "Did the aliens Crop Pixel the 8647 instead of crop circles?",
       "postedAt": "2026-08-01T19:26:53.217000Z",
       "likes": 17
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/starlightwithin.bsky.social/post/3mrtssiid7k2c",
-      "author": "Razhiel @ Starlight Within",
-      "handle": "@starlightwithin.bsky.social",
-      "text": "Sharing my friend's blog on his recent journey exploring England's ley lines, particularly those around #Avebury, as well as crop circles:\n\nroadtonowhere.nicholls.online/p/tickling-t...\n\n#leyline #leylines #LeyLinesInEngland #EnglishLeyLine #CropCircle #megalith #megaliths #St…",
-      "postedAt": "2026-07-30T06:29:15.595000Z",
-      "likes": 1
     },
     {
       "platform": "bluesky",
@@ -89,6 +80,15 @@ window.SOCIAL_FEED = {
       "text": "Even the crop circle aliens are done with him",
       "postedAt": "2026-06-12T01:59:23.093000Z",
       "likes": 36
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/galeriadometeorito.bsky.social/post/3mmpmo46vfc2i",
+      "author": "Galeria do Meteorito",
+      "handle": "@galeriadometeorito.bsky.social",
+      "text": "🚨Ela filmou um fenômeno BIZARRO acontecendo em um novo desenho de plantação! O vídeo acaba de sair: youtu.be/28BsEk132uU\n\n#UFO #CropCircle #UAP #analise",
+      "postedAt": "2026-05-25T23:22:48.933000Z",
+      "likes": 2
     }
   ]
 };
