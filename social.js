@@ -15,18 +15,9 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-08T13:59:18Z",
+  "fetchedAt": "2026-08-09T14:03:39Z",
   "source": "bluesky",
   "posts": [
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mskmwzeg6c2m",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@churchofengland.org\n\nCosciomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-08-08T08:15:39.039000Z",
-      "likes": 0
-    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msds7lhx3s27",
@@ -34,6 +25,15 @@ window.SOCIAL_FEED = {
       "handle": "@sirius2368.bsky.social",
       "text": "Conjunctions And The Word \nStonehenge,\nWiltshire, England. \n16th July 2020\n\n#TheWordOfGod #TheGeometricWord\n#CropCircles #Logos #SpecialRevelation #England #Heritage #Culture #Taboo\n#Rejection #Exclusion #Marginalisation\n\ntemporarytemples.co.uk/project/ston...",
       "postedAt": "2026-08-05T15:01:17.006000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msdrunf6ss27",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "Conjunctions And The Word\nStonehenge,\nWiltshire, England. \n16th July 2020\n\n#TheWordOfGod #TheGeometricWord\n#CropCircles #Logos #SpecialRevelation #England #Heritage #Culture #Taboo \n\ntemporarytemples.co.uk/project/ston...",
+      "postedAt": "2026-08-05T14:55:09.918000Z",
       "likes": 1
     },
     {
@@ -83,12 +83,12 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/galeriadometeorito.bsky.social/post/3mmpmo46vfc2i",
-      "author": "Galeria do Meteorito",
-      "handle": "@galeriadometeorito.bsky.social",
-      "text": "🚨Ela filmou um fenômeno BIZARRO acontecendo em um novo desenho de plantação! O vídeo acaba de sair: youtu.be/28BsEk132uU\n\n#UFO #CropCircle #UAP #analise",
-      "postedAt": "2026-05-25T23:22:48.933000Z",
-      "likes": 2
+      "url": "https://bsky.app/profile/ampule2.bsky.social/post/3mo2aw6tvpk22",
+      "author": "Martin",
+      "handle": "@ampule2.bsky.social",
+      "text": "Crop circles, absolutely alien crop circles 😂😂",
+      "postedAt": "2026-06-11T22:17:04.015000Z",
+      "likes": 13
     }
   ]
 };

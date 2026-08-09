@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-08-08T09:59:00-07:00",
+  lastScan: "2026-08-09T07:10:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -209,12 +209,17 @@ window.STORIES = [
     id: "2026-07-03-alfreds-castle",
     date: "2026-07-03",
     title: "Alfred's Castle (Double Circle)",
+    aliases: ["Alfred's Castle Settlement"],
     location: "Nr Ashbury & Bishopstone, Oxfordshire, UK · Map ref SU2772882233",
     description: "Two formations appeared the same night of 3 July 2026 on opposite sides of the Alfred's Castle earthwork: an old-fashioned dumbbell design with a crescent-moon motif, and a central circle with fine concentric rings.",
     tags: ["UK", "Oxfordshire", "2026 season", "video"],
     sourceUrl: "https://temporarytemples.co.uk/project/alfreds-castle-2026",
     sourceName: "Temporary Temples",
-    youtubeId: "oqcf0UnEU1U"
+    youtubeId: "oqcf0UnEU1U",
+    references: [
+      { label: "Temporary Temples — Alfred's Castle", url: "https://temporarytemples.co.uk/project/alfreds-castle-2026" },
+      { label: "Crop Circle Connector — Alfred's Castle Settlement", url: "https://www.cropcircleconnector.com/2026/alfred/alfred2026a.html" }
+    ]
   },
   {
     // ADDED 2026-08-06 by manual check. Missed by every daily scan because
