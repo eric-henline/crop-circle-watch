@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-09T14:03:39Z",
+  "fetchedAt": "2026-08-10T14:11:20Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msds7lhx3s27",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mspp2qa2ik2d",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "Conjunctions And The Word \nStonehenge,\nWiltshire, England. \n16th July 2020\n\n#TheWordOfGod #TheGeometricWord\n#CropCircles #Logos #SpecialRevelation #England #Heritage #Culture #Taboo\n#Rejection #Exclusion #Marginalisation\n\ntemporarytemples.co.uk/project/ston...",
-      "postedAt": "2026-08-05T15:01:17.006000Z",
+      "text": "The Cube and the Quickening\nAvebury, Wiltshire, England.\n22nd April 2017\n\n#CropCircles #TheWordOfGod\n#Logos #SpecialRevelation \n#England #SacredSites #HolyGround\n\nwww.cropcircleconnector.com/2017/wadenhi...",
+      "postedAt": "2026-08-10T08:36:49.850000Z",
       "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msdrunf6ss27",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msn5anm5vk2t",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "Conjunctions And The Word\nStonehenge,\nWiltshire, England. \n16th July 2020\n\n#TheWordOfGod #TheGeometricWord\n#CropCircles #Logos #SpecialRevelation #England #Heritage #Culture #Taboo \n\ntemporarytemples.co.uk/project/ston...",
-      "postedAt": "2026-08-05T14:55:09.918000Z",
+      "text": "The Passage Tomb.\nWest Kennet Long Barrow,\nWiltshire, England.\n28th June 2007\n\n#Logos #SpecialRevelation \n#CropCircles #England\n#TheNewJerusalem \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-08-09T08:12:41.602000Z",
       "likes": 1
     },
     {

@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-08-09T21:45:45-07:00",
+  lastScan: "2026-08-10T07:02:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -203,7 +203,11 @@ window.STORIES = [
     tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://temporarytemples.co.uk/project/etchilhampton-2-2026",
     sourceName: "Temporary Temples",
-    youtubeId: "6XH_1dCBFQM"
+    youtubeId: "6XH_1dCBFQM",
+    references: [
+      { label: "Temporary Temples — Etchilhampton (2)", url: "https://temporarytemples.co.uk/project/etchilhampton-2-2026" },
+      { label: "Crop Circle Connector — Etchilhampton Hill", url: "https://www.cropcircleconnector.com/2026/lion/lion2026a.html" }
+    ]
   },
   {
     id: "2026-07-03-alfreds-castle",
