@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-10T14:11:20Z",
+  "fetchedAt": "2026-08-13T14:31:10Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mspp2qa2ik2d",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msxlihlfbk2i",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Cube and the Quickening\nAvebury, Wiltshire, England.\n22nd April 2017\n\n#CropCircles #TheWordOfGod\n#Logos #SpecialRevelation \n#England #SacredSites #HolyGround\n\nwww.cropcircleconnector.com/2017/wadenhi...",
-      "postedAt": "2026-08-10T08:36:49.850000Z",
-      "likes": 1
+      "text": "The Network\nPatney, Wiltshire, England\n8th August 2020\n\n#CropCircles #Logos\n#TheLivingWord\n#SpecialRevelation\n\ntemporarytemples.co.uk/project/patn...",
+      "postedAt": "2026-08-13T11:54:13.491000Z",
+      "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msn5anm5vk2t",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msvdva52zc2c",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Passage Tomb.\nWest Kennet Long Barrow,\nWiltshire, England.\n28th June 2007\n\n#Logos #SpecialRevelation \n#CropCircles #England\n#TheNewJerusalem \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-08-09T08:12:41.602000Z",
+      "text": "Orbital Designs\nEast Kennett, Wiltshire,\nEngland, 8th of July 2008\n\n#CropCircles #Logos \n#Space #Earth 🌍 #Moon 🌙\n#Sun ☀️ #Eclipses\n#GeneralRevelation\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-08-12T14:32:52.480000Z",
       "likes": 1
     },
     {
@@ -44,15 +44,6 @@ window.SOCIAL_FEED = {
       "text": "nobody drinks problematically because of alien crop circles anymore",
       "postedAt": "2026-08-03T04:40:32.672000Z",
       "likes": 76
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/peachiikimaf.bsky.social/post/3ms276tldc22h",
-      "author": "peachiiKim",
-      "handle": "@peachiikimaf.bsky.social",
-      "text": "Did the aliens Crop Pixel the 8647 instead of crop circles?",
-      "postedAt": "2026-08-01T19:26:53.217000Z",
-      "likes": 17
     },
     {
       "platform": "bluesky",
@@ -89,6 +80,15 @@ window.SOCIAL_FEED = {
       "text": "Crop circles, absolutely alien crop circles 😂😂",
       "postedAt": "2026-06-11T22:17:04.015000Z",
       "likes": 13
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/galeriadometeorito.bsky.social/post/3mmpmo46vfc2i",
+      "author": "Galeria do Meteorito",
+      "handle": "@galeriadometeorito.bsky.social",
+      "text": "🚨Ela filmou um fenômeno BIZARRO acontecendo em um novo desenho de plantação! O vídeo acaba de sair: youtu.be/28BsEk132uU\n\n#UFO #CropCircle #UAP #analise",
+      "postedAt": "2026-05-25T23:22:48.933000Z",
+      "likes": 2
     }
   ]
 };
