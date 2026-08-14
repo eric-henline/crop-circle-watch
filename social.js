@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-13T14:31:10Z",
+  "fetchedAt": "2026-08-14T14:00:10Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msxlihlfbk2i",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msy36zhvps2c",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Network\nPatney, Wiltshire, England\n8th August 2020\n\n#CropCircles #Logos\n#TheLivingWord\n#SpecialRevelation\n\ntemporarytemples.co.uk/project/patn...",
-      "postedAt": "2026-08-13T11:54:13.491000Z",
-      "likes": 0
+      "text": "@whitehouse-47.bsky.social\n@deptofwar.bsky.social\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #Parousia #Jesus\n#TheNewJerusalem #TheNewEarth\n\ntemporarytemples…",
+      "postedAt": "2026-08-13T16:35:16.573000Z",
+      "likes": 2
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msvdva52zc2c",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msxllprgq22i",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "Orbital Designs\nEast Kennett, Wiltshire,\nEngland, 8th of July 2008\n\n#CropCircles #Logos \n#Space #Earth 🌍 #Moon 🌙\n#Sun ☀️ #Eclipses\n#GeneralRevelation\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-08-12T14:32:52.480000Z",
+      "text": "The Network\nPatney, Wiltshire, England\n8th August 2020\n\nI want to say; Not the connectors,\nnot the connections……but the matrix\nmade up by the connections.\n\n#Brain #Mind #Consciousness\n\n#CropCircles #Logos\n#TheLivingWord\n#SpecialRevelation\n\ntemporarytemples.co.uk/project/patn...",
+      "postedAt": "2026-08-13T11:56:02.743000Z",
       "likes": 1
     },
     {
