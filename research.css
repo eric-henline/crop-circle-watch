@@ -292,6 +292,159 @@
 .r-grid line{ stroke:var(--chart-grid); stroke-width:1; }
 .r-axis line, .r-axis path{ stroke:var(--chart-axis); stroke-width:1; }
 
+/* Map typography. Place labels sit ON the map rather than beside it, so they
+   need to survive being drawn over a coastline, a county fill and the odd
+   formation symbol — hence the halo, painted underneath the glyphs via
+   paint-order so it thickens the outside of the letterform only. Their fill is
+   set inline per landmark kind (a presentation attribute would lose to the
+   `.r-chart text` rule above). */
+.r-chart .r-map-label{
+  font-size:8.6px;
+  letter-spacing:0.02em;
+  pointer-events:none;
+}
+/* Painted underneath the glyphs, so it thickens the outside of the letterform
+   only and the text stays its true weight. */
+.r-chart .r-map-label, .r-chart .r-halo{
+  stroke:var(--panel);
+  stroke-width:2.4px;
+  paint-order:stroke fill;
+}
+.r-chart .r-map-key{ font-size:10px; fill:var(--text-1); }
+
+/* Zoom + time controls under the Wiltshire map. */
+.r-map-block{ margin-top:var(--s-2); }
+
+/* At rest the page keeps one-finger scrolling, so the map never traps a reader
+   swiping past a 660px-tall card. `pan-y` already excludes pinch, so a
+   two-finger gesture reaches our handler either way. Once zoomed the map takes
+   the whole gesture set, because now there is somewhere to pan to. */
+.r-map-zoomable{ touch-action:pan-y; }
+.r-map-zoomable.is-locked{ touch-action:none; }
+/* The grab cursor is set per-pointer-position in JS (the side column is not
+   draggable); this only has to cover the active drag. `user-select` matters as
+   much as the cursor — without it a drag across the map selects every place
+   name it crosses and leaves them highlighted. */
+.r-map-zoomable.is-panning{ cursor:grabbing !important; user-select:none; }
+.r-map-zoomable:focus{ outline:none; }
+.r-map-zoomable:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+
+.r-zoom-bar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--s-3);
+  margin-top:var(--s-3);
+}
+.r-zoom-readout{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--text-2);
+  font-variant-numeric:tabular-nums;
+  /* Reserved so the hint text does not shuffle as the level changes. */
+  min-width:4ch;
+}
+.r-zoom-bar.is-zoomed .r-zoom-readout{ color:var(--accent); }
+.r-zoom-hint{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:0.04em;
+  color:var(--text-2);
+}
+/* The +/− buttons are single glyphs; the shared .r-seg-btn padding leaves them
+   looking cramped against "Reset". */
+.r-zoom-bar .r-seg-btn{ min-width:38px; }
+.r-map-controls{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--s-3);
+  margin-top:var(--s-3);
+}
+.r-seg{ display:flex; border:1px solid var(--border); border-radius:999px; overflow:hidden; }
+.r-seg-btn{
+  appearance:none;
+  border:0;
+  background:none;
+  cursor:pointer;
+  padding:6px 13px;
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:0.06em;
+  color:var(--text-2);
+}
+.r-seg-btn + .r-seg-btn{ border-left:1px solid var(--border); }
+.r-seg-btn:hover{ color:var(--accent); }
+.r-seg-btn[aria-pressed="true"]{ background:var(--accent); color:var(--bg-0); font-weight:600; }
+
+.r-slider{ display:flex; align-items:center; gap:var(--s-2); flex:1 1 300px; min-width:240px; }
+/* The slider stays in the layout when the mode is "all at once" — hiding it
+   would make the controls jump every time the mode changes. */
+.r-slider.is-off{ opacity:0.4; }
+
+.r-play{
+  appearance:none;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:none;
+  cursor:pointer;
+  padding:5px 14px;
+  min-width:64px;
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:0.06em;
+  color:var(--text-1);
+}
+.r-play:hover:not(:disabled){ color:var(--accent); border-color:var(--border-strong); }
+.r-play.is-playing{ color:var(--signal); border-color:var(--signal-dim); }
+.r-play:disabled, .r-range:disabled{ cursor:default; }
+
+.r-range{
+  appearance:none;
+  flex:1;
+  height:3px;
+  border-radius:999px;
+  background:var(--chart-axis);
+  outline-offset:4px;
+}
+.r-range::-webkit-slider-thumb{
+  appearance:none;
+  width:15px; height:15px;
+  border-radius:50%;
+  background:var(--accent);
+  border:0;
+  cursor:pointer;
+}
+.r-range::-moz-range-thumb{
+  width:15px; height:15px;
+  border-radius:50%;
+  background:var(--accent);
+  border:0;
+  cursor:pointer;
+}
+.r-year-readout{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--accent);
+  font-variant-numeric:tabular-nums;
+  /* Fixed width so the controls do not reflow as the year ticks past. */
+  min-width:4.5ch;
+  text-align:right;
+}
+.r-map-caption{
+  margin:var(--s-3) 0 0;
+  font-family:var(--font-body);
+  font-size:14px;
+  line-height:1.55;
+  color:var(--text-1);
+  /* Two lines' worth, reserved: the text changes length as the year moves and
+     an unreserved box shifts everything below it on every tick. */
+  min-height:2.6em;
+}
+
 /* Marks. Bars get 4px rounded data-ends; the baseline end stays square,
    which is what `rx` on a rect anchored to the axis effectively gives at
    these sizes. */
@@ -571,4 +724,22 @@
   .research{ padding-inline:var(--s-3); }
   .r-card{ padding:var(--s-4) var(--s-3); }
   .research-stamp{ gap:var(--s-4); }
+
+  /* The three mode buttons run ~300px at full size, which overflows a 320px
+     phone once card padding is taken out. Tighten them rather than letting the
+     pill scroll or the labels truncate. */
+  .r-seg{ flex-wrap:wrap; }
+  .r-seg-btn{ padding:6px 9px; font-size:10px; letter-spacing:0.03em; }
+  .r-slider{ flex-basis:100%; }
+}
+
+/* Season dial: month names ring the outside, so they need a little more size
+   than an axis tick and a halo to survive crossing the spokes. */
+.r-chart .r-month-label{
+  font-size:10.5px;
+  letter-spacing:0.03em;
+  fill:var(--text-1);
+  stroke:var(--panel);
+  stroke-width:2.6px;
+  paint-order:stroke fill;
 }

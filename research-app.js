@@ -55,6 +55,13 @@
 
   function catVar(i) { return 'var(--cat-' + ((i % 8) + 1) + ')'; }
 
+  // Read live rather than cached: the OS setting can change mid-session, and a
+  // reader who turns motion off should not have to reload to be believed.
+  function prefersReducedMotion() {
+    return !!(window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
   function fmt(n, digits) {
     if (n == null || isNaN(n)) return '—';
     var d = digits == null ? 0 : digits;
@@ -338,18 +345,14 @@
     return svg;
   }
 
-  // ------------------------------------------------------- chart: scatter
-  // Geographic point cloud in plain equirectangular projection, coloured by a
-  // magnitude (complexity) using the sequential ramp — one hue, light→dark.
-  //
-  // At world scale this chart is a lie of omission: roughly half the archive
-  // sits inside two degrees of latitude, so ~350 points render as ~40 visible
-  // dots and the reader cannot see the structure that matters. The fix is the
-  // standard cartographic one — a detail inset. The world panel keeps the
-  // international context; the inset re-plots the densest region at ~40x the
-  // area, where the same points separate. The inset extent is derived from the
-  // data (densest one-degree cell, grown and then tightened onto its contents),
-  // not hardcoded to a country, so it follows the archive if the archive moves.
+  // ------------------------------------------------- densest-region finder
+  // Roughly half the archive sits inside two degrees of latitude, so at world
+  // scale hundreds of formations collapse into a smudge four pixels across.
+  // The world map marks that knot with a callout rather than leaving the
+  // reader to discover that its most important feature is the one they cannot
+  // see. The box is derived from the data — densest one-degree cell, grown and
+  // then tightened onto its contents — not hardcoded to a country, so it
+  // follows the archive if the archive ever moves.
 
   function densestBox(points) {
     var cells = {}, best = null, k;
@@ -387,207 +390,1218 @@
     };
   }
 
-  function scatterGeo(points, opts) {
-    opts = opts || {};
-    var Hgt = 436, pad = 26, padB = 46, padLeft = 46;
-    var plotH = Hgt - pad - padB;
+  // ============================================================ maps
+  // The charts above answer "how much" and "how spread out". These answer
+  // "where, actually" — the same points, but drawn on real coastlines, real
+  // county lines and real monuments, because a dot cloud floating in an empty
+  // rectangle cannot tell you that the densest square mile of the archive sits
+  // between a neolithic henge and an iron-age hillfort. That adjacency is the
+  // single most suggestive thing in the geography, and only a map shows it.
+  //
+  // Outlines come from basemap.js, baked at build time from Natural Earth and
+  // ONS boundaries. No tile server and no mapping library: the site ships zero
+  // third-party JS and makes no runtime network calls, so the rings ARE the
+  // map. See that file's header for sources and licences.
 
-    var inset = densestBox(points);
-    // Without an inset the world panel takes the full width, exactly as before.
-    var gapX = 34;
-    var insetW = inset ? 236 : 0;
-    var worldW = W - padLeft - pad - (inset ? insetW + gapX : 0);
-    var insetX = padLeft + worldW + gapX;
+  var BM = window.BASEMAP || null;
+  var clipSeq = 0;
 
-    var lats = points.map(function (p) { return p.lat; });
-    var lons = points.map(function (p) { return p.lon; });
-    var minLat = Math.min.apply(null, lats), maxLat = Math.max.apply(null, lats);
-    var minLon = Math.min.apply(null, lons), maxLon = Math.max.apply(null, lons);
-    var spanLat = (maxLat - minLat) || 1, spanLon = (maxLon - minLon) || 1;
-
-    var svg = el('svg', {
-      'class': 'r-chart', viewBox: '0 0 ' + W + ' ' + Hgt,
-      role: 'img', 'aria-label': opts.ariaLabel || 'Geographic scatter plot'
-    });
-
-    var deg = function (v, axis, digits) {
-      var hemi = axis === 'lat' ? (v >= 0 ? 'N' : 'S') : (v >= 0 ? 'E' : 'W');
-      return Math.abs(v).toFixed(digits == null ? 0 : digits) + '°' + hemi;
+  // Equirectangular, standard parallel at the extent's mid-latitude: longitude
+  // is scaled by cos(lat) so a local map is not stretched sideways. At 51°N a
+  // degree of longitude is only ~0.62 of a degree of latitude on the ground,
+  // and an unscaled grid renders Wiltshire about 60% too wide — which would
+  // distort the very cluster shape these maps exist to show.
+  function projector(ext, boxW, boxH) {
+    var k = Math.cos(((ext.lat0 + ext.lat1) / 2) * Math.PI / 180);
+    var lonU = (ext.lon1 - ext.lon0) * k;
+    var latU = ext.lat1 - ext.lat0;
+    var scale = Math.min(boxW / lonU, boxH / latU);
+    var mapW = lonU * scale, mapH = latU * scale;
+    var ox = (boxW - mapW) / 2, oy = (boxH - mapH) / 2;
+    return {
+      ext: ext, w: mapW, h: mapH, x0: ox, y0: oy, scale: scale,
+      x: function (lon) { return ox + (lon - ext.lon0) * k * scale; },
+      y: function (lat) { return oy + (ext.lat1 - lat) * scale; },
+      // Inverses, so a zoomed map can turn its own pixel frame back into a
+      // geographic extent — which is what the locator rectangle and the ring
+      // culling both need.
+      lon: function (px) { return ext.lon0 + (px - ox) / (k * scale); },
+      lat: function (py) { return ext.lat1 - (py - oy) / scale; },
+      has: function (p) {
+        return p.lon >= ext.lon0 && p.lon <= ext.lon1 &&
+               p.lat >= ext.lat0 && p.lat <= ext.lat1;
+      }
     };
-    var seq = ['var(--seq-1)', 'var(--seq-2)', 'var(--seq-3)', 'var(--seq-4)', 'var(--seq-5)'];
+  }
 
-    function plotPoint(p, x, y, r, label, value) {
-      var band = Math.min(4, Math.max(0, Math.round(((p.c || 1) - 1) / 9 * 4)));
-      // Half-transparent fill so a dense knot reads as density rather than one
-      // flat blob; the surface-coloured ring keeps points separable where they
-      // still overlap.
-      var dot = el('circle', {
-        cx: x.toFixed(1), cy: y.toFixed(1), r: r.toFixed(2),
-        fill: seq[band], 'fill-opacity': '0.7',
-        stroke: 'var(--chart-surface)', 'stroke-width': '0.75'
-      });
-      svg.appendChild(dot);
-      hoverable(dot, label || p.name,
-        value || ('complexity ' + p.c + ' · ' + p.lat.toFixed(2) + ', ' + p.lon.toFixed(2)));
+  // Bounding box per ring, cached on the array itself. Culling matters: the
+  // Wiltshire map would otherwise walk all 1,714 world points to draw nothing.
+  function ringBox(r) {
+    if (!r._bb) {
+      var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      for (var i = 0; i < r.length; i++) {
+        if (r[i][0] < x0) x0 = r[i][0];
+        if (r[i][0] > x1) x1 = r[i][0];
+        if (r[i][1] < y0) y0 = r[i][1];
+        if (r[i][1] > y1) y1 = r[i][1];
+      }
+      r._bb = [x0, y0, x1, y1];
+    }
+    return r._bb;
+  }
+
+  // All rings as ONE path. Ninety separate <path> nodes for the world costs
+  // nothing in fidelity and a great deal in layout time.
+  function ringsPath(rings, P) {
+    var e = P.ext, d = [];
+    for (var i = 0; i < rings.length; i++) {
+      var b = ringBox(rings[i]);
+      if (b[2] < e.lon0 || b[0] > e.lon1 || b[3] < e.lat0 || b[1] > e.lat1) continue;
+      var r = rings[i], seg = [];
+      for (var j = 0; j < r.length; j++) {
+        seg.push((j ? 'L' : 'M') + P.x(r[j][0]).toFixed(1) + ' ' + P.y(r[j][1]).toFixed(1));
+      }
+      d.push(seg.join('') + 'Z');
+    }
+    return d.join('');
+  }
+
+  // Records sharing a coordinate to ~100 m are one position, not many. A large
+  // minority of the archive carries a village- or site-level fix rather than a
+  // surveyed one, so 150 records can sit on 90 distinct positions and no amount
+  // of magnification separates them. Both maps therefore plot GROUPS and size
+  // the symbol by how many records share the spot, which stops the map
+  // implying locations the dataset does not have.
+  function groupByCoord(pts) {
+    var seen = {}, out = [];
+    pts.forEach(function (p) {
+      var k = p.lat.toFixed(3) + ',' + p.lon.toFixed(3);
+      if (!seen[k]) {
+        seen[k] = { lat: p.lat, lon: p.lon, items: [], rep: p };
+        out.push(seen[k]);
+      }
+      seen[k].items.push(p);
+      // Let the highest complexity in the group carry its colour, rather than
+      // whichever record happened to come first in the file.
+      if ((p.c || 0) > (seen[k].rep.c || 0)) seen[k].rep = p;
+    });
+    return out;
+  }
+
+  var SEQ = ['var(--seq-1)', 'var(--seq-2)', 'var(--seq-3)', 'var(--seq-4)', 'var(--seq-5)'];
+  function seqBand(c) {
+    return Math.min(4, Math.max(0, Math.round((((c || 1) - 1) / 9) * 4)));
+  }
+  function groupRadius(n, base) {
+    // Area proportional to count — the only sizing that does not mislead the
+    // eye — hence the square root on the radius.
+    return Math.min(base * 3.4, base * Math.sqrt(n));
+  }
+
+  function degLabel(v, axis, digits) {
+    var hemi = axis === 'lat' ? (v >= 0 ? 'N' : 'S') : (v >= 0 ? 'E' : 'W');
+    return Math.abs(v).toFixed(digits == null ? 0 : digits) + '°' + hemi;
+  }
+
+  function groupTip(grp) {
+    if (grp.items.length === 1) {
+      var p = grp.items[0];
+      return [p.name, 'complexity ' + p.c + (p.y ? ' · ' + p.y : '') +
+        ' · ' + p.lat.toFixed(3) + ', ' + p.lon.toFixed(3)];
+    }
+    var names = grp.items.slice(0, 4).map(function (q) { return q.name; }).join(' · ');
+    return [grp.items.length + ' formations · ' + grp.lat.toFixed(3) + ', ' + grp.lon.toFixed(3),
+      names + (grp.items.length > 4 ? ' · +' + (grp.items.length - 4) + ' more' : '')];
+  }
+
+  // Draws land + a graticule into `g`, and returns the clip id the caller
+  // should hang plotted marks under so nothing escapes the map frame.
+  function drawBase(g, P, rings, opts) {
+    opts = opts || {};
+    var id = 'rmapclip' + (++clipSeq);
+    var cp = el('clipPath', { id: id });
+    cp.appendChild(el('rect', {
+      x: P.x0.toFixed(1), y: P.y0.toFixed(1),
+      width: P.w.toFixed(1), height: P.h.toFixed(1)
+    }));
+    g.appendChild(cp);
+
+    // Sea/ground plate. Without it the land outline reads as an abstract
+    // squiggle rather than a coast with water on the other side.
+    g.appendChild(el('rect', {
+      x: P.x0.toFixed(1), y: P.y0.toFixed(1),
+      width: P.w.toFixed(1), height: P.h.toFixed(1),
+      fill: opts.sea || 'rgba(120,255,200,0.025)',
+      stroke: 'var(--chart-axis)', 'stroke-width': '1'
+    }));
+
+    var clipped = el('g', { 'clip-path': 'url(#' + id + ')' });
+    g.appendChild(clipped);
+
+    if (opts.graticule) {
+      var grat = el('g', { 'class': 'r-grid' }), t;
+      for (t = Math.ceil(P.ext.lon0 / opts.graticule) * opts.graticule; t <= P.ext.lon1; t += opts.graticule) {
+        clipped.appendChild(el('line', {
+          x1: P.x(t).toFixed(1), y1: P.y0, x2: P.x(t).toFixed(1), y2: P.y0 + P.h
+        }));
+      }
+      for (t = Math.ceil(P.ext.lat0 / opts.graticule) * opts.graticule; t <= P.ext.lat1; t += opts.graticule) {
+        clipped.appendChild(el('line', {
+          x1: P.x0, y1: P.y(t).toFixed(1), x2: P.x0 + P.w, y2: P.y(t).toFixed(1)
+        }));
+      }
+      clipped.appendChild(grat);
     }
 
-    // Records sharing a coordinate to ~100 m are one position, not many.
-    function groupByCoord(pts) {
-      var seen = {}, out = [];
-      pts.forEach(function (p) {
-        var k = p.lat.toFixed(3) + ',' + p.lon.toFixed(3);
-        if (!seen[k]) {
-          seen[k] = { lat: p.lat, lon: p.lon, items: [], rep: p };
-          out.push(seen[k]);
-        }
-        seen[k].items.push(p);
-        // The representative carries the group's colour, so let the highest
-        // complexity in the group speak for it rather than whichever record
-        // happened to be first in the file.
-        if ((p.c || 0) > (seen[k].rep.c || 0)) seen[k].rep = p;
+    var paths = (rings || []).map(function (layer) {
+      var node = el('path', {
+        d: ringsPath(layer.rings, P), 'fill-rule': 'evenodd',
+        fill: layer.fill || 'none', stroke: layer.stroke || 'none',
+        'stroke-width': layer.width == null ? 1 : layer.width,
+        'stroke-opacity': layer.strokeOpacity == null ? 1 : layer.strokeOpacity,
+        'stroke-linejoin': 'round',
+        // Keeps coastlines and county lines hairline-crisp at every zoom
+        // instead of thickening with the geometry.
+        'vector-effect': 'non-scaling-stroke'
       });
+      clipped.appendChild(node);
+      return { node: node, rings: layer.rings };
+    });
+
+    return { clipped: clipped, paths: paths };
+  }
+
+  // ---------------------------------------------------------- world map
+  // Global context. Antarctica is cut at 56°S: the archive holds nothing below
+  // 45°S, and keeping the ice sheet would spend a quarter of the panel's height
+  // on empty white.
+
+  function worldMap(points) {
+    var Hgt = 400, pad = 24, padB = 34;
+    var P = projector({ lon0: -180, lat0: -58, lon1: 180, lat1: 84 },
+      W - pad * 2, Hgt - pad - padB);
+    var svg = el('svg', {
+      'class': 'r-chart', viewBox: '0 0 ' + W + ' ' + Hgt,
+      role: 'img',
+      'aria-label': 'World map of all ' + points.length + ' geolocated formations'
+    });
+    var g = el('g', { transform: 'translate(' + pad + ',' + pad + ')' });
+    svg.appendChild(g);
+
+    var clipped = drawBase(g, P, BM ? [{
+      rings: BM.world, fill: 'rgba(169,186,200,0.11)',
+      stroke: 'var(--chart-axis)', width: 0.6
+    }] : [], { graticule: 30 }).clipped;
+
+    var groups = groupByCoord(points);
+    groups.sort(function (a, b) { return b.items.length - a.items.length; });
+    groups.forEach(function (grp) {
+      var tipText = groupTip(grp);
+      var dot = el('circle', {
+        cx: P.x(grp.lon).toFixed(1), cy: P.y(grp.lat).toFixed(1),
+        r: groupRadius(grp.items.length, 2.6).toFixed(2),
+        fill: SEQ[seqBand(grp.rep.c)], 'fill-opacity': '0.78',
+        stroke: 'var(--chart-surface)', 'stroke-width': '0.6'
+      });
+      clipped.appendChild(dot);
+      hoverable(dot, tipText[0], tipText[1]);
+    });
+
+    // Callout on the knot. Half the archive sits inside about two degrees of
+    // latitude in southern England; at world scale that is four pixels, and
+    // without a marked box the reader has no way to know the map's most
+    // important feature is the one they cannot see.
+    var box = densestBox(points);
+    if (box) {
+      var bx = P.x(box.lon0), by = P.y(box.lat1);
+      var bw = Math.max(P.x(box.lon1) - bx, 11), bh = Math.max(P.y(box.lat0) - by, 11);
+      bx -= (bw - (P.x(box.lon1) - P.x(box.lon0))) / 2;
+      by -= (bh - (P.y(box.lat0) - P.y(box.lat1))) / 2;
+      clipped.appendChild(el('rect', {
+        x: bx.toFixed(1), y: by.toFixed(1), width: bw.toFixed(1), height: bh.toFixed(1),
+        fill: 'none', stroke: 'var(--signal)', 'stroke-width': '1.25'
+      }));
+      clipped.appendChild(el('line', {
+        x1: (bx + bw).toFixed(1), y1: by.toFixed(1),
+        x2: (bx + bw + 42).toFixed(1), y2: (by - 26).toFixed(1),
+        stroke: 'var(--signal)', 'stroke-width': '1', 'stroke-opacity': '0.55'
+      }));
+      var lbl = el('text', {
+        x: (bx + bw + 46).toFixed(1), y: (by - 28).toFixed(1),
+        'class': 'r-axis-label r-halo'
+      }, box.n + ' formations');
+      lbl.style.fill = 'var(--signal)';
+      clipped.appendChild(lbl);
+      clipped.appendChild(el('text', {
+        x: (bx + bw + 46).toFixed(1), y: (by - 17).toFixed(1), 'class': 'r-axis-label r-halo'
+      }, 'southern England'));
+    }
+
+    g.appendChild(el('text', {
+      x: 0, y: P.y0 + P.h + 22, 'class': 'r-axis-label'
+    }, 'Equirectangular · graticule every 30° · ' + points.length +
+       ' geolocated formations at ' + groups.length + ' distinct coordinates'));
+
+    return svg;
+  }
+
+  // ------------------------------------------------------- wiltshire map
+  // The detail map, and the one that earns the section. Formations, the county
+  // line, and every monument, hill figure and town that gives the dots a
+  // meaning — plotted at a scale where a formation and the barrow it sits
+  // beside are visibly separate things.
+
+  var LM_STYLE = {
+    monument: { color: 'var(--cat-2)', sym: 'diamond', pri: 2 },
+    horse:    { color: 'var(--cat-6)', sym: 'tri',     pri: 3 },
+    hill:     { color: 'var(--cat-5)', sym: 'caret',   pri: 4 },
+    town:     { color: 'var(--text-2)', sym: 'square', pri: 1 }
+  };
+  // Labelled by name however crowded the map gets — these are the anchors a
+  // reader orients by, and the ones the archive's own notes keep naming.
+  var LM_ALWAYS = {
+    'Stonehenge': 1, 'Avebury henge': 1, 'Silbury Hill': 1, 'Barbury Castle': 1,
+    'West Kennet Long Barrow': 1, 'Old Sarum': 1, 'Uffington White Horse': 1,
+    'Alton Barnes horse': 1, 'Milk Hill': 1,
+    'Salisbury': 1, 'Marlborough': 1, 'Devizes': 1, 'Swindon': 1, 'Pewsey': 1
+  };
+
+  function landmarkSymbol(kind, x, y) {
+    // Callers pass either numbers or the output of toFixed; coerce, or the
+    // offsets below silently become string concatenation and every glyph
+    // renders as an invalid path.
+    x = Number(x); y = Number(y);
+    var st = LM_STYLE[kind] || LM_STYLE.town;
+    var a = { fill: 'none', stroke: st.color, 'stroke-width': '1.1' };
+    if (st.sym === 'diamond') {
+      a.d = 'M' + x + ' ' + (y - 3.6) + 'L' + (x + 3.6) + ' ' + y +
+            'L' + x + ' ' + (y + 3.6) + 'L' + (x - 3.6) + ' ' + y + 'Z';
+      return el('path', a);
+    }
+    if (st.sym === 'tri') {
+      a.d = 'M' + x + ' ' + (y - 3.9) + 'L' + (x + 3.5) + ' ' + (y + 2.6) +
+            'L' + (x - 3.5) + ' ' + (y + 2.6) + 'Z';
+      return el('path', a);
+    }
+    if (st.sym === 'caret') {
+      a.d = 'M' + (x - 4) + ' ' + (y + 2.4) + 'L' + x + ' ' + (y - 3.2) +
+            'L' + (x + 4) + ' ' + (y + 2.4);
+      a['stroke-linejoin'] = 'round';
+      return el('path', a);
+    }
+    a.x = x - 2.7; a.y = y - 2.7; a.width = 5.4; a.height = 5.4;
+    return el('rect', a);
+  }
+
+  // Greedy label placement. Forty landmarks in a panel this size will overlap
+  // no matter how they are drawn, so labels go down in priority order, each
+  // taking the first free slot.
+  //
+  // The obstacle set is seeded with the formation symbols BEFORE any label is
+  // placed, and with the all-time symbol layout rather than whatever the time
+  // filter is currently showing. Both matter: a label sitting on top of the
+  // Avebury knot is exactly the label a reader most wants, and if placement
+  // followed the filter, every label on the map would jump each time the year
+  // ticked over.
+  //
+  // A landmark that finds no slot nearby falls into one of two outcomes. The
+  // anchors a reader orients by (`lead: true`) get pushed outward on a leader
+  // line until they fit — losing "Avebury henge" to a crowded neighbourhood
+  // would gut the map. Everything else is simply dropped: its symbol stays and
+  // hovering still names it. A dropped low-priority label is the honest
+  // failure mode; overlapping text that cannot be read is not.
+  function placeLabels(items, bounds, obstacles) {
+    var placed = (obstacles || []).slice();
+    // Clockwise from "right of the symbol": the first slot that fits wins.
+    var slots = [[7, 3.2, 'start'], [-7, 3.2, 'end'], [0, -6.5, 'middle'], [0, 11, 'middle']];
+    // Ring offsets for the leader-line fallback, near to far.
+    var RINGS = [17, 26, 36, 48], ANGLES = [0, -35, 35, -70, 70, 180, -145, 145, -110, 110];
+
+    function hits(b) {
+      if (b.x0 < bounds.x0 || b.x1 > bounds.x1 || b.y0 < bounds.y0 || b.y1 > bounds.y1) return true;
+      for (var i = 0; i < placed.length; i++) {
+        var o = placed[i];
+        if (!(b.x1 < o.x0 || b.x0 > o.x1 || b.y1 < o.y0 || b.y0 > o.y1)) return true;
+      }
+      return false;
+    }
+    function boxFor(lx, ly, tw, anchor) {
+      var x0 = anchor === 'start' ? lx : anchor === 'end' ? lx - tw : lx - tw / 2;
+      return { x0: x0 - 1.5, x1: x0 + tw + 1.5, y0: ly - 9, y1: ly + 2.5 };
+    }
+
+    var out = [];
+    items.forEach(function (it) {
+      // Fragment Mono at 8.6px runs ~5.05px per character.
+      var tw = it.text.length * 5.05, s, b;
+
+      for (s = 0; s < slots.length; s++) {
+        var lx = it.x + slots[s][0], ly = it.y + slots[s][1];
+        b = boxFor(lx, ly, tw, slots[s][2]);
+        if (!hits(b)) {
+          placed.push(b);
+          out.push({ x: lx, y: ly, anchor: slots[s][2], text: it.text, color: it.color, item: it });
+          return;
+        }
+      }
+
+      if (it.lead) {
+        for (var r = 0; r < RINGS.length; r++) {
+          for (var a = 0; a < ANGLES.length; a++) {
+            var rad = ANGLES[a] * Math.PI / 180;
+            var px = it.x + Math.cos(rad) * RINGS[r];
+            var py = it.y + Math.sin(rad) * RINGS[r];
+            var anchor = Math.cos(rad) < -0.3 ? 'end' : Math.cos(rad) > 0.3 ? 'start' : 'middle';
+            var gap = anchor === 'end' ? -4 : anchor === 'start' ? 4 : 0;
+            b = boxFor(px + gap, py + 3, tw, anchor);
+            if (!hits(b)) {
+              placed.push(b);
+              out.push({
+                x: px + gap, y: py + 3, anchor: anchor, text: it.text, color: it.color,
+                item: it, leader: [it.x, it.y, px, py]
+              });
+              return;
+            }
+          }
+        }
+      }
+
+      // Nowhere to go: symbol only. Reserve its footprint so a later label
+      // does not land on top of it.
+      placed.push({ x0: it.x - 4, x1: it.x + 4, y0: it.y - 4, y1: it.y + 4 });
+    });
+    return out;
+  }
+
+  // The detail map is zoomable, which changes how it has to be built. A static
+  // chart can draw once and forget; this one keeps every layer addressable and
+  // repaints them against a live transform.
+  //
+  // The transform is the standard one (d3-zoom's model, implemented directly):
+  // a scale k about a screen anchor, plus a translation, clamped so the county
+  // can never be dragged off its own frame. Screen position is
+  // `base * k + t` — base being the fixed equirectangular projection.
+  //
+  // Formation symbols scale as sqrt(k) rather than k. Scaling them by k would
+  // be geometrically "correct" for marks glued to the ground, but these mark
+  // RECORD COUNTS, not footprints — and under a linear scale the cluster looks
+  // identical at every zoom, since gaps and symbols grow together. The square
+  // root keeps them visibly tied to the map while letting a zoom actually
+  // resolve the Avebury knot, which is the entire reason to offer one.
+  var MAX_K = 8;
+  var DOT_BASE = 4.2;
+
+  function wiltshireMap(allPoints) {
+    var Hgt = 660, pad = 22;
+    var mapBoxW = 512, sideX = 548, sideW = W - sideX - pad;
+
+    // Frame on the county itself, with enough margin that a formation just
+    // over the line is not clipped off the edge of its own story.
+    var wb = [Infinity, Infinity, -Infinity, -Infinity];
+    (BM ? BM.wiltshire : []).forEach(function (r) {
+      var b = ringBox(r);
+      wb[0] = Math.min(wb[0], b[0]); wb[1] = Math.min(wb[1], b[1]);
+      wb[2] = Math.max(wb[2], b[2]); wb[3] = Math.max(wb[3], b[3]);
+    });
+    var ext = isFinite(wb[0])
+      ? { lon0: wb[0] - 0.09, lat0: wb[1] - 0.05, lon1: wb[2] + 0.09, lat1: wb[3] + 0.09 }
+      : { lon0: -2.5, lat0: 50.9, lon1: -1.4, lat1: 51.8 };
+
+    var P = projector(ext, mapBoxW, Hgt - pad * 2 - 26);
+    var inView = allPoints.filter(P.has);
+
+    var view = { k: 1, tx: 0, ty: 0 };
+    var filter = null;
+
+    // A projector-shaped view of the current transform. ringsPath only reads
+    // `.ext`, `.x` and `.y`, so it culls and draws against the zoomed frame
+    // with no changes of its own.
+    // Set by the interaction block below; paint() re-creates the dots every
+    // frame, so it reads the handler rather than owning it.
+    var onDotClick = null;
+
+    var V = {
+      ext: null,
+      x: function (lon) { return P.x(lon) * view.k + view.tx; },
+      y: function (lat) { return P.y(lat) * view.k + view.ty; }
+    };
+
+    // Pure: takes a candidate transform and returns the legal one nearest to it.
+    // Kept separate from the live view so the zoom tween can test a frame's
+    // worth of arithmetic without committing to it.
+    function clampTo(k, tx, ty) {
+      k = Math.max(1, Math.min(MAX_K, k));
+      // The map plate must always cover the frame — no dragging the county
+      // into a corner and leaving two thirds of the panel empty.
+      var tx0 = (P.x0 + P.w) * (1 - k), tx1 = P.x0 * (1 - k);
+      var ty0 = (P.y0 + P.h) * (1 - k), ty1 = P.y0 * (1 - k);
+      return {
+        k: k,
+        tx: Math.max(tx0, Math.min(tx1, tx)),
+        ty: Math.max(ty0, Math.min(ty1, ty))
+      };
+    }
+
+    // The visible geographic window, derived fresh from `view`. paint() calls
+    // this first so there is exactly ONE place that turns the transform into
+    // geography — ring culling, the extent readout and the locator rectangle
+    // all read it. It used to hang off the clamp helper, which meant any code
+    // path that clamped a candidate without committing it left this stale.
+    function syncExtent() {
+      V.ext = {
+        lon0: P.lon((P.x0 - view.tx) / view.k),
+        lon1: P.lon((P.x0 + P.w - view.tx) / view.k),
+        lat1: P.lat((P.y0 - view.ty) / view.k),
+        lat0: P.lat((P.y0 + P.h - view.ty) / view.k)
+      };
+    }
+    syncExtent();
+
+    var svg = el('svg', {
+      'class': 'r-chart r-map-zoomable', viewBox: '0 0 ' + W + ' ' + Hgt,
+      role: 'img',
+      'aria-label': 'Zoomable map of Wiltshire showing formation locations against ' +
+        'ancient monuments, hill figures and towns'
+    });
+    var g = el('g', { transform: 'translate(' + pad + ',' + pad + ')' });
+    svg.appendChild(g);
+
+    var base = drawBase(g, P, BM ? [
+      { rings: BM.context, fill: 'rgba(169,186,200,0.05)',
+        stroke: 'var(--chart-grid)', width: 0.8 },
+      { rings: BM.wiltshire, fill: 'rgba(120,255,200,0.045)',
+        stroke: 'var(--border-strong)', width: 1.5 }
+    ] : [], { sea: 'transparent' });
+    var clipped = base.clipped;
+
+    // Layer order matters. Landmark SYMBOLS sit under the formations — they are
+    // the context, not the point. Landmark LABELS sit over everything, because
+    // a haloed word covering nothing (the placer routed it around every symbol)
+    // beats a word half-hidden under a dot.
+    var lmLayer = el('g', null);          // landmark symbols
+    var dotLayer = el('g', null);         // formations
+    var labelLayer = el('g', null);       // place names, on top
+    clipped.appendChild(lmLayer);
+    clipped.appendChild(dotLayer);
+    clipped.appendChild(labelLayer);
+
+    // ---- label placement, solved ONCE at 1x and then carried
+    // Re-running the greedy placer on every frame would make labels flick
+    // between sides as the map moves. Instead each landmark keeps the offset it
+    // won at the default view and is drawn at that offset from wherever it now
+    // sits. Zooming in thins the crowd anyway, so the base solution only ever
+    // gets more comfortable.
+    var marks = (BM ? BM.landmarks : []).filter(function (m) {
+      return P.has({ lat: m[2], lon: m[3] });
+    }).map(function (m) {
+      return { name: m[0], kind: m[1], lat: m[2], lon: m[3],
+               st: LM_STYLE[m[1]] || LM_STYLE.town };
+    });
+
+    var dotObstacles = groupByCoord(inView).map(function (grp) {
+      var x = P.x(grp.lon), y = P.y(grp.lat), r = groupRadius(grp.items.length, DOT_BASE) + 1.5;
+      return { x0: x - r, x1: x + r, y0: y - r, y1: y + r };
+    });
+
+    var labelItems = marks.map(function (m) {
+      return {
+        x: P.x(m.lon), y: P.y(m.lat), text: m.name, color: m.st.color,
+        lead: !!LM_ALWAYS[m.name], mark: m,
+        pri: (LM_ALWAYS[m.name] ? 0 : 1) * 10 + m.st.pri
+      };
+    }).sort(function (a, b) { return a.pri - b.pri; });
+
+    placeLabels(labelItems, {
+      x0: P.x0 + 2, y0: P.y0 + 2, x1: P.x0 + P.w - 2, y1: P.y0 + P.h - 2
+    }, dotObstacles).forEach(function (l) {
+      var bx = P.x(l.item.mark.lon), by = P.y(l.item.mark.lat);
+      l.item.mark.label = {
+        dx: l.x - bx, dy: l.y - by, anchor: l.anchor,
+        leader: l.leader ? [l.leader[2] - bx, l.leader[3] - by] : null
+      };
+    });
+
+    var countText = el('text', {
+      x: P.x0 + 8, y: P.y0 + P.h - 10, 'class': 'r-axis-label r-halo'
+    }, '');
+    countText.style.fill = 'var(--accent)';
+    clipped.appendChild(countText);
+
+    // ---- side column: locator, keys, scale
+    var side = el('g', { transform: 'translate(' + sideX + ',' + pad + ')' });
+    svg.appendChild(side);
+    var sy = 0;
+    var locRect = null, LP = null;
+
+    // Britain locator. "Wiltshire" means nothing to a reader who does not
+    // already know Britain; this is the two seconds of orientation that makes
+    // the rest of the panel legible. The marker is a rectangle rather than a
+    // ring because it is showing an EXTENT, and once the main map can zoom that
+    // extent changes — a fixed circle would quietly start lying.
+    if (BM && BM.britain && BM.britain.length) {
+      side.appendChild(el('text', { x: 0, y: sy, 'class': 'r-axis-label' }, 'Where this is'));
+      sy += 8;
+      var locH = 152;
+      LP = projector({ lon0: -9.2, lat0: 49.8, lon1: 2.0, lat1: 59.6 }, sideW, locH);
+      var lg = el('g', { transform: 'translate(0,' + sy + ')' });
+      side.appendChild(lg);
+      var lclip = drawBase(lg, LP, [{
+        rings: BM.britain, fill: 'rgba(169,186,200,0.13)',
+        stroke: 'var(--chart-axis)', width: 0.5
+      }], {}).clipped;
+      locRect = el('rect', {
+        fill: 'rgba(255,180,84,0.18)', stroke: 'var(--signal)', 'stroke-width': '1.3'
+      });
+      lclip.appendChild(locRect);
+      sy += locH + 20;
+    }
+
+    function keyHead(text) {
+      side.appendChild(el('text', { x: 0, y: sy, 'class': 'r-axis-label' }, text));
+      sy += 14;
+    }
+
+    keyHead('Formations');
+    [[1, 'one record'], [4, '4 records'], [12, '12 records']].forEach(function (k) {
+      var r = groupRadius(k[0], DOT_BASE);
+      side.appendChild(el('circle', {
+        cx: 12, cy: sy + 1, r: r.toFixed(2),
+        fill: 'var(--seq-3)', 'fill-opacity': '0.62',
+        stroke: 'var(--seq-4)', 'stroke-width': '1'
+      }));
+      side.appendChild(el('text', { x: 30, y: sy + 4, 'class': 'r-map-key' }, k[1]));
+      sy += Math.max(17, r * 2 + 7);
+    });
+    // The key is drawn at 1x and stays there. What it is teaching is the
+    // encoding — area against record count — and that holds at every zoom even
+    // though the pixels do not.
+    // Two short lines rather than one long one: the side column is ~190px and
+    // this key sits at the far right, where an overrun is clipped rather than
+    // wrapped.
+    side.appendChild(el('text', { x: 0, y: sy + 6, 'class': 'r-map-key' },
+      'area ∝ records at that spot'));
+    side.appendChild(el('text', { x: 0, y: sy + 19, 'class': 'r-map-key' },
+      'key at 1× · grows with zoom'));
+    sy += 39;
+
+    keyHead('Landmarks');
+    [['monument', 'ancient monument'], ['horse', 'hill figure'],
+     ['hill', 'downland high point'], ['town', 'town']].forEach(function (k) {
+      side.appendChild(landmarkSymbol(k[0], 12, sy + 1));
+      side.appendChild(el('text', { x: 30, y: sy + 4, 'class': 'r-map-key' }, k[1]));
+      sy += 17;
+    });
+
+    // Scale bar. A map without one invites the reader to guess distances, and
+    // the guess that matters here — how close a formation is to a monument — is
+    // exactly the one the section makes a claim about. It has to be rebuilt on
+    // every zoom, or it becomes the most confidently wrong thing on the panel.
+    sy += 16;
+    var barY = sy;
+    var scaleGroup = el('g', null);
+    side.appendChild(scaleGroup);
+
+    var KM_PER_DEG = 111.32;
+    var BAR_LADDER = [1, 2, 5, 10, 20, 50];
+
+    function paintScale() {
+      while (scaleGroup.firstChild) scaleGroup.removeChild(scaleGroup.firstChild);
+      var pxPerKm = (P.h / (ext.lat1 - ext.lat0)) / KM_PER_DEG * view.k;
+      var km = BAR_LADDER.filter(function (v) { return v * pxPerKm <= sideW; }).pop() || BAR_LADDER[0];
+      var bar = km * pxPerKm;
+      scaleGroup.appendChild(el('line', {
+        x1: 0, y1: barY, x2: bar.toFixed(1), y2: barY,
+        stroke: 'var(--chart-axis)', 'stroke-width': '2'
+      }));
+      [0, bar].forEach(function (x) {
+        scaleGroup.appendChild(el('line', {
+          x1: x.toFixed(1), y1: barY - 3.5, x2: x.toFixed(1), y2: barY + 3.5,
+          stroke: 'var(--chart-axis)', 'stroke-width': '1.5'
+        }));
+      });
+      scaleGroup.appendChild(el('text', {
+        x: 0, y: barY + 15, 'class': 'r-map-key'
+      }, km + ' km' + (view.k > 1.01 ? '  ·  ' + fmt(view.k, 1) + '× zoom' : '')));
+    }
+
+    var footer = el('text', { x: 0, y: P.y0 + P.h + 20, 'class': 'r-axis-label' }, '');
+    g.appendChild(footer);
+
+    // ---------------------------------------------------------------- paint
+
+    function inFrame(x, y, m) {
+      m = m || 0;
+      return x >= P.x0 - m && x <= P.x0 + P.w + m && y >= P.y0 - m && y <= P.y0 + P.h + m;
+    }
+
+    function paint() {
+      syncExtent();
+      // Land first: the paths are reused, only their `d` changes.
+      base.paths.forEach(function (layer) {
+        layer.node.setAttribute('d', ringsPath(layer.rings, V));
+      });
+
+      // Landmarks and their labels. Both stay at constant screen size — that is
+      // how a real map behaves, where the terrain zooms and the symbology does
+      // not — and both are culled to the frame so an 8× view is not carrying
+      // forty offscreen nodes.
+      while (lmLayer.firstChild) lmLayer.removeChild(lmLayer.firstChild);
+      while (labelLayer.firstChild) labelLayer.removeChild(labelLayer.firstChild);
+      marks.forEach(function (m) {
+        var x = V.x(m.lon), y = V.y(m.lat);
+        if (!inFrame(x, y, 30)) return;
+        var sym = landmarkSymbol(m.kind, x.toFixed(1), y.toFixed(1));
+        sym.setAttribute('opacity', '0.85');
+        lmLayer.appendChild(sym);
+        var hit = el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: '8', fill: 'transparent' });
+        lmLayer.appendChild(hit);
+        hoverable(sym, m.name, m.kind + ' · ' + m.lat.toFixed(3) + ', ' + m.lon.toFixed(3), hit);
+
+        if (!m.label) return;
+        var lx = x + m.label.dx, ly = y + m.label.dy, anchor = m.label.anchor;
+        if (!inFrame(lx, ly)) return;
+
+        // The offset was chosen once at 1×, against a frame the landmark sat
+        // well inside. Zoom in and that same landmark can end up against an
+        // edge, where the offset throws its name off the plate and the clip
+        // path saws it in half ("…et Long Barrow"). Mirror the offset to the
+        // other side of the symbol when that happens, and drop the label only
+        // if neither side fits.
+        var tw = m.name.length * 5.05;
+        function span(px, a) {
+          return a === 'start' ? [px, px + tw]
+            : a === 'end' ? [px - tw, px]
+            : [px - tw / 2, px + tw / 2];
+        }
+        function fits(s) { return s[0] >= P.x0 + 2 && s[1] <= P.x0 + P.w - 2; }
+        if (!fits(span(lx, anchor))) {
+          var mx = x - m.label.dx;
+          var mAnchor = anchor === 'start' ? 'end' : anchor === 'end' ? 'start' : anchor;
+          if (!fits(span(mx, mAnchor))) return;
+          lx = mx; anchor = mAnchor;
+        }
+
+        if (m.label.leader) {
+          labelLayer.appendChild(el('line', {
+            x1: x.toFixed(1), y1: y.toFixed(1),
+            x2: (x + m.label.leader[0]).toFixed(1), y2: (y + m.label.leader[1]).toFixed(1),
+            stroke: m.st.color, 'stroke-width': '0.6', 'stroke-opacity': '0.6'
+          }));
+        }
+        var t = el('text', {
+          x: lx.toFixed(1), y: ly.toFixed(1), 'text-anchor': anchor,
+          'class': 'r-map-label'
+        }, m.name);
+        t.style.fill = m.st.color;
+        labelLayer.appendChild(t);
+      });
+
+      // Formations.
+      while (dotLayer.firstChild) dotLayer.removeChild(dotLayer.firstChild);
+      var pts = filter ? inView.filter(filter) : inView;
+      var groups = groupByCoord(pts);
+      groups.sort(function (a, b) { return b.items.length - a.items.length; });
+      var kScale = Math.sqrt(view.k), shownRecords = 0, shownGroups = 0;
+      groups.forEach(function (grp) {
+        var x = V.x(grp.lon), y = V.y(grp.lat);
+        var r = groupRadius(grp.items.length, DOT_BASE) * kScale;
+        if (!inFrame(x, y, r + 4)) return;
+        shownRecords += grp.items.length;
+        shownGroups++;
+        var tipText = groupTip(grp);
+        var dot = el('circle', {
+          cx: x.toFixed(1), cy: y.toFixed(1), r: r.toFixed(2),
+          fill: SEQ[seqBand(grp.rep.c)], 'fill-opacity': '0.62',
+          stroke: SEQ[Math.min(4, seqBand(grp.rep.c) + 1)], 'stroke-width': '1',
+          'vector-effect': 'non-scaling-stroke'
+        });
+        dot.style.cursor = 'pointer';
+        dot.addEventListener('click', function () {
+          if (onDotClick) onDotClick(grp);
+        });
+        dotLayer.appendChild(dot);
+        hoverable(dot, tipText[0], tipText[1]);
+      });
+
+      // Zoomed in, the reader can see perhaps thirty dots; a caption reading
+      // "142 formations" is then describing a map they are not looking at. Say
+      // what is actually on screen, and keep the total as the denominator.
+      countText.textContent = shownRecords === pts.length
+        ? fmt(pts.length) + ' formation' + (pts.length === 1 ? '' : 's') +
+          ' · ' + groups.length + ' distinct location' + (groups.length === 1 ? '' : 's')
+        : fmt(shownRecords) + ' of ' + fmt(pts.length) + ' formations in view · ' +
+          shownGroups + ' distinct location' + (shownGroups === 1 ? '' : 's');
+
+      if (locRect && LP) {
+        var rx = LP.x(V.ext.lon0), ry = LP.y(V.ext.lat1);
+        var rw = Math.max(LP.x(V.ext.lon1) - rx, 5), rh = Math.max(LP.y(V.ext.lat0) - ry, 5);
+        locRect.setAttribute('x', rx.toFixed(1));
+        locRect.setAttribute('y', ry.toFixed(1));
+        locRect.setAttribute('width', rw.toFixed(1));
+        locRect.setAttribute('height', rh.toFixed(1));
+      }
+
+      paintScale();
+      footer.textContent = 'Wiltshire · ' +
+        degLabel(V.ext.lat0, 'lat', 2) + '–' + degLabel(V.ext.lat1, 'lat', 2) + ' · ' +
+        degLabel(V.ext.lon0, 'lon', 2) + '–' + degLabel(V.ext.lon1, 'lon', 2) +
+        ' · county boundary in mint';
+      return pts.length;
+    }
+
+    // ------------------------------------------------------- interaction
+    // Five ways in, because no single one covers everybody: wheel/trackpad,
+    // drag, two-finger pinch, double-click, and the buttons. The buttons are
+    // the accessible path — every gesture below is a shortcut for something a
+    // keyboard user can also do.
+
+    var frame = null;
+    function schedule() {
+      // One repaint per animation frame however fast the wheel spins.
+      if (frame) return;
+      frame = requestAnimationFrame(function () { frame = null; paint(); });
+    }
+
+    // Client pixels -> the coordinate space inside `g`. The SVG scales to its
+    // container, so the ratio has to be measured rather than assumed. The rect
+    // is cached for the duration of a gesture: reading it per pointermove
+    // forces a synchronous layout on every frame of a drag.
+    var rectCache = null;
+    function localRect() {
+      return rectCache || svg.getBoundingClientRect();
+    }
+    function toLocal(evt) {
+      var r = localRect(), s = r.width / W;
+      return { x: (evt.clientX - r.left) / s - pad, y: (evt.clientY - r.top) / s - pad };
+    }
+    function overMap(pt) {
+      return pt.x >= P.x0 && pt.x <= P.x0 + P.w && pt.y >= P.y0 && pt.y <= P.y0 + P.h;
+    }
+
+    // Zoom about a fixed screen point: whatever is under the cursor stays under
+    // the cursor. Returns the clamped target rather than applying it, so the
+    // animated and immediate paths share one piece of arithmetic.
+    function targetFor(px, py, factor) {
+      var k0 = view.k, k1 = Math.max(1, Math.min(MAX_K, k0 * factor));
+      return clampTo(k1, px - (px - view.tx) * (k1 / k0), py - (py - view.ty) * (k1 / k0));
+    }
+
+    var anim = null;
+    function stopAnim() {
+      if (anim) { cancelAnimationFrame(anim); anim = null; }
+    }
+    // Eased zoom for the discrete gestures (buttons, double-click, zoom-to-dot).
+    // A step change reads as a jump cut and costs the reader the thread of where
+    // they were; 260ms of ease is enough to carry it. Continuous gestures —
+    // wheel and pinch — deliberately skip this: they are already smooth, and
+    // tweening on top of them feels like lag.
+    function animateTo(t, ms) {
+      stopAnim();
+      if (prefersReducedMotion()) {
+        view.k = t.k; view.tx = t.tx; view.ty = t.ty;
+        paint();
+        onZoomChange();
+        return;
+      }
+      var k0 = view.k, x0 = view.tx, y0 = view.ty, t0 = null;
+      anim = requestAnimationFrame(function step(now) {
+        if (t0 === null) t0 = now;
+        var u = Math.min(1, (now - t0) / ms);
+        // easeInOutCubic
+        var e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+        var c = clampTo(k0 + (t.k - k0) * e, x0 + (t.tx - x0) * e, y0 + (t.ty - y0) * e);
+        view.k = c.k; view.tx = c.tx; view.ty = c.ty;
+        paint();
+        // Every frame, not just the last: the readout is the only thing telling
+        // the reader how far in they are, and a number that jumps straight from
+        // 1.0x to 4.5x when the motion has visibly been gradual reads as broken.
+        onZoomChange();
+        anim = u < 1 ? requestAnimationFrame(step) : null;
+      });
+    }
+
+    function applyNow(t) {
+      stopAnim();
+      if (Math.abs(t.k - view.k) < 1e-6 && Math.abs(t.tx - view.tx) < 1e-6 &&
+          Math.abs(t.ty - view.ty) < 1e-6) return false;
+      view.k = t.k; view.tx = t.tx; view.ty = t.ty;
+      schedule();
+      onZoomChange();
+      return true;
+    }
+
+    // The block wires its readout and button states through this.
+    var zoomListener = null;
+    function onZoomChange() {
+      // Once the map owns the gestures, it must also own touch: at 1x the page
+      // still scrolls through the card normally.
+      svg.classList.toggle('is-locked', view.k > 1.001);
+      if (zoomListener) zoomListener(view.k);
+    }
+
+    // ---- wheel / trackpad
+    svg.addEventListener('wheel', function (e) {
+      var pt = toLocal(e);
+      if (!overMap(pt)) return;
+      // deltaMode 1 is lines and 2 is pages; Firefox reports ~3 lines per notch
+      // where Chrome reports ~100 pixels, so an unnormalised exponent makes the
+      // same gesture 30x weaker in one browser.
+      var d = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1);
+      // A trackpad pinch arrives as ctrl+wheel with a much smaller delta.
+      var t = targetFor(pt.x, pt.y, Math.pow(1.0018, -d * (e.ctrlKey ? 2.2 : 1)));
+      // Only swallow the page scroll when the gesture actually moves the map,
+      // so a wheel at full zoom-out still scrolls past the card.
+      if (applyNow(t)) e.preventDefault();
+    }, { passive: false });
+
+    // ---- drag to pan, two fingers to pinch
+    var pointers = {}, nPointers = 0, drag = null, pinch = null, moved = 0;
+
+    function pointerList() {
+      var out = [];
+      for (var id in pointers) if (pointers.hasOwnProperty(id)) out.push(pointers[id]);
       return out;
     }
 
-    // ---- world panel. Graticule with degree labels: without them this reads
-    // as an abstract point cloud, and the labels are what make it a projection
-    // you can orient in.
-    var grid = el('g', { 'class': 'r-grid' });
-    for (var i = 0; i <= 4; i++) {
-      var f = i / 4;
-      var gy = pad + f * plotH;
-      var gx = padLeft + f * worldW;
-      grid.appendChild(el('line', { x1: padLeft, y1: gy, x2: padLeft + worldW, y2: gy }));
-      grid.appendChild(el('line', { x1: gx, y1: pad, x2: gx, y2: pad + plotH }));
-      svg.appendChild(el('text', {
-        x: padLeft - 9, y: gy + 3.5, 'text-anchor': 'end', 'class': 'r-axis-label'
-      }, deg(maxLat - f * spanLat, 'lat')));
-      svg.appendChild(el('text', {
-        x: gx, y: pad + plotH + 18, 'text-anchor': 'middle', 'class': 'r-axis-label'
-      }, deg(minLon + f * spanLon, 'lon')));
-    }
-    svg.appendChild(grid);
+    svg.addEventListener('pointerdown', function (e) {
+      var pt = toLocal(e);
+      if (!overMap(pt)) return;
+      rectCache = svg.getBoundingClientRect();
+      pointers[e.pointerId] = pt;
+      nPointers++;
+      stopAnim();
 
-    var wx = function (lon) { return padLeft + ((lon - minLon) / spanLon) * worldW; };
-    var wy = function (lat) { return pad + (1 - (lat - minLat) / spanLat) * plotH; };
-    points.forEach(function (p) { plotPoint(p, wx(p.lon), wy(p.lat), 4); });
-
-    svg.appendChild(el('text', {
-      x: padLeft, y: Hgt - 10, 'class': 'r-axis-label'
-    }, 'World · all ' + points.length + ' geolocated formations'));
-
-    // ---- detail inset
-    if (inset) {
-      var iLatSpan = inset.lat1 - inset.lat0, iLonSpan = inset.lon1 - inset.lon0;
-      // Scale longitude by cos(mid-latitude) so the inset is not stretched
-      // sideways — at 51°N a degree of longitude is only ~0.63 of a degree of
-      // latitude on the ground, and an unscaled box distorts the cluster shape.
-      var midLat = (inset.lat0 + inset.lat1) / 2;
-      var lonUnits = iLonSpan * Math.cos(midLat * Math.PI / 180);
-      var scale = Math.min(insetW / lonUnits, plotH / iLatSpan);
-      var mapW = lonUnits * scale, mapH = iLatSpan * scale;
-      var mx = insetX + (insetW - mapW) / 2, my = pad + (plotH - mapH) / 2;
-
-      // Callout on the world panel: the rectangle the inset magnifies, plus
-      // leaders to the inset frame so the relationship is not left implied.
-      var cx0 = wx(inset.lon0), cx1 = wx(inset.lon1);
-      var cy0 = wy(inset.lat1), cy1 = wy(inset.lat0);
-      // At world scale the box is often under two pixels across. Floor it at a
-      // size that can actually be seen; the caption carries the true extent.
-      var callW = Math.max(cx1 - cx0, 14), callH = Math.max(cy1 - cy0, 14);
-      var callX = (cx0 + cx1) / 2 - callW / 2, callY = (cy0 + cy1) / 2 - callH / 2;
-
-      svg.appendChild(el('rect', {
-        x: callX.toFixed(1), y: callY.toFixed(1),
-        width: callW.toFixed(1), height: callH.toFixed(1),
-        fill: 'none', stroke: 'var(--signal)', 'stroke-width': '1.25',
-        'stroke-dasharray': '3 3'
-      }));
-      [[callY, my], [callY + callH, my + mapH]].forEach(function (pair) {
-        svg.appendChild(el('line', {
-          x1: (callX + callW).toFixed(1), y1: pair[0].toFixed(1),
-          x2: mx.toFixed(1), y2: pair[1].toFixed(1),
-          stroke: 'var(--signal)', 'stroke-width': '1',
-          'stroke-opacity': '0.42', 'stroke-dasharray': '3 4'
-        }));
-      });
-
-      svg.appendChild(el('rect', {
-        x: mx.toFixed(1), y: my.toFixed(1),
-        width: mapW.toFixed(1), height: mapH.toFixed(1),
-        fill: 'var(--chart-surface)', 'fill-opacity': '0.55',
-        stroke: 'var(--signal)', 'stroke-width': '1.25'
-      }));
-
-      var igrid = el('g', { 'class': 'r-grid' });
-      for (i = 1; i <= 3; i++) {
-        igrid.appendChild(el('line', {
-          x1: mx, y1: my + (i / 4) * mapH, x2: mx + mapW, y2: my + (i / 4) * mapH
-        }));
-        igrid.appendChild(el('line', {
-          x1: mx + (i / 4) * mapW, y1: my, x2: mx + (i / 4) * mapW, y2: my + mapH
-        }));
+      if (nPointers === 2) {
+        var p = pointerList();
+        pinch = {
+          dist: Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1,
+          mx: (p[0].x + p[1].x) / 2, my: (p[0].y + p[1].y) / 2
+        };
+        drag = null;
+        svg.classList.remove('is-panning');
+        return;
       }
-      svg.appendChild(igrid);
+      if (nPointers === 1 && view.k > 1) {
+        drag = { x: pt.x, y: pt.y };
+        moved = 0;
+        svg.setPointerCapture(e.pointerId);
+        svg.classList.add('is-panning');
+        hideTip();
+      }
+    });
 
-      // Zoom alone does not finish the job: a large minority of the archive
-      // shares EXACT coordinates with another record — many entries carry a
-      // site-level or rounded fix rather than a field-level one, so 146 points
-      // can sit on 87 distinct positions. No magnification separates those.
-      // The inset therefore groups by coordinate and sizes the symbol by
-      // count, which stops the chart implying locations it does not have.
-      var groups = groupByCoord(inset.points);
-      // Big groups behind, singles in front, so a single formation sharing a
-      // village with fifteen others is still hoverable.
-      groups.sort(function (a, b) { return b.items.length - a.items.length; });
-      groups.forEach(function (grp) {
-        var x = mx + ((grp.lon - inset.lon0) / iLonSpan) * mapW;
-        var y = my + (1 - (grp.lat - inset.lat0) / iLatSpan) * mapH;
-        // Area proportional to count, which is the only sizing that does not
-        // mislead the eye — hence the square root on the radius.
-        var r = Math.min(15, 4.5 * Math.sqrt(grp.items.length));
-        plotPoint(grp.rep, x, y, r, grp.items.length > 1
-          ? grp.items.length + ' formations · ' + grp.lat.toFixed(3) + ', ' + grp.lon.toFixed(3)
-          : null, grp.items.length > 1
-          ? grp.items.slice(0, 4).map(function (q) { return q.name; }).join(' · ') +
-            (grp.items.length > 4 ? ' · +' + (grp.items.length - 4) + ' more' : '')
-          : null);
-      });
+    svg.addEventListener('pointermove', function (e) {
+      var pt = toLocal(e);
+      if (pointers[e.pointerId]) pointers[e.pointerId] = pt;
 
-      // The magnification factor is the honest headline for an inset: without
-      // it the reader has no way to judge how much the world panel compressed.
-      // Quoted linearly, the way a map inset is conventionally read — the area
-      // ratio is the square of this and reads as a typo.
-      // Measured against the box's TRUE extent, not the floored drawing size,
-      // or the quoted factor is smaller than the magnification actually is.
-      var mag = Math.round(Math.sqrt(
-        (mapW / Math.max(cx1 - cx0, 0.001)) * (mapH / Math.max(cy1 - cy0, 0.001))));
-      svg.appendChild(el('text', {
-        x: insetX + insetW / 2, y: pad - 8, 'text-anchor': 'middle', 'class': 'r-axis-label'
-      }, deg(inset.lat0, 'lat', 1) + '–' + deg(inset.lat1, 'lat', 1) + ' · ' +
-         deg(inset.lon0, 'lon', 1) + '–' + deg(inset.lon1, 'lon', 1)));
-      svg.appendChild(el('text', {
-        x: insetX + insetW / 2, y: Hgt - 10, 'text-anchor': 'middle', 'class': 'r-axis-label'
-      }, 'Detail · ×' + mag + ' scale · ' + inset.n + ' formations at ' +
-         groups.length + ' distinct coordinates'));
+      if (pinch && nPointers >= 2) {
+        var p = pointerList();
+        var dist = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1;
+        var mx = (p[0].x + p[1].x) / 2, my = (p[0].y + p[1].y) / 2;
+        var t = targetFor(mx, my, dist / pinch.dist);
+        // The midpoint moving is a pan; without this the map only scales and a
+        // two-finger drag cannot reposition anything.
+        t = clampTo(t.k, t.tx + (mx - pinch.mx), t.ty + (my - pinch.my));
+        view.k = t.k; view.tx = t.tx; view.ty = t.ty;
+        pinch.dist = dist; pinch.mx = mx; pinch.my = my;
+        schedule(); onZoomChange();
+        e.preventDefault();
+        return;
+      }
 
-      // Size key. Without it the reader has no way to decode a bubble, and a
-      // proportional-symbol map without a key is just a prettier lie.
-      var keyY = my + mapH - 16, keyX = mx + 14;
-      [1, 4, 12].forEach(function (n, ki) {
-        var kr = Math.min(15, 4.5 * Math.sqrt(n));
-        svg.appendChild(el('circle', {
-          cx: keyX, cy: keyY, r: kr.toFixed(2),
-          fill: 'none', stroke: 'var(--chart-axis)', 'stroke-width': '1'
-        }));
-        svg.appendChild(el('text', {
-          x: keyX, y: keyY - kr - 4, 'text-anchor': 'middle', 'class': 'r-axis-label'
-        }, String(n)));
-        keyX += kr + (ki < 2 ? Math.min(15, 4.5 * Math.sqrt([1, 4, 12][ki + 1])) + 10 : 0);
-      });
+      if (!drag) {
+        if (!nPointers) {
+          rectCache = null;
+          svg.style.cursor = overMap(pt) ? (view.k > 1 ? 'grab' : 'zoom-in') : '';
+        }
+        return;
+      }
+      moved += Math.abs(pt.x - drag.x) + Math.abs(pt.y - drag.y);
+      var c = clampTo(view.k, view.tx + (pt.x - drag.x), view.ty + (pt.y - drag.y));
+      view.tx = c.tx; view.ty = c.ty;
+      drag.x = pt.x; drag.y = pt.y;
+      schedule();
+    });
+
+    function endPointer(e) {
+      if (pointers[e.pointerId]) { delete pointers[e.pointerId]; nPointers--; }
+      if (nPointers < 2) pinch = null;
+      if (nPointers === 0) {
+        rectCache = null;
+        if (drag) {
+          drag = null;
+          svg.classList.remove('is-panning');
+        }
+      }
+      if (e.pointerId != null && svg.hasPointerCapture &&
+          svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId);
+      }
+    }
+    svg.addEventListener('pointerup', endPointer);
+    svg.addEventListener('pointercancel', endPointer);
+
+    // ---- double-click. Alt or shift inverts it, which is the convention every
+    // desktop map follows and costs nothing to honour.
+    svg.addEventListener('dblclick', function (e) {
+      var pt = toLocal(e);
+      if (!overMap(pt)) return;
+      e.preventDefault();
+      animateTo(targetFor(pt.x, pt.y, (e.altKey || e.shiftKey) ? 1 / 1.9 : 1.9), 260);
+    });
+
+    // ---- keyboard. The map takes focus so a keyboard user can pan and zoom it
+    // directly rather than round-tripping through the buttons for every step.
+    svg.setAttribute('tabindex', '0');
+    svg.addEventListener('keydown', function (e) {
+      var step = 60 / view.k, handled = true;
+      var cx = P.x0 + P.w / 2, cy = P.y0 + P.h / 2, c;
+      switch (e.key) {
+        case 'ArrowLeft':  c = clampTo(view.k, view.tx + step, view.ty); break;
+        case 'ArrowRight': c = clampTo(view.k, view.tx - step, view.ty); break;
+        case 'ArrowUp':    c = clampTo(view.k, view.tx, view.ty + step); break;
+        case 'ArrowDown':  c = clampTo(view.k, view.tx, view.ty - step); break;
+        case '+': case '=': c = targetFor(cx, cy, 1.6); break;
+        case '-': case '_': c = targetFor(cx, cy, 1 / 1.6); break;
+        case '0': c = clampTo(1, 0, 0); break;
+        default: handled = false;
+      }
+      if (!handled) return;
+      e.preventDefault();
+      animateTo(c, 180);
+    });
+
+    // Zoom straight to a cluster. The single most common thing a reader wants
+    // after seeing the Avebury knot is to get inside it, and hunting for it with
+    // a wheel while it slides under the cursor is a chore.
+    function zoomToLonLat(lon, lat) {
+      var k1 = Math.max(view.k, 4.5);
+      var cx = P.x0 + P.w / 2, cy = P.y0 + P.h / 2;
+      animateTo(clampTo(k1, cx - P.x(lon) * k1, cy - P.y(lat) * k1), 300);
+    }
+    // paint() re-creates the dots, so it reads this rather than owning it.
+    onDotClick = function (grp) {
+      // A click that ends a pan is not a click.
+      if (moved > 4) return;
+      zoomToLonLat(grp.lon, grp.lat);
+    };
+
+    paint();
+    onZoomChange();
+
+    return {
+      svg: svg,
+      points: inView,
+      render: function (f) { filter = f; return paint(); },
+      // Button-driven zoom, anchored on the centre of the frame. Wheel, drag and
+      // pinch are all unreachable for a keyboard user, so the controls are the
+      // accessible path, not a decoration.
+      zoomBy: function (factor) {
+        animateTo(targetFor(P.x0 + P.w / 2, P.y0 + P.h / 2, factor), 260);
+        return Math.max(1, Math.min(MAX_K, view.k * factor));
+      },
+      reset: function () { animateTo(clampTo(1, 0, 0), 300); return 1; },
+      level: function () { return view.k; },
+      onZoom: function (fn) { zoomListener = fn; fn(view.k); }
+    };
+  }
+
+  // -------------------------------------------------- map + time control
+  // The map answers "where"; the slider answers "where, and when". Watching
+  // the record fill in is the only view that separates the two readings of the
+  // Wiltshire cluster — a place that genuinely draws formations, or a place
+  // that acquired its researchers in 1990 and has been watched ever since.
+
+  function wiltshireMapBlock(allPoints) {
+    var map = wiltshireMap(allPoints);
+    var dated = map.points.filter(function (p) { return p.y != null; });
+    var wrap = h('div', 'r-map-block');
+
+    // ---- zoom controls. Wheel and drag are the fast path, but neither is
+    // reachable by keyboard and both are awkward on a trackpad inside a long
+    // scrolling page, so the buttons are the real interface and the gestures
+    // are the shortcut.
+    var zoomBar = h('div', 'r-zoom-bar');
+    var zoomGrp = h('div', 'r-seg');
+    zoomGrp.setAttribute('role', 'group');
+    zoomGrp.setAttribute('aria-label', 'Map zoom');
+    var readoutZ = h('span', 'r-zoom-readout', '1.0×');
+
+    var zoomBtns = {};
+    [['−', 'Zoom out', 'out', function () { return map.zoomBy(1 / 1.6); }],
+     ['Reset', 'Reset the map to the whole county', 'reset', function () { return map.reset(); }],
+     ['+', 'Zoom in', 'in', function () { return map.zoomBy(1.6); }]].forEach(function (b) {
+      var btn = h('button', 'r-seg-btn', b[0]);
+      btn.type = 'button';
+      btn.setAttribute('aria-label', b[1]);
+      btn.addEventListener('click', b[3]);
+      zoomBtns[b[2]] = btn;
+      zoomGrp.appendChild(btn);
+    });
+    zoomBar.appendChild(zoomGrp);
+    zoomBar.appendChild(readoutZ);
+    zoomBar.appendChild(h('span', 'r-zoom-hint',
+      'Scroll or pinch to zoom · drag to pan · click a cluster to fly to it'));
+
+    // The map drives this rather than the buttons: a wheel, a pinch and a
+    // double-click all change the level too, and a readout that only tracked
+    // the buttons would sit there lying most of the time.
+    map.onZoom(function (k) {
+      readoutZ.textContent = fmt(k, 1) + '×';
+      zoomBar.classList.toggle('is-zoomed', k > 1.01);
+      // Nothing to go back to at 1x, and nothing further to give at the ceiling.
+      zoomBtns.out.disabled = zoomBtns.reset.disabled = k <= 1.001;
+      zoomBtns['in'].disabled = k >= 7.999;
+    });
+
+    if (!dated.length) {
+      map.render(null);
+      var only = h('div', 'r-chart-scroll');
+      only.appendChild(map.svg);
+      wrap.appendChild(only);
+      wrap.appendChild(zoomBar);
+      return wrap;
     }
 
-    return svg;
+    var years = dated.map(function (p) { return p.y; });
+    var minY = Math.min.apply(null, years), maxY = Math.max.apply(null, years);
+    // A handful of 17th–19th century entries would otherwise stretch the slider
+    // across three empty centuries. Start it where the record actually begins
+    // to be continuous, and fold everything earlier into the first step.
+    var modern = years.filter(function (y) { return y >= 1970; });
+    var startY = modern.length > years.length * 0.8 ? 1970 : minY;
+
+    var mode = 'all', year = maxY, timer = null;
+
+    var controls = h('div', 'r-map-controls');
+
+    var modes = h('div', 'r-seg');
+    modes.setAttribute('role', 'group');
+    modes.setAttribute('aria-label', 'Time filter mode');
+    var modeBtns = {};
+    [['all', 'All at once'], ['upto', 'Up to year'], ['only', 'That year only']]
+      .forEach(function (m) {
+        var b = h('button', 'r-seg-btn', m[1]);
+        b.type = 'button';
+        b.setAttribute('aria-pressed', String(m[0] === 'all'));
+        b.addEventListener('click', function () { stop(); setMode(m[0]); });
+        modeBtns[m[0]] = b;
+        modes.appendChild(b);
+      });
+    controls.appendChild(modes);
+
+    var slideWrap = h('div', 'r-slider');
+    var play = h('button', 'r-play', 'Play');
+    play.type = 'button';
+    play.setAttribute('aria-label', 'Animate the archive forward through time');
+    var slider = document.createElement('input');
+    slider.type = 'range';
+    slider.min = String(startY);
+    slider.max = String(maxY);
+    slider.step = '1';
+    slider.value = String(maxY);
+    slider.className = 'r-range';
+    slider.setAttribute('aria-label', 'Year');
+    var readout = h('span', 'r-year-readout', String(maxY));
+    slideWrap.appendChild(play);
+    slideWrap.appendChild(slider);
+    slideWrap.appendChild(readout);
+    controls.appendChild(slideWrap);
+
+    var caption = h('p', 'r-map-caption', '');
+
+    function filterFor() {
+      if (mode === 'all') return null;
+      if (mode === 'upto') {
+        return function (p) { return p.y != null && p.y <= year; };
+      }
+      return function (p) { return p.y === year; };
+    }
+
+    function paint() {
+      var n = map.render(filterFor());
+      readout.textContent = mode === 'all' ? '—' : String(year);
+      caption.textContent = mode === 'all'
+        ? 'Showing the whole archive at once — every geolocated formation in ' +
+          'Wiltshire and the country around it, regardless of date.'
+        : mode === 'upto'
+          ? 'The archive as it stood at the end of ' + year + ': ' + fmt(n) +
+            ' formation' + (n === 1 ? '' : 's') + ' recorded up to that point.'
+          : 'Formations recorded in ' + year + ' alone' +
+            (n === 0 ? ' — none in this frame.' : ': ' + fmt(n) + '.');
+    }
+
+    function setMode(m) {
+      mode = m;
+      Object.keys(modeBtns).forEach(function (k) {
+        modeBtns[k].setAttribute('aria-pressed', String(k === m));
+      });
+      slideWrap.classList.toggle('is-off', m === 'all');
+      slider.disabled = (m === 'all');
+      play.disabled = (m === 'all');
+      paint();
+    }
+
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+      play.textContent = 'Play';
+      play.classList.remove('is-playing');
+    }
+
+    function start() {
+      // Restart from the beginning if the slider is already at the end,
+      // otherwise Play looks broken.
+      if (Number(slider.value) >= maxY) { slider.value = String(startY); }
+      year = Number(slider.value);
+      paint();
+      play.textContent = 'Pause';
+      play.classList.add('is-playing');
+      timer = setInterval(function () {
+        if (year >= maxY) { stop(); return; }
+        year += 1;
+        slider.value = String(year);
+        paint();
+      }, 260);
+    }
+
+    slider.addEventListener('input', function () {
+      stop();
+      year = Number(slider.value);
+      paint();
+    });
+
+    play.addEventListener('click', function () {
+      if (timer) { stop(); return; }
+      // Honour the OS setting: an unrequested 56-frame animation is exactly
+      // what prefers-reduced-motion exists to prevent. Jump to the end state
+      // instead, which is the information the animation was going to deliver.
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        year = maxY;
+        slider.value = String(maxY);
+        paint();
+        return;
+      }
+      start();
+    });
+
+    // Stop the timer when the card scrolls away — a background interval
+    // repainting 300 circles is a battery cost with nobody watching.
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) stop();
+      }, { threshold: 0 });
+      io.observe(wrap);
+    }
+
+    setMode('all');
+
+    var scroll = h('div', 'r-chart-scroll');
+    scroll.appendChild(map.svg);
+    wrap.appendChild(scroll);
+    wrap.appendChild(zoomBar);
+    wrap.appendChild(controls);
+    wrap.appendChild(caption);
+    return wrap;
   }
 
   // ------------------------------------ chart: hypothesis confidence bars
@@ -641,56 +1655,11 @@
     return svg;
   }
 
-  // ------------------------------------------------- chart: stacked share bar
-  // One whole, split into parts. Used where the parts sum to something
-  // meaningful (all formations, all leads) and the *proportions* are the point
-  // — a bar chart of the same numbers reads as four unrelated quantities.
-  //
-  // Every segment wide enough to hold text is labelled inside itself, so the
-  // chart survives without the legend and without colour vision.
-
-  function stackedBar(segments, opts) {
-    opts = opts || {};
-    var Hgt = 96, padT = 10, barH = 52;
-    var total = segments.reduce(function (a, s) { return a + s.value; }, 0) || 1;
-
-    var svg = el('svg', {
-      'class': 'r-chart', viewBox: '0 0 ' + W + ' ' + Hgt,
-      role: 'img', 'aria-label': opts.ariaLabel || 'Proportional breakdown'
-    });
-
-    var x = 0;
-    segments.forEach(function (s, i) {
-      var w = (s.value / total) * W;
-      var share = 100 * s.value / total;
-      var g = el('g', { 'class': 'r-seg' });
-      g.style.transitionDelay = (i * 70) + 'ms';
-
-      g.appendChild(el('rect', {
-        x: x, y: padT, width: Math.max(1, w - 2), height: barH,
-        rx: 3, fill: s.color, 'class': 'r-seg-rect'
-      }));
-
-      // 46 units is roughly where "12.3%" stops fitting.
-      if (w > 46) {
-        g.appendChild(el('text', {
-          x: x + w / 2 - 1, y: padT + barH / 2 + 5,
-          'text-anchor': 'middle', 'class': 'r-seg-label'
-        }, fmt(share, share < 10 ? 1 : 0) + '%'));
-      }
-      if (w > 120) {
-        g.appendChild(el('text', {
-          x: x + w / 2 - 1, y: padT + barH + 20,
-          'text-anchor': 'middle', 'class': 'r-axis-label'
-        }, s.label));
-      }
-      hoverable(g, s.label, fmt(s.value) + ' · ' + fmt(share, 1) + '%');
-      svg.appendChild(g);
-      x += w;
-    });
-
-    return svg;
-  }
+  // The stacked share bar that used to live here was removed 2026-08-07 along
+  // with its only caller. The Evidence tab's verdict card now uses unitChart:
+  // for a dataset whose headline is "most of this has never been assessed",
+  // a count of individual records lands where a proportion of one rectangle
+  // does not. Recover it from git if a part-to-whole card ever needs it again.
 
   // ------------------------------------------------------- chart: heatmap
   // Two categorical axes, one magnitude. Rows are normalised against their own
@@ -847,6 +1816,265 @@
     return wrap;
   }
 
+  // ------------------------------------------------- chart: season clock
+  // Twelve months are a CYCLE, and a column chart lies about that: it puts
+  // December and January at opposite ends of the plot when they are adjacent
+  // in the only sense that matters here. A season that peaks in July reads as
+  // "a hump in the middle" on bars; on a dial it reads as a direction — which
+  // is what the data actually is.
+  //
+  // Radius encodes count against labelled rings, and the twelve points are
+  // joined into one closed loop, so the chart's SHAPE is the finding. This is
+  // deliberately not a Nightingale rose: filled wedges make area grow as the
+  // square of the value and systematically oversell the peak.
+
+  function seasonClock(months, opts) {
+    opts = opts || {};
+    var Hgt = 430, cx = W / 2, cy = 208, rMax = 148, rMin = 26;
+    var svg = el('svg', {
+      'class': 'r-chart', viewBox: '0 0 ' + W + ' ' + Hgt,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Formations by month, plotted on a 12-month dial'
+    });
+
+    var values = months.map(function (d) { return d.value; });
+    var max = niceMax(Math.max.apply(null, values));
+    var ang = function (i) { return (i / 12) * Math.PI * 2 - Math.PI / 2; };
+    var rad = function (v) { return rMin + (v / max) * (rMax - rMin); };
+    var px = function (i, r) { return cx + Math.cos(ang(i)) * r; };
+    var py = function (i, r) { return cy + Math.sin(ang(i)) * r; };
+
+    // Rings, labelled — without a radial scale the loop is a pretty shape with
+    // no readable magnitude.
+    var grid = el('g', { 'class': 'r-grid' });
+    ticks(max, 4).forEach(function (t) {
+      if (t === 0) return;
+      grid.appendChild(el('circle', {
+        cx: cx, cy: cy, r: rad(t).toFixed(1), fill: 'none'
+      }));
+      svg.appendChild(el('text', {
+        x: cx + 3, y: (cy - rad(t) + 3).toFixed(1), 'class': 'r-axis-label r-halo'
+      }, fmt(t)));
+    });
+    // Spokes.
+    for (var i = 0; i < 12; i++) {
+      grid.appendChild(el('line', {
+        x1: px(i, rMin).toFixed(1), y1: py(i, rMin).toFixed(1),
+        x2: px(i, rMax).toFixed(1), y2: py(i, rMax).toFixed(1)
+      }));
+    }
+    svg.appendChild(grid);
+
+    var d = months.map(function (m, k) {
+      return (k ? 'L' : 'M') + px(k, rad(m.value)).toFixed(1) + ' ' + py(k, rad(m.value)).toFixed(1);
+    }).join('') + 'Z';
+
+    svg.appendChild(el('path', {
+      d: d, fill: 'var(--seq-3)', 'fill-opacity': '0.28',
+      stroke: 'var(--seq-5)', 'stroke-width': '2', 'stroke-linejoin': 'round'
+    }));
+
+    var peak = Math.max.apply(null, values);
+    months.forEach(function (m, k) {
+      var r = rad(m.value), x = px(k, r), y = py(k, r);
+      var isPeak = m.value === peak;
+      var dot = el('circle', {
+        cx: x.toFixed(1), cy: y.toFixed(1), r: isPeak ? '5' : '3.4',
+        fill: isPeak ? 'var(--signal)' : 'var(--seq-5)',
+        stroke: 'var(--chart-surface)', 'stroke-width': '1.5'
+      });
+      svg.appendChild(dot);
+      var hit = el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: '13', fill: 'transparent' });
+      svg.appendChild(hit);
+      hoverable(dot, m.label, fmt(m.value) + ' formations', hit);
+
+      // Month name AND count outside the ring: twelve categories is few enough
+      // to direct-label every one, which removes the need to read radius
+      // against a ring to get a number.
+      var lr = rMax + 24;
+      var lx = px(k, lr), ly = py(k, lr);
+      var anchor = Math.abs(lx - cx) < 12 ? 'middle' : (lx > cx ? 'start' : 'end');
+      var t = el('text', {
+        x: lx.toFixed(1), y: (ly + 3.5).toFixed(1), 'text-anchor': anchor,
+        'class': 'r-month-label'
+      }, m.label + '  ' + fmt(m.value));
+      if (isPeak) t.style.fill = 'var(--signal)';
+      svg.appendChild(t);
+    });
+
+    // Orientation belongs in the footer, not the middle: whichever month peaks,
+    // its lobe reaches for the centre, and a centred caption ends up underneath
+    // the one part of the chart the reader is looking at.
+    svg.appendChild(el('text', {
+      x: 0, y: Hgt - 8, 'class': 'r-axis-label'
+    }, 'January at top, clockwise through the year · rings at ' +
+       ticks(max, 4).filter(function (t) { return t; })
+         .map(function (t) { return fmt(t); }).join(' / ') + ' formations'));
+
+    return svg;
+  }
+
+  // ---------------------------------------------------- chart: unit chart
+  // One square per record. A stacked bar shows the same four numbers as
+  // proportions of a rectangle, which the eye reads as an abstraction; a grid
+  // of individual marks shows them as a COUNT, and the reader can see that the
+  // assessed slice is a corner of the picture rather than a slice of a bar.
+  // For a dataset whose honest headline is "most of this has never been ruled
+  // on", that difference is the whole point.
+
+  function unitChart(segments, opts) {
+    opts = opts || {};
+    var pad = 2, cols = opts.cols || 37;
+    var total = segments.reduce(function (a, s) { return a + s.value; }, 0);
+    var rows = Math.ceil(total / cols);
+    var cell = Math.floor((W - pad * 2) / cols);
+    var sq = cell - 2.6;                       // 2.6px surface gap between units
+    var Hgt = rows * cell + 26;
+
+    var svg = el('svg', {
+      'class': 'r-chart', viewBox: '0 0 ' + W + ' ' + Hgt,
+      role: 'img',
+      'aria-label': (opts.ariaLabel || 'Unit chart') + ' — one square per record, ' +
+        fmt(total) + ' in total'
+    });
+
+    var n = 0;
+    segments.forEach(function (seg) {
+      // One <g> per segment carrying the hover, so the tooltip names the
+      // category rather than making the reader count squares.
+      var g = el('g', null);
+      svg.appendChild(g);
+      for (var k = 0; k < seg.value; k++, n++) {
+        var c = n % cols, r = Math.floor(n / cols);
+        g.appendChild(el('rect', {
+          x: (pad + c * cell).toFixed(1), y: (r * cell).toFixed(1),
+          width: sq.toFixed(1), height: sq.toFixed(1), rx: '1.5',
+          fill: seg.color
+        }));
+      }
+      hoverable(g, seg.label, fmt(seg.value) + ' of ' + fmt(total) +
+        ' · ' + pct(seg.value / total * 100));
+    });
+
+    svg.appendChild(el('text', {
+      x: pad, y: Hgt - 7, 'class': 'r-axis-label'
+    }, 'One square = one formation · ' + fmt(total) + ' records, read left to right'));
+
+    return svg;
+  }
+
+  // -------------------------------------------------- chart: value strip
+  // Every record as its own dot, packed vertically where they collide (a
+  // beeswarm). Bucketed bars answer "how many are 100-200 m"; this answers the
+  // question a reader actually has — what does the spread LOOK like — and it
+  // is the only form that shows the long right tail and the handful of
+  // genuinely enormous outliers as the same picture. Median and mean are drawn
+  // as separate rules because the gap between them IS the skew.
+
+  function valueStrip(items, opts) {
+    opts = opts || {};
+    var Hgt = 300, pad = 26, padL = 12, padB = 52;
+    var plotW = W - padL - pad, midY = (Hgt - padB) / 2 + 14;
+
+    var vals = items.map(function (d) { return d.value; }).sort(function (a, b) { return a - b; });
+    var max = niceMax(vals[vals.length - 1]);
+    var x = function (v) { return padL + (v / max) * plotW; };
+
+    var svg = el('svg', {
+      'class': 'r-chart', viewBox: '0 0 ' + W + ' ' + Hgt,
+      role: 'img', 'aria-label': opts.ariaLabel || 'Distribution of values, one dot per record'
+    });
+
+    var grid = el('g', { 'class': 'r-grid' });
+    ticks(max, 6).forEach(function (t) {
+      grid.appendChild(el('line', {
+        x1: x(t).toFixed(1), y1: 8, x2: x(t).toFixed(1), y2: Hgt - padB
+      }));
+      svg.appendChild(el('text', {
+        x: x(t).toFixed(1), y: Hgt - padB + 16, 'text-anchor': 'middle', 'class': 'r-axis-label'
+      }, fmt(t) + (opts.unit && t === max ? ' ' + opts.unit : '')));
+    });
+    svg.appendChild(grid);
+
+    // Beeswarm packing: walk in value order and push each dot to the nearest
+    // free lane. Deterministic, unlike jitter, so the same data always draws
+    // the same picture.
+    var r = 3.6, placed = [];
+    var sorted = items.slice().sort(function (a, b) { return a.value - b.value; });
+    sorted.forEach(function (d) {
+      var cx = x(d.value), lane = 0, dir = 1, y;
+      for (var guard = 0; guard < 200; guard++) {
+        y = midY + lane * (r * 2 + 0.6);
+        var clash = placed.some(function (p) {
+          return Math.abs(p.x - cx) < r * 2 && Math.abs(p.y - y) < r * 2;
+        });
+        if (!clash) break;
+        lane = lane > 0 ? -lane : (-lane + 1);
+        dir = -dir;
+      }
+      placed.push({ x: cx, y: y, d: d });
+    });
+
+    placed.forEach(function (p) {
+      var dot = el('circle', {
+        cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: r,
+        fill: 'var(--seq-3)', 'fill-opacity': '0.72',
+        stroke: 'var(--chart-surface)', 'stroke-width': '1'
+      });
+      svg.appendChild(dot);
+      hoverable(dot, p.d.label, fmt(p.d.value) + (opts.unit ? ' ' + opts.unit : ''));
+    });
+
+    function rule(v, label, color, above) {
+      svg.appendChild(el('line', {
+        x1: x(v).toFixed(1), y1: 8, x2: x(v).toFixed(1), y2: Hgt - padB,
+        stroke: color, 'stroke-width': '1.5', 'stroke-dasharray': '4 3'
+      }));
+      var t = el('text', {
+        x: (x(v) + 5).toFixed(1), y: above ? 18 : Hgt - padB - 6,
+        'class': 'r-axis-label r-halo'
+      }, label + ' ' + fmt(v) + (opts.unit ? ' ' + opts.unit : ''));
+      t.style.fill = color;
+      svg.appendChild(t);
+    }
+    var median = vals[Math.floor(vals.length / 2)];
+    var mean = vals.reduce(function (a, b) { return a + b; }, 0) / vals.length;
+    rule(median, 'median', 'var(--seq-5)', true);
+    rule(mean, 'mean', 'var(--signal)', false);
+
+    // Name the extremes. An unlabelled outlier is a provocation; a labelled one
+    // is a fact the reader can go and check. The two biggest sit close together
+    // at the end of the tail and their labels are long, so they go one above
+    // and one below their own dot with a leader rather than both to the right,
+    // where they would print on top of each other.
+    sorted.slice(-2).forEach(function (d, k) {
+      var p = placed[placed.length - 2 + k];
+      var dy = k === 0 ? -16 : 20;
+      // Formation names run long, and the biggest ones sit at the right edge by
+      // definition. Flip the anchor rather than clamping a centred label, or
+      // the text slides off the plot. Fragment Mono at 10px is ~6.2px/char.
+      var halfW = d.label.length * 3.1, tx = p.x, anchor = 'middle';
+      if (p.x + halfW > W - 4) { anchor = 'end'; tx = W - 4; }
+      else if (p.x - halfW < padL) { anchor = 'start'; tx = padL; }
+      svg.appendChild(el('line', {
+        x1: p.x.toFixed(1), y1: (p.y + (dy < 0 ? -r : r)).toFixed(1),
+        x2: (anchor === 'end' ? tx - halfW : anchor === 'start' ? tx + halfW : tx).toFixed(1),
+        y2: (p.y + dy + (dy < 0 ? 3 : -7)).toFixed(1),
+        stroke: 'var(--chart-axis)', 'stroke-width': '0.8'
+      }));
+      svg.appendChild(el('text', {
+        x: tx.toFixed(1), y: (p.y + dy).toFixed(1),
+        'text-anchor': anchor, 'class': 'r-axis-label r-halo'
+      }, d.label));
+    });
+
+    svg.appendChild(el('text', {
+      x: padL, y: Hgt - 8, 'class': 'r-axis-label'
+    }, 'One dot = one formation · ' + fmt(items.length) + ' with a recorded ' +
+       (opts.measure || 'value')));
+
+    return svg;
+  }
+
   // -------------------------------------------------------------- building
 
   function legend(entries) {
@@ -973,6 +2201,67 @@
   function buildGeography() {
     var g = R.geography, m = R.metrics, out = [];
 
+    // Maps first. The two bar charts below say "the UK, and Wiltshire in
+    // particular" in numbers; the maps say it in one look, and a reader who
+    // sees the shape of the record before the counts reads the counts as
+    // confirmation rather than as an abstraction to be decoded.
+    var complexityKey = function () {
+      return legend([
+        { label: 'complexity 1–2', color: 'var(--seq-1)' },
+        { label: '3–4', color: 'var(--seq-2)' },
+        { label: '5–6', color: 'var(--seq-3)' },
+        { label: '7–8', color: 'var(--seq-4)' },
+        { label: '9–10', color: 'var(--seq-5)' }
+      ]);
+    };
+
+    if (g.points && g.points.length) {
+      out.push(card({
+        kicker: 'Spatial',
+        title: 'Every geolocated formation, on one map',
+        chart: worldMap(g.points),
+        legend: complexityKey(),
+        reading: 'All ' + fmt(g.points.length) + ' geolocated formations, shaded by ' +
+          'complexity score and sized by how many records share the coordinate. ' +
+          'The phenomenon is reported on five continents, but the map makes the ' +
+          'real shape of the record obvious: almost everything worth looking at ' +
+          'is inside the amber box, and the box is smaller than the dot marking ' +
+          'it. Outside southern England the archive thins to a scatter — a few ' +
+          'dozen formations spread across the Netherlands, Germany, Italy, ' +
+          'Canada and Australia, most of them isolated single events rather than ' +
+          'the repeat seasons that define the English record. The engine ' +
+          'currently resolves ' + fmt(m.clusters) + ' distinct spatial clusters ' +
+          'worldwide, and the great majority of them are within an hour\'s drive ' +
+          'of each other.'
+      }));
+
+      out.push(card({
+        kicker: 'The heartland',
+        title: 'Wiltshire, field by field',
+        block: wiltshireMapBlock(g.points),
+        legend: complexityKey(),
+        reading: 'This is the box from the world map, opened up. Every formation ' +
+          'is plotted against the things that actually surround it: the neolithic ' +
+          'and iron-age monuments in amber, the chalk hill figures in violet, the ' +
+          'downland high points in green, and the towns in grey. The pattern that ' +
+          'emerges is not "Wiltshire" so much as a corridor — the Marlborough ' +
+          'Downs and the Vale of Pewsey, roughly twenty miles of chalk running ' +
+          'east from Avebury, with the Avebury complex itself sitting in the ' +
+          'thickest part of it. Stonehenge, which is what most people picture, ' +
+          'is comparatively quiet. ' +
+          'Use the time control to watch the record accumulate. That view ' +
+          'separates two readings of this cluster that the static map cannot: a ' +
+          'landscape that genuinely draws formations, or a landscape that ' +
+          'acquired a dense population of researchers and cameras around 1990 and ' +
+          'has been watched more closely than anywhere else on earth ever since. ' +
+          'Symbols sized larger than one record mark coordinates shared by ' +
+          'several formations — usually a village- or site-level fix rather than ' +
+          'a surveyed one, a limit of the dataset rather than a finding. Hover ' +
+          'anything for the names behind it.'
+      }));
+    }
+
+
     out.push(card({
       kicker: 'Distribution',
       title: 'Where formations are reported',
@@ -1016,37 +2305,6 @@
       table: tableView(['County', 'Formations'],
         g.ukRegions.map(function (d) { return [d.label, d.value]; }))
     }));
-
-    if (g.points && g.points.length) {
-      out.push(card({
-        kicker: 'Spatial',
-        title: 'Every geolocated formation, plotted',
-        chart: scatterGeo(g.points, { ariaLabel: 'Formation locations by latitude and longitude' }),
-        legend: legend([
-          { label: 'complexity 1–2', color: 'var(--seq-1)' },
-          { label: '3–4', color: 'var(--seq-2)' },
-          { label: '5–6', color: 'var(--seq-3)' },
-          { label: '7–8', color: 'var(--seq-4)' },
-          { label: '9–10', color: 'var(--seq-5)' }
-        ]),
-        reading: 'All ' + fmt(g.points.length) + ' geolocated formations are plotted ' +
-          'by latitude and longitude, shaded by complexity score. On the world ' +
-          'panel far fewer than ' + fmt(g.points.length) + ' dots are visible, ' +
-          'because most of them land on top of each other: roughly half the ' +
-          'archive sits inside about two degrees of latitude in southern England, ' +
-          'and at world scale those hundreds of formations collapse into a single ' +
-          'smudge. The amber box marks that knot, and the panel beside it re-plots ' +
-          'the same points at map scale, where most of them separate. The outliers ' +
-          'on the world panel are the international record. ' +
-          'Zoom alone is not enough, though: in the detail panel each symbol is ' +
-          'sized by how many records share that coordinate, and a good number of ' +
-          'them stack. Those are not formations in the same field — they are ' +
-          'records carrying a village- or site-level fix rather than a surveyed ' +
-          'one, which is a dataset limitation rather than a finding. Hover any ' +
-          'symbol for the names behind it. The engine currently resolves ' +
-          fmt(m.clusters) + ' distinct spatial clusters.'
-      }));
-    }
 
     var near = g.nearAncientSite;
     out.push(card({
@@ -1135,23 +2393,21 @@
         unit: 'of all formations appear June–August',
         delta: null
       },
-      chart: barsV(t.perMonth, {
-        ariaLabel: 'Formations by month of year',
-        unit: 'formations',
-        emphasis: function (d) { return d.month >= 6 && d.month <= 8; },
-        emphasisFill: 'var(--seq-4)',
-        fill: 'var(--seq-2)'
+      chart: seasonClock(t.perMonth, {
+        ariaLabel: 'Formations by month of year, plotted on a 12-month dial'
       }),
-      legend: legend([
-        { label: 'June–August', color: 'var(--seq-4)' },
-        { label: 'rest of year', color: 'var(--seq-2)' }
-      ]),
       reading: 'This is the least mysterious pattern in the archive and the most ' +
         'important one to state plainly: formations appear when there is standing ' +
         'crop tall enough to lay down. The season opens as winter wheat reaches ' +
         'height and closes at harvest. Any explanation — human or otherwise — has ' +
         'to operate inside that window, so seasonality discriminates between ' +
-        'hypotheses far less than it first appears to.',
+        'hypotheses far less than it first appears to. ' +
+        'The dial is used rather than a column chart because the year is a loop, ' +
+        'not a line: on bars, December and January sit at opposite ends of the ' +
+        'plot despite being consecutive weeks of the same season. Here the ' +
+        'archive collapses into a single lobe pointing at high summer, and the ' +
+        'five months from October to February are close to flat against the ' +
+        'centre.',
       table: tableView(['Month', 'Formations'],
         t.perMonth.map(function (d) { return [d.label, d.value]; }))
     }));
@@ -1340,6 +2596,12 @@
 
     // -- scale ------------------------------------------------------------
     var sc = R.scale;
+    // The geography export carries a diameter per formation, which is what the
+    // strip plot needs; R.scale only holds the pre-binned bands.
+    var sized = ((R.geography && R.geography.points) || [])
+      .filter(function (p) { return p.d != null && p.d > 0; })
+      .map(function (p) { return { label: p.name, value: p.d }; });
+
     if (sc && sc.buckets) {
       out.push(card({
         kicker: 'Scale',
@@ -1349,16 +2611,28 @@
           unit: 'median diameter, across the ' + fmt(sc.reported) + ' records that state one',
           delta: null
         },
-        chart: barsV(sc.buckets, {
-          ariaLabel: 'Formations by diameter band',
-          unit: 'formations',
-          fill: 'var(--seq-3)'
-        }),
-        reading: 'A crop formation is a large object: the median is ' +
+        // Prefer the real distribution when the export carries per-formation
+        // diameters; fall back to the pre-binned bands if it does not.
+        chart: sized.length > 20
+          ? valueStrip(sized, {
+              ariaLabel: 'Diameter of every formation that reports one',
+              unit: 'm', measure: 'diameter'
+            })
+          : barsV(sc.buckets, {
+              ariaLabel: 'Formations by diameter band',
+              unit: 'formations',
+              fill: 'var(--seq-3)'
+            }),
+        reading: 'Every formation that reports a size, plotted as its own dot — ' +
+          'bands would tell you how many fall between 100 and 200 m, but the ' +
+          'question a reader actually has is what the spread looks like, and only ' +
+          'this shows it. A crop formation is a large object: the median is ' +
           fmt(sc.medianDiameterM, 0) + ' metres across and the largest on record ' +
           'runs to ' + fmt(sc.maxDiameterM, 0) + ' m — roughly five football pitches ' +
-          'end to end. The distribution is right-skewed, which is why the mean (' +
-          fmt(sc.meanDiameterM, 1) + ' m) sits well above the median. The caveat is ' +
+          'end to end. The shape is a dense bank under 150 m with a long thin ' +
+          'tail to the right, and the two rules make the consequence visible: the ' +
+          'mean (' + fmt(sc.meanDiameterM, 1) + ' m) sits well above the median ' +
+          'because a handful of giants drag it there. The caveat is ' +
           'large: only ' + pct(sc.reportedPct) + ' of records state a diameter at ' +
           'all, and reports that bother to measure are biased toward the ' +
           'impressive ones, so the true archive-wide median is probably lower ' +
@@ -1450,15 +2724,17 @@
         unit: 'of ' + fmt(a.total) + ' formations carry an evidence verdict',
         delta: null
       },
-      chart: stackedBar(a.counts.map(function (d, i) {
+      chart: unitChart(a.counts.map(function (d, i) {
         return { label: d.label, value: d.value, color: COLORS[i] };
-      }), { ariaLabel: 'Share of formations by authenticity verdict' }),
+      }), { ariaLabel: 'Every formation as one square, coloured by authenticity verdict' }),
       legend: legend(a.counts.map(function (d, i) {
         return { label: d.label + ' — ' + fmt(d.value), color: COLORS[i] };
       })),
-      reading: 'Each formation in the research index carries one of four verdicts, ' +
-        'assigned by the daily research agent from the sourcing it found. The ' +
-        'honest headline is the grey block: ' + fmt(a.counts[3].value) + ' records ' +
+      reading: 'One square per formation, so the picture is a count rather than a ' +
+        'proportion — which matters here, because the proportion is the ' +
+        'misleading half. Each record in the research index carries one of four ' +
+        'verdicts, assigned by the daily research agent from the sourcing it ' +
+        'found. The honest headline is the grey field: ' + fmt(a.counts[3].value) + ' records ' +
         'are still unassessed, so every ratio drawn from this chart is a ratio ' +
         'over the ' + fmt(a.assessed) + ' that have been looked at. Within that ' +
         'assessed set, ' + fmt(a.humanMade) + ' are confirmed human-made — a ' +
