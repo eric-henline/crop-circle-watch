@@ -296,6 +296,11 @@ authoritative field reference):
   title: "Formation name",
   location: "Human-readable location string",
   description: "1-3 factual sentences. Only state what the source actually says.",
+  //   Say what IS known, never what is missing. "Ground reports and diagrams
+  //   not yet published", "analysis still pending", "access details not yet
+  //   confirmed" and the like tell the reader nothing they can use and read
+  //   as filler — the absence of a detail is the default, so it does not
+  //   need stating. If a source later publishes the detail, add the detail.
   tags: ["Country", "Region-or-County", "<year> season", "video" /* only if a real video was found */],
   sourceUrl: "https://...",        // the page you verified the date on
   sourceName: "Short source label",

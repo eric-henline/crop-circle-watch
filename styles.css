@@ -226,9 +226,12 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
   display:flex;
   flex-wrap:nowrap;
   gap:var(--s-3) var(--s-5);
-  /* Top-aligned so the last-scan stamp sits in the actual top corner; the
-     brand block is taller, and centering would drop the stamp to mid-bar. */
-  align-items:flex-start;
+  /* Centred, not top-aligned. The comment here used to say the brand block was
+     the taller of the two and that centring would drop the stamp to mid-bar;
+     the reverse is now true — the right column carries a stamp AND a control
+     row, so it outgrows the brand and top-aligning left the wordmark riding
+     high with dead space under the tagline. */
+  align-items:center;
   justify-content:space-between;
   transition:padding .2s ease;
 }
@@ -246,7 +249,8 @@ body.compact .site-header-inner{ padding-top:var(--s-2); padding-bottom:var(--s-
 body.compact .brand-mark{ width:34px; height:34px; }
 body.compact .tagline{ display:none; }
 body.compact .cereology-note{ display:none; }
-body.compact .brand-text h1{ font-size:16px; }
+body.compact .brand-text h1,
+.brand-text .brand-name{ font-size:16px; }
 
 .brand{ display:flex; align-items:center; gap:var(--s-3); }
 
@@ -264,7 +268,8 @@ body.compact .brand-text h1{ font-size:16px; }
 }
 @keyframes spin-slow{ to{ transform:rotate(360deg); } }
 
-.brand-text h1{
+.brand-text h1,
+.brand-text .brand-name{
   font-family:var(--font-display);
   /* Sized for the display face in theme.css, not for a generic sans. Syne is
      appreciably wider per character than the previous face, so the old clamp
@@ -291,7 +296,13 @@ body.compact .brand-text h1{ font-size:16px; }
    About-page definition, just smaller and tighter since it now sits under
    the tagline in a fixed-height bar instead of floating in the hero. */
 .brand-text .cereology-note{
-  margin:4px 0 0;
+  margin:1px 0 0;
+  /* overflow:hidden below clips in BOTH axes, and this box's bottom edge is
+     flush with its own line box — which sheared the descenders off
+     "cereology". The padding is the room those descenders need; the margin
+     above is reduced by the same amount so nothing else moves. */
+  padding-bottom:3px;
+  line-height:1.5;
   gap:7px;
   flex-wrap:nowrap;
   white-space:nowrap;
@@ -336,7 +347,7 @@ body.compact .brand-text h1{ font-size:16px; }
   display:flex;
   flex-direction:column;
   align-items:flex-end;
-  gap:var(--s-2);
+  gap:6px;
   flex:0 0 auto;
 }
 
@@ -1003,7 +1014,7 @@ body.compact .brand-text h1{ font-size:16px; }
   background:var(--panel);
   border:1px solid var(--border);
   border-radius:var(--radius);
-  padding:9px 12px;
+  padding:7px 12px;
   flex:1 1 240px;
   min-width:220px;
 }
@@ -1647,7 +1658,12 @@ body.compact .brand-text h1{ font-size:16px; }
 /* -- nav -- */
 .footer-nav{
   display:flex;
-  gap:var(--s-4);
+  /* Wraps for the same reason .site-nav does: five uppercase mono links do not
+     fit a phone in one row, and this went from four to five when Resources was
+     added to the footers that were missing it. */
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:var(--s-2) var(--s-4);
   font-family:var(--font-mono);
   font-size:12px;
   letter-spacing:0.06em;
@@ -1697,11 +1713,17 @@ body.compact .brand-text h1{ font-size:16px; }
 
 @media (max-width:760px){
   .footer-inner{
-    grid-template-columns:1fr;
+    /* minmax(0,1fr), not 1fr: a bare 1fr track keeps min-width:auto and is
+       sized by its widest child's min-content, which on a 375px viewport made
+       this track 410px and gave the whole document a horizontal scrollbar. */
+    grid-template-columns:minmax(0, 1fr);
     justify-items:center;
     text-align:center;
     gap:var(--s-4);
   }
+  .footer-inner > *{ min-width:0; max-width:100%; }
+  .footer-brand{ flex-wrap:wrap; justify-content:center; }
+  .footer-brand-text{ min-width:0; }
   .footer-status{ text-align:center; }
   .footer-legal{ text-align:center; margin-inline:auto; }
 }
@@ -1793,4 +1815,37 @@ template{ display:none; }
   .header-search .search-box{ min-width:0; flex:1 1 auto; }
   .brand-text .cereology-note{ white-space:normal; flex-wrap:wrap; }
   .brand-text .cereology-note .cer-def{ flex-basis:100%; }
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* Timeline page head                                                     */
+/* Added when the timeline moved to its own page: it was the only page     */
+/* with no heading of its own, which left it with no h1 and nothing to     */
+/* orient a reader arriving from a permalink.                              */
+/* ---------------------------------------------------------------------- */
+/* Every other block inside .timeline-section carries its own max-width and
+   inset (.control-bar, .layout) rather than inheriting one from the section,
+   so this has to do the same or it sits flush against the viewport edge. */
+.tl-head{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:var(--s-4) var(--s-4) 0;
+}
+.tl-eyebrow{
+  margin:0 0 var(--s-2);
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.tl-title{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(26px, 3.4vw, 38px);
+  line-height:1.1;
+  letter-spacing:var(--display-tracking);
+  color:var(--text-0);
 }
