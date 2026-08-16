@@ -15,17 +15,17 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-15T13:58:05Z",
+  "fetchedAt": "2026-08-16T13:58:05Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mt2mcllikk2r",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mt6wzn5tas25",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "Sacred Geometry\n(Geometry with meaning)\n\n#Logos #SpecialRevelation\n#TheNewJerusalem #England\n#CropCircles #TheWordOfGod\n#Jesus #TheSecondComing\n\nen.wikipedia.org/wiki/Sacred_...",
-      "postedAt": "2026-08-14T16:46:49.316000Z",
-      "likes": 0
+      "text": "Pentagrams and Perspective Shifts\nRanscomb Bottom, nr Calstone Wellington, Wiltshire, England\n23rd July 2016\n\n#CropCircles #Logos\n#SpecialRevelation\n#TheGeometricWord\n#TheStarProphecy\n#Jesus #TheSecondComing \n\ntemporarytemples.co.uk/project/cals...",
+      "postedAt": "2026-08-16T10:09:19.090000Z",
+      "likes": 1
     },
     {
       "platform": "bluesky",
@@ -43,7 +43,7 @@ window.SOCIAL_FEED = {
       "handle": "@cynicaltherapist.bsky.social",
       "text": "nobody drinks problematically because of alien crop circles anymore",
       "postedAt": "2026-08-03T04:40:32.672000Z",
-      "likes": 76
+      "likes": 78
     },
     {
       "platform": "bluesky",

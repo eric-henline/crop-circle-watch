@@ -39,7 +39,7 @@
   font-weight:800;
   font-size:clamp(32px, 5vw, 52px);
   line-height:1.05;
-  letter-spacing:-0.02em;
+  letter-spacing:var(--display-tracking);
   color:var(--text-0);
 }
 .research-lede{
@@ -197,7 +197,7 @@
   font-weight:800;
   font-size:clamp(40px, 7vw, 64px);
   line-height:1;
-  letter-spacing:-0.03em;
+  letter-spacing:var(--display-tracking);
   color:var(--text-0);
   font-variant-numeric:tabular-nums;
 }
@@ -220,8 +220,8 @@
   font-size:11px;
   color:var(--text-2);
 }
-.r-delta--up{ color:var(--div-pos-1); border-color:rgba(54,212,166,0.35); }
-.r-delta--down{ color:var(--div-neg-1); border-color:rgba(240,166,60,0.35); }
+.r-delta--up{ color:var(--div-pos-1); border-color:color-mix(in srgb, var(--div-pos-1) 35%, transparent); }
+.r-delta--down{ color:var(--div-neg-1); border-color:color-mix(in srgb, var(--div-neg-1) 35%, transparent); }
 .r-delta--flat{ color:var(--text-2); }
 
 /* Stat tile row — for grouped scalar metrics that don't deserve a plot. */

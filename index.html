@@ -37,6 +37,7 @@
      header of fonts.css for why. Nothing on this page contacts a third party
      before the visitor asks it to. -->
 <link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="theme.css">
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -226,7 +227,7 @@
   </div>
   <div class="hero-inner">
 
-    <p class="hero-subhead">Daily scans for new formations — news, footage, and field reports as they happen.</p>
+    <p class="hero-subhead">Daily scans for new formations. News, footage and field reports as they happen.</p>
 
     <div class="status-line">
       <span class="pulse-dot" id="statusDot" aria-hidden="true"></span>
@@ -273,7 +274,7 @@
 
       <section class="widget widget-news" aria-labelledby="newsHeading">
         <h2 id="newsHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-doc"/></svg>Recent coverage</h2>
-        <p class="widget-sub">Articles, documentaries, podcasts and events about the phenomenon itself — not the formation reports, which are in the timeline below.</p>
+        <p class="widget-sub">Articles, documentaries, podcasts and events about the phenomenon.</p>
         <ul class="news-list" id="newsList"><!-- populated by app.js --></ul>
       </section>
      </div>
@@ -281,7 +282,7 @@
      <div class="widget-col widget-col--side">
       <section class="widget widget-social" aria-labelledby="socialHeading">
         <h2 id="socialHeading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-rss"/></svg>Live chatter</h2>
-        <p class="widget-sub">Public Bluesky posts matching crop-circle terms, pulled fresh by the daily scan, plus any posts hand-checked against a formation. Bluesky posts load live right here; X no longer allows that, so X posts show as cards — tap through for the thread. Chatter is unverified: treat it as what people are saying, not as a source.</p>
+        <p class="widget-sub">Unverified. What people are saying, not a source.</p>
         <div class="social-posts" id="socialPosts"><!-- populated by app.js --></div>
         <div class="keyword-block">
           <div class="keyword-chips" id="keywordChips"><!-- populated by app.js --></div>
@@ -293,7 +294,7 @@
             <a id="searchX" class="search-launch" target="_blank" rel="noopener noreferrer">Search X →</a>
             <a id="searchBsky" class="search-launch" target="_blank" rel="noopener noreferrer">Search Bluesky →</a>
           </div>
-          <p class="keyword-note">Opens a live search in a new tab — open-ended keyword search still can't be auto-embedded on a static site, on either platform.</p>
+          <p class="keyword-note">Opens a live search in a new tab.</p>
         </div>
       </section>
 
@@ -369,7 +370,7 @@
     </dl>
   </div>
 
-  <p class="footer-legal">Photography and footage remain the property of their original creators — each entry links back to its source.</p>
+  <p class="footer-legal">Photography and footage remain the property of their original creators. Each entry links back to its source.</p>
 </footer>
 
 <template id="storyCardTemplate">
@@ -398,6 +399,7 @@
 </template>
 
 <script src="data.js"></script>
+<script src="shared-chrome.js"></script>
 <!-- Generated research-archive dataset (window.HISTORY) — powers the "All history"
      timeline toggle. Built by pipeline/generate_dashboard_entries.py. Optional:
      app.js degrades gracefully to the curated feed if it's absent. -->

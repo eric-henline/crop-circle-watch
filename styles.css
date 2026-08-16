@@ -5,78 +5,25 @@
    re-theme the whole site without touching markup.
 
    Type system (deliberately not the usual Inter/Poppins/Space-Grotesk set):
-     --font-display  Bricolage Grotesque — headlines, big numbers
-     --font-body     Newsreader (serif)  — narrative prose: descriptions,
-                      taglines, the About page
-     --font-mono     Fragment Mono       — UI chrome, data, labels, tags
+     --font-display  headlines and big numbers
+     --font-body     narrative prose: descriptions, taglines, the About page
+     --font-mono     UI chrome, data, labels, tags
+
+   Which faces those are is theme.css's business, not this file's.
    ========================================================================== */
 
-:root{
-  /* -- palette -- */
-  --bg-0:#070b12;
-  --bg-1:#0b1220;
-  --panel:#0e1828;
-  --panel-soft:#0c1422;
-  --border:rgba(120,255,200,0.14);
-  --border-strong:rgba(120,255,200,0.30);
-  --text-0:#eaf2f3;
-  --text-1:#a9bac8;
-  --text-2:#6c7e91;
-  --accent:#6bffc2;
-  --accent-dim:#3c9a76;
-  --signal:#ffb454;
-  --signal-dim:#9a6c33;
+/* ------------------------------------------------------------------------
+   Design tokens live in theme.css, which loads before this file.
 
-  /* -- chart palette (research page) --
-     These are NOT the UI accent colors. Chart marks sit on --panel and have to
-     survive colour-vision deficiency, so they were computed in OKLCH at a
-     lightness the dark surface can hold (L 0.48-0.67) and machine-validated for
-     lightness band, chroma floor, adjacent-pair CVD separation (Machado 2009),
-     and WCAG contrast vs --panel. The UI accent #6bffc2 sits at L 0.90 and
-     FAILS that band, which is why it is not in this list.
+   Nothing in this stylesheet may hardcode a colour or a typeface. If you need
+   a value that is not already a token, add it to theme.css rather than
+   inlining it here — the whole point of that file is that a reskin is one
+   edit, and one hardcoded hex is enough to break that promise.
 
-     Assign --cat-1..8 in fixed order and never cycle them: a 9th series folds
-     into an "Other" bucket instead. Reordering these breaks CVD separation
-     between neighbours — re-run the validator if you change them. */
-  --cat-1:#00ac7d;  /* mint   */
-  --cat-2:#c68102;  /* amber  */
-  --cat-3:#4296e7;  /* blue   */
-  --cat-4:#dd696d;  /* red    */
-  --cat-5:#78a235;  /* lime   */
-  --cat-6:#b773cb;  /* violet */
-  --cat-7:#db6f49;  /* orange */
-  --cat-8:#0da5b2;  /* teal   */
-
-  /* Sequential ramp (magnitude) — one hue, monotone lightness, light end
-     clears the surface at 2.6:1. */
-  --seq-1:#04684e;
-  --seq-2:#078968;
-  --seq-3:#15ab83;
-  --seq-4:#48cba1;
-  --seq-5:#6eecc1;
-
-  /* Diverging pair (polarity) — amber vs mint with a NEUTRAL grey midpoint.
-     Never put a hue at the midpoint. */
-  --div-neg-3:#a66c04; --div-neg-2:#ce8703; --div-neg-1:#f0a63c;
-  --div-mid:#5c6672;
-  --div-pos-1:#36d4a6; --div-pos-2:#05b388; --div-pos-3:#02906d;
-
-  /* Chart chrome — grid and axes stay recessive so marks carry the eye. */
-  --chart-grid:rgba(169,186,200,0.13);
-  --chart-axis:rgba(169,186,200,0.28);
-  --chart-surface:var(--panel);
-
-  /* -- type -- */
-  --font-display:'Bricolage Grotesque', 'Segoe UI', sans-serif;
-  --font-body:'Newsreader', Georgia, 'Times New Roman', serif;
-  --font-mono:'Fragment Mono', 'SF Mono', Consolas, monospace;
-
-  /* -- spacing scale (8px base) -- */
-  --s-1:4px; --s-2:8px; --s-3:16px; --s-4:24px; --s-5:32px; --s-6:48px; --s-7:64px;
-
-  --radius:6px;
-  --max-width:1180px;
-}
+   Tokens available: --bg-*, --panel*, --border*, --text-*, --accent*,
+   --signal*, --cat-1..8, --seq-1..5, --div-*, --chart-*, --font-*, --s-1..7,
+   --radius, --max-width, --display-tracking, --display-weight.
+   ------------------------------------------------------------------------ */
 
 *{ box-sizing:border-box; }
 /* NB: no `overflow-x:hidden` on html/body — it turns the root into a scroll
@@ -122,8 +69,8 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
     radial-gradient(1px 1px at 87% 54%, rgba(255,255,255,0.3) 50%, transparent 51%),
     radial-gradient(1px 1px at 95% 18%, rgba(255,255,255,0.4) 50%, transparent 51%),
     radial-gradient(1px 1px at 14% 90%, rgba(255,255,255,0.3) 50%, transparent 51%),
-    radial-gradient(900px 600px at 12% -10%, rgba(107,255,194,0.07), transparent 60%),
-    radial-gradient(900px 700px at 105% 110%, rgba(255,180,84,0.06), transparent 60%),
+    radial-gradient(900px 600px at 12% -10%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 60%),
+    radial-gradient(900px 700px at 105% 110%, color-mix(in srgb, var(--signal) 6%, transparent), transparent 60%),
     linear-gradient(180deg, var(--bg-0), var(--bg-1) 60%, var(--bg-0));
   background-repeat:no-repeat;
   background-size:100% 100%;
@@ -285,7 +232,14 @@ code{ font-family:var(--font-mono); background:var(--panel-soft); padding:1px 5p
   justify-content:space-between;
   transition:padding .2s ease;
 }
-.brand{ flex:0 1 auto; min-width:0; }
+.brand{ flex:1 1 auto; min-width:0; }
+/* min-width:0 has to travel all the way down the flex chain, or the text
+   column keeps its min-content width and the shrink never happens. */
+/* flex:1 1 auto, not the default 0 1 auto. The column's content width is set
+   by the (nowrap) wordmark, and `overflow:hidden` on the tagline stops its
+   own wider intrinsic size from contributing — so without grow, the tagline
+   was clipped even while the header had 29px going spare. */
+.brand-text{ flex:1 1 auto; min-width:0; overflow:hidden; }
 .header-end{ flex:0 0 auto; }
 
 body.compact .site-header-inner{ padding-top:var(--s-2); padding-bottom:var(--s-2); align-items:center; }
@@ -299,7 +253,7 @@ body.compact .brand-text h1{ font-size:16px; }
 .brand-mark{
   width:60px; height:60px;
   color:var(--accent);
-  filter:drop-shadow(0 0 8px rgba(107,255,194,0.35));
+  filter:drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 35%, transparent));
   flex-shrink:0;
   animation:spin-slow 13s linear infinite;
   transition:width .2s ease, height .2s ease;
@@ -312,10 +266,16 @@ body.compact .brand-text h1{ font-size:16px; }
 
 .brand-text h1{
   font-family:var(--font-display);
-  font-size:clamp(21px, 2.7vw, 27px);
-  letter-spacing:0.045em;
+  /* Sized for the display face in theme.css, not for a generic sans. Syne is
+     appreciably wider per character than the previous face, so the old clamp
+     wrapped "CROP CIRCLE WATCH" onto two lines here. nowrap makes the wordmark
+     the one thing in this block that never breaks; the tagline below it
+     truncates instead. */
+  font-size:clamp(17px, 2.1vw, 22px);
+  letter-spacing:0.03em;
+  white-space:nowrap;
   margin:0 0 4px;
-  font-weight:700;
+  font-weight:var(--display-weight);
   transition:font-size .2s ease;
 }
 
@@ -335,14 +295,27 @@ body.compact .brand-text h1{ font-size:16px; }
   gap:7px;
   flex-wrap:nowrap;
   white-space:nowrap;
+  /* The header is a nowrap flex row, so anything in the brand block that
+     refuses to shrink pushes straight into the nav. That already happened once
+     (see the note above .header-end) and happened again the moment the display
+     face got wider. Truncating is the graceful failure: the tagline is
+     decorative, the nav is not. */
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
-.brand-text .cereology-note .cer-word{ font-size:14.5px; font-style:italic; }
-.brand-text .cereology-note .cer-pos{ font-size:12px; }
-.brand-text .cereology-note .cer-def{ font-size:14px; flex-basis:auto; }
+/* Sized down from 14.5/12/14: Space Grotesk sets wider than the previous body
+   face, and at the old sizes this line no longer fits beside the nav inside
+   the 1180px header. */
+.brand-text .cereology-note .cer-word{ font-size:13px; font-style:italic; }
+.brand-text .cereology-note .cer-pos{ font-size:11px; }
+.brand-text .cereology-note .cer-def{ font-size:12.5px; flex-basis:auto; }
 
 /* Wraps: with five items the nav is wider than a phone viewport, and an
    unwrapped flex row would push "About" off the right edge. */
-.site-nav{ display:flex; gap:var(--s-2) var(--s-4); align-items:center; flex-wrap:wrap; }
+/* Column gap trimmed from --s-4 to 20px: the wider display/body faces cost
+   the brand block about 19px, and taking it back from five nav gaps is far
+   less visible than shrinking the wordmark or clipping the tagline. */
+.site-nav{ display:flex; gap:var(--s-2) 18px; align-items:center; flex-wrap:wrap; }
 .nav-link{
   font-family:var(--font-mono);
   font-size:12.5px;
@@ -435,10 +408,10 @@ body.compact .brand-text h1{ font-size:16px; }
   border-radius:50%;
   background:
     repeating-radial-gradient(circle,
-      rgba(107,255,194,0.10) 0px, rgba(107,255,194,0.10) 1px,
+      color-mix(in srgb, var(--accent) 10%, transparent) 0px, color-mix(in srgb, var(--accent) 10%, transparent) 1px,
       transparent 1px, transparent 55px),
-    linear-gradient(to bottom, transparent calc(50% - 1px), rgba(107,255,194,0.08) calc(50% - 1px), rgba(107,255,194,0.08) calc(50% + 1px), transparent calc(50% + 1px)),
-    linear-gradient(to right, transparent calc(50% - 1px), rgba(107,255,194,0.08) calc(50% - 1px), rgba(107,255,194,0.08) calc(50% + 1px), transparent calc(50% + 1px));
+    linear-gradient(to bottom, transparent calc(50% - 1px), color-mix(in srgb, var(--accent) 8%, transparent) calc(50% - 1px), color-mix(in srgb, var(--accent) 8%, transparent) calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(to right, transparent calc(50% - 1px), color-mix(in srgb, var(--accent) 8%, transparent) calc(50% - 1px), color-mix(in srgb, var(--accent) 8%, transparent) calc(50% + 1px), transparent calc(50% + 1px));
   -webkit-mask-image:radial-gradient(circle, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 70%, transparent 100%);
   mask-image:radial-gradient(circle, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 70%, transparent 100%);
   opacity:0.8;
@@ -453,17 +426,17 @@ body.compact .brand-text h1{ font-size:16px; }
   border-radius:50%;
   background:
     conic-gradient(from 0deg,
-      rgba(107,255,194,0.55) 0deg,
-      rgba(107,255,194,0.30) 4deg,
-      rgba(107,255,194,0.12) 16deg,
-      rgba(107,255,194,0.04) 34deg,
+      color-mix(in srgb, var(--accent) 55%, transparent) 0deg,
+      color-mix(in srgb, var(--accent) 30%, transparent) 4deg,
+      color-mix(in srgb, var(--accent) 12%, transparent) 16deg,
+      color-mix(in srgb, var(--accent) 4%, transparent) 34deg,
       transparent 60deg,
       transparent 360deg);
   -webkit-mask-image:radial-gradient(circle, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 75%, transparent 100%);
   mask-image:radial-gradient(circle, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 75%, transparent 100%);
   opacity:0.7;
   animation:radar-spin 6s linear infinite;
-  filter:drop-shadow(0 0 10px rgba(107,255,194,0.25));
+  filter:drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 25%, transparent));
 }
 
 /* Stationary "blips" the beam passes over. Each pings briefly once per
@@ -474,7 +447,7 @@ body.compact .brand-text h1{ font-size:16px; }
   width:5px; height:5px;
   border-radius:50%;
   background:var(--accent);
-  box-shadow:0 0 0 0 rgba(107,255,194,0.6);
+  box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent);
   opacity:0;
   animation:blip-ping 6s linear infinite;
 }
@@ -486,10 +459,10 @@ body.compact .brand-text h1{ font-size:16px; }
 @keyframes radar-spin{ to{ transform:rotate(360deg); } }
 
 @keyframes blip-ping{
-  0%, 3%{ opacity:0; box-shadow:0 0 0 0 rgba(107,255,194,0); }
-  4%{ opacity:1; box-shadow:0 0 0 0 rgba(107,255,194,0.7); }
-  9%{ opacity:0.9; box-shadow:0 0 0 10px rgba(107,255,194,0); }
-  16%, 100%{ opacity:0; box-shadow:0 0 0 0 rgba(107,255,194,0); }
+  0%, 3%{ opacity:0; box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+  4%{ opacity:1; box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 70%, transparent); }
+  9%{ opacity:0.9; box-shadow:0 0 0 10px color-mix(in srgb, var(--accent) 0%, transparent); }
+  16%, 100%{ opacity:0; box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -574,9 +547,9 @@ body.compact .brand-text h1{ font-size:16px; }
 #footerUpdated.scan-warn{ color:var(--signal); }
 
 @keyframes pulse{
-  0%{ box-shadow:0 0 0 0 rgba(107,255,194,0.45); }
-  70%{ box-shadow:0 0 0 14px rgba(107,255,194,0); }
-  100%{ box-shadow:0 0 0 0 rgba(107,255,194,0); }
+  0%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+  70%{ box-shadow:0 0 0 14px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
 }
 
 /* Last confirmed formation — a small feature block. The accent label sits on
@@ -744,7 +717,7 @@ body.compact .brand-text h1{ font-size:16px; }
    already this site's "recency / time" colour (the last-formation chip, the
    non-article kind badges), so it doesn't introduce a new signal. */
 .news-date{ color:var(--signal); }
-.news-item a:hover .news-date{ color:#ffc87a; }
+.news-item a:hover .news-date{ color:color-mix(in srgb, var(--signal) 70%, white); }
 
 /* Lead items — the most recent few get a summary paragraph and a little more
    breathing room, so the top of the list reads as reporting rather than a
@@ -797,14 +770,14 @@ body.compact .brand-text h1{ font-size:16px; }
 .news-kind--event,
 .news-kind--community{
   color:var(--signal);
-  border-color:rgba(255,180,84,0.28);
+  border-color:color-mix(in srgb, var(--signal) 28%, transparent);
 }
 .news-item a:hover .news-kind--documentary,
 .news-item a:hover .news-kind--video,
 .news-item a:hover .news-kind--podcast,
 .news-item a:hover .news-kind--event,
 .news-item a:hover .news-kind--community{
-  border-color:rgba(255,180,84,0.5);
+  border-color:color-mix(in srgb, var(--signal) 50%, transparent);
   color:var(--signal);
 }
 
@@ -870,7 +843,7 @@ body.compact .brand-text h1{ font-size:16px; }
   font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.04em;
   border-radius:999px; padding:1px 8px; flex-shrink:0;
 }
-.social-live-tag{ color:var(--accent); border:1px solid var(--accent-dim); background:rgba(107,255,194,0.08); }
+.social-live-tag{ color:var(--accent); border:1px solid var(--accent-dim); background:color-mix(in srgb, var(--accent) 8%, transparent); }
 .social-curated-tag{ color:var(--text-2); border:1px solid var(--border); }
 .social-time{ font-family:var(--font-mono); font-size:10.5px; color:var(--text-2); margin-left:auto; }
 
@@ -894,7 +867,7 @@ body.compact .brand-text h1{ font-size:16px; }
    an iframe by their embed.js) takes over and styles itself. */
 .social-embed-slot.social-skeleton{
   height:88px; border-radius:var(--radius);
-  background:linear-gradient(90deg, var(--panel) 0%, rgba(107,255,194,0.06) 50%, var(--panel) 100%);
+  background:linear-gradient(90deg, var(--panel) 0%, color-mix(in srgb, var(--accent) 6%, transparent) 50%, var(--panel) 100%);
   animation:skeletonPulse 1.6s ease-in-out infinite;
 }
 @keyframes skeletonPulse{
@@ -936,7 +909,7 @@ body.compact .brand-text h1{ font-size:16px; }
   font-family:var(--font-mono); font-size:12px; color:var(--accent);
   border:1px solid var(--accent-dim); border-radius:999px; padding:6px 13px;
 }
-.search-launch:hover{ background:rgba(107,255,194,0.08); text-decoration:none; }
+.search-launch:hover{ background:color-mix(in srgb, var(--accent) 8%, transparent); text-decoration:none; }
 
 .keyword-note{
   margin:8px 0 0; font-family:var(--font-mono); font-size:10.5px;
@@ -1060,7 +1033,7 @@ body.compact .brand-text h1{ font-size:16px; }
   transition:border-color .15s, color .15s;
 }
 .chip:hover{ border-color:var(--border-strong); color:var(--text-0); }
-.chip.active{ border-color:var(--accent); color:var(--accent); background:rgba(107,255,194,0.08); }
+.chip.active{ border-color:var(--accent); color:var(--accent); background:color-mix(in srgb, var(--accent) 8%, transparent); }
 
 .jump-btn{
   display:flex; align-items:center; gap:6px;
@@ -1147,7 +1120,7 @@ body.compact .brand-text h1{ font-size:16px; }
   transition:background .15s, color .15s;
 }
 .rail-day:hover{ background:var(--panel-soft); color:var(--text-0); }
-.rail-day.active{ color:var(--accent); background:rgba(107,255,194,0.10); }
+.rail-day.active{ color:var(--accent); background:color-mix(in srgb, var(--accent) 10%, transparent); }
 .rail-day .count{ color:var(--text-2); font-size:11px; }
 .rail-day.active .count{ color:var(--accent-dim); }
 
@@ -1206,8 +1179,8 @@ body.compact .brand-text h1{ font-size:16px; }
 .story-card:hover{ border-color:var(--border-strong); transform:translateY(-2px); }
 
 @keyframes flashPulse{
-  0%{ box-shadow:0 0 0 0 rgba(107,255,194,0.55); border-color:var(--accent); }
-  100%{ box-shadow:0 0 0 0 rgba(107,255,194,0); border-color:var(--border); }
+  0%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); border-color:var(--accent); }
+  100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); border-color:var(--border); }
 }
 .story-card.flash{ animation:flashPulse 1.4s ease; }
 
@@ -1284,8 +1257,8 @@ body.compact .brand-text h1{ font-size:16px; }
   border:1px solid currentColor;
   white-space:nowrap;
 }
-.auth-badge.auth-hoax{ color:var(--signal); background:rgba(255,180,84,0.08); }
-.auth-badge.auth-anomaly{ color:var(--accent); background:rgba(107,255,194,0.08); }
+.auth-badge.auth-hoax{ color:var(--signal); background:color-mix(in srgb, var(--signal) 8%, transparent); }
+.auth-badge.auth-anomaly{ color:var(--accent); background:color-mix(in srgb, var(--accent) 8%, transparent); }
 .auth-badge.auth-contested{ color:var(--text-1); background:rgba(169,186,200,0.06); }
 
 /* Provenance / "read more" links — the trail back into the research sources. */
@@ -1505,12 +1478,12 @@ body.compact .brand-text h1{ font-size:16px; }
   padding:3px 8px; border-radius:999px;
   border:1px solid var(--border); color:var(--text-2);
 }
-.res-kind--aggregator{ color:var(--accent); border-color:rgba(107,255,194,0.35); }
-.res-kind--photo{ color:#9ad8ff; border-color:rgba(154,216,255,0.32); }
-.res-kind--video{ color:#ffb454; border-color:rgba(255,180,84,0.32); }
-.res-kind--archive{ color:#c9a7ff; border-color:rgba(201,167,255,0.32); }
-.res-kind--community{ color:#ff9ec4; border-color:rgba(255,158,196,0.32); }
-.res-kind--commentary{ color:#ffd479; border-color:rgba(255,212,121,0.32); }
+.res-kind--aggregator{ color:var(--accent); border-color:color-mix(in srgb, var(--accent) 35%, transparent); }
+.res-kind--photo{ color:var(--kind-photo); border-color:color-mix(in srgb, var(--kind-photo) 32%, transparent); }
+.res-kind--video{ color:var(--kind-video); border-color:color-mix(in srgb, var(--kind-video) 32%, transparent); }
+.res-kind--archive{ color:var(--kind-archive); border-color:color-mix(in srgb, var(--kind-archive) 32%, transparent); }
+.res-kind--community{ color:var(--kind-community); border-color:color-mix(in srgb, var(--kind-community) 32%, transparent); }
+.res-kind--commentary{ color:var(--kind-commentary); border-color:color-mix(in srgb, var(--kind-commentary) 32%, transparent); }
 
 .res-domain{
   font-family:var(--font-mono); font-size:10.5px;
@@ -1535,8 +1508,8 @@ body.compact .brand-text h1{ font-size:16px; }
 .res-offers li{
   font-family:var(--font-mono); font-size:10.5px;
   padding:3px 8px; border-radius:6px;
-  background:rgba(120,255,200,0.06);
-  border:1px solid rgba(120,255,200,0.10);
+  background:color-mix(in srgb, var(--accent) 6%, transparent);
+  border:1px solid color-mix(in srgb, var(--accent) 10%, transparent);
   color:var(--text-2);
 }
 
@@ -1557,10 +1530,10 @@ body.compact .brand-text h1{ font-size:16px; }
   font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.06em;
   color:var(--accent);
   padding:7px 14px; border-radius:8px;
-  border:1px solid rgba(107,255,194,0.28);
+  border:1px solid color-mix(in srgb, var(--accent) 28%, transparent);
 }
 .res-link::after{ content:" ↗"; opacity:0.7; }
-.res-link:hover{ background:rgba(107,255,194,0.09); text-decoration:none; }
+.res-link:hover{ background:color-mix(in srgb, var(--accent) 9%, transparent); text-decoration:none; }
 
 .res-section--note{ margin-top:var(--s-7); }
 .res-unreachable{
@@ -1599,7 +1572,7 @@ body.compact .brand-text h1{ font-size:16px; }
   width:clamp(96px, 16vw, 132px);
   height:clamp(96px, 16vw, 132px);
   color:var(--accent);
-  filter:drop-shadow(0 0 16px rgba(107,255,194,0.28));
+  filter:drop-shadow(0 0 16px color-mix(in srgb, var(--accent) 28%, transparent));
   margin-bottom:var(--s-4);
 }
 .about-article h1{

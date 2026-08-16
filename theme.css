@@ -1,0 +1,190 @@
+/* ==========================================================================
+   theme.css — the ONLY file that decides what this site looks like.
+
+   Everything visual is a token here. styles.css, research.css and labs.css
+   contain layout and structure and read these values; none of them hardcodes
+   a colour or a typeface. So:
+
+     · to retheme the site      → edit this file, nothing else
+     · to retype the site       → edit the --font-* block, nothing else
+     · to add a NEW typeface    → declare the @font-face in fonts.css first,
+                                  then point a --font-* token at it here
+
+   Load order matters: fonts.css → theme.css → styles.css → page stylesheet.
+
+   ---------------------------------------------------------------------------
+   HOW THIS IS ORGANISED
+
+   Two layers, deliberately:
+
+     1. PRIMITIVES — raw values with names that describe the COLOUR
+        (--ink-void, --hue-signal). Change these to reskin.
+     2. SEMANTICS  — names that describe the JOB (--bg-0, --accent, --border).
+        Everything else in the codebase uses only these. A component never
+        reaches past a semantic token to a primitive.
+
+   That indirection is what makes a reskin a small edit: repoint the semantic
+   layer at different primitives and the whole site follows, including the
+   charts.
+
+   ---------------------------------------------------------------------------
+   CURRENT THEME: "Transmission"
+
+   A signal arriving from somewhere cold. Indigo-black ground rather than
+   neutral black, electric cyan as the carrier, magenta as the alert. The type
+   is Syne (wide, geometric, faintly wrong in a way that suits the subject),
+   Space Grotesk for prose, Space Mono for anything that is data.
+
+   Previous theme was "Listening Post": near-black #070b12, mint #6bffc2,
+   amber #ffb454, Bricolage Grotesque / Newsreader / Fragment Mono. Kept in
+   the commented block at the bottom of this file so it can be restored by
+   swapping which block is live.
+   ========================================================================== */
+
+:root{
+
+  /* =======================================================================
+     1. PRIMITIVES
+     ======================================================================= */
+
+  /* -- ground: indigo-black, not neutral. The faint blue keeps the dark
+        surfaces from reading as "unstyled black". */
+  --ink-void:      #08060f;
+  --ink-deep:      #0b0a18;
+  --ink-panel:     #110f22;
+  --ink-panel-alt: #0e0c1d;
+
+  /* -- text, stepped down in three stops */
+  --paper-0: #ecebf6;
+  --paper-1: #a9a7c4;
+  --paper-2: #6f6d90;
+
+  /* -- carrier (primary): electric cyan */
+  --hue-carrier:     #5ce1ff;
+  --hue-carrier-dim: #2b7f96;
+
+  /* -- alert (secondary): magenta. Reserved for "look at this", never
+        decorative, so it keeps meaning something. */
+  --hue-alert:     #ff5cf0;
+  --hue-alert-dim: #96388c;
+
+  /* =======================================================================
+     2. SEMANTIC TOKENS — what the rest of the codebase uses
+     ======================================================================= */
+
+  --bg-0:       var(--ink-void);
+  --bg-1:       var(--ink-deep);
+  --panel:      var(--ink-panel);
+  --panel-soft: var(--ink-panel-alt);
+
+  --border:        rgba(92,225,255,0.15);
+  --border-strong: rgba(92,225,255,0.32);
+
+  --text-0: var(--paper-0);
+  --text-1: var(--paper-1);
+  --text-2: var(--paper-2);
+
+  --accent:     var(--hue-carrier);
+  --accent-dim: var(--hue-carrier-dim);
+  --signal:     var(--hue-alert);
+  --signal-dim: var(--hue-alert-dim);
+
+  /* =======================================================================
+     3. CHART PALETTE
+     These are NOT the UI accents. Chart marks sit on --panel and must survive
+     colour-vision deficiency, so they were computed in OKLCH at a lightness
+     the dark surface can hold and machine-validated for lightness band, chroma
+     floor, adjacent-pair CVD separation (Machado 2009) and WCAG contrast
+     against --panel. The UI accent sits far too light to pass that band, which
+     is why it is not in this list.
+
+     Assign --cat-1..8 in fixed order and never cycle them; a 9th series folds
+     into an "Other" bucket. REORDERING BREAKS the CVD separation between
+     neighbours — re-run the dataviz validator if you touch these.
+     ======================================================================= */
+  --cat-1:#00b3a4;  /* teal    */
+  --cat-2:#c88a1e;  /* amber   */
+  --cat-3:#5b8dfa;  /* blue    */
+  --cat-4:#e0678f;  /* rose    */
+  --cat-5:#7fa22f;  /* olive   */
+  --cat-6:#b473d8;  /* violet  */
+  --cat-7:#e06d4f;  /* orange  */
+  --cat-8:#0ea5c4;  /* cyan    */
+
+  /* Sequential ramp (magnitude): one hue, monotone lightness, tuned to the
+     carrier so charts read as part of the same signal. */
+  --seq-1:#0f5e7e;
+  --seq-2:#12718f;
+  --seq-3:#1b95b3;
+  --seq-4:#4fc0d8;
+  --seq-5:#8ae8fb;
+
+  /* Diverging pair (polarity): alert vs carrier with a NEUTRAL grey midpoint.
+     Never put a hue at the midpoint. */
+  --div-neg-3:#a83a9c; --div-neg-2:#cb4bbc; --div-neg-1:#e878da;
+  --div-mid:#5f5d78;
+  --div-pos-1:#4fc0d8; --div-pos-2:#1b95b3; --div-pos-3:#0b6c86;
+
+  /* Resource-kind badges (Resources page). Mapped onto the categorical palette
+     rather than given their own hexes, so they inherit its CVD validation and
+     move with the theme. These used to be six hardcoded colours in styles.css,
+     which quietly meant a reskin was never actually one edit. */
+  --kind-photo:      var(--cat-3);
+  --kind-video:      var(--cat-2);
+  --kind-archive:    var(--cat-6);
+  --kind-community:  var(--cat-4);
+  --kind-commentary: var(--cat-7);
+
+  /* Chart chrome stays recessive so the marks carry the eye. */
+  --chart-grid:rgba(169,167,196,0.13);
+  --chart-axis:rgba(169,167,196,0.30);
+  --chart-surface:var(--panel);
+
+  /* =======================================================================
+     4. TYPE
+     Swap these three lines to retype the site. Anything referenced here must
+     have an @font-face in fonts.css.
+     ======================================================================= */
+  --font-display:'Syne', 'Trebuchet MS', sans-serif;
+  --font-body:'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:'Space Mono', 'SF Mono', Consolas, monospace;
+
+  /* Syne runs wide and tall; without this, display headings sit noticeably
+     looser than the old face at the same nominal size. */
+  --display-tracking:-0.015em;
+  --display-weight:700;
+
+  /* =======================================================================
+     5. SPACING & SHAPE
+     ======================================================================= */
+  --s-1:4px; --s-2:8px; --s-3:16px; --s-4:24px; --s-5:32px; --s-6:48px; --s-7:64px;
+  --radius:6px;
+  --max-width:1180px;
+}
+
+/* ==========================================================================
+   PREVIOUS THEME — "Listening Post"
+   To restore: uncomment this block, AND re-add the Bricolage Grotesque /
+   Newsreader / Fragment Mono @font-face rules to fonts.css (the .woff2 files
+   are still in fonts/, so only the declarations are missing). Then re-measure
+   CHAR_W_MAP / CHAR_W_AXIS in research-app.js — those are per-face.
+
+:root{
+  --ink-void:#070b12; --ink-deep:#0b1220;
+  --ink-panel:#0e1828; --ink-panel-alt:#0c1422;
+  --paper-0:#eaf2f3; --paper-1:#a9bac8; --paper-2:#6c7e91;
+  --hue-carrier:#6bffc2; --hue-carrier-dim:#3c9a76;
+  --hue-alert:#ffb454;   --hue-alert-dim:#9a6c33;
+  --border:rgba(120,255,200,0.14); --border-strong:rgba(120,255,200,0.30);
+  --cat-1:#00ac7d; --cat-2:#c68102; --cat-3:#4296e7; --cat-4:#dd696d;
+  --cat-5:#78a235; --cat-6:#b773cb; --cat-7:#db6f49; --cat-8:#0da5b2;
+  --seq-1:#04684e; --seq-2:#078968; --seq-3:#15ab83; --seq-4:#48cba1; --seq-5:#6eecc1;
+  --div-neg-3:#a66c04; --div-neg-2:#ce8703; --div-neg-1:#f0a63c;
+  --div-mid:#5c6672;
+  --div-pos-1:#36d4a6; --div-pos-2:#05b388; --div-pos-3:#02906d;
+  --font-display:'Bricolage Grotesque','Segoe UI',sans-serif;
+  --font-body:'Newsreader',Georgia,serif;
+  --font-mono:'Fragment Mono','SF Mono',Consolas,monospace;
+  --display-tracking:-0.02em; --display-weight:700;
+}
+   ========================================================================== */

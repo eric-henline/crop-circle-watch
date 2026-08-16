@@ -145,38 +145,14 @@
     return WEEKDAYS[d.getDay()] + ' · ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
   }
 
-  // Renders in the viewer's own local timezone (browsers have no other
-  // option without a server round-trip) but now *names* that zone instead
-  // of silently omitting it, via Intl's timeZoneName part. Falls back to the
-  // old plain-time format if Intl support is missing.
+  // Delegates to shared-chrome.js so all four pages render this identically.
+  // It used to be implemented here as well as in page-chrome.js and
+  // research-app.js; the copies drifted and two of them leaked a locale
+  // connector into the string ("AUG 15 AT 7:06 AM"). One formatter now.
   function formatScanStamp(iso) {
-    if (!iso) return '—';
-    var d = new Date(iso);
-    if (isNaN(d.getTime())) return iso;
-    try {
-      var parts = new Intl.DateTimeFormat(undefined, {
-        month: 'short', day: 'numeric',
-        hour: 'numeric', minute: '2-digit',
-        timeZoneName: 'short'
-      }).formatToParts(d);
-      var month = '', day = '', hour = '', minute = '', dayPeriod = '', tz = '';
-      parts.forEach(function (p) {
-        if (p.type === 'month') month = p.value.toUpperCase();
-        else if (p.type === 'day') day = p.value;
-        else if (p.type === 'hour') hour = p.value;
-        else if (p.type === 'minute') minute = p.value;
-        else if (p.type === 'dayPeriod') dayPeriod = p.value;
-        else if (p.type === 'timeZoneName') tz = p.value;
-      });
-      if (month && day && hour && minute) {
-        return month + ' ' + day + ', ' + hour + ':' + minute + (dayPeriod ? ' ' + dayPeriod : '') + (tz ? ' ' + tz : '');
-      }
-    } catch (e) { /* fall through to the plain formatter below */ }
-    var hh = d.getHours(), mm = d.getMinutes();
-    var ampm = hh >= 12 ? 'PM' : 'AM';
-    var hh12 = hh % 12; if (hh12 === 0) hh12 = 12;
-    var mmStr = (mm < 10 ? '0' : '') + mm;
-    return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + hh12 + ':' + mmStr + ' ' + ampm;
+    return (window.CCW && window.CCW.formatScanStamp)
+      ? window.CCW.formatScanStamp(iso)
+      : (iso || '\u2014');
   }
 
   // How many hours old the last scan is, or null if the stamp is missing/unparseable.

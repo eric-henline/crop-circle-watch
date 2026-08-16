@@ -17,20 +17,11 @@
 
   var meta = window.DASHBOARD_META || {};
 
-  // Same stamp feeds the header chip and the footer status block.
-  if (meta.lastScan) {
-    var stamp;
-    try {
-      stamp = new Intl.DateTimeFormat(undefined, {
-        month: 'short', day: 'numeric', hour: 'numeric',
-        minute: '2-digit', timeZoneName: 'short'
-      }).format(new Date(meta.lastScan)).toUpperCase();
-    } catch (e) { stamp = meta.lastScan; }
-    ['statScan', 'footerUpdated'].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.textContent = stamp;
-    });
-  }
+  // Same stamp feeds the header chip and the footer status block. The
+  // formatting lives in shared-chrome.js so all four pages render it identically —
+  // this file used to format it itself and picked up a locale connector ("AUG
+  // 15 AT 7:06 AM") that index.html never showed.
+  if (meta.lastScan && window.CCW) window.CCW.paintScanStamp(meta.lastScan);
 
   var form = document.getElementById('headerSearchForm');
   var input = document.getElementById('headerSearchInput');

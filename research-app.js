@@ -55,6 +55,17 @@
 
   function catVar(i) { return 'var(--cat-' + ((i % 8) + 1) + ')'; }
 
+  // Advance width per character of the theme's mono face, MEASURED (see
+  // tools/ — render the string and divide) rather than assumed. Label
+  // placement builds collision boxes from these, so if they are too small the
+  // boxes are too narrow and labels overlap or run off the plot.
+  //
+  // Re-measure if --font-mono changes in theme.css. These are for Space Mono;
+  // the previous face (Fragment Mono) was ~6% narrower, and inheriting its
+  // numbers is exactly how map labels started clipping.
+  var CHAR_W_MAP  = 5.35;   // 8.6px + 0.02em  (.r-map-label)
+  var CHAR_W_AXIS = 6.42;   // 10px  + 0.04em  (.r-axis-label)
+
   // Read live rather than cached: the OS setting can change mid-session, and a
   // reader who turns motion off should not have to reload to be believed.
   function prefersReducedMotion() {
@@ -732,8 +743,7 @@
 
     var out = [];
     items.forEach(function (it) {
-      // Fragment Mono at 8.6px runs ~5.05px per character.
-      var tw = it.text.length * 5.05, s, b;
+      var tw = it.text.length * CHAR_W_MAP, s, b;
 
       for (s = 0; s < slots.length; s++) {
         var lx = it.x + slots[s][0], ly = it.y + slots[s][1];
@@ -1067,7 +1077,7 @@
         // path saws it in half ("…et Long Barrow"). Mirror the offset to the
         // other side of the symbol when that happens, and drop the label only
         // if neither side fits.
-        var tw = m.name.length * 5.05;
+        var tw = m.name.length * CHAR_W_MAP;
         function span(px, a) {
           return a === 'start' ? [px, px + tw]
             : a === 'end' ? [px - tw, px]
@@ -2051,8 +2061,8 @@
       var dy = k === 0 ? -16 : 20;
       // Formation names run long, and the biggest ones sit at the right edge by
       // definition. Flip the anchor rather than clamping a centred label, or
-      // the text slides off the plot. Fragment Mono at 10px is ~6.2px/char.
-      var halfW = d.label.length * 3.1, tx = p.x, anchor = 'middle';
+      // the text slides off the plot.
+      var halfW = d.label.length * CHAR_W_AXIS / 2, tx = p.x, anchor = 'middle';
       if (p.x + halfW > W - 4) { anchor = 'end'; tx = W - 4; }
       else if (p.x - halfW < padL) { anchor = 'start'; tx = padL; }
       svg.appendChild(el('line', {
@@ -2244,7 +2254,7 @@
           'is plotted against the things that actually surround it: the neolithic ' +
           'and iron-age monuments in amber, the chalk hill figures in violet, the ' +
           'downland high points in green, and the towns in grey. The pattern that ' +
-          'emerges is not "Wiltshire" so much as a corridor — the Marlborough ' +
+          'emerges is not "Wiltshire" so much as a corridor: the Marlborough ' +
           'Downs and the Vale of Pewsey, roughly twenty miles of chalk running ' +
           'east from Avebury, with the Avebury complex itself sitting in the ' +
           'thickest part of it. Stonehenge, which is what most people picture, ' +
@@ -2255,7 +2265,7 @@
           'acquired a dense population of researchers and cameras around 1990 and ' +
           'has been watched more closely than anywhere else on earth ever since. ' +
           'Symbols sized larger than one record mark coordinates shared by ' +
-          'several formations — usually a village- or site-level fix rather than ' +
+          'several formations, usually a village- or site-level fix rather than ' +
           'a surveyed one, a limit of the dataset rather than a finding. Hover ' +
           'anything for the names behind it.'
       }));
@@ -2299,7 +2309,7 @@
       }),
       reading: 'Wiltshire accounts for more formations than every non-UK country ' +
         'combined. The county sits on chalk downland with large open fields and ' +
-        'a dense concentration of neolithic monuments — and it is also where ' +
+        'a dense concentration of neolithic monuments, and it is also where ' +
         'nearly all dedicated crop circle researchers are based, so observation ' +
         'effort and formation count are hard to separate here.',
       table: tableView(['County', 'Formations'],
@@ -2320,7 +2330,7 @@
         ' fall within the engine\'s "near ancient site" threshold and ' + fmt(near.far) +
         ' do not. The difference in mean distance tests as statistically significant ' +
         '(t = ' + fmt(near.tStat, 2) + ', p = ' + fmt(near.pValue, 4) + '), which is ' +
-        'the strongest geographic signal in the dataset — though proximity to ' +
+        'the strongest geographic signal in the dataset, though proximity to ' +
         'monuments and proximity to Wiltshire chalk downland are themselves ' +
         'correlated, so this is not yet an independent finding.'
     }));
@@ -2348,8 +2358,8 @@
           'sit beside, so this is a ranking within a small, self-selected slice — ' +
           'the records that name a site are disproportionately the famous ones. ' +
           'Read it as "which sites researchers write down", not as a league table ' +
-          'of monument attraction. The Avebury complex — Silbury Hill, Avebury ' +
-          'itself, the West Kennett barrow, the Hackpen horse — accounts for most ' +
+          'of monument attraction. The Avebury complex (Silbury Hill, Avebury ' +
+          'itself, the West Kennett barrow, the Hackpen horse) accounts for most ' +
           'of the top of this list, and those are all within a few miles of each ' +
           'other on the same stretch of Wiltshire chalk.',
         table: tableView(['Site', 'Formations'],
@@ -2368,7 +2378,7 @@
         },
         block: rankList(s.repeatFields, { color: 'var(--seq-3)', format: function (v) { return fmt(v) + '×'; } }),
         reading: 'Recurrence at a single named location is one of the few patterns ' +
-          'in the archive that a purely random process would not produce — but it ' +
+          'in the archive that a purely random process would not produce, but it ' +
           'is also exactly what you would expect from a small number of ' +
           'well-watched, easily-accessed fields near the roads researchers drive. ' +
           'Note too that some entries here are generic ("Barley field", "Wheat ' +
@@ -2399,7 +2409,7 @@
       reading: 'This is the least mysterious pattern in the archive and the most ' +
         'important one to state plainly: formations appear when there is standing ' +
         'crop tall enough to lay down. The season opens as winter wheat reaches ' +
-        'height and closes at harvest. Any explanation — human or otherwise — has ' +
+        'height and closes at harvest. Any explanation, human or otherwise, has ' +
         'to operate inside that window, so seasonality discriminates between ' +
         'hypotheses far less than it first appears to. ' +
         'The dial is used rather than a column chart because the year is a loop, ' +
@@ -2421,9 +2431,9 @@
           unit: 'formations',
           stroke: 'var(--seq-4)'
         }),
-        reading: 'The record rises sharply through the 1990s — the period when crop ' +
+        reading: 'The record rises sharply through the 1990s, the period when crop ' +
           'circles became a mass-media subject and dedicated documentation groups ' +
-          'formed — then settles. Read this as a curve of documentation effort at ' +
+          'formed, then settles. Read this as a curve of documentation effort at ' +
           'least as much as one of formation frequency: the archive can only ' +
           'contain what somebody recorded. The apparent fall in the most recent ' +
           'year is normally just the current season still being incomplete.',
@@ -2448,14 +2458,14 @@
           { label: 'row peak', color: 'var(--seq-5)' }
         ]),
         reading: 'Each row is one decade, shaded against its own busiest month ' +
-          'rather than against the whole archive — the decades hold very ' +
+          'rather than against the whole archive: the decades hold very ' +
           'different record counts, so a shared scale would render the thin rows ' +
           'blank and tell you nothing. Only decades with at least five ' +
           'month-dated records appear at all, which is why the record starts here ' +
           'in the 1990s rather than in the 1970s. What this asks is whether the ' +
           'shape of the season has shifted. It broadly has not: the July–August ' +
           'core sits in the middle of every row. What ' +
-          'does change is the spread — later decades carry more non-summer ' +
+          'does change is the spread: later decades carry more non-summer ' +
           'entries, which most likely tracks the archive picking up southern ' +
           'hemisphere and out-of-season reports rather than the season widening.',
         table: tableView(['Decade'].concat(e.monthNames),
@@ -2492,10 +2502,10 @@
         reading: 'The archive\'s single-number statistics are averages over three ' +
           'and a half centuries of very unevenly distributed records, so it is ' +
           'worth seeing what they look like decade by decade. Only decades ' +
-          'holding at least ten records are plotted — a percentage over three ' +
+          'holding at least ten records are plotted. A percentage over three ' +
           'formations is noise wearing the costume of a trend. Two things stand ' +
           'out. Mean complexity and the sacred-geometry rate both peak in the ' +
-          '1990s and drift down afterwards — the opposite of the popular claim ' +
+          '1990s and drift down afterwards, the opposite of the popular claim ' +
           'that formations have grown more elaborate, and consistent with the ' +
           'flat regression on the Geometry tab. And the UK share swings hard: ' +
           'high in the 1990s, down through the 2010s as European and North ' +
@@ -2530,7 +2540,7 @@
         unit: 'formations',
         fill: 'var(--seq-3)'
       }),
-      reading: 'The distribution is strongly weighted toward the low end — the ' +
+      reading: 'The distribution is strongly weighted toward the low end: the ' +
         'archive is mostly plain circles and simple rings. The elaborate ' +
         'fractal and pictogram formations that dominate public perception of the ' +
         'subject are a small minority of the actual record, which is worth ' +
@@ -2567,7 +2577,7 @@
       reading: 'Counts of formations the engine has flagged as containing each ' +
         'feature. These flags come from the source records and the engine\'s own ' +
         'scoring rather than from independent re-measurement, so treat them as ' +
-        'a research index — a list of where to look — rather than as verified ' +
+        'a research index (a list of where to look) rather than as verified ' +
         'mathematical claims about each formation.',
       table: tableView(['Feature', 'Formations'],
         g.encoded.map(function (d) { return [d.label, d.value]; }))
@@ -2670,7 +2680,7 @@
           'more interesting part is the top: the most elaborate formations are ' +
           'not the largest ones. Whatever the elaborate designs cost to produce, ' +
           'it is evidently not paid for in ground area. Band counts are small at ' +
-          'both extremes — hover each bar for the sample behind it.',
+          'both extremes. Hover each bar for the sample behind it.',
         table: tableView(['Complexity band', 'Mean diameter (m)', 'Records with a size'],
           sc.byComplexity.map(function (d) { return [d.label, fmt(d.value, 1), d.n]; }))
       }));
@@ -2731,7 +2741,7 @@
         return { label: d.label + ' — ' + fmt(d.value), color: COLORS[i] };
       })),
       reading: 'One square per formation, so the picture is a count rather than a ' +
-        'proportion — which matters here, because the proportion is the ' +
+        'proportion, which matters here, because the proportion is the ' +
         'misleading half. Each record in the research index carries one of four ' +
         'verdicts, assigned by the daily research agent from the sourcing it ' +
         'found. The honest headline is the grey field: ' + fmt(a.counts[3].value) + ' records ' +
@@ -2772,7 +2782,7 @@
           'in the archive, well above the very-high-coverage tier. The likeliest ' +
           'reading is that heavy coverage attaches to formations that are ' +
           'accessible, photogenic and near a famous monument, which is not the ' +
-          'same property as being structurally elaborate — and that the archive\'s ' +
+          'same property as being structurally elaborate, and that the archive\'s ' +
           'coverage field is itself a coarse after-the-fact judgment. Either way, ' +
           'the formations the public knows are not the formations the data finds ' +
           'most interesting.',
@@ -2802,7 +2812,7 @@
           valueFormat: function (v) { return fmt(v, 1) + '%'; }
         }),
         reading: 'The same features the Geometry tab counts, expressed as a share ' +
-          'of the whole archive rather than as raw totals — which changes how ' +
+          'of the whole archive rather than as raw totals, which changes how ' +
           'they read. Sacred geometry is flagged on about a fifth of the record; ' +
           'everything else is a thin minority, and the two features most often ' +
           'cited as evidence of encoded intent, binary messages and Fibonacci ' +
@@ -2954,20 +2964,10 @@
     set('rsWeek', R.week || '—');
     set('rsSpan', span ? span[0] + '–' + span[1] : '—');
 
-    // Same scan stamp the other two pages show, in the header chip and footer.
-    if (meta.lastScan) {
-      var stamp;
-      try {
-        stamp = new Intl.DateTimeFormat(undefined, {
-          month: 'short', day: 'numeric', hour: 'numeric',
-          minute: '2-digit', timeZoneName: 'short'
-        }).format(new Date(meta.lastScan)).toUpperCase();
-      } catch (e) { stamp = meta.lastScan; }
-      ['statScan', 'footerUpdated'].forEach(function (id) {
-        var n = document.getElementById(id);
-        if (n) n.textContent = stamp;
-      });
-    }
+    // Same scan stamp the other pages show, in the header chip and footer.
+    // Shared formatter (shared-chrome.js) — see its header for why this is not
+    // done inline any more.
+    if (meta.lastScan && window.CCW) window.CCW.paintScanStamp(meta.lastScan);
   }
 
   function init() {

@@ -17,6 +17,7 @@
      header of fonts.css for why. Nothing on this page contacts a third party
      before the visitor asks it to. -->
 <link rel="stylesheet" href="/crop-circle-watch/fonts.css">
+<link rel="stylesheet" href="/crop-circle-watch/theme.css">
 
 <link rel="stylesheet" href="/crop-circle-watch/styles.css">
 
@@ -25,20 +26,21 @@
      stylesheet it inherits from has been renamed or moved. -->
 <style>
   /* Palette repeated literally rather than read from the --bg-0/--text-0
-     custom properties in styles.css. If a visitor hits this page because a
-     path is wrong, the stylesheet may be exactly what failed to load — a 404
-     that renders as unstyled black-on-white is a second failure on top of the
-     first. These five values are the only duplication and they are stable. */
-  body { background: #070b12; color: #eaf2f3; margin: 0; }
+     custom properties in theme.css. If a visitor hits this page because a
+     path is wrong, the stylesheet may be exactly what failed to load, and a
+     404 that renders as unstyled black-on-white is a second failure on top of
+     the first. This is the ONE place in the site allowed to repeat the palette
+     literally, and it has to be updated by hand whenever theme.css changes. */
+  body { background: #08060f; color: #ecebf6; margin: 0; }
   .notfound { max-width: 34rem; margin: 18vh auto 0; padding: 0 1.5rem;
-              font-family: Newsreader, Georgia, serif; line-height: 1.6; }
-  .notfound .code { font-family: 'Fragment Mono', ui-monospace, monospace;
-                    font-size: .8rem; letter-spacing: .12em; color: #6c7e91; }
-  .notfound h1 { font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+              font-family: 'Space Grotesk', system-ui, sans-serif; line-height: 1.6; }
+  .notfound .code { font-family: 'Space Mono', ui-monospace, monospace;
+                    font-size: .8rem; letter-spacing: .12em; color: #6f6d90; }
+  .notfound h1 { font-family: 'Syne', system-ui, sans-serif;
                  font-size: clamp(1.8rem, 5vw, 2.6rem); margin: .4rem 0 .8rem; }
-  .notfound p { color: #a9bac8; }
+  .notfound p { color: #a9a7c4; }
   .notfound nav { margin-top: 1.6rem; font-size: .95rem; }
-  .notfound a { color: #6bffc2; }
+  .notfound a { color: #5ce1ff; }
 </style>
 </head>
 <body>
@@ -52,7 +54,7 @@
   <p class="code">404</p>
   <h1>No formation here</h1>
   <p>
-    That page does not exist — or it moved. The live log is the best place to start.
+    That page does not exist, or it moved. The live log is the best place to start.
   </p>
   <nav>
     <a href="/crop-circle-watch/">Back to the formation log</a>
