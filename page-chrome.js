@@ -29,7 +29,7 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var q = (input && input.value.trim()) || '';
-      window.location.href = 'index.html' + (q ? '?q=' + encodeURIComponent(q) : '') + '#timeline';
+      window.location.href = 'timeline.html' + (q ? '?q=' + encodeURIComponent(q) : '');
     });
   }
 })();

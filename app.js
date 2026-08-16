@@ -237,6 +237,7 @@
   }
 
   function renderChips() {
+    if (!els.chips) return;
     var tags = collectTags(timelineStories()).slice(0, 7);
     var html = '<button type="button" class="chip' + (state.tag === 'all' ? ' active' : '') + '" data-tag="all">All</button>';
     tags.forEach(function (t) {
@@ -527,6 +528,7 @@
 
   // -- render feed ------------------------------------------------------------
   function renderFeed() {
+    if (!els.feed) return;
     var visible = timelineStories().filter(matchesFilter);
     els.feed.innerHTML = '';
 
@@ -575,6 +577,7 @@
 
   // -- render rail ------------------------------------------------------------
   function renderRail() {
+    if (!els.rail) return;
     var railStories = timelineStories();
     var grouped = groupByDate(railStories);
     var countByDate = grouped.map;               // {ymd: [stories]} — computed once
@@ -635,11 +638,13 @@
   }
 
   function clearSearchInputs() {
+    if (!els.search) return;
     els.search.value = '';
     if (els.headerSearch) els.headerSearch.value = '';
   }
 
   function jumpToDate(ymd) {
+    if (!els.feed) return;
     // Clear active filters so the target date is guaranteed to be visible,
     // then scroll its section into view.
     state.query = '';
@@ -669,6 +674,7 @@
   }
 
   function jumpToStory(rawId) {
+    if (!els.feed) return;
     var id = resolveStoryId(rawId);
     state.query = '';
     state.tag = 'all';
@@ -712,6 +718,7 @@
 
   // -- scroll-spy: keep the rail synced with whichever day is on screen ----
   function observeSections() {
+    if (!els.feed) return;
     if (!('IntersectionObserver' in window)) return;
     if (sectionObserver) sectionObserver.disconnect();
     sectionObserver = new IntersectionObserver(function (entries) {
@@ -783,6 +790,7 @@
 
   // -- hero: last confirmed formation banner --------------------------------
   function renderLastFormation() {
+    if (!els.lfValue) return;
     if (!stories.length) {
       els.lfValue.textContent = 'No formations logged yet';
       els.lfDays.textContent = '—';
@@ -942,6 +950,7 @@
   }
 
   function renderNews() {
+    if (!els.newsList) return;
     var items = coverageItems();
     els.newsList.innerHTML = '';
     if (!items.length) {
@@ -955,6 +964,7 @@
 
   // -- hero widget: field footage strip --------------------------------------
   function renderVideoStrip() {
+    if (!els.videoStrip) return;
     // Capped to 9 — a fixed 3x3 grid (see .video-strip's `repeat(3, 1fr)` in
     // styles.css). Field footage sits opposite Live chatter in the grid's top
     // row, and 12 thumbnails (4 rows) ran the box well past Live chatter's own
@@ -1115,6 +1125,7 @@
   }
 
   function renderSocialPosts() {
+    if (!els.socialPosts) return;
     var posts = [];
     stories.forEach(function (s) {
       (s.socialPosts || []).forEach(function (p) {
@@ -1224,6 +1235,7 @@
   }
 
   function renderKeywordChips() {
+    if (!els.keywordChips) return;
     els.keywordChips.innerHTML = '';
     keywordState.forEach(function (kw) {
       var chip = document.createElement('span');
@@ -1247,6 +1259,7 @@
   }
 
   function updateSearchLinks() {
+    if (!els.searchX || !els.searchBsky) return;
     var query = keywordState.length ? keywordState.join(' OR ') : 'crop circle';
     var encoded = encodeURIComponent(query);
     els.searchX.href = 'https://x.com/search?q=' + encoded + '&src=typed_query&f=live';
@@ -1258,6 +1271,7 @@
   // content is CORS-readable from a static origin, so these are one-tap entry
   // points into the ongoing conversation rather than embedded posts.
   function renderDiscussionForums() {
+    if (!els.discussionForums) return;
     if (!els.discussionForums) return;
     els.discussionForums.innerHTML = '';
     if (!discussionForums.length) {
@@ -1290,6 +1304,7 @@
   }
 
   function wireKeywordForm() {
+    if (!els.keywordForm) return;
     els.keywordForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var val = els.keywordInput.value.trim();
@@ -1373,6 +1388,7 @@
 
   // -- hero stats + footer ------------------------------------------------------------
   function renderStats() {
+    if (!els.statTotal) return;
     els.statTotal.textContent = String(stories.length);
 
     var seasonYear = stories.length ? parseYMD(stories[0].date).getFullYear() : null;
@@ -1437,9 +1453,11 @@
   }
 
   function wireControls() {
-    els.search.addEventListener('input', function () {
-      syncSearch(els.search.value.trim(), els.search);
-    });
+    if (els.search) {
+      els.search.addEventListener('input', function () {
+        syncSearch(els.search.value.trim(), els.search);
+      });
+    }
     if (els.headerSearch) {
       els.headerSearch.addEventListener('input', function () {
         syncSearch(els.headerSearch.value.trim(), els.headerSearch);
@@ -1449,18 +1467,28 @@
       els.headerSearchForm.addEventListener('submit', function (e) {
         e.preventDefault();
         var target = document.getElementById('timeline');
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+        // On the dashboard there is no timeline to scroll to; hand the query
+        // over to the page that can answer it.
+        var q = (els.headerSearch && els.headerSearch.value.trim()) || '';
+        window.location.href = 'timeline.html' + (q ? '?q=' + encodeURIComponent(q) : '');
       });
     }
-    els.jumpLatest.addEventListener('click', function () {
-      var grouped = groupByDate(timelineStories().filter(matchesFilter));
-      if (grouped.order.length) jumpToDate(grouped.order[0]);
-    });
+    if (els.jumpLatest) {
+      els.jumpLatest.addEventListener('click', function () {
+        var grouped = groupByDate(timelineStories().filter(matchesFilter));
+        if (grouped.order.length) jumpToDate(grouped.order[0]);
+      });
+    }
     wireScopeToggle();
     if (els.scrollCue) {
       els.scrollCue.addEventListener('click', function () {
         var target = document.getElementById('timeline');
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        else window.location.href = 'timeline.html';
       });
     }
   }
@@ -1506,6 +1534,20 @@
     if (els.search) els.search.value = q;
     if (els.headerSearch) els.headerSearch.value = q;
   }
+
+  // Legacy permalinks pointed at the dashboard, which no longer carries the
+  // timeline. Forward rather than break them: replaceState so the redirect
+  // does not sit in the back button between the two pages.
+  function forwardLegacyTimelineLinks() {
+    if (els.feed) return false;                     // already on the timeline
+    var hash = window.location.hash;
+    var q = /[?&]q=/.test(window.location.search);
+    if (!isDeepLinkHash(hash) && !q) return false;
+    window.location.replace('timeline.html' + window.location.search + hash);
+    return true;
+  }
+
+  if (forwardLegacyTimelineLinks()) return;
 
   setupTopScroll();
   applyQueryParam();

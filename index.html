@@ -200,8 +200,8 @@
       </dl>
       <div class="header-controls">
         <nav class="site-nav" aria-label="Primary">
-          <a href="#hero" class="nav-link" id="navDashboard">Dashboard</a>
-          <a href="#timeline" class="nav-link">Timeline</a>
+          <a href="index.html" class="nav-link active" id="navDashboard">Dashboard</a>
+          <a href="timeline.html" class="nav-link">Timeline</a>
           <a href="research.html" class="nav-link">Research</a>
           <a href="resources.html" class="nav-link">Resources</a>
           <a href="about.html" class="nav-link">About</a>
@@ -318,34 +318,6 @@
 
 <div class="hero-sentinel" id="heroSentinel" aria-hidden="true"></div>
 
-<section class="timeline-section" id="timeline">
-
-  <div class="control-bar">
-    <div class="scope-toggle" id="scopeToggle" role="tablist" aria-label="Timeline scope">
-      <button class="scope-btn active" data-scope="season" role="tab" aria-selected="true" type="button">This season</button>
-      <button class="scope-btn" data-scope="all" role="tab" aria-selected="false" type="button">All history</button>
-    </div>
-    <label class="search-box">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
-      <input type="search" id="searchInput" placeholder="Search formation, location, source…" autocomplete="off">
-    </label>
-    <div class="filter-chips" id="filterChips"><!-- populated by app.js --></div>
-    <button class="jump-btn" id="jumpLatest" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-target"/></svg>
-      Jump to latest
-    </button>
-  </div>
-
-  <div class="layout">
-    <nav class="timeline-rail" id="timelineRail" aria-label="Scroll back in time">
-      <!-- populated by app.js: year/month/day rail -->
-    </nav>
-
-    <main class="feed" id="feed">
-      <!-- populated by app.js: date-grouped sections -->
-    </main>
-  </div>
-</section>
 
 <footer class="site-footer">
   <div class="footer-inner">
@@ -358,9 +330,10 @@
     </div>
 
     <nav class="footer-nav" aria-label="Footer">
-      <a href="#hero">Dashboard</a>
-      <a href="#timeline">Timeline</a>
+      <a href="index.html">Dashboard</a>
+      <a href="timeline.html">Timeline</a>
       <a href="research.html">Research</a>
+      <a href="resources.html">Resources</a>
       <a href="about.html">About</a>
     </nav>
 

@@ -27,9 +27,10 @@
      the inline styles Bluesky's embed injects. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://embed.bsky.app; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://i.ytimg.com https://cdn.bsky.app https://video.bsky.app; connect-src 'self' https://embed.bsky.app; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://embed.bsky.app; media-src 'self' https://video.bsky.app; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Research — Crop Circle Watch</title>
-<meta name="description" content="Charts and findings from the crop circle research archive: geography, seasonality, geometry, and hypothesis confidence over time.">
+<title>Timeline — Crop Circle Watch</title>
+<meta name="description" content="Every logged crop circle formation in date order, filterable by season, county and media, with source links for each report.">
 
+<!-- Favicon: shared logo.svg, so the mark only has to be defined once -->
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 
 <!-- Typefaces are served from this repo, not fonts.googleapis.com — see the
@@ -39,7 +40,6 @@
 <link rel="stylesheet" href="theme.css">
 
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="research.css">
 </head>
 <body>
 
@@ -100,6 +100,12 @@
   <symbol id="icon-rss" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
     <circle cx="6" cy="18" r="1.6" fill="currentColor" stroke="none"/>
     <path d="M5 12a7 7 0 0 1 7 7M5 6a13 13 0 0 1 13 13"/>
+  </symbol>
+  <!-- Discussion forums. Two overlapping speech bubbles — deliberately its own
+       mark rather than reusing #icon-rss, which now belongs to Live chatter. -->
+  <symbol id="icon-forum" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M3.5 5.5h11a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5H8l-3.5 3v-3h-1a.5.5 0 0 1-.5-.5V6a.5.5 0 0 1 .5-.5z"/>
+    <path d="M18 9.5h2.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5h-1v3l-3.5-3h-3"/>
   </symbol>
   <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
     <path d="M12 5v14M5 12h14"/>
@@ -183,6 +189,10 @@
         </p>
       </div>
     </div>
+    <!-- Right side stacks into two rows: the last-scan stamp pinned to the top
+         corner, and the nav + search sitting on a second row beneath it. The
+         previous single-row version ran the nav straight into the wordmark at
+         common widths. -->
     <div class="header-end">
       <dl class="header-scan">
         <dt>Last scan</dt>
@@ -191,8 +201,8 @@
       <div class="header-controls">
         <nav class="site-nav" aria-label="Primary">
           <a href="index.html" class="nav-link">Dashboard</a>
-          <a href="timeline.html" class="nav-link">Timeline</a>
-          <a href="research.html" class="nav-link active">Research</a>
+          <a href="timeline.html" class="nav-link active">Timeline</a>
+          <a href="research.html" class="nav-link">Research</a>
           <a href="resources.html" class="nav-link">Resources</a>
           <a href="about.html" class="nav-link">About</a>
         </nav>
@@ -207,41 +217,39 @@
   </div>
 </header>
 
+<!-- The header's compact mode is driven off this sentinel. index.html sits it
+     under the hero; here there is no hero, so it sits at the top of the page
+     and the header compacts as soon as the reader scrolls into the feed. -->
+<div class="hero-sentinel" id="heroSentinel" aria-hidden="true"></div>
 
-<main class="research">
+<section class="timeline-section" id="timeline">
 
-  <header class="research-head">
-    <p class="research-eyebrow">Research archive</p>
-    <h1 class="research-title">Deciphering the Pattern Behind the Patterns</h1>
-    <p class="research-lede">
-      Every formation in the archive gets mined for what it might reveal:
-      where circles cluster, when they tend to appear, how their size and
-      geometry have shifted over time, and how the balance of evidence
-      shifts as new data comes in. Individually, a formation is a data
-      point. Set against the full archive, it starts to answer a harder
-      question — whether the geometry carries intent, whether the placement
-      is a message in itself, and what, if anything, these shapes are
-      trying to say.
-    </p>
-    <dl class="research-stamp">
-      <div><dt>Dataset</dt><dd id="rsTotal">—</dd></div>
-      <div><dt>Analysis week</dt><dd id="rsWeek">—</dd></div>
-      <div><dt>Span</dt><dd id="rsSpan">—</dd></div>
-    </dl>
-  </header>
-
-  <div class="research-tabs-wrap">
-    <h2 class="research-tabs-heading">Research Vectors</h2>
-    <div class="research-tabs" id="researchTabs" role="tablist" aria-label="Research topics">
-      <!-- populated by research.js -->
+  <div class="control-bar">
+    <div class="scope-toggle" id="scopeToggle" role="tablist" aria-label="Timeline scope">
+      <button class="scope-btn active" data-scope="season" role="tab" aria-selected="true" type="button">This season</button>
+      <button class="scope-btn" data-scope="all" role="tab" aria-selected="false" type="button">All history</button>
     </div>
+    <label class="search-box">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-search"/></svg>
+      <input type="search" id="searchInput" placeholder="Search formation, location, source…" autocomplete="off">
+    </label>
+    <div class="filter-chips" id="filterChips"><!-- populated by app.js --></div>
+    <button class="jump-btn" id="jumpLatest" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-target"/></svg>
+      Jump to latest
+    </button>
   </div>
 
-  <div class="research-feed" id="researchFeed">
-    <!-- populated by research.js: one card per finding -->
-  </div>
+  <div class="layout">
+    <nav class="timeline-rail" id="timelineRail" aria-label="Scroll back in time">
+      <!-- populated by app.js: year/month/day rail -->
+    </nav>
 
-</main>
+    <main class="feed" id="feed">
+      <!-- populated by app.js: date-grouped sections -->
+    </main>
+  </div>
+</section>
 
 <footer class="site-footer">
   <div class="footer-inner">
@@ -270,10 +278,41 @@
   <p class="footer-legal">Photography and footage remain the property of their original creators. Each entry links back to its source.</p>
 </footer>
 
+<template id="storyCardTemplate">
+  <article class="story-card">
+    <div class="card-media"></div>
+    <div class="card-body">
+      <div class="card-tags"></div>
+      <h3 class="card-title"></h3>
+      <p class="card-location">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-pin"/></svg>
+        <span></span>
+      </p>
+      <p class="card-desc"></p>
+      <div class="card-footer">
+        <span class="card-date">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-calendar"/></svg>
+          <span></span>
+        </span>
+        <a class="card-source" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-link"/></svg>
+          <span>Source</span>
+        </a>
+      </div>
+    </div>
+  </article>
+</template>
+
 <script src="data.js"></script>
 <script src="shared-chrome.js"></script>
-<script src="research.js"></script>
-<script src="basemap.js"></script>
-<script src="research-app.js"></script>
+<!-- Generated research-archive dataset (window.HISTORY) — powers the "All history"
+     timeline toggle. Built by pipeline/generate_dashboard_entries.py. Optional:
+     app.js degrades gracefully to the curated feed if it's absent. -->
+<script src="history.js"></script>
+<!-- Public Bluesky chatter (window.SOCIAL_FEED), refreshed at build time by the
+     daily scan via dashboard/fetch_social.py. Optional: app.js falls back to the
+     curated per-story posts if it's absent or empty. -->
+<script src="social.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

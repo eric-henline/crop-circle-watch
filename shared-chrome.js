@@ -112,10 +112,22 @@
     mark.style.animationDelay = '-' + (elapsed % SPIN_SECONDS).toFixed(3) + 's';
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', resumeBrandSpin);
-  } else {
+  // Paint the stamp here rather than leaving it to each page script. It is
+  // header furniture that every page carries, and making it a page-script job
+  // is how timeline.html shipped with an em-dash placeholder in the header:
+  // app.js only painted it as a side effect of renderStats(), which that page
+  // has no markup for. Page scripts may still refine it afterwards (index.html
+  // appends a staleness note to the footer copy).
+  function start() {
+    var meta = window.DASHBOARD_META || {};
+    if (meta.lastScan) paintScanStamp(meta.lastScan);
     resumeBrandSpin();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
   }
 
   window.CCW = window.CCW || {};
