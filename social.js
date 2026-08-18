@@ -15,26 +15,26 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-17T13:58:06Z",
+  "fetchedAt": "2026-08-18T13:58:07Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mt6wzn5tas25",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mtdznjnx2c26",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "Pentagrams and Perspective Shifts\nRanscomb Bottom, nr Calstone Wellington, Wiltshire, England\n23rd July 2016\n\n#CropCircles #Logos\n#SpecialRevelation\n#TheGeometricWord\n#TheStarProphecy\n#Jesus #TheSecondComing \n\ntemporarytemples.co.uk/project/cals...",
-      "postedAt": "2026-08-16T10:09:19.090000Z",
+      "text": "The Mandala\nOgbourne St George,\nWiltshire, England\n25th July 2020 \n(Approx 250 ft - 75m)\n\n#Hinduism #Buddhism\n#CropCircles #Logos #KalkiAvatar\n#Mandala #SacredArt #England\n#Heritage #Culture #SpiritualRights\n#SpecialRevelation #TheLivingWord\n\nVideo;\n\nyoutu.be/qzU8uk1e5HA?...",
+      "postedAt": "2026-08-18T10:39:32.690000Z",
       "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3msy36zhvps2c",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mtceqcmil22u",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@whitehouse-47.bsky.social\n@deptofwar.bsky.social\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #Parousia #Jesus\n#TheNewJerusalem #TheNewEarth\n\ntemporarytemples…",
-      "postedAt": "2026-08-13T16:35:16.573000Z",
-      "likes": 2
+      "text": "@ecpmf.bsky.social @interpol.int \n\nCosciomancy\n(separating the wheat from the chaff)\n\n‘Ancient Greek koskinomantis (Greek: κοσκινομάντης) a diviner using a sieve, from koskinon (Greek: κόσκινον) a sieve.’\n\n#CropCircles #Logos\n#Divination #Coscinomancy \n\nen.wikipedia.org/wiki/C…",
+      "postedAt": "2026-08-17T18:52:37.650000Z",
+      "likes": 1
     },
     {
       "platform": "bluesky",
