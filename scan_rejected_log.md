@@ -40,3 +40,4 @@ Format: `- YYYY-MM-DD | <url> | <reason>`
 - 2026-08-21 | https://www.cropcircleconnector.com/2026/August2026.html | empty — CCC August 2026 index still shows zero confirmed formations (re-confirmed; first logged 2026-08-08)
 - 2026-08-22 | https://www.cropcircleconnector.com/2026/August2026.html | empty — CCC August 2026 index re-confirmed empty (third check); no formations added
 - 2026-08-22 | https://rsvdr.wordpress.com/2026/08/04/korn-kreise-von-2026-aktuell-uberraschend-wie-immer/ | unverifiable (HTTP 403 on fetch); surfaced in German 2026 search; no corroboration of a new 2026 German formation from any other source
+- 2026-08-23 | https://www.cropcircleconnector.com/2026/August2026.html | empty — CCC August 2026 index re-confirmed empty (fourth check); no formations added; season appears concluded with Fox Hill/Wanborough Plain (Jul 21) as final 2026 entry

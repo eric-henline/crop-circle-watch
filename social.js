@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-18T13:58:07Z",
+  "fetchedAt": "2026-08-23T13:58:05Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mtdznjnx2c26",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mtov2edkek25",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Mandala\nOgbourne St George,\nWiltshire, England\n25th July 2020 \n(Approx 250 ft - 75m)\n\n#Hinduism #Buddhism\n#CropCircles #Logos #KalkiAvatar\n#Mandala #SacredArt #England\n#Heritage #Culture #SpiritualRights\n#SpecialRevelation #TheLivingWord\n\nVideo;\n\nyoutu.be/qzU8uk1e5HA?...",
-      "postedAt": "2026-08-18T10:39:32.690000Z",
+      "text": "The Celtic Cross.\nEtchilhampton Hill, Wiltshire, England.\n15th August 2008\n\n#CropCircles #Logos\n#TheWordOfGod #SpecialRevelation\n#Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-08-22T18:16:31.725000Z",
       "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mtceqcmil22u",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mtoumcyods25",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@ecpmf.bsky.social @interpol.int \n\nCosciomancy\n(separating the wheat from the chaff)\n\n‘Ancient Greek koskinomantis (Greek: κοσκινομάντης) a diviner using a sieve, from koskinon (Greek: κόσκινον) a sieve.’\n\n#CropCircles #Logos\n#Divination #Coscinomancy \n\nen.wikipedia.org/wiki/C…",
-      "postedAt": "2026-08-17T18:52:37.650000Z",
+      "text": "The Celtic Cross.\nEtchilhampton Hill,\nWiltshire, England.\n15th August 2008\n\n(Lessons in centrifugal force?)\n\n#CropCircles #Logos\n#TheWordOfGod\n#GodGeometer\n#SpecialRevelation\n#England #TheNewJerusalem \n#Jesus #TheSecondComing\n\nwww.ukcropcircles.co.uk?page=circle-...",
+      "postedAt": "2026-08-22T18:08:40.558000Z",
       "likes": 1
     },
     {
@@ -61,7 +61,7 @@ window.SOCIAL_FEED = {
       "handle": "@ggold328.bsky.social",
       "text": "thank the gods the aliens stopped doing stupid crop circles and did something we can all appreciate",
       "postedAt": "2026-06-12T11:45:38.675000Z",
-      "likes": 139
+      "likes": 138
     },
     {
       "platform": "bluesky",
