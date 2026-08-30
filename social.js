@@ -15,25 +15,43 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-08-23T13:58:05Z",
+  "fetchedAt": "2026-08-30T14:00:02Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mtov2edkek25",
+      "url": "https://bsky.app/profile/evil.tabi.world/post/3mubouwpoac24",
+      "author": "big mutt 🏳️‍⚧️🐾",
+      "handle": "@evil.tabi.world",
+      "text": "if i was a big ass corn field these are my crop circles. wherr do they come from ....",
+      "postedAt": "2026-08-30T05:46:42.239000Z",
+      "likes": 45
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/ronsexsmith.bsky.social/post/3mu7edntfuk2e",
+      "author": "Ron Sexsmith",
+      "handle": "@ronsexsmith.bsky.social",
+      "text": "FARMER: What's that s'posed to be?\nMARTIAN: It's a crop circle..\nFARMER: Crop Circle?! Looks more like a crap circle! RS",
+      "postedAt": "2026-08-29T07:32:45.618000Z",
+      "likes": 11
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mu36gtouz22i",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Celtic Cross.\nEtchilhampton Hill, Wiltshire, England.\n15th August 2008\n\n#CropCircles #Logos\n#TheWordOfGod #SpecialRevelation\n#Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-08-22T18:16:31.725000Z",
+      "text": "Strange Attractions \n(The Vesica Piscis)\n\nFox Hill, Nr Liddington,\nWiltshire, England.\n9th August 2015\n\n#CropCircles #Logos\n#TheWordOfGod\n#SpecialRevelation\n#England #TheNewJerusalem\n#Jesus #TheSecondComing \n\ntemporarytemples.co.uk/project/fox-...",
+      "postedAt": "2026-08-27T15:36:31.019000Z",
       "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mtoumcyods25",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mu36dhtcss2i",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Celtic Cross.\nEtchilhampton Hill,\nWiltshire, England.\n15th August 2008\n\n(Lessons in centrifugal force?)\n\n#CropCircles #Logos\n#TheWordOfGod\n#GodGeometer\n#SpecialRevelation\n#England #TheNewJerusalem \n#Jesus #TheSecondComing\n\nwww.ukcropcircles.co.uk?page=circle-...",
-      "postedAt": "2026-08-22T18:08:40.558000Z",
+      "text": "Strange Attractions \n(The Vesica Piscis)\n\nFox Hill, Nr Liddington,\nWiltshire, England.\n9th August 2015\n\n#CropCircles #Logos\n#TheWordOfGod\n#SpecialRevelation\n#England #TheNewJerusalem\n#Jesus #TheSecondComing \n\ntemporarytemples.co.uk/project/fox-...",
+      "postedAt": "2026-08-27T15:34:37.915000Z",
       "likes": 1
     },
     {
@@ -43,7 +61,7 @@ window.SOCIAL_FEED = {
       "handle": "@cynicaltherapist.bsky.social",
       "text": "nobody drinks problematically because of alien crop circles anymore",
       "postedAt": "2026-08-03T04:40:32.672000Z",
-      "likes": 78
+      "likes": 77
     },
     {
       "platform": "bluesky",
@@ -71,24 +89,6 @@ window.SOCIAL_FEED = {
       "text": "Even the crop circle aliens are done with him",
       "postedAt": "2026-06-12T01:59:23.093000Z",
       "likes": 36
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/ampule2.bsky.social/post/3mo2aw6tvpk22",
-      "author": "Martin",
-      "handle": "@ampule2.bsky.social",
-      "text": "Crop circles, absolutely alien crop circles 😂😂",
-      "postedAt": "2026-06-11T22:17:04.015000Z",
-      "likes": 13
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/galeriadometeorito.bsky.social/post/3mmpmo46vfc2i",
-      "author": "Galeria do Meteorito",
-      "handle": "@galeriadometeorito.bsky.social",
-      "text": "🚨Ela filmou um fenômeno BIZARRO acontecendo em um novo desenho de plantação! O vídeo acaba de sair: youtu.be/28BsEk132uU\n\n#UFO #CropCircle #UAP #analise",
-      "postedAt": "2026-05-25T23:22:48.933000Z",
-      "likes": 2
     }
   ]
 };
