@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-09-15T06:28:56-07:00",
+  lastScan: "2026-09-15T07:20:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -427,6 +427,15 @@ window.COVERAGE = [
   // returns 200 and the summary describes what the piece actually says. This is
   // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
   // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-09-15-croppie-investigating-crop-circles-film",
+    date: "2026-09-15",
+    kind: "article",
+    title: "Films: Investigating Crop Circles In the Field",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/09/15/films-investigating-crop-circles-in-the-field/",
+    summary: "Review of a Channel Freax YouTube documentary in which the filmmakers visit crop circles in the field and interview visitors and an event organiser (Jason Porthouse). The reviewer praises the balanced, non-sensationalist approach, which focuses on how different people experience the phenomenon rather than on who created it. Notes the 2025 season as relatively poor and contrasts it with the improved 2026 season."
+  },
   {
     id: "2026-09-01-croppie-gossip-ai-trouble",
     date: "2026-09-01",
