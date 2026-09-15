@@ -19,3 +19,15 @@ push_log.txt
 *_token
 *_secret*
 .claude/settings.local.json
+
+# Derived filenames. Ignoring `x` does not ignore the names a tool MINTS from
+# it — `x.bak`, `x.orig`, `x.1` — and a backup of a protected file is an
+# unprotected copy of it. Editing sessions and self-improve runs both leave
+# these behind, so ignore the SHAPE rather than each instance.
+*.bak
+*.orig
+*.rej
+
+# Python bytecode from running the helper scripts (fetch_social.py et al).
+__pycache__/
+*.py[cod]

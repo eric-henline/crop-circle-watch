@@ -173,7 +173,36 @@ if command -v timeout &>/dev/null; then
 elif command -v gtimeout &>/dev/null; then
   TIMEOUT_BIN="gtimeout"
 else
-  echo "WARNING: no 'timeout'/'gtimeout' on PATH — running without a time cap. Install via 'brew install coreutils' to enable it." >> "$LOG"
+  echo "NOTE: no 'timeout'/'gtimeout' on PATH — using the built-in watchdog instead. 'brew install coreutils' would provide the sturdier GNU version." >> "$LOG"
+fi
+
+# ---- Hold the Mac awake for the duration of the run -------------------------
+# pmset wakes the Mac at 6:55 AM, but a scheduled wake is not a promise to STAY
+# awake — macOS starts its idle-sleep countdown immediately and a launchd job
+# running quietly in the background does not reset it. This job can legitimately
+# run for up to TIMEOUT_SECONDS (900s / 15 min) of mostly-network wait, which is
+# far longer than any default idle-sleep timer, so the machine could and did
+# sleep out from under it mid-run.
+#
+# `caffeinate` is the right tool rather than an Energy Saver change: it asserts
+# the no-sleep power assertion ONLY for the lifetime of the process it wraps,
+# and releases it the moment that process exits. Nothing about the Mac's normal
+# sleep behaviour changes outside this window, which is the explicit project
+# constraint (see CLAUDE.md — do not suggest "always on").
+#
+# Flags: -i no idle sleep, -m no disk sleep, -s no system sleep on AC power,
+# -w <pid> is NOT used because wrapping the command directly ties the assertion
+# to the child's lifetime automatically. Deliberately no -d: keeping the DISPLAY
+# awake would light the screen at 7 AM for no reason.
+#
+# Falls back to running uncaffeinated if the binary is somehow missing, on the
+# same principle as the timeout above — a guard must never be a new reason the
+# job doesn't happen. caffeinate ships with macOS, so this should never fire.
+CAFFEINATE_BIN=""
+if command -v caffeinate &>/dev/null; then
+  CAFFEINATE_BIN="caffeinate"
+else
+  echo "WARNING: 'caffeinate' not found — the Mac may sleep mid-run." >> "$LOG"
 fi
 
 # ---- Stale git lock sweep ---------------------------------------------------
@@ -223,16 +252,52 @@ fi
 # was not saved — see the verification block below.
 HEAD_BEFORE="$(git rev-parse HEAD 2>/dev/null)"
 
+# ${CAFFEINATE_BIN:+...} expands to the caffeinate call only when the binary was
+# found, and to nothing at all when it wasn't — so the uncaffeinated fallback
+# needs no separate branch. Unquoted on purpose: word-splitting the flags here
+# is the intent.
 if [ -n "$TIMEOUT_BIN" ]; then
-  "$TIMEOUT_BIN" "$TIMEOUT_SECONDS" claude -p "$PROMPT" \
+  ${CAFFEINATE_BIN:+$CAFFEINATE_BIN -ims} "$TIMEOUT_BIN" "$TIMEOUT_SECONDS" claude -p "$PROMPT" \
     --allowedTools "Read,Edit,WebSearch,WebFetch,Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git remote get-url:*),Bash(git push:*),Bash(node --check:*),Bash(node check_duplicates.js:*)" \
     >> "$LOG" 2>&1
+  EXIT_CODE=$?
 else
-  claude -p "$PROMPT" \
+  # Built-in watchdog. On 2026-09-10 this job hung inside `claude -p` and ran
+  # for FOUR AND A HALF DAYS: neither `timeout` nor `gtimeout` was on launchd's
+  # PATH, so the cap above silently did not apply, and launchd counts a job as
+  # still running until its process exits — so nothing was scheduled after it.
+  # A cap that depends on an optional Homebrew package is not a cap.
+  #
+  # Backgrounds the real work, sleeps in a second process, and whichever
+  # finishes first kills the other. Exits 124 on timeout to match GNU timeout,
+  # so the existing $EXIT_CODE handling below needs no special case.
+  ${CAFFEINATE_BIN:+$CAFFEINATE_BIN -ims} claude -p "$PROMPT" \
     --allowedTools "Read,Edit,WebSearch,WebFetch,Bash(git add:*),Bash(git commit:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git remote get-url:*),Bash(git push:*),Bash(node --check:*),Bash(node check_duplicates.js:*)" \
-    >> "$LOG" 2>&1
+    >> "$LOG" 2>&1 &
+  WORK_PID=$!
+
+  ( sleep "$TIMEOUT_SECONDS"; kill -0 "$WORK_PID" 2>/dev/null && kill -TERM "$WORK_PID" 2>/dev/null ) &
+  WATCHDOG_PID=$!
+
+  wait "$WORK_PID" 2>/dev/null
+  EXIT_CODE=$?
+
+  # If the watchdog is gone the work outlived it, i.e. it was the one killed.
+  if kill -0 "$WATCHDOG_PID" 2>/dev/null; then
+    kill -TERM "$WATCHDOG_PID" 2>/dev/null   # finished in time; retire the timer
+  else
+    EXIT_CODE=124
+  fi
+  wait "$WATCHDOG_PID" 2>/dev/null
+
+  # SIGTERM alone does not always take `claude` down, and a survivor holds the
+  # launchd job slot exactly as before. Escalate to the whole process group.
+  if [ "$EXIT_CODE" -eq 124 ]; then
+    sleep 5
+    kill -0 "$WORK_PID" 2>/dev/null && kill -KILL "$WORK_PID" 2>/dev/null
+    pkill -KILL -P "$WORK_PID" 2>/dev/null
+  fi
 fi
-EXIT_CODE=$?
 
 if [ $EXIT_CODE -eq 124 ]; then
   echo "ERROR: scan timed out after ${TIMEOUT_SECONDS}s and was killed" >> "$LOG"

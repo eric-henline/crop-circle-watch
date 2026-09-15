@@ -35,6 +35,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -44,6 +45,8 @@ OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "social.js")
 
 # Searched in order; results are pooled and de-duplicated by post URI.
 QUERIES = ['"crop circle"', '"crop circles"', "cropcircle", "cropcircles"]
+# Derived, not a literal: "every query failed" has to stay true if QUERIES grows.
+QUERY_COUNT = len(QUERIES)
 
 WANT = 8            # posts written to social.js
 PER_QUERY = 40      # results requested per query before filtering
@@ -241,7 +244,24 @@ def main():
     # A transient network failure must not blank a feed that was fine
     # yesterday. Only overwrite social.js when there is something to put in it.
     if not posts and os.path.exists(OUT):
-        print("fetch_social: no posts passed the filter; keeping existing social.js")
+        # "Nothing passed the filter" and "every query failed" are very
+        # different events that used to print the same line, so a dead API
+        # looked exactly like a quiet day. Bluesky's searchPosts route began
+        # returning 403 to unauthenticated callers around 2026-09; the feed
+        # froze on 2026-09-04 and nothing said so for ten days.
+        stale_days = None
+        try:
+            stale_days = (time.time() - os.path.getmtime(OUT)) / 86400.0
+        except OSError:
+            pass
+        age = "" if stale_days is None else " (now {:.0f} days old)".format(stale_days)
+
+        if errors and len(errors) >= QUERY_COUNT:
+            print("fetch_social: WARNING every query failed — the feed is FROZEN"
+                  + age + ", not merely quiet. Keeping existing social.js.")
+        else:
+            print("fetch_social: no posts passed the filter; keeping existing "
+                  "social.js" + age)
         for err in errors:
             print("  error:", err)
         return 0
