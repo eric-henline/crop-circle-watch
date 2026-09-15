@@ -1,7 +1,7 @@
 /* ==========================================================================
    labs.css — shared chrome for the formation studies.
 
-   Consumes the site's theme tokens from ../styles.css; defines no colours of
+   Consumes the site's theme tokens from ../theme.css; defines no colours of
    its own. Used by labs/index.html (all studies on one page, for comparison)
    and by the single-study wrapper pages.
 

@@ -1,9 +1,9 @@
 /* ==========================================================================
    Crop Circle Watch — research.css
-   Page-specific styles for research.html. Loads AFTER styles.css and inherits
-   every theme token from it (palette, type, spacing, chart palette). Nothing
-   here redefines a colour literal — chart marks read the --cat- and --seq-
-   custom properties, so the charts re-theme with the site.
+   Page-specific styles for research.html. Loads after theme.css and styles.css
+   and inherits every token from theme.css (palette, type, spacing, chart
+   palette). Nothing here defines a colour literal — chart marks read the
+   --cat-* and --seq-* custom properties, so the charts re-theme with the site.
 
    Kept out of styles.css deliberately: only this page needs it, and styles.css
    is already the shared shell for three pages.

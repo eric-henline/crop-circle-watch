@@ -10,17 +10,25 @@ Those four widgets are laid out as **two flex columns, not a 2×2 grid** — see
 
 No framework, no build step, no third-party JavaScript:
 
-- `index.html` — dashboard page structure (hero + timeline)
+- `index.html` — the dashboard (hero + widgets)
+- `timeline.html` — the formation timeline (feed, rail, filters). Split out of `index.html` on 2026-08-16 so every primary nav item is a page rather than two of them being in-page anchors.
 - `about.html` — the About page
 - `research.html` — the Research page (charts and findings)
-- `styles.css` — all visual design (dark "research console" theme — change the variables at the top of the file to re-theme). Also defines the chart palette; **read the comment above `--cat-1` before changing those values.**
-- `research.css` — styles used only by the Research page; inherits every theme token from `styles.css`
-- `app.js` — rendering logic for the dashboard (hero widgets + timeline)
+- `resources.html` — credit to the researchers and photographers the archive is built on
+- `theme.css` — **the only file that decides what the site looks like.** Every colour and typeface is a token here, in two layers (primitives → semantics). To re-theme or re-type, edit this and nothing else. Also holds the chart palette; **read the comment above `--cat-1`, and re-run `tools/validate_palette.js`, before changing those values.**
+- `styles.css` — layout and structure for the shared shell. Consumes `theme.css` tokens and must never hardcode a colour or a typeface.
+- `research.css` — styles used only by the Research page
+- `fonts.css` — `@font-face` declarations only; which face is used where is `theme.css`'s job. See `fonts/README.md` for licensing.
+- `shared-chrome.js` — header behaviour every page needs: the "Last scan" stamp formatter, and keeping the logo's spin continuous across page loads
+- `page-chrome.js` — the header search for pages with no script of their own
+- `app.js` — rendering for the dashboard *and* the timeline. One file, tolerant of a missing half: each render routine returns early when its root element is absent, so the same script serves both pages.
 - `research-app.js` — the Research page's chart engine. Hand-rolled inline SVG — deliberately no chart library, so the site keeps its zero-dependency property.
+- `basemap.js` — **generated, do not hand-edit.** Coastlines, county boundaries and landmarks for the research maps, baked in by `analytics/basemap/build_basemap.py` because the site makes no runtime network calls.
 - `data.js` — **the content**. Plain JavaScript arrays. This is the file you edit by hand.
 - `research.js` — **generated, do not hand-edit.** Written by `analytics/export_research_json.py`.
+- `tools/validate_palette.js` — checks the chart palette for lightness band, chroma floor, CVD separation and contrast. Run it after touching `--cat-*`, `--seq-*` or `--div-*`.
 
-Type is deliberately not the usual Inter/Space-Grotesk default stack: **Bricolage Grotesque** for headings and big numbers, **Newsreader** (a serif) for prose — descriptions, taglines, the About page — and **Fragment Mono** for UI chrome (nav, chips, tags, stats). Pulled from Google Fonts via the `<link>` tag at the top of each HTML file.
+Type is deliberately not a default stack: **Syne** for headings and the wordmark, **Space Grotesk** for prose, **Space Mono** for anything that is data. All three are self-hosted from `fonts/` — nothing contacts Google — and the faces are chosen by the `--font-*` tokens in `theme.css`, not here.
 
 Because the data lives in a `<script>` tag instead of a fetched JSON file, the dashboard works identically whether you open `index.html` directly in a browser, or it's served from GitHub Pages — no local web server needed to test changes.
 
@@ -283,7 +291,7 @@ dashboard/
     index.html                               ← all three studies on one page, for comparison — START HERE
     anim-engine.js                           ← shared stage/HUD/controls/driver; mounted once per study
     studies.js                               ← the studies themselves: geometry + render(ctx, p)
-    labs.css                                 ← shared lab chrome; consumes styles.css tokens only
+    labs.css                                 ← shared lab chrome; consumes theme.css tokens only
     formation-anim.html, julia-set.html      ← thin single-study wrappers around the same specs
   dedupe.js                                  ← duplicate-formation matching rules (Node-side only; the site doesn't load it)
   check_duplicates.js                        ← `node check_duplicates.js` — audits data.js for the same circle logged twice
@@ -295,7 +303,7 @@ dashboard/
   scan_dashboard.sh                          ← runs the daily scan via `claude -p` (Mac-side, via launchd)
   com.cropcircles.dashboardscan.plist        ← the launchd job definition for the scan
   install_dashboard_scan.sh                  ← one-time installer for the scan job
-  push_dashboard.sh                          ← runs `git push` as a safety-net retry (Mac-side, via launchd)
+  push_dashboard.sh                          ← `git push` safety-net retry. NOT INSTALLED — no `com.cropcircles.dashboardpush` in `launchctl list`, and no plist in ~/Library/LaunchAgents. It has never run. Either install it with `install_dashboard_push.sh` or delete the three files; do not assume the push is retried.
   com.cropcircles.dashboardpush.plist        ← the launchd job definition for the push retry
   install_dashboard_push.sh                  ← one-time installer for the above
   .nojekyll                                  ← tells GitHub Pages not to run Jekyll on this

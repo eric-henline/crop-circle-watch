@@ -452,18 +452,28 @@ gets a real page.
 You're already in the right folder (see above), so just run:
 
 ```
-git add data.js scan_rejected_log.md social.js
-git commit -m "Scan YYYY-MM-DD: added N new formation(s)"   # or "Scan YYYY-MM-DD: no new formations found"
+git commit -m "Scan YYYY-MM-DD: added N new formation(s)" -- data.js scan_rejected_log.md social.js
 ```
+
+**Commit by pathspec — do not `git add` first.** Naming the paths on `git commit`
+builds the commit from HEAD plus exactly those files, ignoring whatever else is
+sitting in the index. That matters because this job runs at 06:58 while a human
+may have left work staged from the night before: with `git add` + `git commit`,
+their staged files join the scan's commit, the pre-commit hook correctly refuses
+the whole thing, and the scan exits 1 having done nothing (this happened on
+2026-08-16). The pathspec form commits cleanly, leaves their staged work exactly
+as they left it, and the hook still sees — and still guards — only these three
+paths.
 
 `social.js` is **machine-generated** — the runner script regenerates it from
 Bluesky's public search before it starts you, so it may already be modified when
 you arrive. Stage it as-is. **Never hand-edit it**, and never promote anything
 out of it into `STORIES`: it is unverified public chatter, and a post that looks
 like a real formation report still has to go through Step 3 verification against
-a real source first. If it's unchanged, `git add` on it is a harmless no-op.
+a real source first. If it's unchanged, naming it on the commit is a harmless
+no-op.
 
-**Stage those three paths only — never `git add -A`.** This step pushes to a
+**Those three paths only — never `git add -A`, and never `git add .`.** This step pushes to a
 PUBLIC repo (github.com/eric-henline/crop-circle-watch). `-A` stages whatever
 happens to be sitting in the working tree, so a half-finished page, an internal
 TODO, or a scratch file becomes live on the public site because a scheduled job
