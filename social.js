@@ -15,27 +15,9 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-09-15T13:58:06Z",
+  "fetchedAt": "2026-09-18T14:12:57Z",
   "source": "bluesky",
   "posts": [
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mvkqmgugjc2u",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@ukparliament.parliament.uk @houseofcommons.parliament.uk @churchofengland.org\n\nOur national taboo.\nThe resurgent Logos.\n\nThe Geometric Word of God.\n\n#England #Logos #CropCircles #SpecialRevelation #TheWordOfGod #Jesus #TheSecondComing \n\nen.wikipedia.org/wiki/Logos_(...",
-      "postedAt": "2026-09-15T13:36:53.950000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mvkjbmjg222x",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@ukparliament.parliament.uk @houseofcommons.parliament.uk @churchofengland.org\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #Parousia #Jesus\n\ntemporarytemples…",
-      "postedAt": "2026-09-15T11:25:34.589000Z",
-      "likes": 1
-    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/aerialembroidery.bsky.social/post/3mv4dknm7jk2l",
@@ -71,15 +53,10 @@ window.SOCIAL_FEED = {
       "text": "Even the crop circle aliens are done with him",
       "postedAt": "2026-06-12T01:59:23.093000Z",
       "likes": 36
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/galeriadometeorito.bsky.social/post/3mmpmo46vfc2i",
-      "author": "Galeria do Meteorito",
-      "handle": "@galeriadometeorito.bsky.social",
-      "text": "🚨Ela filmou um fenômeno BIZARRO acontecendo em um novo desenho de plantação! O vídeo acaba de sair: youtu.be/28BsEk132uU\n\n#UFO #CropCircle #UAP #analise",
-      "postedAt": "2026-05-25T23:22:48.933000Z",
-      "likes": 2
     }
+  ],
+  "errors": [
+    "cropcircle: HTTP Error 403: Forbidden",
+    "cropcircles: HTTP Error 403: Forbidden"
   ]
 };
