@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-09-21T08:47:49-07:00",
+  lastScan: "2026-09-22T07:20:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -427,6 +427,15 @@ window.COVERAGE = [
   // returns 200 and the summary describes what the piece actually says. This is
   // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
   // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-10-03-tt-autumn-lectures",
+    date: "2026-10-03",
+    kind: "event",
+    title: "The Autumn Crop Circle Lectures — Conference 2026",
+    outlet: "Temporary Temples",
+    url: "https://temporarytemples.co.uk/event/summer-lectures-crop-circle-conference-2025-6",
+    summary: "Online five-weekend conference (3 October – 1 November 2026, via Zoom) featuring two introductory workshops on crop circles and geometry/consciousness plus eight lectures from researchers including Peter van den Burg (geometric analysis), Bert Janssen (quantum science perspectives), and Kathy Mingo (alchemy connections). Described by Temporary Temples as the only crop circle event of this kind anywhere; video recordings available for purchase after the series ends."
+  },
   {
     id: "2026-09-15-croppie-investigating-crop-circles-film",
     date: "2026-09-15",
