@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-09-23T14:12:23Z",
+  "fetchedAt": "2026-09-24T14:06:02Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mw6ubshbsc2a",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbcifetuc2w",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Quickening\nEtchilhampton Hill,\nDevizes, Wiltshire, England.\n\nNo longer visible on Apple IOS maps\n\n#Logos #CropCircles\n#TheGeometricWord \n\nCan you see the tiny people in the circle?\n\n#Logos #SpecialRevelation\n#CropCircles #England \n\nmaps.apple.com?ll=51.341596...",
-      "postedAt": "2026-09-23T13:35:46.737000Z",
-      "likes": 0
+      "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation #Particles\n#Wave-ParticleDuality #Physics\n#FundamentalForces #CropCircles\n\nwww.cropcirclecenter.com/ccdata/2023/...",
+      "postedAt": "2026-09-24T12:55:19.771000Z",
+      "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mw3uaak4jk2e",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbchon4qs2w",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@ms.now @whitehouse-47.bsky.social\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #TheWordOfGod\n#Jesus #TheSecondComing\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-09-22T08:56:55.164000Z",
+      "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation #Particles\n#Wave-ParticleDuality #Physics\n#FundamentalForces #CropCircles\n\ntemporarytemples.co.uk/project/roun...",
+      "postedAt": "2026-09-24T12:54:55.923000Z",
       "likes": 1
     },
     {
@@ -43,7 +43,7 @@ window.SOCIAL_FEED = {
       "handle": "@aerialembroidery.bsky.social",
       "text": "'What about my harvest?!' - my second embroidered crop circle! These aerial landscapes have been so fun! This one was 35 hours, the knots took less time but the circles took longer than expected 👽 now available here with the first: victoriaroserichards.co.uk/collection/a... 1/2",
       "postedAt": "2026-09-09T20:05:58.910000Z",
-      "likes": 482
+      "likes": 506
     },
     {
       "platform": "bluesky",
