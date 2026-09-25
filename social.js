@@ -15,26 +15,35 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-09-24T14:06:02Z",
+  "fetchedAt": "2026-09-25T14:39:10Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbcifetuc2w",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbq7egrcs23",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation #Particles\n#Wave-ParticleDuality #Physics\n#FundamentalForces #CropCircles\n\nwww.cropcirclecenter.com/ccdata/2023/...",
-      "postedAt": "2026-09-24T12:55:19.771000Z",
+      "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation\n#Particles #PhysicalSciences\n#Wave-ParticleDuality #Physics\n#CropCircles #TheLivingWord\n\ntemporarytemples.co.uk/project/roun...",
+      "postedAt": "2026-09-24T17:00:49.183000Z",
       "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbchon4qs2w",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbq6cgxqk23",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation #Particles\n#Wave-ParticleDuality #Physics\n#FundamentalForces #CropCircles\n\ntemporarytemples.co.uk/project/roun...",
-      "postedAt": "2026-09-24T12:54:55.923000Z",
+      "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation\n#Particles #PhysicalSciences\n#Wave-ParticleDuality #Physics\n#CropCircles #TheLivingWord\n\ntemporarytemples.co.uk/project/roun...",
+      "postedAt": "2026-09-24T17:00:13.533000Z",
       "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/coffinboffin.bsky.social/post/3mwazgwncts2g",
+      "author": "Coffin Boffin",
+      "handle": "@coffinboffin.bsky.social",
+      "text": "THE MOWING DEVIL or 'Strange News out of Hartford-shire'. An English woodcut pamphlet from 1678 that narrates a tale of Satan mowing a field in Hertfordshire. The images of reaping & gleaning are reminiscent of #harvest folklore; also cited as an early example of a crop circle…",
+      "postedAt": "2026-09-24T10:13:27.088000Z",
+      "likes": 62
     },
     {
       "platform": "bluesky",
@@ -43,7 +52,7 @@ window.SOCIAL_FEED = {
       "handle": "@aerialembroidery.bsky.social",
       "text": "'What about my harvest?!' - my second embroidered crop circle! These aerial landscapes have been so fun! This one was 35 hours, the knots took less time but the circles took longer than expected 👽 now available here with the first: victoriaroserichards.co.uk/collection/a... 1/2",
       "postedAt": "2026-09-09T20:05:58.910000Z",
-      "likes": 506
+      "likes": 511
     },
     {
       "platform": "bluesky",
