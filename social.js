@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-09-25T14:39:10Z",
+  "fetchedAt": "2026-09-26T13:58:02Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/dpfrazier22.bsky.social/post/3mwe7gkmlbk2f",
+      "author": "DianneSpiritlight",
+      "handle": "@dpfrazier22.bsky.social",
+      "text": "Watching the movie\nSIGNS with my dog, who was very concerned about the crop circles!\n#Aliens",
+      "postedAt": "2026-09-25T16:38:36.149000Z",
+      "likes": 11
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbq7egrcs23",
@@ -35,15 +44,6 @@ window.SOCIAL_FEED = {
       "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation\n#Particles #PhysicalSciences\n#Wave-ParticleDuality #Physics\n#CropCircles #TheLivingWord\n\ntemporarytemples.co.uk/project/roun...",
       "postedAt": "2026-09-24T17:00:13.533000Z",
       "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/coffinboffin.bsky.social/post/3mwazgwncts2g",
-      "author": "Coffin Boffin",
-      "handle": "@coffinboffin.bsky.social",
-      "text": "THE MOWING DEVIL or 'Strange News out of Hartford-shire'. An English woodcut pamphlet from 1678 that narrates a tale of Satan mowing a field in Hertfordshire. The images of reaping & gleaning are reminiscent of #harvest folklore; also cited as an early example of a crop circle…",
-      "postedAt": "2026-09-24T10:13:27.088000Z",
-      "likes": 62
     },
     {
       "platform": "bluesky",
