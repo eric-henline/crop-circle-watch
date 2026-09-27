@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-09-26T13:58:02Z",
+  "fetchedAt": "2026-09-27T13:58:04Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwfmvxdn3s2i",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@theguardian.com @telegraph.co.uk @theobserveruk.bsky.social @the-independent.com @thetimes.com\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#CropCircles #Logos\n#TheWordOfGod\n\ntemporarytemples.co.u…",
+      "postedAt": "2026-09-26T06:12:31.168000Z",
+      "likes": 1
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/dpfrazier22.bsky.social/post/3mwe7gkmlbk2f",
@@ -34,15 +43,6 @@ window.SOCIAL_FEED = {
       "handle": "@sirius2368.bsky.social",
       "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation\n#Particles #PhysicalSciences\n#Wave-ParticleDuality #Physics\n#CropCircles #TheLivingWord\n\ntemporarytemples.co.uk/project/roun...",
       "postedAt": "2026-09-24T17:00:49.183000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbq6cgxqk23",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation\n#Particles #PhysicalSciences\n#Wave-ParticleDuality #Physics\n#CropCircles #TheLivingWord\n\ntemporarytemples.co.uk/project/roun...",
-      "postedAt": "2026-09-24T17:00:13.533000Z",
       "likes": 1
     },
     {
