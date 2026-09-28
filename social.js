@@ -15,16 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-09-27T13:58:04Z",
+  "fetchedAt": "2026-09-28T13:58:06Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwfmvxdn3s2i",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwla3jvlc22v",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@theguardian.com @telegraph.co.uk @theobserveruk.bsky.social @the-independent.com @thetimes.com\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#CropCircles #Logos\n#TheWordOfGod\n\ntemporarytemples.co.u…",
-      "postedAt": "2026-09-26T06:12:31.168000Z",
+      "text": "#Psychohistory\n\nThe Milk Hill Orb - 1991\n- Sekhem / The Power For \n(The Ancient Egyptian Concept Of The Soul)\n\nFilmed By Steve Alexander \n\n#CropCircles #Orbs\n#England #TheNewJerusalem\n#Jesus #TheSecondComing\n\nwww.google.com/search?q=Ste...",
+      "postedAt": "2026-09-28T11:38:58.207000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwla2v3vjs2v",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "#Psychohistory\n\nThe Milk Hill Orb - 1991\n- Sekhem / The Power For \n(The Ancient Egyptian Concept Of The Soul)\n\nFilmed By Steve Alexander \n\n#CropCircles #Orbs\n#England #TheNewJerusalem\n#Jesus #TheSecondComing\n\nwww.google.com/search?q=Ste...",
+      "postedAt": "2026-09-28T11:38:36.392000Z",
       "likes": 1
     },
     {
@@ -38,21 +47,12 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwbq7egrcs23",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@netflix.com\n\nThe Particle\nRoundway Down\nDevises, Wiltshire, England\n13th August 2023\n\n#Logos #SpecialRevelation\n#Particles #PhysicalSciences\n#Wave-ParticleDuality #Physics\n#CropCircles #TheLivingWord\n\ntemporarytemples.co.uk/project/roun...",
-      "postedAt": "2026-09-24T17:00:49.183000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
       "url": "https://bsky.app/profile/aerialembroidery.bsky.social/post/3mv4dknm7jk2l",
       "author": "Victoria Rose Richards",
       "handle": "@aerialembroidery.bsky.social",
       "text": "'What about my harvest?!' - my second embroidered crop circle! These aerial landscapes have been so fun! This one was 35 hours, the knots took less time but the circles took longer than expected 👽 now available here with the first: victoriaroserichards.co.uk/collection/a... 1/2",
       "postedAt": "2026-09-09T20:05:58.910000Z",
-      "likes": 511
+      "likes": 513
     },
     {
       "platform": "bluesky",
