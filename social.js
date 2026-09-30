@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-09-29T14:18:16Z",
+  "fetchedAt": "2026-09-30T14:05:16Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwla3jvlc22v",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwqerofj4c2w",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "#Psychohistory\n\nThe Milk Hill Orb - 1991\n- Sekhem / The Power For \n(The Ancient Egyptian Concept Of The Soul)\n\nFilmed By Steve Alexander \n\n#CropCircles #Orbs\n#England #TheNewJerusalem\n#Jesus #TheSecondComing\n\nwww.google.com/search?q=Ste...",
-      "postedAt": "2026-09-28T11:38:58.207000Z",
+      "text": "@channel4news.bsky.social @interpol.int\n\nCosciomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-09-30T12:46:14.775000Z",
       "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwla2v3vjs2v",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwpp3fu7sk2i",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "#Psychohistory\n\nThe Milk Hill Orb - 1991\n- Sekhem / The Power For \n(The Ancient Egyptian Concept Of The Soul)\n\nFilmed By Steve Alexander \n\n#CropCircles #Orbs\n#England #TheNewJerusalem\n#Jesus #TheSecondComing\n\nwww.google.com/search?q=Ste...",
-      "postedAt": "2026-09-28T11:38:36.392000Z",
+      "text": "@channel4news.bsky.social @interpol.int\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #TheWordOfGod\n#Jesus #TheSecondComing\n\ntemporarytemples.co.uk/crop-circle…",
+      "postedAt": "2026-09-30T06:17:59.046000Z",
       "likes": 1
     },
     {
