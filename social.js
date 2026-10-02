@@ -15,35 +15,26 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-09-30T14:05:16Z",
+  "fetchedAt": "2026-10-01T14:02:42Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwqerofj4c2w",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwsbehdwpc2z",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@channel4news.bsky.social @interpol.int\n\nCosciomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-09-30T12:46:14.775000Z",
-      "likes": 1
+      "text": "Coelosphaerium (Cyanobacteria)\nZeal’s Knoll, Wiltshire, England.\n5th July 2026\n\n#CropCircles #Logos\n#TheWordOfGod\n#SpecialRevelation\n\ntemporarytemples.co.uk/project/mere...",
+      "postedAt": "2026-10-01T06:50:29.429000Z",
+      "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwpp3fu7sk2i",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwsbdb2ewk2z",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@channel4news.bsky.social @interpol.int\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #TheWordOfGod\n#Jesus #TheSecondComing\n\ntemporarytemples.co.uk/crop-circle…",
-      "postedAt": "2026-09-30T06:17:59.046000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/dpfrazier22.bsky.social/post/3mwe7gkmlbk2f",
-      "author": "DianneSpiritlight",
-      "handle": "@dpfrazier22.bsky.social",
-      "text": "Watching the movie\nSIGNS with my dog, who was very concerned about the crop circles!\n#Aliens",
-      "postedAt": "2026-09-25T16:38:36.149000Z",
-      "likes": 11
+      "text": "Coelosphaerium (Cyanobacteria)\nZeal’s Knoll, Wiltshire, England.\n5th July 2026\n\n#CropCircles #Logos\n#TheWordOfGod\n#SpecialRevelation\n\nVideo;\n\nyoutu.be/aN_cbX_GxPk?...",
+      "postedAt": "2026-10-01T06:49:49.271000Z",
+      "likes": 0
     },
     {
       "platform": "bluesky",
