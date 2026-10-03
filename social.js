@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-01T14:02:42Z",
+  "fetchedAt": "2026-10-02T14:00:05Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwv42p3soc2i",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "The Geometric Word Of God\n\nThis Logos doesn’t always hold.\nIt waxes and wanes, was exiled and now makes a spectacular return. \n\n#Logos #CropCircles #TheLivingWord \n\nen.wikipedia.org/wiki/Logos",
+      "postedAt": "2026-10-02T09:53:32.516000Z",
+      "likes": 1
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwsbehdwpc2z",
@@ -25,15 +34,6 @@ window.SOCIAL_FEED = {
       "handle": "@sirius2368.bsky.social",
       "text": "Coelosphaerium (Cyanobacteria)\nZeal’s Knoll, Wiltshire, England.\n5th July 2026\n\n#CropCircles #Logos\n#TheWordOfGod\n#SpecialRevelation\n\ntemporarytemples.co.uk/project/mere...",
       "postedAt": "2026-10-01T06:50:29.429000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwsbdb2ewk2z",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "Coelosphaerium (Cyanobacteria)\nZeal’s Knoll, Wiltshire, England.\n5th July 2026\n\n#CropCircles #Logos\n#TheWordOfGod\n#SpecialRevelation\n\nVideo;\n\nyoutu.be/aN_cbX_GxPk?...",
-      "postedAt": "2026-10-01T06:49:49.271000Z",
       "likes": 0
     },
     {
