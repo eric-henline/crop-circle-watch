@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-10-02T17:34:00-07:00",
+  lastScan: "2026-10-03T07:02:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -435,6 +435,15 @@ window.COVERAGE = [
     outlet: "Temporary Temples",
     url: "https://temporarytemples.co.uk/event/summer-lectures-crop-circle-conference-2025-6",
     summary: "Online five-weekend conference (3 October – 1 November 2026, via Zoom) featuring two introductory workshops on crop circles and geometry/consciousness plus eight lectures from researchers including Peter van den Burg (geometric analysis), Bert Janssen (quantum science perspectives), and Kathy Mingo (alchemy connections). Described by Temporary Temples as the only crop circle event of this kind anywhere; video recordings available for purchase after the series ends."
+  },
+  {
+    id: "2026-10-01-croppie-2025-lunatics",
+    date: "2026-10-01",
+    kind: "article",
+    title: "2025: When The Lunatics Took Over",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/10/01/2025-when-the-lunatics-took-over/",
+    summary: "Post-season retrospective on the 2025 crop circle season, which The Croppie describes as dominated by hoaxes from 'Team Ten Watt' (Dene Hine and Mark Breen). Of roughly six genuine unclaimed circles that year, the review documents formations at Sutton Veney, Avebury, Hackpen Hill, Lyme Regis, Ludwell, and Wilmington, arguing that the real circlemakers' absence allowed an amateur group to overshadow the season."
   },
   {
     id: "2026-09-15-croppie-investigating-crop-circles-film",

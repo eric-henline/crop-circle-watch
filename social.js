@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-02T14:00:05Z",
+  "fetchedAt": "2026-10-03T13:58:06Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwxw6lay4k2t",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@bbcnews-uk-rss.bsky.social @bbcnews-world-rss.bsky.social\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #TheWordOfGod\n#Jesus #TheSecondComing\n\ntemporarytemple…",
+      "postedAt": "2026-10-03T12:46:19.466000Z",
+      "likes": 3
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwv42p3soc2i",
@@ -29,21 +38,12 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwsbehdwpc2z",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "Coelosphaerium (Cyanobacteria)\nZeal’s Knoll, Wiltshire, England.\n5th July 2026\n\n#CropCircles #Logos\n#TheWordOfGod\n#SpecialRevelation\n\ntemporarytemples.co.uk/project/mere...",
-      "postedAt": "2026-10-01T06:50:29.429000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
       "url": "https://bsky.app/profile/aerialembroidery.bsky.social/post/3mv4dknm7jk2l",
       "author": "Victoria Rose Richards",
       "handle": "@aerialembroidery.bsky.social",
       "text": "'What about my harvest?!' - my second embroidered crop circle! These aerial landscapes have been so fun! This one was 35 hours, the knots took less time but the circles took longer than expected 👽 now available here with the first: victoriaroserichards.co.uk/collection/a... 1/2",
       "postedAt": "2026-09-09T20:05:58.910000Z",
-      "likes": 514
+      "likes": 517
     },
     {
       "platform": "bluesky",
