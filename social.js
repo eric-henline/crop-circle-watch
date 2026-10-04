@@ -15,7 +15,7 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-03T13:58:06Z",
+  "fetchedAt": "2026-10-04T14:38:24Z",
   "source": "bluesky",
   "posts": [
     {
@@ -25,7 +25,7 @@ window.SOCIAL_FEED = {
       "handle": "@sirius2368.bsky.social",
       "text": "@bbcnews-uk-rss.bsky.social @bbcnews-world-rss.bsky.social\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #TheWordOfGod\n#Jesus #TheSecondComing\n\ntemporarytemple…",
       "postedAt": "2026-10-03T12:46:19.466000Z",
-      "likes": 3
+      "likes": 7
     },
     {
       "platform": "bluesky",
