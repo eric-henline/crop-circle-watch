@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-10-06T06:25:00-07:00",
+  lastScan: "2026-10-06T07:15:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -446,6 +446,15 @@ window.COVERAGE = [
     summary: "Post-season retrospective on the 2025 crop circle season, which The Croppie describes as dominated by hoaxes from 'Team Ten Watt' (Dene Hine and Mark Breen). Of roughly six genuine unclaimed circles that year, the review documents formations at Sutton Veney, Avebury, Hackpen Hill, Lyme Regis, Ludwell, and Wilmington, arguing that the real circlemakers' absence allowed an amateur group to overshadow the season."
   },
   {
+    id: "2026-09-30-citizen-d-pursuit-paranormal",
+    date: "2026-09-30",
+    kind: "podcast",
+    title: "It Can't Be People: Voices From Inside the Circle",
+    outlet: "Pursuit of the Paranormal Podcast",
+    url: "https://itcantbepeople.substack.com/p/brand-new-interview-citizen-d-in-575",
+    summary: "Interview with Citizen D — journalist, author, and former circle-maker — on the Pursuit of the Paranormal podcast, announced via his Substack on 30 September 2026. Drawing on his book of firsthand accounts from active circle-makers, the conversation covers construction techniques in Wiltshire's ancient landscapes, mysterious orbs and lights observed during and after formations, unexplained additions appearing after makers have left, and the book's central question: whether circles may be human-made but not entirely human-directed."
+  },
+  {
     id: "2026-09-15-croppie-investigating-crop-circles-film",
     date: "2026-09-15",
     kind: "article",
@@ -462,6 +471,15 @@ window.COVERAGE = [
     outlet: "The Croppie",
     url: "https://thecroppie.com/2026/09/01/croppie-gossip-ai-trouble-in-the-camel-enclosure/",
     summary: "Post-season gossip column in two parts: a social-media dispute between administrator Dene Hine and user Hamish Jacobs over undisclosed AI usage in online arguments (escalating from a thread about the 1966 Tully UFO incident); and a critique of photographer Mark 'Billy' Breen's uninformed speculation that GPS planting methods might affect future crop circle creation."
+  },
+  {
+    id: "2026-08-30-coast-to-coast-citizen-d",
+    date: "2026-08-30",
+    kind: "podcast",
+    title: "Crop Circle Anomalies: An Insider's Account",
+    outlet: "Coast to Coast AM",
+    url: "https://www.coasttocoastam.com/show/2026-08-30-show/",
+    summary: "Second half of this Coast to Coast AM episode (hosted by Richard Syrett) features Citizen D — journalist, author, and former circle-maker — drawing on his book \"It Can't Be People: Voices from the Inner Circle.\" He describes night-time construction with boards and rope, why Wiltshire and Avebury ancient landscapes are the recurring stage, and unexplained phenomena reported by the makers themselves: orbs and lights during formations, time distortions, apparitions, and prophetic dreams. His argument: human authorship does not close the mystery."
   },
   {
     id: "2026-08-04-croppie-gossip-in-a-field-in-wiltshire",
