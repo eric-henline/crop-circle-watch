@@ -15,7 +15,7 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-06T13:58:06Z",
+  "fetchedAt": "2026-10-07T13:58:02Z",
   "source": "bluesky",
   "posts": [
     {
@@ -26,6 +26,15 @@ window.SOCIAL_FEED = {
       "text": "先揭露：我們是 $CROPCODE 的創作者。免費工具：打一句話，壓成 23 欄二進位麥田再解碼。圖＝WE ARE NOT ALONE。\nhttps://arecibosignal.com\n不是投資建議，迷因幣可能歸零。\n#UFO #UAP #aliens #cropcircle",
       "postedAt": "2026-10-05T12:30:20.353000Z",
       "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/w-a-whittaker.bsky.social/post/3mx4h6a56v224",
+      "author": "Bill Whittaker",
+      "handle": "@w-a-whittaker.bsky.social",
+      "text": "What's next, Space Aliens?  Bigfoot?  Loch Ness Monster?  Crop Circles?",
+      "postedAt": "2026-10-05T08:01:00.379000Z",
+      "likes": 4
     },
     {
       "platform": "bluesky",
