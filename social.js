@@ -15,9 +15,45 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-07T13:58:02Z",
+  "fetchedAt": "2026-10-08T14:08:38Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mxe762hd7c2f",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "The Roman Floor Mosaic\nMorgans Hill, Wiltshire, England\n2nd August 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#History #Culture #Heritage\n#RomanBritain #Art\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-08T09:59:02.391000Z",
+      "likes": 3
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mxe75f5mqs2f",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "The Roman Floor Mosaic\nMorgans Hill, Wiltshire, England\n2nd August 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#History #Culture #Heritage\n#RomanBritain #Art\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-08T09:58:40.054000Z",
+      "likes": 3
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/horrifyinghistory.bsky.social/post/3mxckgd27ra22",
+      "author": "Horrifying History",
+      "handle": "@horrifyinghistory.bsky.social",
+      "text": "Get ready to spiral into mystery! 🌾🔍 Tomorrow, we unravel the enigma of crop circles: hoax, science, or the work of aliens on vacation? 👽 Don’t miss it! #CropCircles #MysteryUnveiled #ListenNow",
+      "postedAt": "2026-10-07T18:15:11.443000Z",
+      "likes": 2
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/horrifyinghistory.bsky.social/post/3mxc4vknlqz2t",
+      "author": "Horrifying History",
+      "handle": "@horrifyinghistory.bsky.social",
+      "text": "🎙️🚜 Get ready to circle up! Today’s episode dives into the mysterious world of crop circles. Are aliens trying to send a message, or just really bad at tic-tac-toe? 🌾👽 #CropCircles #UFOs #FarmFreshConspiracies",
+      "postedAt": "2026-10-07T14:13:10.187000Z",
+      "likes": 2
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mx4w7v3wz72q",
@@ -26,33 +62,6 @@ window.SOCIAL_FEED = {
       "text": "先揭露：我們是 $CROPCODE 的創作者。免費工具：打一句話，壓成 23 欄二進位麥田再解碼。圖＝WE ARE NOT ALONE。\nhttps://arecibosignal.com\n不是投資建議，迷因幣可能歸零。\n#UFO #UAP #aliens #cropcircle",
       "postedAt": "2026-10-05T12:30:20.353000Z",
       "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/w-a-whittaker.bsky.social/post/3mx4h6a56v224",
-      "author": "Bill Whittaker",
-      "handle": "@w-a-whittaker.bsky.social",
-      "text": "What's next, Space Aliens?  Bigfoot?  Loch Ness Monster?  Crop Circles?",
-      "postedAt": "2026-10-05T08:01:00.379000Z",
-      "likes": 4
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mx2xo72zr22f",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@churchofengland.org\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire, England.\n15th August 2008\n\n#CropCircles #Logos\n#TheWordOfGod #SpecialRevelation\n#Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-10-04T17:50:56.521000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mwxw6lay4k2t",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@bbcnews-uk-rss.bsky.social @bbcnews-world-rss.bsky.social\n\n#TheSiriusRevelations\n\nAll The Sanctifications\n\nThe Celtic Cross.\nEtchilhampton Hill, Wiltshire,\nEngland. 15th August 2008\n\n#Logos #SpecialRevelation\n#CropCircles #TheWordOfGod\n#Jesus #TheSecondComing\n\ntemporarytemple…",
-      "postedAt": "2026-10-03T12:46:19.466000Z",
-      "likes": 7
     },
     {
       "platform": "bluesky",
@@ -80,15 +89,6 @@ window.SOCIAL_FEED = {
       "text": "thank the gods the aliens stopped doing stupid crop circles and did something we can all appreciate",
       "postedAt": "2026-06-12T11:45:38.675000Z",
       "likes": 138
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/lostcitymagic.bsky.social/post/3mo2ndpyczk23",
-      "author": "Neugin",
-      "handle": "@lostcitymagic.bsky.social",
-      "text": "Even the crop circle aliens are done with him",
-      "postedAt": "2026-06-12T01:59:23.093000Z",
-      "likes": 36
     }
   ]
 };
