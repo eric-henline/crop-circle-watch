@@ -15,7 +15,7 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-08T14:08:38Z",
+  "fetchedAt": "2026-10-09T14:07:49Z",
   "source": "bluesky",
   "posts": [
     {
@@ -25,7 +25,7 @@ window.SOCIAL_FEED = {
       "handle": "@sirius2368.bsky.social",
       "text": "The Roman Floor Mosaic\nMorgans Hill, Wiltshire, England\n2nd August 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#History #Culture #Heritage\n#RomanBritain #Art\n\ntemporarytemples.co.uk/crop-circles...",
       "postedAt": "2026-10-08T09:59:02.391000Z",
-      "likes": 3
+      "likes": 5
     },
     {
       "platform": "bluesky",
@@ -34,7 +34,7 @@ window.SOCIAL_FEED = {
       "handle": "@sirius2368.bsky.social",
       "text": "The Roman Floor Mosaic\nMorgans Hill, Wiltshire, England\n2nd August 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#History #Culture #Heritage\n#RomanBritain #Art\n\ntemporarytemples.co.uk/crop-circles...",
       "postedAt": "2026-10-08T09:58:40.054000Z",
-      "likes": 3
+      "likes": 4
     },
     {
       "platform": "bluesky",
@@ -53,15 +53,6 @@ window.SOCIAL_FEED = {
       "text": "🎙️🚜 Get ready to circle up! Today’s episode dives into the mysterious world of crop circles. Are aliens trying to send a message, or just really bad at tic-tac-toe? 🌾👽 #CropCircles #UFOs #FarmFreshConspiracies",
       "postedAt": "2026-10-07T14:13:10.187000Z",
       "likes": 2
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mx4w7v3wz72q",
-      "author": "ARECIBO Signal",
-      "handle": "@arecibo-signal.bsky.social",
-      "text": "先揭露：我們是 $CROPCODE 的創作者。免費工具：打一句話，壓成 23 欄二進位麥田再解碼。圖＝WE ARE NOT ALONE。\nhttps://arecibosignal.com\n不是投資建議，迷因幣可能歸零。\n#UFO #UAP #aliens #cropcircle",
-      "postedAt": "2026-10-05T12:30:20.353000Z",
-      "likes": 0
     },
     {
       "platform": "bluesky",
@@ -89,6 +80,15 @@ window.SOCIAL_FEED = {
       "text": "thank the gods the aliens stopped doing stupid crop circles and did something we can all appreciate",
       "postedAt": "2026-06-12T11:45:38.675000Z",
       "likes": 138
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/lostcitymagic.bsky.social/post/3mo2ndpyczk23",
+      "author": "Neugin",
+      "handle": "@lostcitymagic.bsky.social",
+      "text": "Even the crop circle aliens are done with him",
+      "postedAt": "2026-06-12T01:59:23.093000Z",
+      "likes": 36
     }
   ]
 };
