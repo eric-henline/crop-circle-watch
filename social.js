@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-09T14:07:49Z",
+  "fetchedAt": "2026-10-10T13:58:50Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/fluffywuffysheep.bsky.social/post/3mxhxmbrgic2y",
+      "author": "Krystyn, MilSurp Mutt",
+      "handle": "@fluffywuffysheep.bsky.social",
+      "text": "Drawing crop circles in your aura field",
+      "postedAt": "2026-10-09T21:54:28.841000Z",
+      "likes": 3
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mxe762hd7c2f",
@@ -71,24 +80,6 @@ window.SOCIAL_FEED = {
       "text": "nobody drinks problematically because of alien crop circles anymore",
       "postedAt": "2026-08-03T04:40:32.672000Z",
       "likes": 77
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/ggold328.bsky.social/post/3mo3o3zzuds2r",
-      "author": "gg",
-      "handle": "@ggold328.bsky.social",
-      "text": "thank the gods the aliens stopped doing stupid crop circles and did something we can all appreciate",
-      "postedAt": "2026-06-12T11:45:38.675000Z",
-      "likes": 138
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/lostcitymagic.bsky.social/post/3mo2ndpyczk23",
-      "author": "Neugin",
-      "handle": "@lostcitymagic.bsky.social",
-      "text": "Even the crop circle aliens are done with him",
-      "postedAt": "2026-06-12T01:59:23.093000Z",
-      "likes": 36
     }
   ]
 };
