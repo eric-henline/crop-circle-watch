@@ -15,7 +15,7 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-10T13:58:50Z",
+  "fetchedAt": "2026-10-11T14:12:02Z",
   "source": "bluesky",
   "posts": [
     {
@@ -52,15 +52,6 @@ window.SOCIAL_FEED = {
       "handle": "@horrifyinghistory.bsky.social",
       "text": "Get ready to spiral into mystery! 🌾🔍 Tomorrow, we unravel the enigma of crop circles: hoax, science, or the work of aliens on vacation? 👽 Don’t miss it! #CropCircles #MysteryUnveiled #ListenNow",
       "postedAt": "2026-10-07T18:15:11.443000Z",
-      "likes": 2
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/horrifyinghistory.bsky.social/post/3mxc4vknlqz2t",
-      "author": "Horrifying History",
-      "handle": "@horrifyinghistory.bsky.social",
-      "text": "🎙️🚜 Get ready to circle up! Today’s episode dives into the mysterious world of crop circles. Are aliens trying to send a message, or just really bad at tic-tac-toe? 🌾👽 #CropCircles #UFOs #FarmFreshConspiracies",
-      "postedAt": "2026-10-07T14:13:10.187000Z",
       "likes": 2
     },
     {
