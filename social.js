@@ -15,7 +15,7 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-14T14:29:44Z",
+  "fetchedAt": "2026-10-15T13:58:48Z",
   "source": "bluesky",
   "posts": [
     {
@@ -79,7 +79,7 @@ window.SOCIAL_FEED = {
       "handle": "@jsfrankel123.bsky.social",
       "text": "\"A lovely novel of firsts.\"\n\nCarl, a lonely teen stargazer.\nGrace, the new girl in town.\nRachel, Nevada, UFO central.\nDoubles, crop circles, and the mystery of Area 51.\n\nFor Carl, the truth is out there...sort of.\n\n#yafantasy #booklover #humor #Romance #Area51\n\nwww.amazon.com/…",
       "postedAt": "2026-10-11T02:40:59.060000Z",
-      "likes": 4
+      "likes": 11
     },
     {
       "platform": "bluesky",
