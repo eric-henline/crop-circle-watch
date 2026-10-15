@@ -15,9 +15,27 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-13T13:58:04Z",
+  "fetchedAt": "2026-10-14T14:29:44Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/maverickbrett.bsky.social/post/3mxrrdpozgc2q",
+      "author": "Nom de Plume Brett En Spookified",
+      "handle": "@maverickbrett.bsky.social",
+      "text": "OK, thinking of an Idea.\n\nImagine a googie/ UFO themed green house surrounded by a corn field with crop circles.",
+      "postedAt": "2026-10-13T19:28:56.390000Z",
+      "likes": 3
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/bigfatbartolocolon.bsky.social/post/3mxrc2flnz22w",
+      "author": "BOOtolo Colon",
+      "handle": "@bigfatbartolocolon.bsky.social",
+      "text": "hoax works, but i think this was too lazy to even rise to the level of hoax. hoax implies some action was taken beyond just saying something false, and they barely did that. it's like saying you saw crop circles (lie) vs actually making crop circles and pretending you don't kn…",
+      "postedAt": "2026-10-13T14:55:17.676000Z",
+      "likes": 1
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mxoh7aym7s2n",
@@ -71,24 +89,6 @@ window.SOCIAL_FEED = {
       "text": "Hey, Aliens, we don't need no stinking crop circles! We got COCK CIRCLES for Close MENcounters of the Herd kind.",
       "postedAt": "2026-10-10T04:45:09.407000Z",
       "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/achannelings.bsky.social/post/3mxi3nm5tfb2o",
-      "author": "Ashtar Sheran's Lonely Hearts Channeling Page ",
-      "handle": "@achannelings.bsky.social",
-      "text": "Crop Circle Geometry: The Mathematics Hidden in the Fields\n\nhttps://api.follow.it/track-rss-story-click/v3/LouIi8PqKcMgEtS5GLxv6niqiiu3Ckk3?utm_source=follow.it\n\n #channeling #spirituality #channelings #ascension #twinflame #starseeds #consciousness",
-      "postedAt": "2026-10-09T23:06:48.153295Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/fluffywuffysheep.bsky.social/post/3mxhxmbrgic2y",
-      "author": "Krystyn, MilSurp Mutt",
-      "handle": "@fluffywuffysheep.bsky.social",
-      "text": "Drawing crop circles in your aura field",
-      "postedAt": "2026-10-09T21:54:28.841000Z",
-      "likes": 3
     }
   ]
 };
