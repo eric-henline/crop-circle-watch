@@ -15,9 +15,45 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-15T13:58:48Z",
+  "fetchedAt": "2026-10-17T14:07:50Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my2siju3os2w",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@muslimcounciluk.bsky.social @interpol.int \n\nOur national taboo.\nThe resurgent Logos.\n\nThe Geometric Word of God.\n\n#England #Logos #CropCircles #SpecialRevelation #TheWordOfGod #Jesus #TheSecondComing \n\nen.wikipedia.org/wiki/Logos_(...",
+      "postedAt": "2026-10-17T09:43:29.419000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my2qvpdjy22w",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@muslimcounciluk.bsky.social @interpol.int \n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-17T09:15:03.889000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/skwhite2020.bsky.social/post/3my22hqjmvk2o",
+      "author": "skwhite2020.bsky.social",
+      "handle": "@skwhite2020.bsky.social",
+      "text": "ALL GONE by S.K. White. \n\nAre the newly discovered crop circles an invitation to the second coming or an invitation to a first contact? \n\nEXCERPT: “What do the aliens want?”\n\nAvailable at: \namzn.to/3DWgtwS?fbcl...\n\nYou can find me at:\nlinktr.ee/skwhite\n#scifibooks #trickortrea…",
+      "postedAt": "2026-10-17T02:33:33.061000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3mxzifaxmp62p",
+      "author": "Edward Lithium",
+      "handle": "@zzzyzzyva.bsky.social",
+      "text": "Edward Lithium’s Daily Roundup: Unexplained Mysteries (#1) Explore crop circles, earthquakes, unexplained lights and ancient landscapes through biblical resonance, Strong’s Concordance, sacred dates and numerical patterns. edwardlithium.substack.com/p/edward-lit...",
+      "postedAt": "2026-10-16T21:10:01.287000Z",
+      "likes": 0
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/maverickbrett.bsky.social/post/3mxrrdpozgc2q",
@@ -47,48 +83,12 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mxlibq2qvk2r",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "The Monad\nMicrocosm - Macrocosm\nCley Hill, Wiltshire, England\n10th August 2023\n\n#CropCircles #Logos #TheWordOfGod #TheMonad #MicrocosmMacrocosm \n\nOver 700 ft in diameter! \n\ntemporarytemples.co.uk/project/cley...",
-      "postedAt": "2026-10-11T07:30:47.556000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mxlib2d64c2r",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "The Monad\nMicrocosm - Macrocosm\nCley Hill, Wiltshire, England\n10th August 2023\n\n#CropCircles #Logos #TheWordOfGod #TheMonad #MicrocosmMacrocosm \n\nVideo;\n\nyoutu.be/EKGdx6GXn0c?...",
-      "postedAt": "2026-10-11T07:30:24.763000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/meganbryar.bsky.social/post/3mxl2mc7k322w",
-      "author": "Megan Bryar",
-      "handle": "@meganbryar.bsky.social",
-      "text": "And here we've always been told it's aliens that are making those crop circles, when all the time it was macros!",
-      "postedAt": "2026-10-11T03:26:09.749000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
       "url": "https://bsky.app/profile/jsfrankel123.bsky.social/post/3mxky3j3xrk2w",
       "author": "J.S. Frankel",
       "handle": "@jsfrankel123.bsky.social",
       "text": "\"A lovely novel of firsts.\"\n\nCarl, a lonely teen stargazer.\nGrace, the new girl in town.\nRachel, Nevada, UFO central.\nDoubles, crop circles, and the mystery of Area 51.\n\nFor Carl, the truth is out there...sort of.\n\n#yafantasy #booklover #humor #Romance #Area51\n\nwww.amazon.com/…",
       "postedAt": "2026-10-11T02:40:59.060000Z",
-      "likes": 11
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/thongerdad808.bsky.social/post/3mxiokmtodk2e",
-      "author": "DADBODboyrod 🤏🏼 in Hawaii",
-      "handle": "@thongerdad808.bsky.social",
-      "text": "Hey, Aliens, we don't need no stinking crop circles! We got COCK CIRCLES for Close MENcounters of the Herd kind.",
-      "postedAt": "2026-10-10T04:45:09.407000Z",
-      "likes": 1
+      "likes": 16
     }
   ]
 };
