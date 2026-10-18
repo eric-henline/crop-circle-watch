@@ -15,9 +15,45 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-17T14:07:50Z",
+  "fetchedAt": "2026-10-18T13:58:05Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/cambskeptics.bsky.social/post/3my5c7ptcmv24",
+      "author": "Cambridge Skeptics",
+      "handle": "@cambskeptics.bsky.social",
+      "text": "Sky History recounts how crop-circle makers fooled an expert with planks and rope, then revives the alien mystery with reports of UFOs and malfunctioning gadgets. The demonstration gets acknowledged; the speculation gets the last word. www.history.co.uk/articles/cro...",
+      "postedAt": "2026-10-18T09:30:11.879000Z",
+      "likes": 2
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3my42r3k4fh2j",
+      "author": "Edward Lithium",
+      "handle": "@zzzyzzyva.bsky.social",
+      "text": "3/7\nThe design is restrained yet striking: a dark central disc, a light gap, an outer ring.\nIn Christian art, the halo marks holiness.\nHere, on St Luke’s day, a crop-circle halo appears in a field named for Christ.",
+      "postedAt": "2026-10-17T21:44:06.021000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3my42qxrga42q",
+      "author": "Edward Lithium",
+      "handle": "@zzzyzzyva.bsky.social",
+      "text": "1/7\nOn 18 October 2017, a simple crop circle appeared in a wheat field in Bom Jesus, Brazil.\nJust 20 metres across. A filled centre ringed by a narrow halo.\nDiscovered on the feast day of St Luke the Evangelist.  Was it just geometry… or something more?",
+      "postedAt": "2026-10-17T21:44:02.061000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my3cnvwres2v",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@muslimcounciluk.bsky.social @interpol.int \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-10-17T14:32:49.735000Z",
+      "likes": 0
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my2siju3os2w",
@@ -29,30 +65,12 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my2qvpdjy22w",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@muslimcounciluk.bsky.social @interpol.int \n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-10-17T09:15:03.889000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
       "url": "https://bsky.app/profile/skwhite2020.bsky.social/post/3my22hqjmvk2o",
       "author": "skwhite2020.bsky.social",
       "handle": "@skwhite2020.bsky.social",
       "text": "ALL GONE by S.K. White. \n\nAre the newly discovered crop circles an invitation to the second coming or an invitation to a first contact? \n\nEXCERPT: “What do the aliens want?”\n\nAvailable at: \namzn.to/3DWgtwS?fbcl...\n\nYou can find me at:\nlinktr.ee/skwhite\n#scifibooks #trickortrea…",
       "postedAt": "2026-10-17T02:33:33.061000Z",
       "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3mxzifaxmp62p",
-      "author": "Edward Lithium",
-      "handle": "@zzzyzzyva.bsky.social",
-      "text": "Edward Lithium’s Daily Roundup: Unexplained Mysteries (#1) Explore crop circles, earthquakes, unexplained lights and ancient landscapes through biblical resonance, Strong’s Concordance, sacred dates and numerical patterns. edwardlithium.substack.com/p/edward-lit...",
-      "postedAt": "2026-10-16T21:10:01.287000Z",
-      "likes": 0
     },
     {
       "platform": "bluesky",
@@ -71,24 +89,6 @@ window.SOCIAL_FEED = {
       "text": "hoax works, but i think this was too lazy to even rise to the level of hoax. hoax implies some action was taken beyond just saying something false, and they barely did that. it's like saying you saw crop circles (lie) vs actually making crop circles and pretending you don't kn…",
       "postedAt": "2026-10-13T14:55:17.676000Z",
       "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mxoh7aym7s2n",
-      "author": "ARECIBO Signal",
-      "handle": "@arecibo-signal.bsky.social",
-      "text": "Creator here: we made $CROPCODE.\nDecode Challenge #2 🌾 Easiest way in: make a crop circle at arecibosignal.com and post it with #CROPCODE. Or decode this field and post the sentence plus reasoning. First 20 valid entries: 50,000 $CROPCODE each.\nNot investment advice; meme coin…",
-      "postedAt": "2026-10-12T11:49:28.726684Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/jsfrankel123.bsky.social/post/3mxky3j3xrk2w",
-      "author": "J.S. Frankel",
-      "handle": "@jsfrankel123.bsky.social",
-      "text": "\"A lovely novel of firsts.\"\n\nCarl, a lonely teen stargazer.\nGrace, the new girl in town.\nRachel, Nevada, UFO central.\nDoubles, crop circles, and the mystery of Area 51.\n\nFor Carl, the truth is out there...sort of.\n\n#yafantasy #booklover #humor #Romance #Area51\n\nwww.amazon.com/…",
-      "postedAt": "2026-10-11T02:40:59.060000Z",
-      "likes": 16
     }
   ]
 };

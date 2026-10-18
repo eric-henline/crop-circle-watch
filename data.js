@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-10-17T12:46:00-07:00",
+  lastScan: "2026-10-18T07:15:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -427,6 +427,15 @@ window.COVERAGE = [
   // returns 200 and the summary describes what the piece actually says. This is
   // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
   // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-10-15-croppie-it-cant-be-people-review",
+    date: "2026-10-15",
+    kind: "article",
+    title: "Books: It Can't Be People",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/10/15/books-it-cant-be-people/",
+    summary: "The Croppie's critical review of Citizen D's independently published Kindle book 'It Can't Be People: Voices From the Inner Circle,' a collection of testimonies from circle makers describing paranormal experiences — orbs, lights, and tall figures — observed during night-time field activities. The reviewer questions the authenticity of some accounts and concludes that both the book's thesis and mainstream extraterrestrial beliefs rest on similar foundations of 'faith, superstition and wishful thinking.'"
+  },
   {
     id: "2026-10-03-tt-autumn-lectures",
     date: "2026-10-03",
