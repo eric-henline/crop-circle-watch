@@ -15,9 +15,27 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-18T13:58:05Z",
+  "fetchedAt": "2026-10-19T13:58:03Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my7n6mlyrk2n",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@telegraph.co.uk @thetimes.com\n@theobserveruk.bsky.social\n@the-independent.com\n\nSeparating Proteins\nPotterne Field, nr. Devizes,\nWiltshire, England.\n28th May 2020\n\n#CropCircles #Logos\n#TheWordOfGod\n#TheLivingWord\n#Coronavirus\n#ThePestilence\n\ntemporarytemples.co.uk/project/pott...",
+      "postedAt": "2026-10-19T07:51:46.737000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my7n5b6soc2n",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@telegraph.co.uk @thetimes.com\n@theobserveruk.bsky.social\n@the-independent.com\n\nSeparating Proteins\nPotterne Field, nr. Devizes,\nWiltshire, England.\n28th May 2020\n\n#CropCircles #Logos\n#TheWordOfGod\n#TheLivingWord\n#Coronavirus\n#ThePestilence\n\nVideo;\n\nyoutu.be/yoCJYI4za9k?...",
+      "postedAt": "2026-10-19T07:51:01.217000Z",
+      "likes": 0
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/cambskeptics.bsky.social/post/3my5c7ptcmv24",
@@ -25,7 +43,7 @@ window.SOCIAL_FEED = {
       "handle": "@cambskeptics.bsky.social",
       "text": "Sky History recounts how crop-circle makers fooled an expert with planks and rope, then revives the alien mystery with reports of UFOs and malfunctioning gadgets. The demonstration gets acknowledged; the speculation gets the last word. www.history.co.uk/articles/cro...",
       "postedAt": "2026-10-18T09:30:11.879000Z",
-      "likes": 2
+      "likes": 3
     },
     {
       "platform": "bluesky",
@@ -43,24 +61,6 @@ window.SOCIAL_FEED = {
       "handle": "@zzzyzzyva.bsky.social",
       "text": "1/7\nOn 18 October 2017, a simple crop circle appeared in a wheat field in Bom Jesus, Brazil.\nJust 20 metres across. A filled centre ringed by a narrow halo.\nDiscovered on the feast day of St Luke the Evangelist.  Was it just geometry… or something more?",
       "postedAt": "2026-10-17T21:44:02.061000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my3cnvwres2v",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@muslimcounciluk.bsky.social @interpol.int \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-10-17T14:32:49.735000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my2siju3os2w",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@muslimcounciluk.bsky.social @interpol.int \n\nOur national taboo.\nThe resurgent Logos.\n\nThe Geometric Word of God.\n\n#England #Logos #CropCircles #SpecialRevelation #TheWordOfGod #Jesus #TheSecondComing \n\nen.wikipedia.org/wiki/Logos_(...",
-      "postedAt": "2026-10-17T09:43:29.419000Z",
       "likes": 0
     },
     {
