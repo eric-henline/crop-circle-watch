@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-19T13:58:03Z",
+  "fetchedAt": "2026-10-20T13:58:06Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mycd6k76vk25",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@muslimcounciluk.bsky.social\n\nThe Solitary Star\nHackpen Hill, Broad Hinton,\nWiltshire, England. \n29th June 2020\n\n#CropCircles #TheWordOfGod\n#SpecialRevelation #Logos\n#Starman #TheStarProphecy #TheMorningStar\n#At-Tariq #An-Najm\n#Jesus #TheSecondComing\n\ncropcircleconnector.com/2…",
+      "postedAt": "2026-10-20T09:30:46.001000Z",
+      "likes": 0
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my7n6mlyrk2n",
@@ -25,15 +34,6 @@ window.SOCIAL_FEED = {
       "handle": "@sirius2368.bsky.social",
       "text": "@telegraph.co.uk @thetimes.com\n@theobserveruk.bsky.social\n@the-independent.com\n\nSeparating Proteins\nPotterne Field, nr. Devizes,\nWiltshire, England.\n28th May 2020\n\n#CropCircles #Logos\n#TheWordOfGod\n#TheLivingWord\n#Coronavirus\n#ThePestilence\n\ntemporarytemples.co.uk/project/pott...",
       "postedAt": "2026-10-19T07:51:46.737000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my7n5b6soc2n",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@telegraph.co.uk @thetimes.com\n@theobserveruk.bsky.social\n@the-independent.com\n\nSeparating Proteins\nPotterne Field, nr. Devizes,\nWiltshire, England.\n28th May 2020\n\n#CropCircles #Logos\n#TheWordOfGod\n#TheLivingWord\n#Coronavirus\n#ThePestilence\n\nVideo;\n\nyoutu.be/yoCJYI4za9k?...",
-      "postedAt": "2026-10-19T07:51:01.217000Z",
       "likes": 0
     },
     {
@@ -83,12 +83,12 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/bigfatbartolocolon.bsky.social/post/3mxrc2flnz22w",
-      "author": "BOOtolo Colon",
-      "handle": "@bigfatbartolocolon.bsky.social",
-      "text": "hoax works, but i think this was too lazy to even rise to the level of hoax. hoax implies some action was taken beyond just saying something false, and they barely did that. it's like saying you saw crop circles (lie) vs actually making crop circles and pretending you don't kn…",
-      "postedAt": "2026-10-13T14:55:17.676000Z",
-      "likes": 1
+      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mxoh7aym7s2n",
+      "author": "ARECIBO Signal",
+      "handle": "@arecibo-signal.bsky.social",
+      "text": "Creator here: we made $CROPCODE.\nDecode Challenge #2 🌾 Easiest way in: make a crop circle at arecibosignal.com and post it with #CROPCODE. Or decode this field and post the sentence plus reasoning. First 20 valid entries: 50,000 $CROPCODE each.\nNot investment advice; meme coin…",
+      "postedAt": "2026-10-12T11:49:28.726684Z",
+      "likes": 0
     }
   ]
 };
