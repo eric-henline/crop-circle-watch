@@ -15,25 +15,34 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-20T13:58:06Z",
+  "fetchedAt": "2026-10-21T13:58:08Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mycd6k76vk25",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myetlyu7622a",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@muslimcounciluk.bsky.social\n\nThe Solitary Star\nHackpen Hill, Broad Hinton,\nWiltshire, England. \n29th June 2020\n\n#CropCircles #TheWordOfGod\n#SpecialRevelation #Logos\n#Starman #TheStarProphecy #TheMorningStar\n#At-Tariq #An-Najm\n#Jesus #TheSecondComing\n\ncropcircleconnector.com/2…",
-      "postedAt": "2026-10-20T09:30:46.001000Z",
+      "text": "@muslimcounciluk.bsky.social\n\nEarthrise and the Dragonfly \nLittle London, \nWiltshire, England. \n3rd June 2009\n\n#Logos #SpecialRevelation #CropCircles #AnimaMundi #TheNewEarth #TheWorldToCome #TheFifthWorld\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-21T09:29:56.941000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3my7n6mlyrk2n",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myer7a6fks2a",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@telegraph.co.uk @thetimes.com\n@theobserveruk.bsky.social\n@the-independent.com\n\nSeparating Proteins\nPotterne Field, nr. Devizes,\nWiltshire, England.\n28th May 2020\n\n#CropCircles #Logos\n#TheWordOfGod\n#TheLivingWord\n#Coronavirus\n#ThePestilence\n\ntemporarytemples.co.uk/project/pott...",
-      "postedAt": "2026-10-19T07:51:46.737000Z",
+      "text": "@muslimcounciluk.bsky.social\n\nEarthrise and the Dragonfly \nLittle London, \nWiltshire, England. \n3rd June 2009\n\n#Dune #Ornithopters #Dragonfly\n#Logos #SpecialRevelation #CropCircles\n#AnimaMundi #TheNewEarth #TheWorldToCome #TheFifthWorld \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-21T08:47:00.924000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/mikefearl.bsky.social/post/3myctigouns2z",
+      "author": "mikefearl.bsky.social",
+      "handle": "@mikefearl.bsky.social",
+      "text": "Also, mowing a field of grass into a design is beyond human technology, therefore crop circles were made by aliens.",
+      "postedAt": "2026-10-20T14:22:37.752000Z",
       "likes": 0
     },
     {
@@ -71,15 +80,6 @@ window.SOCIAL_FEED = {
       "text": "ALL GONE by S.K. White. \n\nAre the newly discovered crop circles an invitation to the second coming or an invitation to a first contact? \n\nEXCERPT: “What do the aliens want?”\n\nAvailable at: \namzn.to/3DWgtwS?fbcl...\n\nYou can find me at:\nlinktr.ee/skwhite\n#scifibooks #trickortrea…",
       "postedAt": "2026-10-17T02:33:33.061000Z",
       "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/maverickbrett.bsky.social/post/3mxrrdpozgc2q",
-      "author": "Nom de Plume Brett En Spookified",
-      "handle": "@maverickbrett.bsky.social",
-      "text": "OK, thinking of an Idea.\n\nImagine a googie/ UFO themed green house surrounded by a corn field with crop circles.",
-      "postedAt": "2026-10-13T19:28:56.390000Z",
-      "likes": 3
     },
     {
       "platform": "bluesky",
