@@ -15,26 +15,53 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-21T13:58:08Z",
+  "fetchedAt": "2026-10-22T14:04:15Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myetlyu7622a",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@muslimcounciluk.bsky.social\n\nEarthrise and the Dragonfly \nLittle London, \nWiltshire, England. \n3rd June 2009\n\n#Logos #SpecialRevelation #CropCircles #AnimaMundi #TheNewEarth #TheWorldToCome #TheFifthWorld\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-10-21T09:29:56.941000Z",
+      "url": "https://bsky.app/profile/truthseekersai.bsky.social/post/3myhqymwlvx2j",
+      "author": "Truthseekers",
+      "handle": "@truthseekersai.bsky.social",
+      "text": "A Wiltshire crop circle resembles melatonin, but the warning may have come from the interpreter.\n\nhttps://ift.tt/WES0V9K",
+      "postedAt": "2026-10-22T13:21:18Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myer7a6fks2a",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myh4js6c5s2a",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@muslimcounciluk.bsky.social\n\nEarthrise and the Dragonfly \nLittle London, \nWiltshire, England. \n3rd June 2009\n\n#Dune #Ornithopters #Dragonfly\n#Logos #SpecialRevelation #CropCircles\n#AnimaMundi #TheNewEarth #TheWorldToCome #TheFifthWorld \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-10-21T08:47:00.924000Z",
+      "text": "@economist.com @forbes.com\n@financialtimes.com\n\nThe Polarity Sharks.\n(The Vicious Circle)  \n\nHackpen Hill,\nWiltshire, England.\n23rd June 2016\n\n#Logos #SpecialRevelation\n#CropCircles #TheNewJerusalem\n#TheSecondComing #Jesus\n#Antichrists #Prophecy \n\ntemporarytemples.co.uk/projec…",
+      "postedAt": "2026-10-22T07:15:05.976000Z",
       "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myh3tbhld22a",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@economist.com @forbes.com\n@financialtimes.com \n\nThe Polarity Sharks\n(The Vicious Circle)  \n\nHackpen Hill,\nWiltshire, England.\n23rd June 2016\n\n#Logos #CropCircles\n#SpecialRevelation #Polarity\n#ViciousCircles #FeedbackLoops \n\nwww.cropcirclecenter.com/ccdata/2016/...",
+      "postedAt": "2026-10-22T07:02:30.258000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3myg2pukdcf2m",
+      "author": "Edward Lithium",
+      "handle": "@zzzyzzyva.bsky.social",
+      "text": "Edward Lithium’s Daily Roundup: Unexplained Mysteries (#6) Explore Revelation, Mount Ararat, the Barbury Castle and Uffington crop circles, and Hopewell artefacts through biblical resonance and numerical patterns. edwardlithium.substack.com/p/edward-lit...",
+      "postedAt": "2026-10-21T21:10:01.126000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/moviepostmortem.bsky.social/post/3myfd4vqf4k2y",
+      "author": "Movie Postmortem Podcast",
+      "handle": "@moviepostmortem.bsky.social",
+      "text": "👽🌽 Signs (2002) - Aliens’ Guide to Finding Your Faith\n\nThis M. Night Shyamalan film felt perfect for Halloween! \n\nWe discuss crop circles, the best scares, the infamous birthday-party alien, and how M. Night intentionally tried to put a lot of humor in this film. \n\nTune in!\n\n#…",
+      "postedAt": "2026-10-21T14:07:50.212000Z",
+      "likes": 9
     },
     {
       "platform": "bluesky",
@@ -61,33 +88,6 @@ window.SOCIAL_FEED = {
       "handle": "@zzzyzzyva.bsky.social",
       "text": "3/7\nThe design is restrained yet striking: a dark central disc, a light gap, an outer ring.\nIn Christian art, the halo marks holiness.\nHere, on St Luke’s day, a crop-circle halo appears in a field named for Christ.",
       "postedAt": "2026-10-17T21:44:06.021000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3my42qxrga42q",
-      "author": "Edward Lithium",
-      "handle": "@zzzyzzyva.bsky.social",
-      "text": "1/7\nOn 18 October 2017, a simple crop circle appeared in a wheat field in Bom Jesus, Brazil.\nJust 20 metres across. A filled centre ringed by a narrow halo.\nDiscovered on the feast day of St Luke the Evangelist.  Was it just geometry… or something more?",
-      "postedAt": "2026-10-17T21:44:02.061000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/skwhite2020.bsky.social/post/3my22hqjmvk2o",
-      "author": "skwhite2020.bsky.social",
-      "handle": "@skwhite2020.bsky.social",
-      "text": "ALL GONE by S.K. White. \n\nAre the newly discovered crop circles an invitation to the second coming or an invitation to a first contact? \n\nEXCERPT: “What do the aliens want?”\n\nAvailable at: \namzn.to/3DWgtwS?fbcl...\n\nYou can find me at:\nlinktr.ee/skwhite\n#scifibooks #trickortrea…",
-      "postedAt": "2026-10-17T02:33:33.061000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mxoh7aym7s2n",
-      "author": "ARECIBO Signal",
-      "handle": "@arecibo-signal.bsky.social",
-      "text": "Creator here: we made $CROPCODE.\nDecode Challenge #2 🌾 Easiest way in: make a crop circle at arecibosignal.com and post it with #CROPCODE. Or decode this field and post the sentence plus reasoning. First 20 valid entries: 50,000 $CROPCODE each.\nNot investment advice; meme coin…",
-      "postedAt": "2026-10-12T11:49:28.726684Z",
       "likes": 0
     }
   ]
