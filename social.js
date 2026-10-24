@@ -15,9 +15,45 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-23T13:58:05Z",
+  "fetchedAt": "2026-10-24T13:58:06Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mym7mm36fk2p",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@channel4news.bsky.social\n\nThe Stellated Octahedron\n\n#Geometry #Logos\n#CropCircles #IntelligentDesign\n#SpecialRevelation \n\nen.wikipedia.org/wiki/Stellat...",
+      "postedAt": "2026-10-24T07:53:40.166000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mym5xbali22p",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@channel4news.bsky.social\n\nA Compilation from the archive;\nSacred Geometry and the Resurgent Logos\n\nCopies of crop circles and an original design by myself. \n\n#SacredGeometry #Logos #Badges #Posters #Murals #Art #Design #England #CulturalHeritage\n\nen.wikipedia.org/wiki/Sacred_...",
+      "postedAt": "2026-10-24T07:23:50.419000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/subteron.bsky.social/post/3myl6q2aozc25",
+      "author": "Subteron",
+      "handle": "@subteron.bsky.social",
+      "text": "Nazca Lines, 1996 Stonehenge Crop Circle, and the Karnak Energy Mystery\n\nThis episode explores mysterious ancient earthworks, including the Nazca lines, the 1996 Stonehenge crop circle, and the energy alignments of the Karnak stones.\n\nWatch Now #Subteron #AncientHistory #Megas…",
+      "postedAt": "2026-10-23T22:05:02.159000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/stevesensible.bsky.social/post/3mykvcsqbo224",
+      "author": "All Hallows Steve/ComicDeepDive reading X-Men",
+      "handle": "@stevesensible.bsky.social",
+      "text": "Me watching the trailer: \"Crop circles... seriously? Clicky alien languages..?? Oof!\" \nI still watched it though. Possibly the worst movie I've seen all year. It's astonishing how out of step with the modern world people like Spielberg can be.",
+      "postedAt": "2026-10-23T19:16:34.449000Z",
+      "likes": 2
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/gallaethamatt.bsky.social/post/3myk3vwbb4c2f",
@@ -25,7 +61,7 @@ window.SOCIAL_FEED = {
       "handle": "@gallaethamatt.bsky.social",
       "text": "It was always going to be the public's fault no matter what. Climate change? We drove cars and used plastic straws. War? We weren't exactly travelling internationally to negotiate peace with foreign powers were we? It's our own fault if we get bombed. Aliens? *scoff* Those cro…",
       "postedAt": "2026-10-23T11:41:58.398000Z",
-      "likes": 3
+      "likes": 4
     },
     {
       "platform": "bluesky",
@@ -34,7 +70,7 @@ window.SOCIAL_FEED = {
       "handle": "@glider.bsky.social",
       "text": "#SomethingBeautiful - crop circles. Just remember that any science you don't understand is functionally indistinguishable from magic. Or alien activity.",
       "postedAt": "2026-10-23T08:23:02.084000Z",
-      "likes": 5
+      "likes": 8
     },
     {
       "platform": "bluesky",
@@ -43,25 +79,7 @@ window.SOCIAL_FEED = {
       "handle": "@otherworlders.bsky.social",
       "text": "Key points: Crop circles are intricate patterns that appear overnight in fields Most are human-made, but some remain unexplained Theories range from natural causes to alien...\n\nhttps://otherworlders.com/otherworldly/decoding-crop-circles-natural-or-extraterrestrial/\n\n#SciFi #S…",
       "postedAt": "2026-10-23T08:00:28.688554Z",
-      "likes": 5
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myjlhpyy5s2n",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@setiinstitute.bsky.social\n\nDouble Deception And The Alien Delusion\nSparsholt Nr Winchester, Hampshire,\n15th August 2002\n\n#EventualityEarth #TheSpaceParadox\n#TheAlienDelusion #EndTimes\n#TheStrongDelusion #Space\n#CropCircles #SpecialRevelation\n\ntemporarytemples.co.uk/crop-circl…",
-      "postedAt": "2026-10-23T06:47:42.202000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myjlfxq2bk2n",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@setiinstitute.bsky.social\n\nDouble Deception And The Alien Delusion\nSparsholt Nr Winchester, Hampshire,\n15th August 2002\n\n#EventualityEarth #TheSpaceParadox\n#TheAlienDelusion #EndTimes\n#TheStrongDelusion #Space \n#CropCircles #SpecialRevelation\n\ntemporarytemples.co.uk/crop-circ…",
-      "postedAt": "2026-10-23T06:46:43.184000Z",
-      "likes": 1
+      "likes": 8
     },
     {
       "platform": "bluesky",
@@ -70,24 +88,6 @@ window.SOCIAL_FEED = {
       "handle": "@truthseekersai.bsky.social",
       "text": "A Wiltshire crop circle resembles melatonin, but the warning may have come from the interpreter.\n\nhttps://ift.tt/WES0V9K",
       "postedAt": "2026-10-22T13:21:18Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3myg2pukdcf2m",
-      "author": "Edward Lithium",
-      "handle": "@zzzyzzyva.bsky.social",
-      "text": "Edward Lithium’s Daily Roundup: Unexplained Mysteries (#6) Explore Revelation, Mount Ararat, the Barbury Castle and Uffington crop circles, and Hopewell artefacts through biblical resonance and numerical patterns. edwardlithium.substack.com/p/edward-lit...",
-      "postedAt": "2026-10-21T21:10:01.126000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/mikefearl.bsky.social/post/3myctigouns2z",
-      "author": "mikefearl.bsky.social",
-      "handle": "@mikefearl.bsky.social",
-      "text": "Also, mowing a field of grass into a design is beyond human technology, therefore crop circles were made by aliens.",
-      "postedAt": "2026-10-20T14:22:37.752000Z",
       "likes": 0
     }
   ]
