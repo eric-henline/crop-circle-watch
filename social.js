@@ -15,26 +15,53 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-24T13:58:06Z",
+  "fetchedAt": "2026-10-25T13:58:05Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mym7mm36fk2p",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myp63vxuas2j",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@channel4news.bsky.social\n\nThe Stellated Octahedron\n\n#Geometry #Logos\n#CropCircles #IntelligentDesign\n#SpecialRevelation \n\nen.wikipedia.org/wiki/Stellat...",
-      "postedAt": "2026-10-24T07:53:40.166000Z",
+      "text": "@barackobama.bsky.social\n@democrats.org\n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-10-25T12:04:25.591000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mym5xbali22p",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myoubi2xlc2z",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@channel4news.bsky.social\n\nA Compilation from the archive;\nSacred Geometry and the Resurgent Logos\n\nCopies of crop circles and an original design by myself. \n\n#SacredGeometry #Logos #Badges #Posters #Murals #Art #Design #England #CulturalHeritage\n\nen.wikipedia.org/wiki/Sacred_...",
-      "postedAt": "2026-10-24T07:23:50.419000Z",
-      "likes": 1
+      "text": "@barackobama.bsky.social @democrats.org\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-25T09:08:34.917000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3mynm4ng3ia2q",
+      "author": "Edward Lithium",
+      "handle": "@zzzyzzyva.bsky.social",
+      "text": "Edward Lithium’s Daily Roundup #8: Unexplained Mysteries. Explore the Day of the Lord, Noah’s Flood, Machu Picchu / King David’s Sanctuary, Day of the Lord / PI Crop Circle, the Sri Yantra Formation, plus soul and gospel music by Edward Lytton & Friends. edwardlithium.substack…",
+      "postedAt": "2026-10-24T21:10:03.044000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3myn54hyhxs2y",
+      "author": "Creative Native Threads",
+      "handle": "@kr8vn8v.bsky.social",
+      "text": "Mysterious. Minimal. Cosmic. A real crop circle from Wiltshire, UK, printed soft on 100% Airlume cotton. For the curious 🌌 #WearableArt #RootedInCalifornia https://creativenativethreads.com/product/crop-circle-t-shirt-82925-unisex-t-shirt/",
+      "postedAt": "2026-10-24T16:41:31.290000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mymyxyai2srl",
+      "author": "Creative Native Threads",
+      "handle": "@kr8vn8v.bsky.social",
+      "text": "Sunset meets crop circle geometry—cosmic wonder you can wear. Soft, lightweight 100% Airlume cotton. Made-to-order 🌅 #WearableArt #RootedInCalifornia https://creativenativethreads.com/product/crop-circle-70421-sunset-fusion-unisex-t-shirt/",
+      "postedAt": "2026-10-24T15:27:25.806000Z",
+      "likes": 0
     },
     {
       "platform": "bluesky",
@@ -62,33 +89,6 @@ window.SOCIAL_FEED = {
       "text": "It was always going to be the public's fault no matter what. Climate change? We drove cars and used plastic straws. War? We weren't exactly travelling internationally to negotiate peace with foreign powers were we? It's our own fault if we get bombed. Aliens? *scoff* Those cro…",
       "postedAt": "2026-10-23T11:41:58.398000Z",
       "likes": 4
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/glider.bsky.social/post/3myjqs6vvh222",
-      "author": "Helen McCarthy",
-      "handle": "@glider.bsky.social",
-      "text": "#SomethingBeautiful - crop circles. Just remember that any science you don't understand is functionally indistinguishable from magic. Or alien activity.",
-      "postedAt": "2026-10-23T08:23:02.084000Z",
-      "likes": 8
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/otherworlders.bsky.social/post/3myjpjvd4lo2j",
-      "author": "Other Worlders",
-      "handle": "@otherworlders.bsky.social",
-      "text": "Key points: Crop circles are intricate patterns that appear overnight in fields Most are human-made, but some remain unexplained Theories range from natural causes to alien...\n\nhttps://otherworlders.com/otherworldly/decoding-crop-circles-natural-or-extraterrestrial/\n\n#SciFi #S…",
-      "postedAt": "2026-10-23T08:00:28.688554Z",
-      "likes": 8
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/truthseekersai.bsky.social/post/3myhqymwlvx2j",
-      "author": "Truthseekers.com",
-      "handle": "@truthseekersai.bsky.social",
-      "text": "A Wiltshire crop circle resembles melatonin, but the warning may have come from the interpreter.\n\nhttps://ift.tt/WES0V9K",
-      "postedAt": "2026-10-22T13:21:18Z",
-      "likes": 0
     }
   ]
 };
