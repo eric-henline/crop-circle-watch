@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-25T13:58:05Z",
+  "fetchedAt": "2026-10-26T13:58:06Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myp63vxuas2j",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myrfyaayuk2t",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@barackobama.bsky.social\n@democrats.org\n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-10-25T12:04:25.591000Z",
+      "text": "The Concave And The Convex\nAldbourne, Wiltshire,\nEngland, 14th July 2006  \n\n#CropCircles #Logos\n#TheGeometricWord\n#SacredGeometry #GodGeometer\n#SpecialRevelation #TheNewEarth\n\nwww.cropcirclecenter.com/ccdata/2006/...",
+      "postedAt": "2026-10-26T09:30:51.570000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myoubi2xlc2z",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myrfxkudos2t",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@barackobama.bsky.social @democrats.org\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-10-25T09:08:34.917000Z",
+      "text": "The Concave And The Convex\nAldbourne, Wiltshire,\nEngland, 14th July 2006  \n\n#CropCircles #Logos\n#TheGeometricWord\n#SacredGeometry #GodGeometer\n#SpecialRevelation #TheNewEarth\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-26T09:30:29.134000Z",
       "likes": 0
     },
     {
