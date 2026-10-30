@@ -15,26 +15,62 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-26T13:58:06Z",
+  "fetchedAt": "2026-10-29T13:58:15Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myrfyaayuk2t",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myyxcisez22o",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Concave And The Convex\nAldbourne, Wiltshire,\nEngland, 14th July 2006  \n\n#CropCircles #Logos\n#TheGeometricWord\n#SacredGeometry #GodGeometer\n#SpecialRevelation #TheNewEarth\n\nwww.cropcirclecenter.com/ccdata/2006/...",
-      "postedAt": "2026-10-26T09:30:51.570000Z",
+      "text": "@privateeyenews.bsky.social @interpol.int \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-10-29T09:29:27.847000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myrfxkudos2t",
+      "url": "https://bsky.app/profile/deepsagemain.bsky.social/post/3myytu6urfq2i",
+      "author": "Deep Sage",
+      "handle": "@deepsagemain.bsky.social",
+      "text": "Per Wikipedia, the film Signs features a 200-meter-wide crop circle that signals an alien invasion. Let's just hope these waves aren't trying to leave us any mysterious patterns in the sand!\n\nAI-generated",
+      "postedAt": "2026-10-29T08:27:46.111745Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myypu3gjgc2q",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Concave And The Convex\nAldbourne, Wiltshire,\nEngland, 14th July 2006  \n\n#CropCircles #Logos\n#TheGeometricWord\n#SacredGeometry #GodGeometer\n#SpecialRevelation #TheNewEarth\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-10-26T09:30:29.134000Z",
+      "text": "@privateeyenews.bsky.social @interpol.int\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-29T07:16:07.872000Z",
       "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/bearlyhairybear.bsky.social/post/3myxqebstxc2j",
+      "author": "John",
+      "handle": "@bearlyhairybear.bsky.social",
+      "text": "Avebury is my favourite, it has a great feeling to it and occasionally you get crop circles on the hills . I had a long chat to a Druid priest when I was last there it was quite significant in my move to Scotland. Did you get to the Kennet long barrow ?",
+      "postedAt": "2026-10-28T21:52:31.705000Z",
+      "likes": 3
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/lewd-face.bsky.social/post/3myutcd6unc25",
+      "author": "Lewd Pid Face 🔞 | Unemployed Arc",
+      "handle": "@lewd-face.bsky.social",
+      "text": "Watch, out the Alien comprised of tentacles has a human fetish and is known to abduct people sometimes. Others of its species doesn't satisfy it anymore. Just a warning in case you happen to explore crop circles alone.",
+      "postedAt": "2026-10-27T18:07:08.049000Z",
+      "likes": 5
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/laffgaff.com/post/3myryhhs2md22",
+      "author": "LaffGaff",
+      "handle": "@laffgaff.com",
+      "text": "My local farmer has been using a vehicle to make crop circles that are perfectly round.\n\nI think he has a protractor. \n\n#funny #jokes #dadjokes",
+      "postedAt": "2026-10-26T15:01:30.114000Z",
+      "likes": 1
     },
     {
       "platform": "bluesky",
@@ -53,42 +89,6 @@ window.SOCIAL_FEED = {
       "text": "Mysterious. Minimal. Cosmic. A real crop circle from Wiltshire, UK, printed soft on 100% Airlume cotton. For the curious 🌌 #WearableArt #RootedInCalifornia https://creativenativethreads.com/product/crop-circle-t-shirt-82925-unisex-t-shirt/",
       "postedAt": "2026-10-24T16:41:31.290000Z",
       "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mymyxyai2srl",
-      "author": "Creative Native Threads",
-      "handle": "@kr8vn8v.bsky.social",
-      "text": "Sunset meets crop circle geometry—cosmic wonder you can wear. Soft, lightweight 100% Airlume cotton. Made-to-order 🌅 #WearableArt #RootedInCalifornia https://creativenativethreads.com/product/crop-circle-70421-sunset-fusion-unisex-t-shirt/",
-      "postedAt": "2026-10-24T15:27:25.806000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/subteron.bsky.social/post/3myl6q2aozc25",
-      "author": "Subteron",
-      "handle": "@subteron.bsky.social",
-      "text": "Nazca Lines, 1996 Stonehenge Crop Circle, and the Karnak Energy Mystery\n\nThis episode explores mysterious ancient earthworks, including the Nazca lines, the 1996 Stonehenge crop circle, and the energy alignments of the Karnak stones.\n\nWatch Now #Subteron #AncientHistory #Megas…",
-      "postedAt": "2026-10-23T22:05:02.159000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/stevesensible.bsky.social/post/3mykvcsqbo224",
-      "author": "All Hallows Steve/ComicDeepDive reading X-Men",
-      "handle": "@stevesensible.bsky.social",
-      "text": "Me watching the trailer: \"Crop circles... seriously? Clicky alien languages..?? Oof!\" \nI still watched it though. Possibly the worst movie I've seen all year. It's astonishing how out of step with the modern world people like Spielberg can be.",
-      "postedAt": "2026-10-23T19:16:34.449000Z",
-      "likes": 2
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/gallaethamatt.bsky.social/post/3myk3vwbb4c2f",
-      "author": "Matt Holland Author Dot Com",
-      "handle": "@gallaethamatt.bsky.social",
-      "text": "It was always going to be the public's fault no matter what. Climate change? We drove cars and used plastic straws. War? We weren't exactly travelling internationally to negotiate peace with foreign powers were we? It's our own fault if we get bombed. Aliens? *scoff* Those cro…",
-      "postedAt": "2026-10-23T11:41:58.398000Z",
-      "likes": 4
     }
   ]
 };
