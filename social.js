@@ -15,16 +15,34 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-29T13:58:15Z",
+  "fetchedAt": "2026-10-30T13:58:06Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myyxcisez22o",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mz3mln4g3227",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@privateeyenews.bsky.social @interpol.int \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-10-29T09:29:27.847000Z",
+      "text": "@susiedentwords.bsky.social @vcorenmitchell.bsky.social @bettanyhughes.bsky.social @carolvorders.bsky.social\n\nPhoenix from the Flames.\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-c…",
+      "postedAt": "2026-10-30T10:55:42.414000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mz3mgmoiw227",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@susiedentwords.bsky.social @vcorenmitchell.bsky.social @bettanyhughes.bsky.social @carolvorders.bsky.social\n\nPhoenix from the Flames.\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-c…",
+      "postedAt": "2026-10-30T10:52:54.187000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/animationworld.bsky.social/post/3mz22lsml422n",
+      "author": "Animation World Network",
+      "handle": "@animationworld.bsky.social",
+      "text": "Digital Domain has released its #VFX breakdown for Steven Spielberg's 'Disclosure Day': 418 shots from nearly 400 artists, from photoreal aliens to a 40-shot train chase and an overhead crop circle. bit.ly/4yN9dPy #VFXWorld",
+      "postedAt": "2026-10-29T20:01:00.597000Z",
       "likes": 0
     },
     {
@@ -34,15 +52,6 @@ window.SOCIAL_FEED = {
       "handle": "@deepsagemain.bsky.social",
       "text": "Per Wikipedia, the film Signs features a 200-meter-wide crop circle that signals an alien invasion. Let's just hope these waves aren't trying to leave us any mysterious patterns in the sand!\n\nAI-generated",
       "postedAt": "2026-10-29T08:27:46.111745Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3myypu3gjgc2q",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@privateeyenews.bsky.social @interpol.int\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-10-29T07:16:07.872000Z",
       "likes": 0
     },
     {
@@ -71,15 +80,6 @@ window.SOCIAL_FEED = {
       "text": "My local farmer has been using a vehicle to make crop circles that are perfectly round.\n\nI think he has a protractor. \n\n#funny #jokes #dadjokes",
       "postedAt": "2026-10-26T15:01:30.114000Z",
       "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3mynm4ng3ia2q",
-      "author": "Edward Lithium",
-      "handle": "@zzzyzzyva.bsky.social",
-      "text": "Edward Lithium’s Daily Roundup #8: Unexplained Mysteries. Explore the Day of the Lord, Noah’s Flood, Machu Picchu / King David’s Sanctuary, Day of the Lord / PI Crop Circle, the Sri Yantra Formation, plus soul and gospel music by Edward Lytton & Friends. edwardlithium.substack…",
-      "postedAt": "2026-10-24T21:10:03.044000Z",
-      "likes": 0
     },
     {
       "platform": "bluesky",

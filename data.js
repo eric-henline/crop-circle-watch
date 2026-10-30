@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-10-30T00:35:00-07:00",
+  lastScan: "2026-10-30T07:22:00-07:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -427,6 +427,15 @@ window.COVERAGE = [
   // returns 200 and the summary describes what the piece actually says. This is
   // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
   // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-10-30-hpj-crop-circles-mystery",
+    date: "2026-10-30",
+    kind: "article",
+    title: "Crop Circles Remain a Mystery for Researchers and Farmers",
+    outlet: "High Plains Journal",
+    url: "https://hpj.com/2026/10/30/crop-circles-remain-a-mystery-for-researchers-and-farmers/",
+    summary: "Long-form feature by Lacey Vilhauer profiling ICCRA researcher Jeffrey Wilson and his decades of scientific investigation into crop circle plant anomalies. Covers historical accounts back to the 1500s, the physical evidence distinguishing unexplained formations from hoaxes, and the practical and emotional toll on farmers whose fields are affected. One of the more substantive mainstream-press treatments of the research side of the phenomenon."
+  },
   {
     id: "2026-10-15-croppie-it-cant-be-people-review",
     date: "2026-10-15",
