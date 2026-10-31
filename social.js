@@ -15,25 +15,25 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-30T13:58:06Z",
+  "fetchedAt": "2026-10-31T13:58:09Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mz3mln4g3227",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mz66eivrwc2w",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@susiedentwords.bsky.social @vcorenmitchell.bsky.social @bettanyhughes.bsky.social @carolvorders.bsky.social\n\nPhoenix from the Flames.\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-c…",
-      "postedAt": "2026-10-30T10:55:42.414000Z",
+      "text": "@royalsociety.org @kingscollegelondon.bsky.social\n\nThe Magnetic Field \nAvebury, Wiltshire, England\n22 July 2000\n\n#CropCircles #Logos\n#SpecialRevelation\n#Kundalini #Quetzalcoatl\n#Kukulkan#Electromagnetism\n#FundamentalForces\n#TheFourLivingCreatures \n\ntemporarytemples.co.uk/crop-…",
+      "postedAt": "2026-10-31T11:19:09.935000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mz3mgmoiw227",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mz5w22ze5s2v",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@susiedentwords.bsky.social @vcorenmitchell.bsky.social @bettanyhughes.bsky.social @carolvorders.bsky.social\n\nPhoenix from the Flames.\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-c…",
-      "postedAt": "2026-10-30T10:52:54.187000Z",
+      "text": "@royalsociety.org @kingscollegelondon.bsky.social\n\nThe Melatonin Crop Formation \nRoundway Hill,\nWiltshire, England.\n23rd July 2011\n\n#CropCircles #MedicalScience\n#Melatonin #Endocrinology #Health  \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-10-31T08:50:09.909000Z",
       "likes": 0
     },
     {
@@ -74,20 +74,20 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/laffgaff.com/post/3myryhhs2md22",
-      "author": "LaffGaff",
-      "handle": "@laffgaff.com",
-      "text": "My local farmer has been using a vehicle to make crop circles that are perfectly round.\n\nI think he has a protractor. \n\n#funny #jokes #dadjokes",
-      "postedAt": "2026-10-26T15:01:30.114000Z",
-      "likes": 1
+      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mx4w7v3wz72q",
+      "author": "ARECIBO Signal",
+      "handle": "@arecibo-signal.bsky.social",
+      "text": "先揭露：我們是 $CROPCODE 的創作者。免費工具：打一句話，壓成 23 欄二進位麥田再解碼。圖＝WE ARE NOT ALONE。\nhttps://arecibosignal.com\n不是投資建議，迷因幣可能歸零。\n#UFO #UAP #aliens #cropcircle",
+      "postedAt": "2026-10-05T12:30:20.353000Z",
+      "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3myn54hyhxs2y",
-      "author": "Creative Native Threads",
-      "handle": "@kr8vn8v.bsky.social",
-      "text": "Mysterious. Minimal. Cosmic. A real crop circle from Wiltshire, UK, printed soft on 100% Airlume cotton. For the curious 🌌 #WearableArt #RootedInCalifornia https://creativenativethreads.com/product/crop-circle-t-shirt-82925-unisex-t-shirt/",
-      "postedAt": "2026-10-24T16:41:31.290000Z",
+      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mx4w7so4bi24",
+      "author": "ARECIBO Signal",
+      "handle": "@arecibo-signal.bsky.social",
+      "text": "Disclosure: we created $CROPCODE. Free tool: type any sentence, press it into a 23-column binary crop field, then decode it. Image = WE ARE NOT ALONE.\nTry: https://arecibosignal.com\nNot investment advice; meme coins can go to zero.\n#UFO #UAP #aliens #cropcircle",
+      "postedAt": "2026-10-05T12:30:14.832000Z",
       "likes": 0
     }
   ]
