@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-10-31T07:08:00-07:00",
+  lastScan: "2026-11-01T07:08:00-08:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -427,6 +427,15 @@ window.COVERAGE = [
   // returns 200 and the summary describes what the piece actually says. This is
   // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
   // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-11-01-croppie-crab-wood",
+    date: "2026-11-01",
+    kind: "article",
+    title: "Crab Wood: No, It Wasn't Circlemakers.org",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/11/01/crab-wood-no-it-wasnt-circlemakers-org/",
+    summary: "Investigation into the authorship of the famous 2002 Crab Wood formation near Winchester — the one featuring a pixelated alien figure holding a disc. Through interviews with Wil Russell of Circlemakers.org conducted in late July 2026, The Croppie establishes that Circlemakers.org did not make this formation; screenshots circulating as evidence were taken out of context and referred to separate commercial work. The article concludes the formation was likely created by an unnamed group of skilled circle makers who subsequently retired from the activity."
+  },
   {
     id: "2026-10-30-hpj-crop-circles-mystery",
     date: "2026-10-30",

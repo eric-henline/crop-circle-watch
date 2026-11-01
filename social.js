@@ -15,25 +15,34 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-10-31T13:58:09Z",
+  "fetchedAt": "2026-11-01T16:28:29Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mz66eivrwc2w",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzajaahejs2n",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@royalsociety.org @kingscollegelondon.bsky.social\n\nThe Magnetic Field \nAvebury, Wiltshire, England\n22 July 2000\n\n#CropCircles #Logos\n#SpecialRevelation\n#Kundalini #Quetzalcoatl\n#Kukulkan#Electromagnetism\n#FundamentalForces\n#TheFourLivingCreatures \n\ntemporarytemples.co.uk/crop-…",
-      "postedAt": "2026-10-31T11:19:09.935000Z",
+      "text": "@donald-tusk.bsky.social @polandmfa.bsky.social \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-11-01T09:38:57.512000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzaafwzi7c2o",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@donald-tusk.bsky.social @polandmfa.bsky.social \n\nPhoenix from the Flames.\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-01T07:01:05.267000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mz5w22ze5s2v",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@royalsociety.org @kingscollegelondon.bsky.social\n\nThe Melatonin Crop Formation \nRoundway Hill,\nWiltshire, England.\n23rd July 2011\n\n#CropCircles #MedicalScience\n#Melatonin #Endocrinology #Health  \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-10-31T08:50:09.909000Z",
+      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3mz6zg7csgk2e",
+      "author": "Edward Lithium",
+      "handle": "@zzzyzzyva.bsky.social",
+      "text": "1/16\nCrop circle interpretation: The Ipuaçu formation (discovered 31 Oct 2015, Brazil). Four ovals + central circle on the feast of St Luke the Evangelist. A striking visual of the Four Gospels.  Full analysis: edwardlithium.substack.com/p/the-ipuacu...",
+      "postedAt": "2026-10-31T19:23:17.843000Z",
       "likes": 0
     },
     {
@@ -47,27 +56,9 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/deepsagemain.bsky.social/post/3myytu6urfq2i",
-      "author": "Deep Sage",
-      "handle": "@deepsagemain.bsky.social",
-      "text": "Per Wikipedia, the film Signs features a 200-meter-wide crop circle that signals an alien invasion. Let's just hope these waves aren't trying to leave us any mysterious patterns in the sand!\n\nAI-generated",
-      "postedAt": "2026-10-29T08:27:46.111745Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/bearlyhairybear.bsky.social/post/3myxqebstxc2j",
-      "author": "John",
-      "handle": "@bearlyhairybear.bsky.social",
-      "text": "Avebury is my favourite, it has a great feeling to it and occasionally you get crop circles on the hills . I had a long chat to a Druid priest when I was last there it was quite significant in my move to Scotland. Did you get to the Kennet long barrow ?",
-      "postedAt": "2026-10-28T21:52:31.705000Z",
-      "likes": 3
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/lewd-face.bsky.social/post/3myutcd6unc25",
-      "author": "Lewd Pid Face 🔞 | Unemployed Arc",
-      "handle": "@lewd-face.bsky.social",
+      "url": "https://bsky.app/profile/foolgoyle.bsky.social/post/3myutcd6unc25",
+      "author": "FoolGoyle 🔞 | Unemployed Arc",
+      "handle": "@foolgoyle.bsky.social",
       "text": "Watch, out the Alien comprised of tentacles has a human fetish and is known to abduct people sometimes. Others of its species doesn't satisfy it anymore. Just a warning in case you happen to explore crop circles alone.",
       "postedAt": "2026-10-27T18:07:08.049000Z",
       "likes": 5
@@ -89,6 +80,15 @@ window.SOCIAL_FEED = {
       "text": "Disclosure: we created $CROPCODE. Free tool: type any sentence, press it into a 23-column binary crop field, then decode it. Image = WE ARE NOT ALONE.\nTry: https://arecibosignal.com\nNot investment advice; meme coins can go to zero.\n#UFO #UAP #aliens #cropcircle",
       "postedAt": "2026-10-05T12:30:14.832000Z",
       "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/starlightwithin.bsky.social/post/3mrtssiid7k2c",
+      "author": "Razhiel @ Starlight Within",
+      "handle": "@starlightwithin.bsky.social",
+      "text": "Sharing my friend's blog on his recent journey exploring England's ley lines, particularly those around #Avebury, as well as crop circles:\n\nroadtonowhere.nicholls.online/p/tickling-t...\n\n#leyline #leylines #LeyLinesInEngland #EnglishLeyLine #CropCircle #megalith #megaliths #St…",
+      "postedAt": "2026-07-30T06:29:15.595000Z",
+      "likes": 2
     }
   ]
 };
