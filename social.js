@@ -15,53 +15,26 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-01T16:28:29Z",
+  "fetchedAt": "2026-11-02T15:03:25Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzajaahejs2n",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzdcfmpxjk2j",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@donald-tusk.bsky.social @polandmfa.bsky.social \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-11-01T09:38:57.512000Z",
+      "text": "@scottishgreens.org @scotlibdems.org.uk @bylines.scot @ipprscotland.bsky.social\n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-11-02T12:14:41.166000Z",
       "likes": 1
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzaafwzi7c2o",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzcvbn2bzs2g",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@donald-tusk.bsky.social @polandmfa.bsky.social \n\nPhoenix from the Flames.\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-11-01T07:01:05.267000Z",
+      "text": "@scottishgreens.org @scotlibdems.org.uk @bylines.scot @ipprscotland.bsky.social\n\nPhoenix from the Flames.\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-02T08:19:48.647000Z",
       "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/zzzyzzyva.bsky.social/post/3mz6zg7csgk2e",
-      "author": "Edward Lithium",
-      "handle": "@zzzyzzyva.bsky.social",
-      "text": "1/16\nCrop circle interpretation: The Ipuaçu formation (discovered 31 Oct 2015, Brazil). Four ovals + central circle on the feast of St Luke the Evangelist. A striking visual of the Four Gospels.  Full analysis: edwardlithium.substack.com/p/the-ipuacu...",
-      "postedAt": "2026-10-31T19:23:17.843000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/animationworld.bsky.social/post/3mz22lsml422n",
-      "author": "Animation World Network",
-      "handle": "@animationworld.bsky.social",
-      "text": "Digital Domain has released its #VFX breakdown for Steven Spielberg's 'Disclosure Day': 418 shots from nearly 400 artists, from photoreal aliens to a 40-shot train chase and an overhead crop circle. bit.ly/4yN9dPy #VFXWorld",
-      "postedAt": "2026-10-29T20:01:00.597000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/foolgoyle.bsky.social/post/3myutcd6unc25",
-      "author": "FoolGoyle 🔞 | Unemployed Arc",
-      "handle": "@foolgoyle.bsky.social",
-      "text": "Watch, out the Alien comprised of tentacles has a human fetish and is known to abduct people sometimes. Others of its species doesn't satisfy it anymore. Just a warning in case you happen to explore crop circles alone.",
-      "postedAt": "2026-10-27T18:07:08.049000Z",
-      "likes": 5
     },
     {
       "platform": "bluesky",
