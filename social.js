@@ -15,25 +15,34 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-03T15:27:35Z",
+  "fetchedAt": "2026-11-05T14:59:00Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzdcfmpxjk2j",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@scottishgreens.org @scotlibdems.org.uk @bylines.scot @ipprscotland.bsky.social\n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-11-02T12:14:41.166000Z",
-      "likes": 1
+      "url": "https://bsky.app/profile/eksopolitiikka.bsky.social/post/3mzl2gxltxb2p",
+      "author": "Eksopolitiikka",
+      "handle": "@eksopolitiikka.bsky.social",
+      "text": "WILTSHIRE UFO CRATER AND CROPCIRCLE: 1963\n\nhttps://podcasters.spotify.com/pod/show/ufo-warning/episodes/WILTSHIRE-UFO-CRATER-AND-CROPCIRCLE-1963-e3ro9h6\n\n #UFObluesky #UFO #UFOs #UAP #EndUAPsecrecy #UAPtransparency",
+      "postedAt": "2026-11-05T14:13:33.681817Z",
+      "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzcygpweok2g",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzkjf62iq22k",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@scottishgreens.org @scotlibdems.org.uk @bylines.scot @ipprscotland.bsky.social \n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.…",
-      "postedAt": "2026-11-02T09:16:20.657000Z",
+      "text": "@churchofengland.org @muslimcounciluk.bsky.social\n\nThe Dyad And The Vesica\nAbbots Down, Wiltshire, England,\n5th June 2007\n\n#CropCircles #SacredGeometry\n#Logos #TheLivingWord #GodGeometer #TheDyad #TheVesicaPiscis \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-05T09:08:20.147000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzkjctyms22k",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@churchofengland.org @muslimcounciluk.bsky.social\n\nThe Dyad And The Vesica\nAbbots Down, Wiltshire, England\n5th June 2007\n\n#CropCircles #SacredGeometry\n#Logos #TheLivingWord #GodGeometer #TheDyad #TheVesicaPiscis \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-05T09:07:02.492000Z",
       "likes": 0
     },
     {
