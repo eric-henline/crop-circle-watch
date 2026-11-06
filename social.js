@@ -15,9 +15,36 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-05T14:59:00Z",
+  "fetchedAt": "2026-11-06T14:59:09Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mznkv4sepc2q",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@britishacademy.bsky.social @ippr.org @ethicsandintegrity.bsky.social\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-…",
+      "postedAt": "2026-11-06T14:13:08.632000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mznkpa4jrc2q",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@britishacademy.bsky.social @ippr.org @ethicsandintegrity.bsky.social\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-…",
+      "postedAt": "2026-11-06T14:09:50.815000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/alexjaffe.bsky.social/post/3mzlt6lyyak2n",
+      "author": "Alex Jaffe, DC Comics Expert",
+      "handle": "@alexjaffe.bsky.social",
+      "text": "“Your world,” Metron began, “was formed aeons ago as an engine to derive the Anti-Life Equation. That cosmic purpose is coming to fruit within your soil, for Darkseid to harvest. You call them ‘Crop Circles.’”\n\n“We’ll see if he can read them,” Damian said, “Before Bat-Cow’s he…",
+      "postedAt": "2026-11-05T21:36:17.055000Z",
+      "likes": 6
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/eksopolitiikka.bsky.social/post/3mzl2gxltxb2p",
@@ -25,24 +52,6 @@ window.SOCIAL_FEED = {
       "handle": "@eksopolitiikka.bsky.social",
       "text": "WILTSHIRE UFO CRATER AND CROPCIRCLE: 1963\n\nhttps://podcasters.spotify.com/pod/show/ufo-warning/episodes/WILTSHIRE-UFO-CRATER-AND-CROPCIRCLE-1963-e3ro9h6\n\n #UFObluesky #UFO #UFOs #UAP #EndUAPsecrecy #UAPtransparency",
       "postedAt": "2026-11-05T14:13:33.681817Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzkjf62iq22k",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@churchofengland.org @muslimcounciluk.bsky.social\n\nThe Dyad And The Vesica\nAbbots Down, Wiltshire, England,\n5th June 2007\n\n#CropCircles #SacredGeometry\n#Logos #TheLivingWord #GodGeometer #TheDyad #TheVesicaPiscis \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-11-05T09:08:20.147000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzkjctyms22k",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@churchofengland.org @muslimcounciluk.bsky.social\n\nThe Dyad And The Vesica\nAbbots Down, Wiltshire, England\n5th June 2007\n\n#CropCircles #SacredGeometry\n#Logos #TheLivingWord #GodGeometer #TheDyad #TheVesicaPiscis \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-11-05T09:07:02.492000Z",
       "likes": 0
     },
     {
