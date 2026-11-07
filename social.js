@@ -15,26 +15,35 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-06T14:59:09Z",
+  "fetchedAt": "2026-11-07T15:02:35Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mznkv4sepc2q",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzq2pe5qmc22",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@britishacademy.bsky.social @ippr.org @ethicsandintegrity.bsky.social\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-…",
-      "postedAt": "2026-11-06T14:13:08.632000Z",
+      "text": "@bloomsburybooksuk.bsky.social @scholasticuk.bsky.social\n\nThe Owl of Initiation\nWoodborough Hill,\nWiltshire, England.\n10th August 2009\n\n#CropCircles #Logos\n#TheGeometricWord \n#TheLivingWord \n#SpecialRevelation\n#Initiation #Insight\n#Awakening \n#Minerva #Athena \n\ntemporarytemple…",
+      "postedAt": "2026-11-07T14:01:34.392000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mznkpa4jrc2q",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzq2ok2g5c22",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@britishacademy.bsky.social @ippr.org @ethicsandintegrity.bsky.social\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-…",
-      "postedAt": "2026-11-06T14:09:50.815000Z",
+      "text": "@bloomsburybooksuk.bsky.social @scholasticuk.bsky.social\n\nThe Owl of Initiation\nWoodborough Hill,\nWiltshire, England.\n10th August 2009\n\n#CropCircles #Logos\n#TheGeometricWord \n#TheLivingWord \n#SpecialRevelation\n#Initiation #Insight\n#Awakening \n#Minerva #Athena \n\ntemporarytemple…",
+      "postedAt": "2026-11-07T14:01:07.018000Z",
       "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/april-now.bsky.social/post/3mzofdzzwps2s",
+      "author": "april",
+      "handle": "@april-now.bsky.social",
+      "text": "also kelly krumrie said 'concentric macroscope' is getting a second print run from crop circle press but there's no indication of when that will be and tbh considering crop circle only accepts submissions during aries season i'm guessing they are not exactly Leaping At The Cha…",
+      "postedAt": "2026-11-06T22:06:46.370000Z",
+      "likes": 1
     },
     {
       "platform": "bluesky",
@@ -43,7 +52,7 @@ window.SOCIAL_FEED = {
       "handle": "@alexjaffe.bsky.social",
       "text": "“Your world,” Metron began, “was formed aeons ago as an engine to derive the Anti-Life Equation. That cosmic purpose is coming to fruit within your soil, for Darkseid to harvest. You call them ‘Crop Circles.’”\n\n“We’ll see if he can read them,” Damian said, “Before Bat-Cow’s he…",
       "postedAt": "2026-11-05T21:36:17.055000Z",
-      "likes": 6
+      "likes": 7
     },
     {
       "platform": "bluesky",
