@@ -15,25 +15,43 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-07T15:02:35Z",
+  "fetchedAt": "2026-11-08T15:12:12Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzq2pe5qmc22",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@bloomsburybooksuk.bsky.social @scholasticuk.bsky.social\n\nThe Owl of Initiation\nWoodborough Hill,\nWiltshire, England.\n10th August 2009\n\n#CropCircles #Logos\n#TheGeometricWord \n#TheLivingWord \n#SpecialRevelation\n#Initiation #Insight\n#Awakening \n#Minerva #Athena \n\ntemporarytemple…",
-      "postedAt": "2026-11-07T14:01:34.392000Z",
+      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mzs42hh7ckqb",
+      "author": "Creative Native Threads",
+      "handle": "@kr8vn8v.bsky.social",
+      "text": "Sunset light bleeds through the geometry of a real crop circle—soft cotton, bold color, infinite mystery. For believers and dreamers alike 🌅\n\n#WearableArt #RootedInCalifornia\n\nhttps://creativenativethreads.com/product/crop-circle-70421-sunset-fusion-unisex-t-shirt/",
+      "postedAt": "2026-11-08T09:31:00.214000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzq2ok2g5c22",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzrzdci52k2s",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@bloomsburybooksuk.bsky.social @scholasticuk.bsky.social\n\nThe Owl of Initiation\nWoodborough Hill,\nWiltshire, England.\n10th August 2009\n\n#CropCircles #Logos\n#TheGeometricWord \n#TheLivingWord \n#SpecialRevelation\n#Initiation #Insight\n#Awakening \n#Minerva #Athena \n\ntemporarytemple…",
-      "postedAt": "2026-11-07T14:01:07.018000Z",
+      "text": "@bloomsburybooksuk.bsky.social @scholasticuk.bsky.social\n\nPhoenix from the Flames\nLittle London, Wiltshire,\nEngland. 12th June, 2009\n\n#CropCircles #Logos\n#SpecialRevelation\n#TheWordOfGod\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-…",
+      "postedAt": "2026-11-08T08:42:15.721000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzrzat5aw22s",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@bloomsburybooksuk.bsky.social @scholasticuk.bsky.social\n\nPhoenix from the Flames\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-08T08:40:52.523000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mzrhxavyqsqb",
+      "author": "Creative Native Threads",
+      "handle": "@kr8vn8v.bsky.social",
+      "text": "Mystery in the wheat: the Longwood Warren crop circle from July 2021, now on soft 100% Airlume cotton. For the curious and the searchers. https://creativenativethreads.com/product/crop-circle-70421-t-shirt-unisex-t-shirt/ #WearableArt #UFOs",
+      "postedAt": "2026-11-08T03:31:18.115000Z",
       "likes": 0
     },
     {
@@ -71,24 +89,6 @@ window.SOCIAL_FEED = {
       "text": "先揭露：我們是 $CROPCODE 的創作者。免費工具：打一句話，壓成 23 欄二進位麥田再解碼。圖＝WE ARE NOT ALONE。\nhttps://arecibosignal.com\n不是投資建議，迷因幣可能歸零。\n#UFO #UAP #aliens #cropcircle",
       "postedAt": "2026-10-05T12:30:20.353000Z",
       "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mx4w7so4bi24",
-      "author": "ARECIBO Signal",
-      "handle": "@arecibo-signal.bsky.social",
-      "text": "Disclosure: we created $CROPCODE. Free tool: type any sentence, press it into a 23-column binary crop field, then decode it. Image = WE ARE NOT ALONE.\nTry: https://arecibosignal.com\nNot investment advice; meme coins can go to zero.\n#UFO #UAP #aliens #cropcircle",
-      "postedAt": "2026-10-05T12:30:14.832000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/starlightwithin.bsky.social/post/3mrtssiid7k2c",
-      "author": "Razhiel @ Starlight Within",
-      "handle": "@starlightwithin.bsky.social",
-      "text": "Sharing my friend's blog on his recent journey exploring England's ley lines, particularly those around #Avebury, as well as crop circles:\n\nroadtonowhere.nicholls.online/p/tickling-t...\n\n#leyline #leylines #LeyLinesInEngland #EnglishLeyLine #CropCircle #megalith #megaliths #St…",
-      "postedAt": "2026-07-30T06:29:15.595000Z",
-      "likes": 2
     }
   ]
 };
