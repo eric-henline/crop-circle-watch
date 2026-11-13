@@ -15,9 +15,63 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-08T15:12:12Z",
+  "fetchedAt": "2026-11-12T14:59:49Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n23vugb5fc2w",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@jvp.bsky.social @jewishcurrents.bsky.social\n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-11-12T07:06:52.529000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n22ejog6zs2j",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@jvp.bsky.social @jewishcurrents.bsky.social\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-11T16:23:58.628000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/subteron.bsky.social/post/3mzz75joia22z",
+      "author": "Subteron",
+      "handle": "@subteron.bsky.social",
+      "text": "They're Here\n\nAuthor Gary Moshier \"connects all the dots\" of the UFO phenomenon, including UFOs, nonhuman intelligence, telepathic communication, human abductions, animal mutilations, and the creation of crop circles.\n\nView Book #Subteron #UAP #Extraterrestrial",
+      "postedAt": "2026-11-11T05:15:02.510000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/amagire.bsky.social/post/3mzypyh24js2t",
+      "author": "Skull Issue",
+      "handle": "@amagire.bsky.social",
+      "text": "some day they'll release the goverment files that prove crop circles are real and aliens do it for the same reason 3 lads with some rope and a plank do: to fuck with you",
+      "postedAt": "2026-11-11T00:43:45.900000Z",
+      "likes": 2
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/lnchl80.bsky.social/post/3mzvtycypps2q",
+      "author": "LnchL80",
+      "handle": "@lnchl80.bsky.social",
+      "text": "alien crop circle hoaxer🥰😘",
+      "postedAt": "2026-11-09T21:17:17.409000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mzsq6plwu2qb",
+      "author": "Creative Native Threads",
+      "handle": "@kr8vn8v.bsky.social",
+      "text": "A real crop circle formation from Wiltshire, UK — August 29, 2025 — printed on your chest. Minimal. Mysterious. 100% Airlume cotton. For those who look up and stay curious.\n\nhttps://creativenativethreads.com/product/crop-circle-t-shirt-82925-unisex-t-shirt/\n\n#RootedInCaliforni…",
+      "postedAt": "2026-11-08T15:31:17.814000Z",
+      "likes": 0
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mzs42hh7ckqb",
@@ -29,66 +83,12 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzrzdci52k2s",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@bloomsburybooksuk.bsky.social @scholasticuk.bsky.social\n\nPhoenix from the Flames\nLittle London, Wiltshire,\nEngland. 12th June, 2009\n\n#CropCircles #Logos\n#SpecialRevelation\n#TheWordOfGod\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-…",
-      "postedAt": "2026-11-08T08:42:15.721000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3mzrzat5aw22s",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@bloomsburybooksuk.bsky.social @scholasticuk.bsky.social\n\nPhoenix from the Flames\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#CropCircles #Logos\n#TheWordOfGod\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-11-08T08:40:52.523000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mzrhxavyqsqb",
-      "author": "Creative Native Threads",
-      "handle": "@kr8vn8v.bsky.social",
-      "text": "Mystery in the wheat: the Longwood Warren crop circle from July 2021, now on soft 100% Airlume cotton. For the curious and the searchers. https://creativenativethreads.com/product/crop-circle-70421-t-shirt-unisex-t-shirt/ #WearableArt #UFOs",
-      "postedAt": "2026-11-08T03:31:18.115000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
       "url": "https://bsky.app/profile/april-now.bsky.social/post/3mzofdzzwps2s",
       "author": "april",
       "handle": "@april-now.bsky.social",
       "text": "also kelly krumrie said 'concentric macroscope' is getting a second print run from crop circle press but there's no indication of when that will be and tbh considering crop circle only accepts submissions during aries season i'm guessing they are not exactly Leaping At The Cha…",
       "postedAt": "2026-11-06T22:06:46.370000Z",
       "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/alexjaffe.bsky.social/post/3mzlt6lyyak2n",
-      "author": "Alex Jaffe, DC Comics Expert",
-      "handle": "@alexjaffe.bsky.social",
-      "text": "“Your world,” Metron began, “was formed aeons ago as an engine to derive the Anti-Life Equation. That cosmic purpose is coming to fruit within your soil, for Darkseid to harvest. You call them ‘Crop Circles.’”\n\n“We’ll see if he can read them,” Damian said, “Before Bat-Cow’s he…",
-      "postedAt": "2026-11-05T21:36:17.055000Z",
-      "likes": 7
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/eksopolitiikka.bsky.social/post/3mzl2gxltxb2p",
-      "author": "Eksopolitiikka",
-      "handle": "@eksopolitiikka.bsky.social",
-      "text": "WILTSHIRE UFO CRATER AND CROPCIRCLE: 1963\n\nhttps://podcasters.spotify.com/pod/show/ufo-warning/episodes/WILTSHIRE-UFO-CRATER-AND-CROPCIRCLE-1963-e3ro9h6\n\n #UFObluesky #UFO #UFOs #UAP #EndUAPsecrecy #UAPtransparency",
-      "postedAt": "2026-11-05T14:13:33.681817Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mx4w7v3wz72q",
-      "author": "ARECIBO Signal",
-      "handle": "@arecibo-signal.bsky.social",
-      "text": "先揭露：我們是 $CROPCODE 的創作者。免費工具：打一句話，壓成 23 欄二進位麥田再解碼。圖＝WE ARE NOT ALONE。\nhttps://arecibosignal.com\n不是投資建議，迷因幣可能歸零。\n#UFO #UAP #aliens #cropcircle",
-      "postedAt": "2026-10-05T12:30:20.353000Z",
-      "likes": 0
     }
   ]
 };
