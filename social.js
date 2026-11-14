@@ -15,34 +15,43 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-12T14:59:49Z",
+  "fetchedAt": "2026-11-14T14:58:50Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n23vugb5fc2w",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2bbgtl2mc26",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@jvp.bsky.social @jewishcurrents.bsky.social\n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-11-12T07:06:52.529000Z",
+      "text": "@plaidcymru.bsky.social @interpol.int @walesgovernance.bsky.social\n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-11-14T10:17:20.312000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2b7aiyb2c2z",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@plaidcymru.bsky.social @bylines.cymru @walesgovernance.bsky.social\n\nDesecration of the Word of God\n\nThe Kundalini Of The Earth\nWest Woodhay Down \nWiltshire, England.\n\n#CropCircles #Logos\n#TheWordOfGod\n\nDesecrating your own most sacred culture.\n\ntemporarytemples.co.uk/crop-cir…",
+      "postedAt": "2026-11-14T09:38:00.399000Z",
+      "likes": 1
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/eksopolitiikka.bsky.social/post/3n2b2k3zwld25",
+      "author": "Eksopolitiikka",
+      "handle": "@eksopolitiikka.bsky.social",
+      "text": "Crop Circles: Messages to Humanity?\n\nhttps://www.youtube.com/shorts/ZBC2dEk8wVs\n\n #UFObluesky #UFO #UFOs #UAP #EndUAPsecrecy #UAPtransparency",
+      "postedAt": "2026-11-14T08:13:53.252449Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n22ejog6zs2j",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@jvp.bsky.social @jewishcurrents.bsky.social\n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-11-11T16:23:58.628000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/subteron.bsky.social/post/3mzz75joia22z",
-      "author": "Subteron",
-      "handle": "@subteron.bsky.social",
-      "text": "They're Here\n\nAuthor Gary Moshier \"connects all the dots\" of the UFO phenomenon, including UFOs, nonhuman intelligence, telepathic communication, human abductions, animal mutilations, and the creation of crop circles.\n\nView Book #Subteron #UAP #Extraterrestrial",
-      "postedAt": "2026-11-11T05:15:02.510000Z",
+      "url": "https://bsky.app/profile/nyeug.com/post/3n2aeucqmyb2j",
+      "author": "NYE Underground",
+      "handle": "@nyeug.com",
+      "text": "Crop circles remain a worldwide phenomenon, possibly linked to an energy field and a technology, with no clear explanation. Tune in live at http://www.nyeug.com",
+      "postedAt": "2026-11-14T01:45:54.726629Z",
       "likes": 0
     },
     {
@@ -80,15 +89,6 @@ window.SOCIAL_FEED = {
       "text": "Sunset light bleeds through the geometry of a real crop circle—soft cotton, bold color, infinite mystery. For believers and dreamers alike 🌅\n\n#WearableArt #RootedInCalifornia\n\nhttps://creativenativethreads.com/product/crop-circle-70421-sunset-fusion-unisex-t-shirt/",
       "postedAt": "2026-11-08T09:31:00.214000Z",
       "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/april-now.bsky.social/post/3mzofdzzwps2s",
-      "author": "april",
-      "handle": "@april-now.bsky.social",
-      "text": "also kelly krumrie said 'concentric macroscope' is getting a second print run from crop circle press but there's no indication of when that will be and tbh considering crop circle only accepts submissions during aries season i'm guessing they are not exactly Leaping At The Cha…",
-      "postedAt": "2026-11-06T22:06:46.370000Z",
-      "likes": 1
     }
   ]
 };
