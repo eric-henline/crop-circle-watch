@@ -15,26 +15,26 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-14T14:58:50Z",
+  "fetchedAt": "2026-11-15T15:13:08Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2bbgtl2mc26",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2e76aum7s2m",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@plaidcymru.bsky.social @interpol.int @walesgovernance.bsky.social\n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-11-14T10:17:20.312000Z",
-      "likes": 1
+      "text": "#LessonsForTheDeepStates\n\nThe Alien Delusion;\n\nCrop Circles, Crossovers From\nAnother Dimension \n\nAstonishing with hindsight!\nFor all kinds of reasons.\n\n#TheAlienDelusion #UFOs\n#TheGeometricWord #TheWordOfGod #Psychology #Polarity #Avoidance #SpiritualBlindness \n\nyoutu.be/MmXU1…",
+      "postedAt": "2026-11-15T14:14:44.002000Z",
+      "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2b7aiyb2c2z",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2e4odfues2m",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "@plaidcymru.bsky.social @bylines.cymru @walesgovernance.bsky.social\n\nDesecration of the Word of God\n\nThe Kundalini Of The Earth\nWest Woodhay Down \nWiltshire, England.\n\n#CropCircles #Logos\n#TheWordOfGod\n\nDesecrating your own most sacred culture.\n\ntemporarytemples.co.uk/crop-cir…",
-      "postedAt": "2026-11-14T09:38:00.399000Z",
-      "likes": 1
+      "text": "Extraterrestrial Life\n\nI think God is trying to tell us something about aliens. I think the inspired fictions can teach us something too.\n\n#CropCircles #Logos\n#SpecialRevelation\n#Space #TheFineTunedUniverse\n#RareEarth #EventualityEarth\n\nen.wikipedia.org/wiki/Extrate...",
+      "postedAt": "2026-11-15T13:30:02.309000Z",
+      "likes": 2
     },
     {
       "platform": "bluesky",

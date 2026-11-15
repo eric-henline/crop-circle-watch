@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-11-14T07:13:34-08:00",
+  lastScan: "2026-11-15T07:12:00-08:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -427,6 +427,15 @@ window.COVERAGE = [
   // returns 200 and the summary describes what the piece actually says. This is
   // coverage ABOUT crop circles — commentary, interviews, news, podcasts,
   // events — NOT the per-formation report pages, which are the STORIES feed.
+  {
+    id: "2026-11-15-circle-makers-speak-13",
+    date: "2026-11-15",
+    kind: "article",
+    title: "Circle Makers Speak #13: Q&A Session (Part Two)",
+    outlet: "The Croppie",
+    url: "https://thecroppie.com/2026/11/15/circle-makers-speak-13-qa-session-part-two/",
+    summary: "Second part of a reader Q&A with an anonymous working circle maker, continuing from Part One (May 2026). Covers team logistics and field scouting, the makers' attitudes toward farmers cutting their work, the difficulty of distinguishing human-made formations from alleged unexplained ones, and notable past designs — including the Crab Wood grey alien (2002) and the Woodborough Hill owl (2009) — as examples of exceptional craftsmanship."
+  },
   {
     id: "2026-11-01-croppie-crab-wood",
     date: "2026-11-01",
