@@ -74,7 +74,7 @@
 window.DASHBOARD_META = {
   // Updated automatically by the daily scan. ISO 8601 with explicit offset
   // so it renders the same regardless of the visitor's timezone settings.
-  lastScan: "2026-11-15T10:32:00-08:00",
+  lastScan: "2026-11-16T06:58:00-08:00",
   // Set by the daily scan at the end of each run. Three possible values:
   //   "ok"      — scan ran and completed normally (including "no new formations" days)
   //   "flagged" — safety valve triggered (>6 candidates found; needs manual review)
@@ -177,7 +177,7 @@ window.STORIES = [
     date: "2026-07-07",
     title: "Maccoombe Down",
     location: "Nr Tidcombe, Wiltshire, UK · Map ref SU2931057192",
-    description: "Reported 7 July 2026 near Tidcombe, described by Temporary Temples as a striking 3D design roughly 180ft in diameter. The field's owner — his first crop circle in 19 years — has granted limited public access along marked tractor-track routes.",
+    description: "Reported 7 July 2026 near Tidcombe, described by Temporary Temples as a striking 3D design roughly 180ft in diameter. The field's owner (his first crop circle in 19 years) has granted limited public access along marked tractor-track routes.",
     tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://www.cropcircleconnector.com/2026/Maccoombe/Maccoombe2026a.html",
     sourceName: "Crop Circle Connector",
@@ -314,7 +314,7 @@ window.STORIES = [
     aliases: ["First Broad Drive"],
     mergedIds: ["2026-06-15-first-broad-drive"],
     location: "Nr Grovely Woods, Great Wishford, Wiltshire, UK · Map ref SU0556533826",
-    description: "Reported 15 June 2026 in young wheat near Grovely Woods, measuring approximately 120ft in diameter, and logged by Crop Circle Connector as the season's fourth confirmed formation. Temporary Temples describe it as another three-fold design with fascinating geometry and symbolism. The formation lasted only three days before the farmer cut it — one day before Temporary Temples' planned aerial flight — so their own coverage is drone stills by Tomasz Kaczmarek; the aerial video below comes from Crop Circle Connector's report of the same formation.",
+    description: "Reported 15 June 2026 in young wheat near Grovely Woods, measuring approximately 120ft in diameter, and logged by Crop Circle Connector as the season's fourth confirmed formation. Temporary Temples describe it as another three-fold design with fascinating geometry and symbolism. The formation lasted only three days before the farmer cut it, one day before Temporary Temples' planned aerial flight, so their own coverage is drone stills by Tomasz Kaczmarek; the aerial video below comes from Crop Circle Connector's report of the same formation.",
     tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://temporarytemples.co.uk/project/great-wishford-2026",
     sourceName: "Temporary Temples",
@@ -330,7 +330,7 @@ window.STORIES = [
     date: "2026-05-31",
     title: "Ditcheat",
     location: "Nr Ditcheat & Pennard Hill, Somerset, UK · Map ref ST6167037280",
-    description: "Reported 31 May 2026 in young wheat — the first crop circle of the 2026 season to appear in wheat rather than barley or oilseed rape. A three-fold, roughly 120ft design bearing a passing resemblance to the Strophalos (Hecate's Wheel) symbol.",
+    description: "Reported 31 May 2026 in young wheat, the first crop circle of the 2026 season to appear in wheat rather than barley or oilseed rape. A three-fold, roughly 120ft design bearing a passing resemblance to the Strophalos (Hecate's Wheel) symbol.",
     tags: ["UK", "Somerset", "2026 season"],
     sourceUrl: "https://temporarytemples.co.uk/project/ditcheat-2026",
     sourceName: "Temporary Temples",
@@ -375,7 +375,7 @@ window.STORIES = [
     date: "2026-04-29",
     title: "Waden Hill",
     location: "Nr Avebury, Wiltshire, UK · Map ref SU1053268965",
-    description: "The first confirmed formation of the UK's 2026 season, reported 29 April on Waden Hill near Avebury — opening the season just as the winter wheat reached the right height for a clean lay.",
+    description: "The first confirmed formation of the UK's 2026 season, reported 29 April on Waden Hill near Avebury, opening the season just as the winter wheat reached the right height for a clean lay.",
     tags: ["UK", "Wiltshire", "2026 season", "video"],
     sourceUrl: "https://www.cropcircleconnector.com/2026/wadenhill/wadenhill2026a.html",
     sourceName: "Crop Circle Connector",
@@ -434,7 +434,7 @@ window.COVERAGE = [
     title: "Circle Makers Speak #13: Q&A Session (Part Two)",
     outlet: "The Croppie",
     url: "https://thecroppie.com/2026/11/15/circle-makers-speak-13-qa-session-part-two/",
-    summary: "Second part of a reader Q&A with an anonymous working circle maker, continuing from Part One (May 2026). Covers team logistics and field scouting, the makers' attitudes toward farmers cutting their work, the difficulty of distinguishing human-made formations from alleged unexplained ones, and notable past designs — including the Crab Wood grey alien (2002) and the Woodborough Hill owl (2009) — as examples of exceptional craftsmanship."
+    summary: "Second part of a reader Q&A with an anonymous working circle maker, continuing from Part One (May 2026). Covers team logistics and field scouting, the makers' attitudes toward farmers cutting their work, the difficulty of distinguishing human-made formations from alleged unexplained ones, and notable past designs, including the Crab Wood grey alien (2002) and the Woodborough Hill owl (2009), as examples of exceptional craftsmanship."
   },
   {
     id: "2026-11-01-croppie-crab-wood",
@@ -443,7 +443,7 @@ window.COVERAGE = [
     title: "Crab Wood: No, It Wasn't Circlemakers.org",
     outlet: "The Croppie",
     url: "https://thecroppie.com/2026/11/01/crab-wood-no-it-wasnt-circlemakers-org/",
-    summary: "Investigation into the authorship of the famous 2002 Crab Wood formation near Winchester — the one featuring a pixelated alien figure holding a disc. Through interviews with Wil Russell of Circlemakers.org conducted in late July 2026, The Croppie establishes that Circlemakers.org did not make this formation; screenshots circulating as evidence were taken out of context and referred to separate commercial work. The article concludes the formation was likely created by an unnamed group of skilled circle makers who subsequently retired from the activity."
+    summary: "Investigation into the authorship of the famous 2002 Crab Wood formation near Winchester, the one featuring a pixelated alien figure holding a disc. Through interviews with Wil Russell of Circlemakers.org conducted in late July 2026, The Croppie establishes that Circlemakers.org did not make this formation; screenshots circulating as evidence were taken out of context and referred to separate commercial work. The article concludes the formation was likely created by an unnamed group of skilled circle makers who subsequently retired from the activity."
   },
   {
     id: "2026-10-30-hpj-crop-circles-mystery",
@@ -461,13 +461,13 @@ window.COVERAGE = [
     title: "Books: It Can't Be People",
     outlet: "The Croppie",
     url: "https://thecroppie.com/2026/10/15/books-it-cant-be-people/",
-    summary: "The Croppie's critical review of Citizen D's independently published Kindle book 'It Can't Be People: Voices From the Inner Circle,' a collection of testimonies from circle makers describing paranormal experiences — orbs, lights, and tall figures — observed during night-time field activities. The reviewer questions the authenticity of some accounts and concludes that both the book's thesis and mainstream extraterrestrial beliefs rest on similar foundations of 'faith, superstition and wishful thinking.'"
+    summary: "The Croppie's critical review of Citizen D's independently published Kindle book 'It Can't Be People: Voices From the Inner Circle,' a collection of testimonies from circle makers describing paranormal experiences, orbs, lights, and tall figures, observed during night-time field activities. The reviewer questions the authenticity of some accounts and concludes that both the book's thesis and mainstream extraterrestrial beliefs rest on similar foundations of 'faith, superstition and wishful thinking.'"
   },
   {
     id: "2026-10-03-tt-autumn-lectures",
     date: "2026-10-03",
     kind: "event",
-    title: "The Autumn Crop Circle Lectures — Conference 2026",
+    title: "The Autumn Crop Circle Lectures: Conference 2026",
     outlet: "Temporary Temples",
     url: "https://temporarytemples.co.uk/event/summer-lectures-crop-circle-conference-2025-6",
     summary: "Online five-weekend conference (3 October – 1 November 2026, via Zoom) featuring two introductory workshops on crop circles and geometry/consciousness plus eight lectures from researchers including Peter van den Burg (geometric analysis), Bert Janssen (quantum science perspectives), and Kathy Mingo (alchemy connections). Described by Temporary Temples as the only crop circle event of this kind anywhere; video recordings available for purchase after the series ends."
@@ -488,7 +488,7 @@ window.COVERAGE = [
     title: "It Can't Be People: Voices From Inside the Circle",
     outlet: "Pursuit of the Paranormal Podcast",
     url: "https://itcantbepeople.substack.com/p/brand-new-interview-citizen-d-in-575",
-    summary: "Interview with Citizen D — journalist, author, and former circle-maker — on the Pursuit of the Paranormal podcast, announced via his Substack on 30 September 2026. Drawing on his book of firsthand accounts from active circle-makers, the conversation covers construction techniques in Wiltshire's ancient landscapes, mysterious orbs and lights observed during and after formations, unexplained additions appearing after makers have left, and the book's central question: whether circles may be human-made but not entirely human-directed."
+    summary: "Interview with Citizen D, journalist, author, and former circle-maker, on the Pursuit of the Paranormal podcast, announced via his Substack on 30 September 2026. Drawing on his book of firsthand accounts from active circle-makers, the conversation covers construction techniques in Wiltshire's ancient landscapes, mysterious orbs and lights observed during and after formations, unexplained additions appearing after makers have left, and the book's central question: whether circles may be human-made but not entirely human-directed."
   },
   {
     id: "2026-09-15-croppie-investigating-crop-circles-film",
@@ -515,7 +515,7 @@ window.COVERAGE = [
     title: "Crop Circle Anomalies: An Insider's Account",
     outlet: "Coast to Coast AM",
     url: "https://www.coasttocoastam.com/show/2026-08-30-show/",
-    summary: "Second half of this Coast to Coast AM episode (hosted by Richard Syrett) features Citizen D — journalist, author, and former circle-maker — drawing on his book \"It Can't Be People: Voices from the Inner Circle.\" He describes night-time construction with boards and rope, why Wiltshire and Avebury ancient landscapes are the recurring stage, and unexplained phenomena reported by the makers themselves: orbs and lights during formations, time distortions, apparitions, and prophetic dreams. His argument: human authorship does not close the mystery."
+    summary: "Second half of this Coast to Coast AM episode (hosted by Richard Syrett) features Citizen D, journalist, author, and former circle-maker, drawing on his book \"It Can't Be People: Voices from the Inner Circle.\" He describes night-time construction with boards and rope, why Wiltshire and Avebury ancient landscapes are the recurring stage, and unexplained phenomena reported by the makers themselves: orbs and lights during formations, time distortions, apparitions, and prophetic dreams. His argument: human authorship does not close the mystery."
   },
   {
     id: "2026-08-04-croppie-gossip-in-a-field-in-wiltshire",

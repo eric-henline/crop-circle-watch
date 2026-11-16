@@ -15,26 +15,35 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-15T15:13:08Z",
+  "fetchedAt": "2026-11-16T15:01:11Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2e76aum7s2m",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2glvjthec2g",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "#LessonsForTheDeepStates\n\nThe Alien Delusion;\n\nCrop Circles, Crossovers From\nAnother Dimension \n\nAstonishing with hindsight!\nFor all kinds of reasons.\n\n#TheAlienDelusion #UFOs\n#TheGeometricWord #TheWordOfGod #Psychology #Polarity #Avoidance #SpiritualBlindness \n\nyoutu.be/MmXU1…",
-      "postedAt": "2026-11-15T14:14:44.002000Z",
+      "text": "The Three Turns Of The Wheel Of Dharma\nAvebury Stone Circle\nAvebury, Wiltshire, England.\n1st August 2012\n\n#Kundalini #Electromagnetism\n#Buddhism #Enlightenment\n#Consciousness #TheWheelOfTime\n#Kalachakra #Dharmachakra \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-16T13:07:49.530000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2e4odfues2m",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2gltdxmic2g",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "Extraterrestrial Life\n\nI think God is trying to tell us something about aliens. I think the inspired fictions can teach us something too.\n\n#CropCircles #Logos\n#SpecialRevelation\n#Space #TheFineTunedUniverse\n#RareEarth #EventualityEarth\n\nen.wikipedia.org/wiki/Extrate...",
-      "postedAt": "2026-11-15T13:30:02.309000Z",
-      "likes": 2
+      "text": "The Three Turns Of The Wheel Of Dharma\nAvebury Stone Circle\nAvebury, Wiltshire, England.\n1st August 2012\n\n#Kundalini #Electromagnetism\n#Buddhism #Enlightenment\n#Consciousness #TheWheelOfTime\n#Kalachakra #Dharmachakra \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-16T13:06:36.268000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/eksopolitiikka.bsky.social/post/3n2ewzpe3ra2m",
+      "author": "Eksopolitiikka",
+      "handle": "@eksopolitiikka.bsky.social",
+      "text": "Crop Circles - Messages to Humanity?\n\nhttps://www.youtube.com/shorts/ZBC2dEk8wVs\n\n #UFObluesky #UFO #UFOs #UAP #EndUAPsecrecy #UAPtransparency",
+      "postedAt": "2026-11-15T21:21:40.805152Z",
+      "likes": 0
     },
     {
       "platform": "bluesky",
@@ -53,15 +62,6 @@ window.SOCIAL_FEED = {
       "text": "Crop circles remain a worldwide phenomenon, possibly linked to an energy field and a technology, with no clear explanation. Tune in live at http://www.nyeug.com",
       "postedAt": "2026-11-14T01:45:54.726629Z",
       "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/amagire.bsky.social/post/3mzypyh24js2t",
-      "author": "Skull Issue",
-      "handle": "@amagire.bsky.social",
-      "text": "some day they'll release the goverment files that prove crop circles are real and aliens do it for the same reason 3 lads with some rope and a plank do: to fuck with you",
-      "postedAt": "2026-11-11T00:43:45.900000Z",
-      "likes": 2
     },
     {
       "platform": "bluesky",
