@@ -15,9 +15,18 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-17T15:16:18Z",
+  "fetchedAt": "2026-11-18T14:58:05Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/eksopolitiikka.bsky.social/post/3n2jw36r7ii27",
+      "author": "Eksopolitiikka",
+      "handle": "@eksopolitiikka.bsky.social",
+      "text": "Crop Circles: Crossovers From Another Dimension\n\nhttps://www.youtube.com/watch?v=tliT0CBdJDM\n\n #UFObluesky #UFO #UFOs #UAP #EndUAPsecrecy #UAPtransparency",
+      "postedAt": "2026-11-17T20:47:55.582229Z",
+      "likes": 0
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2imnos2hc2p",
@@ -25,7 +34,7 @@ window.SOCIAL_FEED = {
       "handle": "@sirius2368.bsky.social",
       "text": "@europarl.europa.eu @ec.europa.eu @vonderleyen.ec.europa.eu \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
       "postedAt": "2026-11-17T08:26:39.503000Z",
-      "likes": 0
+      "likes": 1
     },
     {
       "platform": "bluesky",
@@ -56,24 +65,6 @@ window.SOCIAL_FEED = {
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/eksopolitiikka.bsky.social/post/3n2b2k3zwld25",
-      "author": "Eksopolitiikka",
-      "handle": "@eksopolitiikka.bsky.social",
-      "text": "Crop Circles: Messages to Humanity?\n\nhttps://www.youtube.com/shorts/ZBC2dEk8wVs\n\n #UFObluesky #UFO #UFOs #UAP #EndUAPsecrecy #UAPtransparency",
-      "postedAt": "2026-11-14T08:13:53.252449Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/nyeug.com/post/3n2aeucqmyb2j",
-      "author": "NYE Underground",
-      "handle": "@nyeug.com",
-      "text": "Crop circles remain a worldwide phenomenon, possibly linked to an energy field and a technology, with no clear explanation. Tune in live at http://www.nyeug.com",
-      "postedAt": "2026-11-14T01:45:54.726629Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
       "url": "https://bsky.app/profile/lnchl80.bsky.social/post/3mzvtycypps2q",
       "author": "LnchL80",
       "handle": "@lnchl80.bsky.social",
@@ -88,6 +79,15 @@ window.SOCIAL_FEED = {
       "handle": "@kr8vn8v.bsky.social",
       "text": "A real crop circle formation from Wiltshire, UK — August 29, 2025 — printed on your chest. Minimal. Mysterious. 100% Airlume cotton. For those who look up and stay curious.\n\nhttps://creativenativethreads.com/product/crop-circle-t-shirt-82925-unisex-t-shirt/\n\n#RootedInCaliforni…",
       "postedAt": "2026-11-08T15:31:17.814000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/arecibo-signal.bsky.social/post/3mx4w7v3wz72q",
+      "author": "ARECIBO Signal",
+      "handle": "@arecibo-signal.bsky.social",
+      "text": "先揭露：我們是 $CROPCODE 的創作者。免費工具：打一句話，壓成 23 欄二進位麥田再解碼。圖＝WE ARE NOT ALONE。\nhttps://arecibosignal.com\n不是投資建議，迷因幣可能歸零。\n#UFO #UAP #aliens #cropcircle",
+      "postedAt": "2026-10-05T12:30:20.353000Z",
       "likes": 0
     }
   ]
