@@ -15,26 +15,35 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-16T15:01:11Z",
+  "fetchedAt": "2026-11-17T15:16:18Z",
   "source": "bluesky",
   "posts": [
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2glvjthec2g",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2imnos2hc2p",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Three Turns Of The Wheel Of Dharma\nAvebury Stone Circle\nAvebury, Wiltshire, England.\n1st August 2012\n\n#Kundalini #Electromagnetism\n#Buddhism #Enlightenment\n#Consciousness #TheWheelOfTime\n#Kalachakra #Dharmachakra \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-11-16T13:07:49.530000Z",
+      "text": "@europarl.europa.eu @ec.europa.eu @vonderleyen.ec.europa.eu \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
+      "postedAt": "2026-11-17T08:26:39.503000Z",
       "likes": 0
     },
     {
       "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2gltdxmic2g",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2iicnzzx22p",
       "author": "Sirius",
       "handle": "@sirius2368.bsky.social",
-      "text": "The Three Turns Of The Wheel Of Dharma\nAvebury Stone Circle\nAvebury, Wiltshire, England.\n1st August 2012\n\n#Kundalini #Electromagnetism\n#Buddhism #Enlightenment\n#Consciousness #TheWheelOfTime\n#Kalachakra #Dharmachakra \n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-11-16T13:06:36.268000Z",
+      "text": "@europarl.europa.eu @ec.europa.eu @vonderleyen.ec.europa.eu \n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-17T07:08:54.655000Z",
       "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/timharbert.bsky.social/post/3n2hhtgbcss2f",
+      "author": "Tim",
+      "handle": "@timharbert.bsky.social",
+      "text": "crop circles are warnings to UFO pilots to not land here.",
+      "postedAt": "2026-11-16T21:27:43.455000Z",
+      "likes": 2
     },
     {
       "platform": "bluesky",
@@ -79,15 +88,6 @@ window.SOCIAL_FEED = {
       "handle": "@kr8vn8v.bsky.social",
       "text": "A real crop circle formation from Wiltshire, UK — August 29, 2025 — printed on your chest. Minimal. Mysterious. 100% Airlume cotton. For those who look up and stay curious.\n\nhttps://creativenativethreads.com/product/crop-circle-t-shirt-82925-unisex-t-shirt/\n\n#RootedInCaliforni…",
       "postedAt": "2026-11-08T15:31:17.814000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mzs42hh7ckqb",
-      "author": "Creative Native Threads",
-      "handle": "@kr8vn8v.bsky.social",
-      "text": "Sunset light bleeds through the geometry of a real crop circle—soft cotton, bold color, infinite mystery. For believers and dreamers alike 🌅\n\n#WearableArt #RootedInCalifornia\n\nhttps://creativenativethreads.com/product/crop-circle-70421-sunset-fusion-unisex-t-shirt/",
-      "postedAt": "2026-11-08T09:31:00.214000Z",
       "likes": 0
     }
   ]
