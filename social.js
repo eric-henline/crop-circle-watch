@@ -15,9 +15,36 @@
    ==========================================================================
  */
 window.SOCIAL_FEED = {
-  "fetchedAt": "2026-11-18T14:58:05Z",
+  "fetchedAt": "2026-11-19T15:55:37Z",
   "source": "bluesky",
   "posts": [
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2ogkmltg22b",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@ukparliament.parliament.uk @houseofcommons.parliament.uk @churchofengland.org\n\nThe Great Eight\n(Duality, Time Cycles And Opposition)\nMilk Hill, Wiltshire, England\n08/08/2008\n\n#TheLionsGatePortal\n#TheLionOfJudah\n#Jesus888 #CropCircles\n#SpecialRevelation\n\ntemporarytemples.co.uk…",
+      "postedAt": "2026-11-19T15:53:32.523000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2oeoemy2s2s",
+      "author": "Sirius",
+      "handle": "@sirius2368.bsky.social",
+      "text": "@ukparliament.parliament.uk @houseofcommons.parliament.uk @churchofengland.org\n\nPhoenix from the Flames.\nLittle London, Wiltshire,\nEngland. 12th June 2009\n\n#TheOrderOfThePheonix\n#Resurrection #Jesus #TheSecondComing \n\ntemporarytemples.co.uk/crop-circles...",
+      "postedAt": "2026-11-19T15:19:50.906000Z",
+      "likes": 0
+    },
+    {
+      "platform": "bluesky",
+      "url": "https://bsky.app/profile/flintox.bsky.social/post/3n2mmz4hahs2d",
+      "author": "Flint",
+      "handle": "@flintox.bsky.social",
+      "text": "#macrofurry\n\n\"What?!\" The green alien cat balked, crossing his arms indignantly. \"We make crop circles all the time! What's the problem?!\"\n\nHis crewmate stared back, baffled, pointing down at the whole tiny city his fellow visitor had marred with a boot print spanning 15,8km.…",
+      "postedAt": "2026-11-18T22:43:41.892000Z",
+      "likes": 29
+    },
     {
       "platform": "bluesky",
       "url": "https://bsky.app/profile/eksopolitiikka.bsky.social/post/3n2jw36r7ii27",
@@ -25,24 +52,6 @@ window.SOCIAL_FEED = {
       "handle": "@eksopolitiikka.bsky.social",
       "text": "Crop Circles: Crossovers From Another Dimension\n\nhttps://www.youtube.com/watch?v=tliT0CBdJDM\n\n #UFObluesky #UFO #UFOs #UAP #EndUAPsecrecy #UAPtransparency",
       "postedAt": "2026-11-17T20:47:55.582229Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2imnos2hc2p",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@europarl.europa.eu @ec.europa.eu @vonderleyen.ec.europa.eu \n\nCoscinomancy\n(separating the wheat from the chaff)\n\n#CropCircles #Logos #Divination\n#Discernment #Coscinomancy \n#TheWheatAndTheChaff\n\nen.wikipedia.org/wiki/Coscino...",
-      "postedAt": "2026-11-17T08:26:39.503000Z",
-      "likes": 1
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/sirius2368.bsky.social/post/3n2iicnzzx22p",
-      "author": "Sirius",
-      "handle": "@sirius2368.bsky.social",
-      "text": "@europarl.europa.eu @ec.europa.eu @vonderleyen.ec.europa.eu \n\nThe Pipe-Smoking Alien\nCherhill White Horse,\nWiltshire, England.\n27th July 2011\n\n#ChristOnAWhiteHorse\n#TheCrownOfLife\n#TheCeremonialPipe #VesicaPiscis\n#GoldenRatio #SacredSmoke\n\ntemporarytemples.co.uk/crop-circles...",
-      "postedAt": "2026-11-17T07:08:54.655000Z",
       "likes": 0
     },
     {
@@ -70,15 +79,6 @@ window.SOCIAL_FEED = {
       "handle": "@lnchl80.bsky.social",
       "text": "alien crop circle hoaxer🥰😘",
       "postedAt": "2026-11-09T21:17:17.409000Z",
-      "likes": 0
-    },
-    {
-      "platform": "bluesky",
-      "url": "https://bsky.app/profile/kr8vn8v.bsky.social/post/3mzsq6plwu2qb",
-      "author": "Creative Native Threads",
-      "handle": "@kr8vn8v.bsky.social",
-      "text": "A real crop circle formation from Wiltshire, UK — August 29, 2025 — printed on your chest. Minimal. Mysterious. 100% Airlume cotton. For those who look up and stay curious.\n\nhttps://creativenativethreads.com/product/crop-circle-t-shirt-82925-unisex-t-shirt/\n\n#RootedInCaliforni…",
-      "postedAt": "2026-11-08T15:31:17.814000Z",
       "likes": 0
     },
     {
